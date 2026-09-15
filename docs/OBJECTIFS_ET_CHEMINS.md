@@ -485,6 +485,14 @@ La cinématique libre `X_N1_kamera-ya.scr` montre les deux accès souterrains av
 
 Africa 3 enregistre explicitement la valeur 20 à zéro au début de la scène du radio-opérateur, puis à un seulement si sa transmission aboutit. Africa 4 conserve ensuite deux variantes complètes : les conducteurs reçoivent les signaux 20 ou 21, dix-huit fantassins et deux chefs de char les signaux 1 ou 2, cinq réservistes n'apparaissent que si l'alerte a été envoyée, et les délais ainsi que le journal changent selon ce choix.
 
+### Passagers et réservistes d’Africa 4
+
+Les deux Opel arrivent avec cinq occupants chacun. Les passagers 02 et 08 exécutent déjà `HUMAN_Suspend(true)` puis `HUMAN_SetEvents(true)` après l'embarquement : ils restent à leur siège tout en recevant le signal 2 envoyé par le conducteur pour débarquer. Les mêmes deux lignes subsistent, commentées au même emplacement, chez les passagers 03, 04, 07, 09 et 10. Le paquet les réactive sans modifier les sièges, les délais de sortie, les points de rassemblement ni les deux vitesses déterminées par l'alerte radio.
+
+Les réservistes 27 à 30 conservent chacun `gosub CHANGEPOS` commenté juste avant leur unique déplacement vers `AF3b_27_01…AF3b_30_01`. La sous-routine complète existe dans chaque script et choisit déjà entre posture debout et accroupie. Les quatre appels sont réactivés ; la position finale accroupie, le mode d'IA et la boucle de visée restent inchangés.
+
+Le cas du passager 09 est volontairement scindé : son déplacement et son attente sont complets, mais son ancien `HUMAN_TurnAt(dummy_turnat)` ne possède plus ni déclaration de variable ni cible. Cette seule orientation reste une reconstruction séparée. Les changements de posture sans appel des autres groupes ne sont pas inventés.
+
 Dans le seul organisateur de l'attaque, la valeur sauvegardée était cependant remplacée juste après sa lecture par `odvysilali = 1;`, ce qui condamnait systématiquement la variante « ennemis non avertis ». Le paquet retire uniquement cette affectation. Les deux branches restent entièrement constituées de scripts commerciaux et la correction 1.12 des soldats 24 et 25 est conservée.
 
 ### Réactions coordonnées des gardes dans Africa 2

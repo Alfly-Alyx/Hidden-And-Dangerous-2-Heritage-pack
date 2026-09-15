@@ -297,6 +297,9 @@ namespace HD2CommunityInstaller
                     Africa4RadioConsequenceInstaller.Install(
                         options.GamePath, journal, prepared, progress);
                 if (options.RestoreDormantSequences)
+                    Africa4DormantInfantryInstaller.Install(
+                        options.GamePath, journal, prepared, progress);
+                if (options.RestoreDormantSequences)
                     Africa5StorageActivationInstaller.Install(
                         options.GamePath, journal, prepared, progress);
                 if (options.RestoreDormantSequences)

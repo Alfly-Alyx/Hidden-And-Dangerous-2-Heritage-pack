@@ -130,6 +130,7 @@ namespace HD2CommunityInstaller
             if (Czech4ObjectiveCounterInstaller.IsActive(gamePath)) ready++;
             if (PairedSignalTargetInstaller.IsActive(gamePath)) ready++;
             if (Africa4RadioConsequenceInstaller.IsActive(gamePath)) ready++;
+            if (Africa4DormantInfantryInstaller.IsActive(gamePath)) ready++;
             if (Africa5StorageActivationInstaller.IsActive(gamePath)) ready++;
             if (Africa5StorageAlarmInstaller.IsActive(gamePath)) ready++;
             if (Africa5GateSmokeInstaller.IsActive(gamePath)) ready++;
@@ -192,7 +193,7 @@ namespace HD2CommunityInstaller
                 && africa3Dialogue.IndexOf(
                     "079915604", StringComparison.Ordinal) < 0)
                 ready++;
-            return CountStatus(ready, 65);
+            return CountStatus(ready, 66);
         }
 
         private static string DetectEasterEggs(string gamePath)

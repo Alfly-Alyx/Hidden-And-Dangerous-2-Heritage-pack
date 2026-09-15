@@ -51,6 +51,7 @@ namespace HD2CommunityInstaller
                         Console.WriteLine(Czech4ObjectiveCounterInstaller.ValidateOnly(game));
                         Console.WriteLine(PairedSignalTargetInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa4RadioConsequenceInstaller.ValidateOnly(game));
+                        Console.WriteLine(Africa4DormantInfantryInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa5StorageActivationInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa5StorageAlarmInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa5GateSmokeInstaller.ValidateOnly(game));
@@ -132,6 +133,7 @@ namespace HD2CommunityInstaller
                         Console.WriteLine(Czech4ObjectiveCounterInstaller.ValidateOnly(game));
                         Console.WriteLine(PairedSignalTargetInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa4RadioConsequenceInstaller.ValidateOnly(game));
+                        Console.WriteLine(Africa4DormantInfantryInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa5StorageActivationInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa5StorageAlarmInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa5GateSmokeInstaller.ValidateOnly(game));
