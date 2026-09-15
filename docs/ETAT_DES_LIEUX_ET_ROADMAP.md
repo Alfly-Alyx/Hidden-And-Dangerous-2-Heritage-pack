@@ -36,6 +36,12 @@ Le projet doit produire un ensemble installable pour Hidden & Dangerous 2: Sabre
 - même traitement appliqué aux cartes CMP ;
 - dans Arctic 1, les deux retours d'Albert ne réactivent plus le détecteur qui affichait trois reproches avant de faire échouer la mission ; le choix marais/route et les cinématiques restaurées restent inchangés.
 
+### Affichage et performances
+
+- la résolution appliquée est toujours la résolution physique active de l'écran principal ; elle n'est plus abaissée à 1080p ou 1440p selon le profil matériel et n'est plus plafonnée artificiellement à 4K ;
+- le profil de qualité reste indépendant et additionne des indices CPU, mémoire vive, mémoire vidéo et famille de GPU ;
+- le contrôle de câblage refuse désormais une régression qui réintroduirait un plafond 4K, oublierait une des trois familles de performances ou appliquerait la résolution avant le correctif écran large.
+
 ### Objectifs et chemins
 
 - Arctic 3 corrigé avec la nuance qu'une route peut parfois contourner l'anomalie ;

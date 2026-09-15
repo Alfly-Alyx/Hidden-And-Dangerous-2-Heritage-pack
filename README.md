@@ -30,7 +30,7 @@ La version 0.7.5 réunit le retour du jeu en ligne, la collection communautaire 
 - complète Africa 1 avec le changement de lumière de la porte `HL_dvh_x01` et la prise de poste du garde 06 sur sa MG42 encore présente ;
 - complète `PROTOTYPE - Normandy3 Zone` avec les cinq bases officielles absentes ou factices, et `PROTOTYPE - Africa5` avec les ressources et les sept scripts officiels attendus ; chaque prototype est désormais déployé comme un dossier autonome complet afin que le serveur local charge aussi ses fichiers propres au lieu de rester bloqué à la connexion ;
 - place les deux vestiges dans le menu multijoueur : PROTOTYPE - Africa5 en Deathmatch et PROTOTYPE - Normandy3 Zone en Occupation ;
-- détecte CPU, mémoire, carte graphique et résolution physique de l'écran — sans être trompé par le zoom Windows —, installe le correctif écran large vérifié puis applique la résolution maximale adaptée (jusqu’à 4K) ;
+- détecte CPU, mémoire, carte graphique, mémoire vidéo et résolution physique de l'écran — sans être trompé par le zoom Windows —, installe le correctif écran large vérifié, applique la résolution physique complète sans plafond 4K artificiel, puis adapte seulement le niveau de qualité aux performances ;
 - réactive les easter eggs d'Africa 1 et d'Africa 4 neutralisés par la mise à jour 1.12 ;
 - installe un guide joueur des secrets et un rapport séparé des découvertes ;
 - sauvegarde tout fichier remplacé et permet une restauration complète ;

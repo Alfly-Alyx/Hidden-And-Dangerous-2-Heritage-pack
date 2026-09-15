@@ -51,11 +51,13 @@ def audit(root: Path) -> dict[str, object]:
     status_path = installer / "FeatureStatusDetector.cs"
     config_path = installer / "Config.cs"
     main_form_path = installer / "MainForm.cs"
+    graphics_path = installer / "GraphicsConfigurator.cs"
     program = program_path.read_text(encoding="utf-8-sig")
     core = core_path.read_text(encoding="utf-8-sig")
     status = status_path.read_text(encoding="utf-8-sig")
     config = config_path.read_text(encoding="utf-8-sig")
     main_form = main_form_path.read_text(encoding="utf-8-sig")
+    graphics = graphics_path.read_text(encoding="utf-8-sig")
     mutation_sources = []
     unhashed_mutation_sources = []
     for source in sorted(installer.glob("*.cs")):
@@ -175,6 +177,39 @@ def audit(root: Path) -> dict[str, object]:
             "Loose-tree exploration pass must run after prototypes and CMP"
         )
 
+    native_resolution_policy = all((
+        "profile.Width = nativeWidth;" in graphics,
+        "profile.Height = nativeHeight;" in graphics,
+        "EnumDisplaySettings(null, EnumCurrentSettings" in graphics,
+        "WriteInt32(updated, 2, profile.Width);" in graphics,
+        "WriteInt32(updated, 6, profile.Height);" in graphics,
+        "int maxWidth" not in graphics,
+        "int maxHeight" not in graphics,
+        "profile.Width > 3840" not in graphics,
+        "profile.Height > 2160" not in graphics,
+    ))
+    if not native_resolution_policy:
+        errors.append(
+            "Graphics configuration must use the physical desktop resolution without a 4K cap"
+        )
+    adaptive_quality_policy = all((
+        "profile.GpuRamBytes" in graphics,
+        "profile.RamBytes" in graphics,
+        "profile.LogicalProcessors" in graphics,
+        "bool dedicatedGpu" in graphics,
+        "bool modernIntegratedGpu" in graphics,
+        "int performance = 0;" in graphics,
+    ))
+    if not adaptive_quality_policy:
+        errors.append("Graphics quality does not use CPU, RAM and GPU evidence")
+    widescreen_install = core.find("WidescreenInstaller.Install(")
+    graphics_apply = core.find("GraphicsConfigurator.Apply(")
+    widescreen_before_resolution = (
+        widescreen_install >= 0 and graphics_apply > widescreen_install
+    )
+    if not widescreen_before_resolution:
+        errors.append("Widescreen support must be installed before applying resolution")
+
     declared_options = set(re.findall(r"public bool ([A-Za-z0-9_]+)\s*=", config))
     expected_options = set(OPTION_MAP)
     if declared_options != expected_options:
@@ -227,6 +262,9 @@ def audit(root: Path) -> dict[str, object]:
         "interface_options": len(OPTION_MAP),
         "exploration_postpass": exploration_postpass,
         "safe_update_preflight": safe_update_preflight,
+        "native_resolution_policy": native_resolution_policy,
+        "adaptive_quality_policy": adaptive_quality_policy,
+        "widescreen_before_resolution": widescreen_before_resolution,
         "errors": errors,
     }
 

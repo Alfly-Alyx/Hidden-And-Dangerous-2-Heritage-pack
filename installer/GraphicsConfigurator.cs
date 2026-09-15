@@ -11,6 +11,7 @@ namespace HD2CommunityInstaller
     {
         public string Level;
         public string Gpu;
+        public ulong GpuRamBytes;
         public ulong RamBytes;
         public int LogicalProcessors;
         public int NativeWidth;
@@ -28,7 +29,10 @@ namespace HD2CommunityInstaller
                 return resolution + ", profil " + Level
                     + " (" + LogicalProcessors + " processeurs logiques, "
                     + Math.Max(1, (long)(RamBytes / (1024UL * 1024 * 1024))) + " Go RAM"
-                    + (String.IsNullOrWhiteSpace(Gpu) ? "" : ", " + Gpu) + ")";
+                    + (String.IsNullOrWhiteSpace(Gpu) ? "" : ", " + Gpu
+                        + (GpuRamBytes == 0 ? "" : " / "
+                            + Math.Max(1, (long)(GpuRamBytes / (1024UL * 1024 * 1024)))
+                            + " Go video")) + ")";
             }
         }
     }
@@ -102,14 +106,25 @@ namespace HD2CommunityInstaller
             profile.LogicalProcessors = Math.Max(1, Environment.ProcessorCount);
             MemoryStatus memory = new MemoryStatus();
             if (GlobalMemoryStatusEx(memory)) profile.RamBytes = memory.TotalPhysical;
-            profile.Gpu = DetectGpu();
+            profile.Gpu = DetectGpu(out profile.GpuRamBytes);
 
             bool weakGpu = ContainsAny(profile.Gpu,
                 "Microsoft Basic", "Standard VGA", "GMA ", "SiS ", "VIA ");
-            bool high = !weakGpu && profile.RamBytes >= 8UL * 1024 * 1024 * 1024
-                && profile.LogicalProcessors >= 4;
-            bool balanced = !weakGpu && profile.RamBytes >= 4UL * 1024 * 1024 * 1024
-                && profile.LogicalProcessors >= 2;
+            bool dedicatedGpu = ContainsAny(profile.Gpu,
+                "NVIDIA", "GeForce", "AMD", "Radeon", "Arc ");
+            bool modernIntegratedGpu = ContainsAny(profile.Gpu,
+                "Intel HD", "Intel UHD", "Intel Iris", "Vega", "Apple ");
+            int performance = 0;
+            if (profile.RamBytes >= 8UL * 1024 * 1024 * 1024) performance += 2;
+            else if (profile.RamBytes >= 4UL * 1024 * 1024 * 1024) performance += 1;
+            if (profile.LogicalProcessors >= 4) performance += 2;
+            else if (profile.LogicalProcessors >= 2) performance += 1;
+            if (profile.GpuRamBytes >= 2UL * 1024 * 1024 * 1024) performance += 2;
+            else if (profile.GpuRamBytes >= 512UL * 1024 * 1024) performance += 1;
+            if (dedicatedGpu) performance += 2;
+            else if (modernIntegratedGpu) performance += 1;
+            bool high = !weakGpu && performance >= 4;
+            bool balanced = !weakGpu && performance >= 2;
             profile.Level = high ? "eleve" : (balanced ? "equilibre" : "compatibilite");
 
             int nativeWidth;
@@ -117,12 +132,11 @@ namespace HD2CommunityInstaller
             DetectNativeResolution(out nativeWidth, out nativeHeight);
             profile.NativeWidth = nativeWidth;
             profile.NativeHeight = nativeHeight;
-            int maxWidth = high ? 3840 : (balanced ? 2560 : 1920);
-            int maxHeight = high ? 2160 : (balanced ? 1440 : 1080);
-            double scale = Math.Min(1.0,
-                Math.Min((double)maxWidth / nativeWidth, (double)maxHeight / nativeHeight));
-            profile.Width = Math.Max(800, ((int)Math.Floor(nativeWidth * scale) / 2) * 2);
-            profile.Height = Math.Max(600, ((int)Math.Floor(nativeHeight * scale) / 2) * 2);
+            // Resolution and quality are independent.  The widescreen fix reads
+            // the two 32-bit dimensions directly and removes the old setup-app
+            // bounds, so every profile uses the physical desktop resolution.
+            profile.Width = nativeWidth;
+            profile.Height = nativeHeight;
             return profile;
         }
 
@@ -163,8 +177,10 @@ namespace HD2CommunityInstaller
                 || ReadInt32(encodingProbe, 6) != profile.Height
                 || ReadInt32(encodingProbe, 10) != 32)
                 throw new InvalidOperationException("Encodage de resolution invalide.");
-            if (profile.NativeWidth < profile.Width || profile.NativeHeight < profile.Height
-                || profile.Width > 3840 || profile.Height > 2160)
+            if (profile.Width != profile.NativeWidth
+                || profile.Height != profile.NativeHeight
+                || profile.Width < 800 || profile.Height < 600
+                || profile.Width > 32768 || profile.Height > 32768)
                 throw new InvalidOperationException("Resolution d'ecran incoherente.");
             return "Configuration graphique validable : " + profile.Description + ".";
         }
@@ -215,11 +231,13 @@ namespace HD2CommunityInstaller
             InstallerCore.Report(progress, "Reglages graphiques d'origine restaures.");
         }
 
-        private static string DetectGpu()
+        private static string DetectGpu(out ulong gpuRamBytes)
         {
+            gpuRamBytes = 0;
             try
             {
                 string best = null;
+                ulong bestRam = 0;
                 int score = Int32.MinValue;
                 using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(
                     "SELECT Name, AdapterRAM FROM Win32_VideoController"))
@@ -233,8 +251,14 @@ namespace HD2CommunityInstaller
                         ulong ram = 0;
                         try { ram = Convert.ToUInt64(item["AdapterRAM"]); } catch { }
                         current += (int)Math.Min(50UL, ram / (256UL * 1024 * 1024));
-                        if (current > score) { score = current; best = name; }
+                        if (current > score)
+                        {
+                            score = current;
+                            best = name;
+                            bestRam = ram;
+                        }
                     }
+                gpuRamBytes = bestRam;
                 return best;
             }
             catch { return null; }
