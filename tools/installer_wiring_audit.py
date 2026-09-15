@@ -19,6 +19,17 @@ STATUS_RE = re.compile(
     r"if\s*\(\s*(?P<class>[A-Za-z0-9_]+)\."
     r"Is[A-Za-z0-9_]*Active\(gamePath\)\s*\)\s*ready\+\+;"
 )
+OPTION_MAP = {
+    "ConfigureMasterServer": "master",
+    "EnableDirectPlay": "directPlay",
+    "InstallCmp": "cmp",
+    "FreeExploration": "exploration",
+    "FixOptionalObjectives": "objectives",
+    "RestoreDormantSequences": "dormant",
+    "RestoreOfficialEasterEggs": "officialEasterEggs",
+    "UnlockAllMissions": "unlockMissions",
+    "AutoConfigureGraphics": "graphics",
+}
 
 
 def between(text: str, start: str, end: str, source: Path) -> str:
@@ -38,9 +49,13 @@ def audit(root: Path) -> dict[str, object]:
     program_path = installer / "Program.cs"
     core_path = installer / "InstallerCore.cs"
     status_path = installer / "FeatureStatusDetector.cs"
+    config_path = installer / "Config.cs"
+    main_form_path = installer / "MainForm.cs"
     program = program_path.read_text(encoding="utf-8-sig")
     core = core_path.read_text(encoding="utf-8-sig")
     status = status_path.read_text(encoding="utf-8-sig")
+    config = config_path.read_text(encoding="utf-8-sig")
+    main_form = main_form_path.read_text(encoding="utf-8-sig")
     mutation_sources = []
     unhashed_mutation_sources = []
     for source in sorted(installer.glob("*.cs")):
@@ -137,6 +152,45 @@ def audit(root: Path) -> dict[str, object]:
     if "journal.SealMissingHashes(options.GamePath)" not in core:
         errors.append("InstallerCore does not seal legacy missing hashes")
 
+    declared_options = set(re.findall(r"public bool ([A-Za-z0-9_]+)\s*=", config))
+    expected_options = set(OPTION_MAP)
+    if declared_options != expected_options:
+        missing = sorted(expected_options - declared_options)
+        extra = sorted(declared_options - expected_options)
+        if missing:
+            errors.append("Expected InstallOptions missing: " + ", ".join(missing))
+        if extra:
+            errors.append("Unmapped InstallOptions: " + ", ".join(extra))
+    detected_block = between(
+        main_form,
+        "private void ApplyDetectedState(string diagnostic)",
+        "private void AppendLog(string message)",
+        main_form_path,
+    )
+    busy_block = main_form[main_form.find("private void SetBusy(bool busy)") :]
+    for option, checkbox in OPTION_MAP.items():
+        if not re.search(
+            rf"\b{re.escape(option)}\s*=\s*{re.escape(checkbox)}\.Checked\b",
+            main_form,
+        ):
+            errors.append(f"{option} is not assigned from {checkbox}.Checked")
+        if not re.search(rf"\boptions\.{re.escape(option)}\b", core):
+            errors.append(f"{option} is not consumed by InstallerCore")
+        if not re.search(rf"\b{re.escape(checkbox)}\.Checked\s*=", detected_block):
+            errors.append(f"{checkbox} is not refreshed by detected state")
+        if not re.search(rf"\b{re.escape(checkbox)}\.Checked\s*=\s*true\s*;", main_form):
+            errors.append(f"{checkbox} has no enabled default")
+        if not re.search(rf"\b{re.escape(checkbox)}\.Enabled\s*=\s*!busy\s*;", busy_block):
+            errors.append(f"{checkbox} is not locked while the installer is busy")
+    browse_block = between(
+        main_form,
+        "private void BrowseClick(object sender, EventArgs e)",
+        "private async void InstallClick(object sender, EventArgs e)",
+        main_form_path,
+    )
+    if "RunDiagnostic();" not in browse_block:
+        errors.append("Choosing another game folder does not refresh detected state")
+
     return {
         "ok": not errors,
         "local_self_tests": len(local),
@@ -147,6 +201,7 @@ def audit(root: Path) -> dict[str, object]:
         "status_installer_classes": len(set(status_classes)),
         "mutation_sources": len(mutation_sources),
         "unhashed_mutation_sources": unhashed_mutation_sources,
+        "interface_options": len(OPTION_MAP),
         "errors": errors,
     }
 

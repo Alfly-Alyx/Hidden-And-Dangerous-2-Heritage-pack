@@ -74,7 +74,7 @@ namespace HD2CommunityInstaller
             exploration.Checked = true;
             exploration.AutoSize = true;
             exploration.Location = new Point(29, 244);
-            objectives.Text = "Reparer 4 objectifs optionnels casses ou incoherents";
+            objectives.Text = "Reparer les objectifs optionnels casses ou incoherents";
             objectives.Checked = true;
             objectives.AutoSize = true;
             objectives.Location = new Point(29, 272);
@@ -145,7 +145,10 @@ namespace HD2CommunityInstaller
                 dialog.Description = "Selectionnez le dossier de Hidden & Dangerous 2";
                 dialog.SelectedPath = gamePath.Text;
                 if (dialog.ShowDialog(this) == DialogResult.OK)
+                {
                     gamePath.Text = dialog.SelectedPath;
+                    RunDiagnostic();
+                }
             }
         }
 
@@ -159,7 +162,7 @@ namespace HD2CommunityInstaller
             }
             string impact = cmp.Checked
                 ? "L'installation telechargera environ 1,08 Go et ajoutera environ 3,6 Go au jeu."
-                : "La CMP est deja active et ne sera pas retelechargee.";
+                : "La CMP ne sera pas telechargee.";
             DialogResult answer = MessageBox.Show(
                 this, impact + "\r\n\r\nContinuer ?",
                 AppConfig.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Information);

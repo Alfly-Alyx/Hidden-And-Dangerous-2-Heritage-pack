@@ -55,7 +55,8 @@ Les 25 variantes multijoueurs officielles possédant un registre ont également
 été fermées une par une. Le contrôle `tools/installer_wiring_audit.py` garantit
 sans compiler que les autocontrôles, les étapes d'installation et les 73 états
 détaillés restent synchronisés à mesure que de nouvelles restaurations sont
-ajoutées.
+ajoutées. Il vérifie aussi les neuf cases de l'interface, depuis la détection
+de leur état jusqu'à l'option effectivement appliquée.
 
 Les conversions de cartes multijoueur vers de vraies missions solo sont suivies dans `docs/MULTIJOUEUR_VERS_SOLO.md`, avec leur niveau de preuve et leur état de test.
 
