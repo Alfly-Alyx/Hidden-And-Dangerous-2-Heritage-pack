@@ -116,6 +116,13 @@ ports de jeu RpR publiés ont tous répondu en GameSpy2 sur leur port d’inform
 interprété ; l’affichage de la liste Internet et l’entrée effective sur un
 serveur restent volontairement des essais en jeu.
 
+Le prétest `tools/network_runtime_preflight.py` rassemble ces preuves avec
+l'état local : exécutable Sabre Squadron, redirections du fichier `hosts`,
+DirectPlay, six empreintes du correctif écran large, serveur maître et sept
+serveurs publics. Un rapport vert signifie seulement que la machine est prête
+pour l'essai visuel ; il laisse explicitement la liste en jeu et la connexion
+marquées non validées.
+
 Le contrôle `tools/flamethrower_evidence_audit.py` fige séparément les traces
 des deux lance-flammes : record allemand, emplacement britannique réemployé,
 munitions, icônes et effet présents, mais modèles d'arme, animations, table de

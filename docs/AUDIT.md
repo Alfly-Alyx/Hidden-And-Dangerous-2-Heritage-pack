@@ -22,6 +22,14 @@ La disponibilité des serveurs publiés a aussi été testée indépendamment de
 
 Statut honnête : serveur maître et sept serveurs de jeu trouvés et joignables, configuration automatisée, mais affichage de la liste et connexion dans le jeu encore à valider visuellement sur la machine du joueur.
 
+Le prétest combiné `tools/network_runtime_preflight.py` a également confirmé
+sur la machine du 15 septembre 2026 : exécutable Sabre Squadron présent, trois
+redirections `hosts` exactes, DirectPlay activé (`InstallState` 1), six fichiers
+du correctif écran large identiques à l'archive vérifiée et sept réponses
+GameSpy2. Le script vérifie aussi que ses six empreintes restent synchronisées
+avec `WidescreenInstaller.cs`. Il refuse volontairement d'en déduire que le
+menu Internet ou l'entrée sur une carte ont été testés.
+
 Sources :
 - https://www.rprclan.com/hd2/play-online
 - https://rprclan.com/
