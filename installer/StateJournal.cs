@@ -227,6 +227,25 @@ namespace HD2CommunityInstaller
             State.DirectPlayEnabledByInstaller = true;
         }
 
+        public int SealMissingHashes(string gamePath)
+        {
+            int sealedCount = 0;
+            foreach (FileChange change in State.Changes)
+            {
+                if (!String.IsNullOrWhiteSpace(change.InstalledSha256))
+                    continue;
+                string target = InstallerCore.SafeGameTarget(
+                    gamePath, change.RelativePath);
+                if (!File.Exists(target))
+                    throw new FileNotFoundException(
+                        "Fichier suivi absent avant scellement du journal.", target);
+                RecordHash(
+                    change.RelativePath, CmpInstaller.ComputeSha256(target));
+                sealedCount++;
+            }
+            return sealedCount;
+        }
+
         public void Dispose()
         {
             writer.Dispose();

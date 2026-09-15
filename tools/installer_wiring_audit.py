@@ -41,6 +41,17 @@ def audit(root: Path) -> dict[str, object]:
     program = program_path.read_text(encoding="utf-8-sig")
     core = core_path.read_text(encoding="utf-8-sig")
     status = status_path.read_text(encoding="utf-8-sig")
+    mutation_sources = []
+    unhashed_mutation_sources = []
+    for source in sorted(installer.glob("*.cs")):
+        if source.name == "InstallerCore.cs":
+            continue
+        content = source.read_text(encoding="utf-8-sig")
+        if "InstallerCore.PrepareTarget(" not in content:
+            continue
+        mutation_sources.append(source.name)
+        if ".RecordHash(" not in content:
+            unhashed_mutation_sources.append(source.name)
 
     local_block = between(
         program,
@@ -118,6 +129,13 @@ def audit(root: Path) -> dict[str, object]:
         errors.append(
             f"Dormant status total is {declared_total}, but {status_checks} checks increment ready"
         )
+    if unhashed_mutation_sources:
+        errors.append(
+            "Mutation sources without RecordHash: "
+            + ", ".join(unhashed_mutation_sources)
+        )
+    if "journal.SealMissingHashes(options.GamePath)" not in core:
+        errors.append("InstallerCore does not seal legacy missing hashes")
 
     return {
         "ok": not errors,
@@ -127,6 +145,8 @@ def audit(root: Path) -> dict[str, object]:
         "dormant_status_checks": status_checks,
         "dormant_status_total": declared_total,
         "status_installer_classes": len(set(status_classes)),
+        "mutation_sources": len(mutation_sources),
+        "unhashed_mutation_sources": unhashed_mutation_sources,
         "errors": errors,
     }
 

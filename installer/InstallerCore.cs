@@ -430,6 +430,10 @@ namespace HD2CommunityInstaller
                         options.GamePath, journal, prepared, progress);
                 if (options.UnlockAllMissions)
                     MissionUnlockInstaller.Install(options.GamePath, journal, progress);
+                int sealedHashes = journal.SealMissingHashes(options.GamePath);
+                if (sealedHashes > 0)
+                    Report(progress, "Journal de restauration securise : "
+                        + sealedHashes + " anciennes empreintes ajoutees.");
                 SetPercent(percent, 100);
                 Report(progress, "Installation terminee. La restauration reste disponible.");
             }
