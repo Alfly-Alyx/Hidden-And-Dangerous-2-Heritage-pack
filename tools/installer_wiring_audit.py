@@ -288,6 +288,8 @@ def audit(root: Path) -> dict[str, object]:
         )
 
     czech2_uses_commercial_hostility_sequence = all((
+        '"Missions/CZECH2/actors.bin"' in czech2_carnage,
+        '"Missions/CZECH2/scene2.bin"' not in czech2_carnage,
         "HUMAN_Suspend\\s*\\(\\s*0\\s*\\)" in czech2_carnage,
         "SetAlarmType\\s*\\(\\s*1023\\s*,\\s*1\\s*\\)" in czech2_carnage,
         "HUMAN_WeaponOnArm\\s*\\(\\s*1\\s*\\)" in czech2_carnage,

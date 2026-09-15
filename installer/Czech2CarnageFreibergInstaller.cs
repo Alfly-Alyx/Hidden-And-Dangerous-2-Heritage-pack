@@ -13,7 +13,7 @@ namespace HD2CommunityInstaller
         private const string CarnageScriptPath =
             "Scripts/CZECH2/carn_Big_Boss.scr";
         private const string RegistryPath = "Missions/CZECH2/Scripts.dta";
-        private const string ScenePath = "Missions/CZECH2/scene2.bin";
+        private const string ActorPath = "Missions/CZECH2/actors.bin";
 
         private static readonly string[] ScriptArchives = {
             "Scripts.dta", "Patch.dta", "SabreSquadron.dta"
@@ -171,12 +171,12 @@ namespace HD2CommunityInstaller
                 + @"[\s\S]{0,160}?HUMAN_SETMODE_Crouch\s*\(\s*\)\s*;",
                 "Sequence hostile officielle absente du script Carnage de Freiberg.");
 
-            string scene = Encoding.GetEncoding(1252).GetString(ReadSource(
-                ResolveSource(gamePath, ScenePath, MissionArchives)));
-            if (scene.IndexOf("big_boss",
+            string actors = Encoding.GetEncoding(1252).GetString(ReadSource(
+                ResolveSource(gamePath, ActorPath, MissionArchives)));
+            if (actors.IndexOf("big_boss",
                     StringComparison.OrdinalIgnoreCase) < 0)
                 throw new InvalidDataException(
-                    "Acteur Freiberg absent de la scene Czech 2.");
+                    "Acteur Freiberg absent du registre d'acteurs Czech 2.");
         }
 
         private static bool HasBinding(
