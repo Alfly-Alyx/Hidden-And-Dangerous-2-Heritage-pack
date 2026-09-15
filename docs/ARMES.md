@@ -81,7 +81,11 @@ modèles ne doivent pas les remplacer.
 - Le P08 silencieux, le G43, le MAS 36 et le Panzerschreck sont des éléments livrés avec Sabre Squadron.
 - Le Vickers K est le composant monté de la jeep SAS déjà active, pas une arme portative dormante.
 - Le canon de 17 mm est utilisé activement dans `Ardens1_obj` ; sa mention désactivée dans une ancienne liste ne décrit pas son état final.
-- Les modèles La-5, Aichi, M323, Li-2, Fa 223, Fw 200 et DFS 230 sont bien présents, mais aucun des 49 `car_table.dat` commerciaux analysés ne les référence comme véhicule pilotable.
+- Les modèles La-5, Aichi, M323, Li-2, Fa 223, Fw 200 et DSF 230 sont bien
+  présents. Aucun identifiant exact n'apparaît dans les 3 059 scènes,
+  registres et scripts commerciaux examinés. Les 49 `car_table.dat` ne
+  contiennent pas non plus ces noms lisibles, mais leur format binaire reste
+  indécodé : aucune chaîne pilotable complète n'est démontrée.
 
 ## Décision actuelle
 

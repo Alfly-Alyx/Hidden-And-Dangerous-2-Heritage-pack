@@ -29,13 +29,18 @@ Lecture manuelle recoupée :
 - le Ju 52 est le seul aéronef retiré dont des usages exacts dans des missions
   soient prouvés : il reste un décor scénarisé actif dans Africa 1 et
   Africa 2 ;
-- les modèles La-5, Aichi, M323, Li-2, Fa 223, Fw 200 et DFS/DSF 230 sont réellement présents et articulés, mais aucune chaîne commerciale de placement ou de pilotage ne subsiste ;
+- les modèles La-5, Aichi, M323, Li-2, Fa 223, Fw 200 et DSF 230 sont
+  réellement présents et articulés, mais aucune liaison par identifiant exact
+  ne subsiste dans les 3 059 scènes, registres et scripts commerciaux
+  examinés ;
 - les scripts nommés Li-2 pilotent des sons d’ambiance, pas le modèle d’avion ;
 - les correspondances lexicales La-5 dans `posila5`, par exemple, sont des faux positifs distincts : elles ne remettent pas en cause la présence du vrai modèle `la_La-5.4ds` ;
 - Garota et ZK-383 n’ont aucune ressource locale identifiable par ces noms.
 - aucun des 49 `car_table.dat` commerciaux — 33 de base, deux du Patch et
-  quatorze de Sabre Squadron — ne référence exactement La-5, Aichi, M323,
-  Li-2, Fa 223, Fw 200, DFS 230 ou Ju 52 comme véhicule pilotable.
+  quatorze de Sabre Squadron — ne contient sous forme lisible les identifiants
+  exacts de La-5, Aichi, M323, Li-2, Fa 223, Fw 200, DSF 230 ou Ju 52. Le
+  format binaire de cette table n'étant pas décodé, ce résultat n'exclut pas
+  une ancienne liaison numérique ou indirecte.
 
 ## Armes déjà actives ou faussement présentées comme retirées
 
@@ -85,11 +90,19 @@ placement commercial attesté ; ils restent séparés des mines finales actives.
 
 ## Aéronefs
 
-Les modèles exacts La-5, `la_aici`, `LA_M323`, Li-2, `la_Fa 223`, Fw 200 et DFS 230 sont présents avec leurs LOD et plusieurs pièces articulées. Cela permet un banc décoratif et des essais de collision, pas de revendiquer un véhicule jouable : commandes, physique de vol, HUD, dégâts, IA et synchronisation réseau manquent.
+Les modèles exacts La-5, `la_aici`, `LA_M323`, Li-2, `la_Fa 223`, Fw 200 et
+DSF 230 sont présents avec leurs LOD et plusieurs pièces articulées. Le M323
+est le vestige le plus fourni avec six moteurs, plusieurs sièges, caméras et
+ancrages d'arme ; Fa 223, Li-2 et DSF 230 conservent eux aussi des sièges et
+caméras, tandis que le Fw 200 est plus proche d'un décor animé. Cela permet un
+banc décoratif et des essais de collision, pas de revendiquer un véhicule
+jouable : commandes, physique de vol, HUD, dégâts, IA et synchronisation
+réseau manquent.
 
-`tools/aircraft_scenic_audit.py` vérifie les modèles et empreintes du Ju 52,
-du La-5 et de l'Aichi, les 49 `car_table.dat` commerciaux, ainsi que les deux
-chaînes Ju 52 encore actives. Africa 1 utilise `CUTjunkers` et
+`tools/aircraft_scenic_audit.py` vérifie les modèles et empreintes des huit
+types d'aéronefs, les 49 `car_table.dat` commerciaux, les 3 059 ressources de
+mission pertinentes, ainsi que les deux chaînes Ju 52 encore actives.
+Africa 1 utilise `CUTjunkers` et
 `CUTjunkersB` dans sa cinématique ; Africa 2 anime `HoriciJunkers` sur
 `fight_stage01`, tourne ses trois hélices, crée la fumée 16 puis masque et
 fait exploser l'appareil. La liaison vers `AF2_particle_junkers.scr` subsiste,

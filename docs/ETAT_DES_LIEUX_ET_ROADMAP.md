@@ -157,7 +157,11 @@ Le projet doit produire un ensemble installable pour Hidden & Dangerous 2: Sabre
 - modèles M323, Aichi, La-5, Fa 223, Fw 200, Li-2, DFS 230 et Ju 52 retrouvés ;
 - Ju 52 confirmé dans deux scènes officielles actives, Africa 1 et Africa 2 ;
 - aucun des 49 `car_table.dat` commerciaux ni des 105 tables libres
-  actuellement installées ne définit Ju 52, La-5 ou Aichi comme véhicule ;
+  actuellement installées ne contient les identifiants lisibles des huit
+  aéronefs ; leur format binaire n'étant pas décodé, ce constat ne prouve pas
+  l'absence d'une liaison numérique ;
+- aucune liaison nommée de La-5, Aichi, DSF 230, Fa 223, Fw 200, Li-2 ou
+  Me 323 dans les 3 059 scènes, registres et scripts commerciaux examinés ;
 - deux lance-flammes diagnostiqués : record allemand conservé mais modèles
   absents, record britannique réemployé par le Flak, deux munitions et vingt
   ressources d'icônes présentes, sans animation, table de tir ni script ;

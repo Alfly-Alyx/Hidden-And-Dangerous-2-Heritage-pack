@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify scenic Ju 52 use and the non-vehicle status of La-5 and Aichi."""
+"""Verify surviving aircraft models, named mission links and scenic Ju 52 use."""
 
 from __future__ import annotations
 
@@ -30,6 +30,26 @@ MODEL_FILES = (
      "0F1075747E382E56EF7C493E75E408255D9614523BF9FB62D7065929E1AB1EA5"),
     ("models.dta", "MODELS/sla_aici.4ds", 22419,
      "53E6196EFC445A3473BACC893248F08B5820ED25CEC54EB6D664713071B93B51"),
+    ("models.dta", "MODELS/la_DSF 230.4ds", 143402,
+     "2684D387CACDE2C09C131D7B37671E7A68F0DC42BFEF4ED9B85B5DB9DCC246DC"),
+    ("models.dta", "MODELS/sla_DSF 230.4ds", 16704,
+     "2D2D1AA308406D57F4CB096F21939EF88E36D21A003FCE6118F50AF5AE0D1492"),
+    ("models.dta", "MODELS/la_Fa 223.4ds", 175680,
+     "F1CD7AD72A822ED3EAE76BB46856065EE9E1F1ED08611771A337F72DD8487B07"),
+    ("models.dta", "MODELS/sla_Fa 223.4ds", 26283,
+     "E0D96BE29351D4D232F85DFE37651F663CF7EAA52A66D1BA3DAE1631BC1E795E"),
+    ("models.dta", "MODELS/la_Fw 200.4ds", 60102,
+     "F56A70ED4A68D3E86EF1272304BAE3CBD8CDF5ADEFF31DE0B7FC7B22A7EF6251"),
+    ("models.dta", "MODELS/sla_Fw 200.4ds", 58306,
+     "0E07FC696CA1C5E9A00D660A50D86B0354CC269E0EB2D3DCDCD45E6242352ED8"),
+    ("models.dta", "MODELS/la_Li2.4ds", 323240,
+     "557B3C90840F1CBFAF438F72803ACB1BF75F5D3AA9D2F336F3DDEDFEF129EBD3"),
+    ("models.dta", "MODELS/sla_Li2.4ds", 23680,
+     "112EB9EFD450002CC2CAA1C5DA0C47EE3872587C6BB714571FACECF2AD4FCDC4"),
+    ("models.dta", "MODELS/LA_M323.4ds", 257929,
+     "3DF44CE22BC2C31BEAD7EDA71A8B370CB5888060B809157BD6235C03204BDB7D"),
+    ("models.dta", "MODELS/sla_m323.4ds", 30794,
+     "E4329640FBF786F66CA54A5C51EBAA8AE75947957FFBC8C918B874217ED3E209"),
     ("models.dta", "MODELS/la_Ju52trup.4ds", 89238,
      "A7894EC3DFFEC9A182E4D369EBB003180F803F22B4D1D08C28FCD51020479643"),
     ("Patch.dta", "MODELS/la_Ju52trup.4ds", 89462,
@@ -82,7 +102,22 @@ AIRCRAFT_TABLE_TERMS = (
     b"la_ju52af",
     b"la_la-5",
     b"la_aici",
+    b"la_dsf 230",
+    b"la_fa 223",
+    b"la_fw 200",
+    b"la_li2",
+    b"la_m323",
 )
+ORPHAN_AIRCRAFT_TERMS = {
+    "la5": "la_La-5",
+    "aichi": "la_aici",
+    "dsf230": "la_DSF 230",
+    "fa223": "la_Fa 223",
+    "fw200": "la_Fw 200",
+    "li2": "la_Li2",
+    "m323": "LA_M323",
+}
+REFERENCE_SUFFIXES = ("scene2.bin", "scripts.dta", "mpscripts.dta", ".scr")
 MISSING_AFRICA2_SCRIPT = "scripts/africa2/af2_particle_junkers.scr"
 
 
@@ -192,6 +227,11 @@ def commercial_car_tables(
         "expected_total": sum(COMMERCIAL_ARCHIVES.values()),
         "aircraft_hits": all_hits,
         "none_reference_aircraft": not all_hits,
+        "interpretation": (
+            "Only exact readable model identifiers are tested. The binary "
+            "car_table.dat format is not decoded, so absence of a string is "
+            "not proof that no numeric or indirect definition ever existed."
+        ),
     }
 
 
@@ -211,6 +251,48 @@ def loose_car_tables(game: Path) -> dict[str, object]:
         "aircraft_hits": hits,
         "none_reference_aircraft": not hits,
         "informational": True,
+        "interpretation": (
+            "Only exact readable model identifiers are tested. The binary "
+            "car_table.dat format is not decoded, so absence of a string is "
+            "not proof that no numeric or indirect definition ever existed."
+        ),
+    }
+
+
+def encoded_needles(value: str) -> tuple[bytes, bytes]:
+    lowered = value.casefold()
+    return lowered.encode("cp1252"), lowered.encode("utf-16le")
+
+
+def commercial_named_references(game: Path) -> dict[str, object]:
+    needles = {
+        label: encoded_needles(value)
+        for label, value in ORPHAN_AIRCRAFT_TERMS.items()
+    }
+    hits: dict[str, list[str]] = {label: [] for label in needles}
+    scanned = 0
+    for archive_name in COMMERCIAL_ARCHIVES:
+        with DtaArchive(game / archive_name) as archive:
+            for entry in archive.entries:
+                name = normalized_name(entry.name)
+                if not name.endswith(REFERENCE_SUFFIXES):
+                    continue
+                data = archive.read(entry).lower()
+                scanned += 1
+                for label, variants in needles.items():
+                    if any(needle in data for needle in variants):
+                        hits[label].append(f"{archive_name}::{entry.name}")
+    return {
+        "scanned_resources": scanned,
+        "terms": ORPHAN_AIRCRAFT_TERMS,
+        "hits": hits,
+        "none_found": not any(hits.values()),
+        "interpretation": (
+            "No exact ASCII or UTF-16 model identifier survives in commercial "
+            "scene2.bin, script registries or scripts for these seven orphan "
+            "aircraft. This proves no named link, not the absence of every "
+            "possible numeric or indirect link."
+        ),
     }
 
 
@@ -240,6 +322,7 @@ def audit(game: Path) -> dict[str, object]:
     chains = exact_file_evidence(game, CHAIN_FILES, cache)
     car_tables = commercial_car_tables(game, cache)
     loose_tables = loose_car_tables(game)
+    named_references = commercial_named_references(game)
     missing_script = missing_script_evidence(game, cache)
     errors: list[str] = []
     if not all(item["expected"] for item in models):
@@ -251,7 +334,12 @@ def audit(game: Path) -> dict[str, object]:
     ):
         errors.append("Commercial car_table.dat layer counts changed")
     if not car_tables["none_reference_aircraft"]:
-        errors.append("A commercial aircraft vehicle definition needs review")
+        errors.append(
+            "A commercial car_table.dat contains an exact aircraft model "
+            "identifier and needs review"
+        )
+    if not named_references["none_found"]:
+        errors.append("An orphan aircraft has an exact commercial named link")
     if not missing_script["absent_everywhere"]:
         errors.append("AF2_particle_junkers.scr now exists and needs review")
     return {
@@ -260,11 +348,15 @@ def audit(game: Path) -> dict[str, object]:
         "verdict": {
             "ju52": (
                 "Two active official scenic chains, Africa 1 and Africa 2; "
-                "no commercial vehicle definition."
+                "no complete pilotable vehicle chain is demonstrated."
             ),
             "la5": "Official articulated model and LOD only; static decor first.",
             "aichi": "Official articulated model and LOD only; static decor first.",
-            "pilotable": False,
+            "other_orphans": (
+                "DSF 230, Fa 223, Fw 200, Li-2 and Me 323 retain exact model "
+                "and LOD resources but no exact named commercial mission link."
+            ),
+            "pilotable_demonstrated": False,
         },
         "models": models,
         "active_ju52_chains": {
@@ -273,6 +365,7 @@ def audit(game: Path) -> dict[str, object]:
         },
         "commercial_car_tables": car_tables,
         "installed_loose_car_tables": loose_tables,
+        "commercial_named_references": named_references,
         "africa2_missing_particle_script": missing_script,
         "errors": errors,
     }

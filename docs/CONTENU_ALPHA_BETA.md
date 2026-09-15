@@ -51,7 +51,10 @@ Le projet a subi un changement de moteur et une refonte de conception. Il faut d
 - LONDON_MP : arène inachevée dans le jeu de base, achevée sous le nom Poland dans Sabre Squadron.
 - modèles d'aéronefs : M323, Aichi, La-5, Fa 223, Fw 200, Li-2, DSF 230 et Ju 52 présents.
 - Ju 52 : utilisé par deux scènes officielles actives, dans Africa 1 et
-  Africa 2 ; aucune définition de véhicule pilotable.
+  Africa 2 ; aucune chaîne de véhicule pilotable complète n'est démontrée.
+- autres aéronefs : aucun identifiant exact de modèle dans les 3 059 scènes,
+  registres ou scripts commerciaux examinés ; cela n'exclut pas une ancienne
+  liaison numérique encore inconnue.
 - lance-flammes : noms et munitions, mais pas de modèle d'arme utilisable.
 - sept easter eggs : six publics et un septième neutralisé dans Africa 4.
 

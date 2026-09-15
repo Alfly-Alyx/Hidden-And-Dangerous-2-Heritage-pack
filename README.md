@@ -117,10 +117,15 @@ tir, scripts et sons de fonctionnement absents. Il empêche de présenter leur
 future reconstruction comme une simple activation.
 
 Le contrôle `tools/aircraft_scenic_audit.py` distingue les deux scènes Ju 52
-officielles encore actives dans Africa 1 et Africa 2 des modèles La-5/Aichi
-orphelins. Il vérifie également qu'aucun des 49 catalogues commerciaux de
-véhicules ne rend ces appareils pilotables et isole le script de particules
-Africa 2 réellement manquant.
+officielles encore actives dans Africa 1 et Africa 2 des sept autres aéronefs
+orphelins. Il fige les modèles et LOD de La-5, Aichi, DSF 230, Fa 223, Fw 200,
+Li-2 et Me 323, puis vérifie qu'aucun de leurs identifiants exacts ne subsiste
+dans les 3 059 scènes, registres ou scripts commerciaux examinés. Les 49
+`car_table.dat` commerciaux ne contiennent pas non plus ces noms lisibles,
+mais leur format binaire n'étant pas décodé, ce second résultat ne suffit pas
+à nier une ancienne liaison numérique. Aucune chaîne pilotable complète n'est
+démontrée. Le contrôle isole aussi le script de particules Africa 2 réellement
+manquant.
 
 Un prototype de menu solo distinct est maintenant préparé dans une copie de
 test séparée. La scène `.4ds` seule ne suffisait pas ; la copie de l'exécutable

@@ -114,7 +114,17 @@ La recherche exacte dans Models.dta corrige plusieurs faux négatifs :
 - modèles Fw 200, Li-2 et DSF 230 ;
 - douze ressources Ju 52, avec variantes et sous-éléments.
 
-Les modèles M323, La-5, Aichi et Fa 223 contiennent moteurs, hélices ou rotors, surfaces mobiles, sièges et caméras. Cela les place au-dessus d'un simple dessin. En revanche, aucune mission, physique, commande et interface de véhicule pilotable complète n'est démontrée. Le bon statut est : modèle de véhicule présent, jouabilité annoncée historiquement, véhicule pilotable fini non prouvé.
+Les modèles M323, La-5, Aichi et Fa 223 contiennent moteurs, hélices ou
+rotors, surfaces mobiles, sièges et caméras. Le Li-2 et le DSF 230 conservent
+eux aussi plusieurs sièges et caméras ; le Fw 200 surtout ses moteurs,
+gouvernes et une caméra extérieure. Le M323 est le vestige structurel le plus
+riche : six moteurs, plusieurs sièges, caméras et ancrages d'arme. Cela place
+ces ressources au-dessus d'un simple dessin. En revanche, aucun de leurs
+identifiants exacts n'apparaît dans les 3 059 scènes, registres ou scripts
+commerciaux examinés, et aucune mission, physique, commande et interface de
+véhicule pilotable complète n'est démontrée. Le bon statut est : modèle de
+véhicule présent, jouabilité annoncée historiquement, véhicule pilotable fini
+non prouvé.
 
 Le Ju 52 est explicitement appelé dans deux scènes actives. Africa 1 utilise
 `CUTjunkers` et `CUTjunkersB` dans sa cinématique ; Africa 2 fait suivre

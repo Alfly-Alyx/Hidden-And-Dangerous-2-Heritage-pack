@@ -162,8 +162,12 @@ dans Africa 1 et Africa 2. Dans la seconde, le script suit
 `fight_stage01`, anime les hélices, crée la fumée 16, masque puis fait
 exploser `HoriciJunkers`. La liaison orpheline
 `AF2_particle_junkers.scr` ne révèle pas un second comportement
-reconstructible. Aucun des 49 `car_table.dat` commerciaux ne référence ces
-appareils, donc rien ne prouve un véhicule pilotable fini.
+reconstructible. Aucun identifiant exact de La-5, Aichi, DSF 230, Fa 223,
+Fw 200, Li-2 ou Me 323 n'apparaît dans les 3 059 scènes, registres et scripts
+commerciaux examinés. Les 49 `car_table.dat` commerciaux ne contiennent pas
+non plus ces noms lisibles ; comme leur format binaire n'est pas décodé, cela
+prouve l'absence de liaison nommée, pas celle de toute liaison numérique.
+Aucune chaîne pilotable complète n'est démontrée.
 
 ## Limites et prochains essais
 
