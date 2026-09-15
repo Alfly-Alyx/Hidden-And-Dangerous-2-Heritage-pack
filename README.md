@@ -128,7 +128,12 @@ ancien exécutable présent dans `dist` avec la version finale. Il exige le
 câblage et la composition statiques, l'intégration du menu custom, les preuves
 d'exécution, un dépôt propre, un setup présent et plus récent que toutes ses
 sources. L'ancien setup 0.7.5 reste donc un artefact de développement tant que
-ces barrières ne sont pas franchies.
+ces barrières ne sont pas franchies. Lorsqu'un dossier de jeu lui est fourni,
+il recalcule aussi les inventaires commerciaux, les limites d'exploration, les
+deux plans de prototypes, les easter eggs, les vestiges d'armes et d'aéronefs,
+les collisions d'identifiants et le précontrôle réseau. La publication reste
+bloquée tant que les deux prototypes ne sont pas réellement déployés par la
+construction candidate.
 
 Le contrôle `tools/flamethrower_evidence_audit.py` fige séparément les traces
 des deux lance-flammes : record allemand, emplacement britannique réemployé,

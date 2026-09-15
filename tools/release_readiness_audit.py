@@ -9,10 +9,25 @@ import json
 import subprocess
 from pathlib import Path
 
+import africa4_key_trigger_audit
+import aircraft_scenic_audit
+import asset_presence_audit
+import boundary_label_audit
+import burma1_easter_egg_audit
+import community_package_policy_audit
+import easter_egg_position_audit
+import embedded_dependency_audit
+import flamethrower_evidence_audit
+import full_game_audit
 import installer_composition_audit
 import installer_wiring_audit
+import item_id_collision_audit
+import map_inventory_audit
 import network_runtime_preflight
+import orphan_weapon_evidence_audit
+import prototype_deployment_audit
 import runtime_validation_audit
+import signal_graph_audit
 
 
 FINAL_SETUP = "H-D2-Heritage-Pack-Setup.exe"
@@ -32,6 +47,22 @@ SOURCE_DIRECTORIES = {
     "payload",
     "custom-mission-tool",
     "custom-missions",
+}
+EXPECTED_FULL_GAME_SCOPE = {
+    "registry_missions": 68,
+    "registry_files": 79,
+    "script_directories": 71,
+    "effective_scripts": 5347,
+    "catalogue_missions": 54,
+    "singleplayer_catalogue_missions": 33,
+    "multiplayer_catalogue_missions": 21,
+    "overridden_scripts": 619,
+}
+EXPECTED_SIGNAL_GRAPH_SCOPE = {
+    "missions": 68,
+    "used_scripts": 4894,
+    "resolved_signal_calls": 5711,
+    "mismatched_signal_calls": 152,
 }
 
 
@@ -136,6 +167,98 @@ def artifact_state(root: Path) -> dict[str, object]:
     }
 
 
+def project_evidence_state(root: Path) -> dict[str, object]:
+    reports: dict[str, dict[str, object]] = {}
+    errors: list[str] = []
+    for name, run in (
+        ("community_package_policy", lambda: community_package_policy_audit.audit(root)),
+        ("embedded_dependencies", lambda: embedded_dependency_audit.audit(root)),
+    ):
+        try:
+            reports[name] = run()
+        except Exception as error:  # keep a release audit diagnostic, not a traceback
+            reports[name] = {"ok": False, "errors": [str(error)]}
+        if reports[name].get("ok") is not True:
+            errors.append(name)
+    return {"ok": not errors, "failed": errors, "reports": reports}
+
+
+def commercial_evidence_state(game: Path) -> dict[str, object]:
+    try:
+        maps = map_inventory_audit.audit(game)
+        unlisted = [
+            row for row in maps["directories"]
+            if row["interesting_name"] and not row["listed_multiplayer"]
+        ]
+        full_game = full_game_audit.build(game)
+        signal_graph = signal_graph_audit.build(game)
+        prototypes = {
+            "archive_plan": prototype_deployment_audit.archive_plan(game),
+            "installed": prototype_deployment_audit.installed_state(game),
+        }
+        assets = asset_presence_audit.audit(game)
+        reports = {
+            "exploration_boundaries": boundary_label_audit.audit(game),
+            "flamethrowers": flamethrower_evidence_audit.audit(game),
+            "orphan_weapons": orphan_weapon_evidence_audit.audit(game),
+            "aircraft": aircraft_scenic_audit.audit(game),
+            "item_id_359": item_id_collision_audit.audit(game, 359),
+            "africa4_easter_egg": africa4_key_trigger_audit.audit(game),
+            "burma1_easter_egg": burma1_easter_egg_audit.audit(game),
+            "easter_egg_positions": easter_egg_position_audit.audit(game),
+        }
+        checks = {
+            "map_inventory": (
+                maps["mission_directories"] == 82
+                and maps["commercial_multiplayer_directories"] == 47
+                and len(unlisted) == 2
+            ),
+            "full_game_inventory": full_game["scope"] == EXPECTED_FULL_GAME_SCOPE,
+            "signal_graph_inventory": (
+                signal_graph["scope"] == EXPECTED_SIGNAL_GRAPH_SCOPE
+            ),
+            "prototype_archive_plan": prototypes["archive_plan"]["ok"],
+            "asset_inventory": assets["evidence_ok"],
+        }
+        checks.update(
+            (name, report.get("ok") is True)
+            for name, report in reports.items()
+        )
+        return {
+            "ok": all(checks.values()),
+            "checks": checks,
+            "failed": [name for name, passed in checks.items() if not passed],
+            "prototype_installed": prototypes["installed"]["ready"],
+            "summaries": {
+                "maps": {
+                    "mission_directories": maps["mission_directories"],
+                    "commercial_multiplayer_directories": (
+                        maps["commercial_multiplayer_directories"]
+                    ),
+                    "unlisted_interesting": len(unlisted),
+                },
+                "full_game": full_game["scope"],
+                "signal_graph": signal_graph["scope"],
+                "prototype_archive_plan": prototypes["archive_plan"],
+                "prototype_installed": prototypes["installed"],
+                "assets": {
+                    "evidence_ok": assets["evidence_ok"],
+                    "evidence_errors": assets["evidence_errors"],
+                    "summary": assets["summary"],
+                },
+                "reports": reports,
+            },
+        }
+    except Exception as error:  # missing/corrupt commercial input must block release
+        return {
+            "ok": False,
+            "checks": {},
+            "failed": ["commercial_evidence_exception"],
+            "prototype_installed": False,
+            "error": str(error),
+        }
+
+
 def audit(root: Path, game: Path | None, timeout: float) -> dict[str, object]:
     wiring = installer_wiring_audit.audit(root)
     composition = installer_composition_audit.audit(root)
@@ -144,8 +267,11 @@ def audit(root: Path, game: Path | None, timeout: float) -> dict[str, object]:
     integration = integration_state(root)
     artifact = artifact_state(root)
     tree = working_tree(root)
+    project_evidence = project_evidence_state(root)
+    commercial_evidence = None
     network = None
     if game is not None:
+        commercial_evidence = commercial_evidence_state(game)
         network = network_runtime_preflight.audit(
             root,
             game,
@@ -156,6 +282,7 @@ def audit(root: Path, game: Path | None, timeout: float) -> dict[str, object]:
     gates = {
         "installer_wiring": wiring["ok"],
         "installer_composition": composition["ok"],
+        "project_evidence": project_evidence["ok"],
         "runtime_register_schema": runtime_schema["ok"],
         "custom_integration": integration["complete"],
         "custom_runtime_validation": runtime["custom_cases_passed"],
@@ -165,6 +292,10 @@ def audit(root: Path, game: Path | None, timeout: float) -> dict[str, object]:
         "final_setup_fresh": artifact["modified_after_all_sources"],
     }
     if network is not None:
+        gates["commercial_evidence"] = commercial_evidence["ok"]
+        gates["prototypes_installed"] = commercial_evidence[
+            "prototype_installed"
+        ]
         gates["network_preflight"] = network["ok"]
     blockers = [name for name, passed in gates.items() if not passed]
     return {
@@ -173,6 +304,8 @@ def audit(root: Path, game: Path | None, timeout: float) -> dict[str, object]:
         "blockers": blockers,
         "installer_wiring": wiring,
         "installer_composition": composition,
+        "project_evidence": project_evidence,
+        "commercial_evidence": commercial_evidence,
         "runtime_register": runtime_schema,
         "runtime": runtime,
         "custom_integration": integration,
