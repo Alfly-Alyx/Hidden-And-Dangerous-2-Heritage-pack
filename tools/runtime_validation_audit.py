@@ -23,12 +23,21 @@ REQUIRED_CASES = {
     "exploration.no_failure_messages", "exploration.no_invisible_borders",
     "easter.africa1", "easter.africa4_dummy_owner",
     "easter.africa4_mg42_owner", "objectives.arctic3_two_routes",
+    "alternate.normandy_lighthouse", "alternate.brest_two_approaches",
+    "alternate.czech4_plaza", "alternate.alps1_doghandler",
     "multiplayer.prototype_normandy3", "multiplayer.prototype_africa5",
     "multiplayer.community_package", "conversion.mp_to_solo_gate",
 }
 EVIDENCE_FIELDS = {"tester", "date", "build_hash", "captures", "logs", "notes"}
 MP_SOLO_RUNTIME_FIELDS = {
-    "menu_start", "player_spawn", "objective_progress", "mission_end",
+    "menu_launch", "player_spawn", "objectives", "completion",
+}
+OFFICIAL_MP_SOLO_CANDIDATES = {
+    "africa1_obj", "africa3_obj", "africa4_obj", "alps3_obj",
+    "arctic1_obj", "arctic3_obj", "ardens1_obj", "burma1_obj",
+    "burma2_obj", "czech1_obj", "czech2_obj", "czech3_obj",
+    "co_brest", "co_burgundy1", "co_burgundy2", "co_burgundy3",
+    "co_libye1", "co_libye2", "co_libye3", "co_sicily1", "co_sicily2",
 }
 
 
@@ -128,23 +137,61 @@ def audit(root: Path) -> dict[str, object]:
         errors.append("multiplayer-solo-runtime.json missions must be a list")
         missions = []
     validated_mp_solo = 0
+    mp_solo_directories: list[str] = []
     for index, mission in enumerate(missions):
         label = f"multiplayer-solo mission #{index + 1}"
         if not isinstance(mission, dict):
             errors.append(f"{label} is not an object")
             continue
+        directory = mission.get("directory")
+        if not isinstance(directory, str) or not directory.strip():
+            errors.append(f"{label} has no directory")
+        else:
+            mp_solo_directories.append(directory.casefold())
+            label = directory
+        state = mission.get("state")
+        if state not in {"pending", "blocked", "validated", "failed"}:
+            errors.append(f"{label} has invalid state {state!r}")
+        for field in MP_SOLO_RUNTIME_FIELDS:
+            if mission.get(field) not in {True, False}:
+                errors.append(f"{label} has no boolean {field}")
         if mission.get("state") != "validated":
             continue
         validated_mp_solo += 1
-        runtime = mission.get("runtime")
-        if not isinstance(runtime, dict):
-            errors.append(f"{label} is validated without runtime evidence")
-            continue
         missing = sorted(
-            field for field in MP_SOLO_RUNTIME_FIELDS if runtime.get(field) is not True
+            field for field in MP_SOLO_RUNTIME_FIELDS
+            if mission.get(field) is not True
         )
         if missing:
             errors.append(f"{label} is validated without: {', '.join(missing)}")
+        evidence = mission.get("evidence")
+        if not isinstance(evidence, list) or not evidence:
+            errors.append(f"{label} is validated without evidence")
+    duplicate_directories = sorted(
+        item for item, count in Counter(mp_solo_directories).items()
+        if count > 1
+    )
+    if duplicate_directories:
+        errors.append(
+            "Duplicate multiplayer-solo directories: "
+            + ", ".join(duplicate_directories)
+        )
+    missing_candidates = sorted(
+        OFFICIAL_MP_SOLO_CANDIDATES - set(mp_solo_directories)
+    )
+    unexpected_candidates = sorted(
+        set(mp_solo_directories) - OFFICIAL_MP_SOLO_CANDIDATES
+    )
+    if missing_candidates:
+        errors.append(
+            "Missing official multiplayer-solo candidates: "
+            + ", ".join(missing_candidates)
+        )
+    if unexpected_candidates:
+        errors.append(
+            "Unexpected official multiplayer-solo candidates: "
+            + ", ".join(unexpected_candidates)
+        )
 
     return {
         "ok": not errors,
@@ -154,6 +201,8 @@ def audit(root: Path) -> dict[str, object]:
         "areas": dict(sorted(Counter(areas).items())),
         "states": dict(sorted(states.items())),
         "required_cases": len(REQUIRED_CASES),
+        "mp_to_solo_candidates": len(missions),
+        "expected_mp_to_solo_candidates": len(OFFICIAL_MP_SOLO_CANDIDATES),
         "validated_mp_to_solo": validated_mp_solo,
         "errors": errors,
     }

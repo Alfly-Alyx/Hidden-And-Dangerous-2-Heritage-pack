@@ -20,6 +20,10 @@ La version multijoueur commerciale reste toujours intacte. Toute conversion est 
 
 `tools/multiplayer_solo_readiness_audit.py` applique désormais le même garde-fou à chaque carte. Il vérifie séparément : l'entrée de catalogue solo, les quatre fichiers de carte, les données d'acteurs et de navigation, le registre de scripts, les scripts réellement reliés et une logique d'objectif active. Il ne valide ensuite une conversion que si `validation/multiplayer-solo-runtime.json` atteste quatre essais en jeu : ouverture depuis le menu solo, apparition du joueur, fonctionnement des objectifs et fin de mission.
 
+Ce registre contient maintenant explicitement les 21 candidates officielles,
+toutes initialisées à `pending` avec leurs quatre preuves à `false`. Une carte
+ne peut donc plus disparaître du suivi ni être validée par omission.
+
 Le contrôle est étalonné sur les 33 missions solo commerciales : **33/33 franchissent le contrôle statique**. Sur l'installation de travail actuelle, il distingue 47 dossiers multijoueur commerciaux et 195 dossiers déclarés après ajout du Community Map Package. Parmi eux, 21 cartes officielles et 69 cartes communautaires possèdent assez de composants statiques pour mériter une étude d'adaptation ; ce ne sont pas encore 90 conversions. **Aucune conversion multijoueur vers solo n'a reçu les quatre validations en jeu.**
 
 Les 21 candidats officiels sont les douze variantes Objectifs `AFRICA1_OBJ`, `AFRICA3_OBJ`, `AFRICA4_OBJ`, `ALPS3_OBJ`, `ARCTIC1_OBJ`, `ARCTIC3_OBJ`, `ARDENS1_OBJ`, `BURMA1_OBJ`, `BURMA2_OBJ`, `CZECH1_OBJ`, `CZECH2_OBJ` et `CZECH3_OBJ`, ainsi que les neuf missions coopératives `CO_BREST`, `CO_BURGUNDY1`, `CO_BURGUNDY2`, `CO_BURGUNDY3`, `CO_LIBYE1`, `CO_LIBYE2`, `CO_LIBYE3`, `CO_SICILY1` et `CO_SICILY2`. Leur contrôleur multijoueur et leurs objectifs constituent une base de reconstruction, mais ne prouvent ni une équipe solo correcte, ni une IA compatible, ni une sortie de mission solo.
