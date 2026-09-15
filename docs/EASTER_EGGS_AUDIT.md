@@ -112,7 +112,9 @@ vérifie les liaisons exactes du registre. Positions relevées :
 - clé C, objet 242 / instance 319 : 37,451393 ; 0,644349 ; 35,168266,
   secteur nord-est.
 
-Le guide joueur traduit ces coordonnées en repères visuels et explique comment réunir les trois clés.
+Le futur guide joueur traduira ces coordonnées en repères visuels après le
+test en jeu des deux propriétaires du déclencheur. Tant que ce test n'est pas
+fait, aucun point de dépôt unique n'est présenté comme certain.
 
 Le registre commercial contient une particularité jusque-là non documentée :
 `AF3b_ee_activator.scr` est affecté à deux propriétaires,

@@ -135,17 +135,20 @@ def build_player():
     s.append(PageBreak())
 
     section(s,"07","Africa 4 - La pluie de météores")
-    s.append(P("Ce septième easter egg est absent des guides historiques parce que la mise à jour 1.12 détourne son déclencheur. Le Heritage Pack 0.7.5 le réactive."))
+    s.append(P("Ce septième easter egg est absent des guides historiques parce que la mise à jour 1.12 détourne son déclencheur. Le Heritage Pack restaure le saut officiel, mais le point de dépôt définitif doit encore être confirmé en jeu."))
     s.append(Africa4Map())
     s.append(Spacer(1,3*mm))
     s.append(number_steps([
         "Récupérez la clé A dans le secteur sud-ouest de l'enceinte, près du groupe de petites pièces et de la cour basse.",
         "Récupérez la clé B dans le secteur central-est, autour du bâtiment carré reconnaissable à son élément arrondi.",
         "Récupérez la clé C dans le secteur nord-est, près du bâtiment ouvert ou du toit à l'extrémité haute de l'enceinte.",
-        "Réunissez les trois clés au même endroit, très proches les unes des autres, dans un rayon d'environ trois mètres.",
-        "Écartez-vous et regardez le ciel : la séquence de météores doit se déclencher."
+        "Conservez les trois clés ensemble : le script exige que chacune soit à moins de trois mètres de son point d'activation.",
+        "Testez d'abord le poste de MG42 couchée situé plus au nord-est que la clé C. Si rien ne se produit, rechargez votre sauvegarde.",
+        "Testez ensuite séparément le second point officiel, dans la partie basse et centrale de l'enceinte. Écartez-vous et observez le ciel."
     ]))
-    s.append(info_box("Astuce","Transportez les trois clés vers un point central et dégagé. Si l'effet ne part pas, rapprochez encore les objets ; les avoir simplement trouvés ne suffit pas."))
+    s.append(info_box("Procédure encore en validation",
+        "Le même script est officiellement relié à deux points différents. Les fichiers ne permettent pas de savoir lequel est réellement actif dans le moteur 1.12. La prochaine édition remplacera cette double vérification par un repère visuel unique seulement après un test en jeu.",
+        colors.HexColor("#FFF1DD")))
     s.append(PageBreak())
 
     section(s,"08","Autres coins cachés confirmés")
@@ -169,18 +172,18 @@ def build_player():
         ["Alps 1","Quatre membres d'équipage","Quatre corps sur le même rocher"],
         ["Alps 2","Bibliothèque","Tableaux puis archives"],
         ["Normandy 1","Neuf bouteilles d'abord","Bouteille 10 puis garde ivre"],
-        ["Africa 4","Clés A, B et C","Réunies dans un rayon de 3 m"]
+        ["Africa 4","Clés A, B et C","Tester séparément les 2 points officiels"]
     ]
     s.append(table([["Mission","Contrôle 1","Contrôle 2"]]+checks,[32*mm,67*mm,69*mm]))
     s.append(Spacer(1,7*mm))
     s.append(info_box("Bonne chasse",
         "Les séquences les plus sensibles à l'ordre sont Burma 1, Alps 2 et Normandy 1. "
-        "Pour Africa 1 et Africa 4, utilisez le Heritage Pack 0.7.5. Le secret du Tutorial attend encore une solution 1.12 validée en jeu."))
+        "Pour Africa 1 et Africa 4, utilisez le Heritage Pack. Le point de dépôt d'Africa 4 et l'accès au secret du Tutorial attendent encore leur validation en jeu."))
     s.append(Spacer(1,8*mm))
     s.append(P("Sources joueur","h2"))
     s.append(P('<link href="https://gamefaqs.gamespot.com/pc/451072-hidden-and-dangerous-2/cheats">GameFAQs - procédures historiques des six secrets publics</link>',"source"))
     s.append(P('<link href="https://hd2.fandom.com/wiki/Easter_eggs">H&amp;D 2 Wiki - synthèse communautaire des easter eggs</link>',"source"))
-    s.append(P("Les précisions d'ordre et le septième secret d'Africa 4 ont été vérifiés dans les fichiers de l'installation 1.12.","source"))
+    s.append(P("Les conditions et les deux propriétaires du septième secret d'Africa 4 ont été vérifiés dans les fichiers 1.12 ; leur comportement effectif reste à tester avant publication finale.","source"))
     doc.build(s)
     return path
 
