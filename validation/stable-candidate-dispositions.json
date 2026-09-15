@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "description": "Disposition exhaustive des candidats structurels prioritaires détectés dans les archives commerciales H&D2 1.12.",
+  "candidate_fields": [
+    "inactive_unique_declared_indices",
+    "script_only_objective_indices",
+    "unbound_scripts_with_free_matching_actor",
+    "missing_attached_scripts"
+  ],
+  "entries": [
+    {
+      "mission": "africa1",
+      "category": "inactive_unique_objective",
+      "item": 8,
+      "disposition": "stable_integrated",
+      "installer_sources": ["installer/ObjectiveFixInstaller.cs"],
+      "evidence_paths": ["docs/AUDIT.md"],
+      "note": "L'objectif Carnage 8 conserve son acteur, son contrôleur, son activation et sa validation officielles commentées."
+    },
+    {
+      "mission": "africa2",
+      "category": "missing_attached_script",
+      "item": "af2_particle_junkers.scr",
+      "disposition": "already_active_or_replaced",
+      "installer_sources": [],
+      "evidence_paths": ["experimental/AFRICA2_JUNKERS_PARTICLE_OWNER/ETUDE.md"],
+      "note": "Le cycle complet de la fumée est déjà possédé par AF2_actprelet.scr; recréer ce fichier doublerait l'effet."
+    },
+    {
+      "mission": "africa3",
+      "category": "unbound_script_free_owner",
+      "item": "af3a_obj2.scr",
+      "disposition": "stable_integrated",
+      "installer_sources": ["installer/Africa3VehicleDiscoveryInstaller.cs"],
+      "evidence_paths": ["docs/AUDIT.md"],
+      "note": "Le détecteur officiel complet est reconnecté à son acteur libre placé sur l'Opel."
+    },
+    {
+      "mission": "africa3",
+      "category": "missing_attached_script",
+      "item": "af3a_1415synchronizer.scr",
+      "disposition": "already_active_or_replaced",
+      "installer_sources": [],
+      "evidence_paths": ["experimental/AFRICA3_MISSING_SYNCHRONIZERS/ETUDE.md"],
+      "note": "La conversation 14/15 release possède déjà son déclenchement, ses voix, ses regards et ses retours complets."
+    },
+    {
+      "mission": "africa3",
+      "category": "missing_attached_script",
+      "item": "af3a_2223synchronizer.scr",
+      "disposition": "reconstruction_delegated",
+      "installer_sources": [],
+      "evidence_paths": ["experimental/AFRICA3_MISSING_SYNCHRONIZERS/ETUDE.md"],
+      "note": "Le code, le protocole de signaux et le propriétaire spatial d'origine ne subsistent pas suffisamment."
+    },
+    {
+      "mission": "africa5",
+      "category": "missing_attached_script",
+      "item": "af4_runway01_detector.scr",
+      "disposition": "already_active_or_replaced",
+      "installer_sources": [],
+      "evidence_paths": ["experimental/AFRICA5_OLD_RUNWAY01_DETECTOR/ETUDE.md"],
+      "note": "Le contrôleur central AF4_runway_detector.scr couvre déjà les trois zones, dont runway01 au même transform."
+    },
+    {
+      "mission": "alps1",
+      "category": "unbound_script_free_owner",
+      "item": "ci03alarmer1.scr",
+      "disposition": "stable_integrated",
+      "installer_sources": ["installer/Alps1CivilAlarmInstaller.cs"],
+      "evidence_paths": ["docs/AUDIT.md"],
+      "note": "La seconde zone d'approche officielle rejoint la réaction complète du civil 03."
+    },
+    {
+      "mission": "alps1_mp_zone",
+      "category": "missing_attached_script",
+      "item": "v_a1_vitr_stromy.scr",
+      "disposition": "reconstruction_delegated",
+      "installer_sources": [],
+      "evidence_paths": ["experimental/ALPS1_MP_ZONE_WIND_SCRIPT/PROPOSITION.md"],
+      "note": "L'objet de rafale requis par l'homologue solo manque également dans la zone multijoueur."
+    },
+    {
+      "mission": "alps2",
+      "category": "unbound_script_free_owner",
+      "item": "al2_13_a1.scr",
+      "disposition": "reconstruction_delegated",
+      "installer_sources": [],
+      "evidence_paths": ["experimental/ALPS2_AL2_13_14_MISSING_GUARDS/ETUDE.md"],
+      "note": "Les deux soldats destinataires, leurs scripts, items et transforms ont été retirés."
+    },
+    {
+      "mission": "alps2",
+      "category": "unbound_script_free_owner",
+      "item": "shotalarmdetector.scr",
+      "disposition": "stable_integrated",
+      "installer_sources": ["installer/Alps2ShotAlarmInstaller.cs"],
+      "evidence_paths": ["docs/AUDIT.md"],
+      "note": "Le détecteur et toute sa chaîne de réaction aux tirs existent encore."
+    },
+    {
+      "mission": "burma2",
+      "category": "missing_attached_script",
+      "item": "cutsoundshlidka.scr",
+      "disposition": "reconstruction_delegated",
+      "installer_sources": [],
+      "evidence_paths": ["experimental/BURMA2_CUTSOUNDSHLIDKA_MISSING/ETUDE.md"],
+      "note": "Le porteur sonore existe, mais le séquençage pluriel du contrôleur a disparu."
+    },
+    {
+      "mission": "co_brest",
+      "category": "script_only_objective",
+      "item": 5,
+      "disposition": "stable_integrated",
+      "installer_sources": ["installer/CoBrestGeneratorObjectiveInstaller.cs"],
+      "evidence_paths": ["docs/AUDIT.md"],
+      "note": "L'objectif des deux générateurs retrouve son entrée coopérative officielle."
+    },
+    {
+      "mission": "co_brest",
+      "category": "unbound_script_free_owner",
+      "item": "hint.scr",
+      "disposition": "stable_integrated",
+      "installer_sources": ["installer/CoBrestHintInstaller.cs"],
+      "evidence_paths": ["docs/AUDIT.md"],
+      "note": "Le conseil contextuel coopératif retrouve sa liaison équivalente au solo."
+    },
+    {
+      "mission": "co_brest",
+      "category": "unbound_script_free_owner",
+      "item": "obj_gener.scr",
+      "disposition": "stable_integrated",
+      "installer_sources": ["installer/CoBrestGeneratorObjectiveInstaller.cs"],
+      "evidence_paths": ["docs/AUDIT.md"],
+      "note": "Le contrôleur officiel des deux générateurs est relié à son acteur libre."
+    },
+    {
+      "mission": "co_burgundy1",
+      "category": "script_only_objective",
+      "item": 5,
+      "disposition": "stable_integrated",
+      "installer_sources": ["installer/CoBurgundy1StealthObjectiveInstaller.cs"],
+      "evidence_paths": ["docs/AUDIT.md"],
+      "note": "Les branches de discrétion officielles retrouvent leurs entrées de catalogue coopératif."
+    },
+    {
+      "mission": "co_burgundy1",
+      "category": "missing_attached_script",
+      "item": "bu1_diary.scr",
+      "disposition": "stable_integrated",
+      "installer_sources": ["installer/CrossMissionScriptInstaller.cs"],
+      "evidence_paths": ["docs/AUDIT.md"],
+      "note": "Le journal officiel appelé par la carte est recopié depuis son homologue solo identique."
+    },
+    {
+      "mission": "co_burgundy1",
+      "category": "missing_attached_script",
+      "item": "bur1_obj_carnage.scr",
+      "disposition": "already_active_or_replaced",
+      "installer_sources": [],
+      "evidence_paths": ["experimental/CO_BURGUNDY1_OBJECTIVE7_SURVIVAL/ETUDE.md", "docs/AUDIT.md"],
+      "note": "Ce contrôleur vise un objectif Carnage solo absent du contrat coopératif et ne doit pas être greffé."
+    },
+    {
+      "mission": "co_libye2",
+      "category": "script_only_objective",
+      "item": 3,
+      "disposition": "stable_integrated",
+      "installer_sources": ["installer/CoLibye2ObjectiveInstaller.cs"],
+      "evidence_paths": ["docs/AUDIT.md"],
+      "note": "Le parc automobile possède son compteur complet et retrouve son entrée d'objectif coopérative."
+    },
+    {
+      "mission": "czech2",
+      "category": "unbound_script_free_owner",
+      "item": "bigboskecac.scr",
+      "disposition": "already_active_or_replaced",
+      "installer_sources": [],
+      "evidence_paths": ["experimental/CZECH2_LEGACY_DOOR_DIALOGUE/ETUDE.md", "docs/AUDIT_COMPLET_JEU.md"],
+      "note": "La cinématique active joue déjà les deux mêmes voix; reconnecter l'ancien déclencheur doublerait la scène."
+    },
+    {
+      "mission": "czech4_mp_zone",
+      "category": "unbound_script_free_owner",
+      "item": "door35.scr",
+      "disposition": "stable_integrated",
+      "installer_sources": ["installer/Czech4ZoneDoorInstaller.cs"],
+      "evidence_paths": ["docs/AUDIT.md"],
+      "note": "La neuvième porte possède le même contrôleur complet, son acteur et sa géométrie."
+    },
+    {
+      "mission": "libye3",
+      "category": "inactive_unique_objective",
+      "item": 4,
+      "disposition": "stable_integrated",
+      "installer_sources": ["installer/ObjectiveFixInstaller.cs"],
+      "evidence_paths": ["experimental/LIBYE3_OBJECTIVES4_6/ETUDE.md", "docs/AUDIT.md"],
+      "note": "L'objectif officiel de survie est validé à l'extraction par le contrôleur existant."
+    },
+    {
+      "mission": "norway",
+      "category": "unbound_script_free_owner",
+      "item": "tirpicmined.scr",
+      "disposition": "already_active_or_replaced",
+      "installer_sources": [],
+      "evidence_paths": ["experimental/ALPS2_TUTORIAL_COBREST/FAISABILITE.md", "docs/AUDIT_COMPLET_JEU.md"],
+      "note": "R_Nor_OBJ_1_a.scr surveille directement les deux charges et remplace ce relais ancien."
+    },
+    {
+      "mission": "tutorial",
+      "category": "unbound_script_free_owner",
+      "item": "t_dummy_speech.scr",
+      "disposition": "reconstruction_delegated",
+      "installer_sources": [],
+      "evidence_paths": ["experimental/TUTORIAL_T_DUMMY_SPEECH_RECONSTRUCTION/ETUDE.md"],
+      "note": "Le dialogue subsiste, mais le personnage, son apparence et son placement exact doivent être recréés."
+    }
+  ]
+}

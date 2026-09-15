@@ -28,6 +28,7 @@ import orphan_weapon_evidence_audit
 import prototype_deployment_audit
 import runtime_validation_audit
 import signal_graph_audit
+import stable_candidate_coverage_audit
 
 
 FINAL_SETUP = "H-D2-Heritage-Pack-Setup.exe"
@@ -183,7 +184,7 @@ def project_evidence_state(root: Path) -> dict[str, object]:
     return {"ok": not errors, "failed": errors, "reports": reports}
 
 
-def commercial_evidence_state(game: Path) -> dict[str, object]:
+def commercial_evidence_state(root: Path, game: Path) -> dict[str, object]:
     try:
         maps = map_inventory_audit.audit(game)
         unlisted = [
@@ -191,6 +192,9 @@ def commercial_evidence_state(game: Path) -> dict[str, object]:
             if row["interesting_name"] and not row["listed_multiplayer"]
         ]
         full_game = full_game_audit.build(game)
+        stable_coverage = stable_candidate_coverage_audit.audit(
+            root, game, full_game_report=full_game
+        )
         signal_graph = signal_graph_audit.build(game)
         prototypes = {
             "archive_plan": prototype_deployment_audit.archive_plan(game),
@@ -219,6 +223,7 @@ def commercial_evidence_state(game: Path) -> dict[str, object]:
             ),
             "prototype_archive_plan": prototypes["archive_plan"]["ok"],
             "asset_inventory": assets["evidence_ok"],
+            "stable_candidate_coverage": stable_coverage["ok"],
         }
         checks.update(
             (name, report.get("ok") is True)
@@ -238,6 +243,7 @@ def commercial_evidence_state(game: Path) -> dict[str, object]:
                     "unlisted_interesting": len(unlisted),
                 },
                 "full_game": full_game["scope"],
+                "stable_candidate_coverage": stable_coverage,
                 "signal_graph": signal_graph["scope"],
                 "prototype_archive_plan": prototypes["archive_plan"],
                 "prototype_installed": prototypes["installed"],
@@ -271,7 +277,7 @@ def audit(root: Path, game: Path | None, timeout: float) -> dict[str, object]:
     commercial_evidence = None
     network = None
     if game is not None:
-        commercial_evidence = commercial_evidence_state(game)
+        commercial_evidence = commercial_evidence_state(root, game)
         network = network_runtime_preflight.audit(
             root,
             game,

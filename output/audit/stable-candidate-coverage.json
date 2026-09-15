@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "candidate_count": 23,
+  "manifest_count": 23,
+  "disposition_counts": {
+    "already_active_or_replaced": 6,
+    "reconstruction_delegated": 5,
+    "stable_integrated": 12
+  },
+  "missing_candidates": [],
+  "stale_dispositions": [],
+  "installer_wiring_ok": true,
+  "errors": []
+}
