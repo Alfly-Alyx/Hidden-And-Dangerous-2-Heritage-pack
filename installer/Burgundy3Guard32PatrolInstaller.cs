@@ -123,10 +123,12 @@ namespace HD2CommunityInstaller
         private static Regex ActiveBranchRegex()
         {
             return new Regex(
-                @"Label\s+ACTIVITY_LOOP\s*:[\s\S]{0,100}"
-                + @"HUMAN_Move\s*\(\s*""32_01""\s*\)\s*;[\s\S]{0,100}"
-                + @"HUMAN_Move\s*\(\s*""32_02""\s*\)\s*;[\s\S]{0,100}"
-                + @"goto\s+ACTIVITY_LOOP\s*;",
+                @"^[ \t]*Label\s+ACTIVITY_LOOP\s*:[ \t]*(?=\r?$)"
+                + @"[\s\S]{0,100}^[ \t]*HUMAN_Move\s*"
+                + @"\(\s*""32_01""\s*\)\s*;[ \t]*(?=\r?$)"
+                + @"[\s\S]{0,100}^[ \t]*HUMAN_Move\s*"
+                + @"\(\s*""32_02""\s*\)\s*;[ \t]*(?=\r?$)"
+                + @"[\s\S]{0,100}^[ \t]*goto\s+ACTIVITY_LOOP\s*;",
                 RegexOptions.IgnoreCase | RegexOptions.Multiline);
         }
         private static void ValidatePatched(byte[] data)

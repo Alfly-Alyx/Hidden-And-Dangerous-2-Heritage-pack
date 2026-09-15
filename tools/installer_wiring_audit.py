@@ -66,6 +66,7 @@ def audit(root: Path) -> dict[str, object]:
     africa5_schumann_path = installer / "Africa5SchumannAmbushInstaller.cs"
     africa5_dormant_actors_path = installer / "Africa5DormantActorsInstaller.cs"
     dta_archive_path = installer / "DtaArchive.cs"
+    burgundy3_guard32_path = installer / "Burgundy3Guard32PatrolInstaller.cs"
     assembly_path = installer / "AssemblyInfo.cs"
     build_path = root / "build.ps1"
     icon_path = installer / "assets" / "hd2-heritage-icon.ico"
@@ -93,6 +94,7 @@ def audit(root: Path) -> dict[str, object]:
         encoding="utf-8-sig"
     )
     dta_archive = dta_archive_path.read_text(encoding="utf-8-sig")
+    burgundy3_guard32 = burgundy3_guard32_path.read_text(encoding="utf-8-sig")
     assembly = assembly_path.read_text(encoding="utf-8-sig")
     build = build_path.read_text(encoding="utf-8-sig")
     readme = readme_path.read_text(encoding="utf-8-sig")
@@ -375,6 +377,19 @@ def audit(root: Path) -> dict[str, object]:
             "The installer cannot verify the preserved Africa 5 face in Maps.dta"
         )
 
+    burgundy3_guard32_requires_active_patrol = all((
+        '@"^[ \\t]*Label\\s+ACTIVITY_LOOP' in burgundy3_guard32,
+        burgundy3_guard32.count(
+            '@"[\\s\\S]{0,100}^[ \\t]*HUMAN_Move\\s*"'
+        ) == 2,
+        '@"[\\s\\S]{0,100}^[ \\t]*goto\\s+ACTIVITY_LOOP'
+        in burgundy3_guard32,
+    ))
+    if not burgundy3_guard32_requires_active_patrol:
+        errors.append(
+            "Burgundy 3 guard-32 detection can mistake commented moves for a patrol"
+        )
+
     historical_icon = (
         icon_path.is_file()
         and hashlib.sha256(icon_path.read_bytes()).hexdigest().upper()
@@ -494,6 +509,9 @@ def audit(root: Path) -> dict[str, object]:
             africa5_schumann_requires_active_handlers
         ),
         "maps_archive_key": maps_archive_key,
+        "burgundy3_guard32_requires_active_patrol": (
+            burgundy3_guard32_requires_active_patrol
+        ),
         "historical_icon": historical_icon,
         "artifact_identity": artifact_identity,
         "version": version,
