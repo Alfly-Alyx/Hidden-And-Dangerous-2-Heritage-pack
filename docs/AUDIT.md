@@ -115,6 +115,7 @@ Source : https://github.com/ehylla93/had2-cmp/
 - Lighthouse : le déclencheur d'origine montrant les deux accès souterrains est reconnecté.
 - Normandy3 Zone : variante officielle non déclarée ajoutée au menu expérimental.
 - Africa5 Prototype : sept fichiers propres sont complétés avec six ressources strictement identiques de sa variante officielle.
+- Chargement des prototypes : l'ancienne installation n'écrivait que les fichiers complémentaires dans les dossiers libres, ce qui laissait Normandy3 à 5 fichiers sur 14 et Africa5 à 7 sur 13 et pouvait bloquer le serveur local sur « Connecting to server ». Le module déploie désormais chaque dossier complet ; les marqueurs factices de Normandy3 sont remplacés, les autres données propres sont conservées et les sept liaisons de citernes Africa5 retrouvent toutes leur acteur.
 - Africa 1 : le patch 1.12 force à zéro la condition des quatre morts ; la valeur d'origine est restaurée.
 - Africa 4 : le patch 1.12 détourne les trois clés vers la fin du script ; le saut vers la séquence de météores est restauré.
 - Sicily 1 : les neuf objectifs, les 90 scripts utilisés et les 118 checkpoints distincts sont complets. Les anciennes commandes d'ouverture immédiate des deux portes souterraines d'`IT_40` coexistent avec le déverrouillage actif et sont réservées à une variante additive ; l'ancienne affectation de l'objectif normal est déjà remplacée par sa liaison directe.

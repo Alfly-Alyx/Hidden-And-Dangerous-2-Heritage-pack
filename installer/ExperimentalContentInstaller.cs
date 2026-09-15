@@ -19,9 +19,17 @@ namespace HD2CommunityInstaller
             "map.4ds", "tree.klz", "scene.4ds", "loader.4ds", "volumy.bin"
         };
 
-        private static readonly string[] AfricaBaseFiles = {
-            "map.4ds", "check2.bin", "loader.4ds", "mpscripts.dta",
-            "sounds.bin", "Vertanim.bin"
+        private static readonly string[] AfricaMissionFiles = {
+            "map.4ds", "tree.klz", "scene.4ds", "items.dat", "check2.bin",
+            "scene2.bin", "loader.4ds", "actors.bin", "sounds.bin",
+            "volumy.bin", "Vertanim.bin", "car_table.dat", "mpscripts.dta"
+        };
+
+        private static readonly string[] NormandyMissionFiles = {
+            "map.4ds", "tree.klz", "scene.4ds", "items.dat", "check2.bin",
+            "scene2.bin", "loader.4ds", "actors.bin", "sounds.bin",
+            "volumy.bin", "effects.bin", "watercam.set", "car_table.dat",
+            "meshplayer.bin"
         };
 
         internal const string NormandyPrototypeName =
@@ -45,6 +53,8 @@ namespace HD2CommunityInstaller
                     DirectFiles(archive, AfricaPrototypePrefix);
                 List<DtaEntry> africaMissing = MissingFiles(africaSource, africaPrototype);
                 ValidateAfricaInventory(africaSource, africaPrototype, africaMissing);
+                ValidateCompletePrototype(CompletePrototype(
+                    africaPrototype, africaMissing), AfricaMissionFiles, "Africa5");
                 africaOwn = africaPrototype.Count;
                 africaCopies = africaMissing.Count;
 
@@ -56,6 +66,9 @@ namespace HD2CommunityInstaller
                     normandySource, normandyPrototype);
                 ValidateNormandyInventory(
                     normandySource, normandyPrototype, normandyBase);
+                ValidateCompletePrototype(CompletePrototype(
+                    normandyPrototype, normandyBase), NormandyMissionFiles,
+                    "Normandy3 Zone");
                 normandyOwn = normandyPrototype.Count;
                 normandyCopies = normandyBase.Count;
             }
@@ -93,8 +106,12 @@ namespace HD2CommunityInstaller
                     DirectFiles(archive, AfricaPrototypePrefix);
                 List<DtaEntry> africaMissing = MissingFiles(africaSource, africaPrototype);
                 ValidateAfricaInventory(africaSource, africaPrototype, africaMissing);
-                written += InstallEntries(archive, africaMissing, AfricaPrototypePrefix,
-                    gamePath, journal, prepared);
+                List<DtaEntry> africaComplete = CompletePrototype(
+                    africaPrototype, africaMissing);
+                ValidateCompletePrototype(
+                    africaComplete, AfricaMissionFiles, "Africa5");
+                written += InstallEntries(archive, africaComplete,
+                    AfricaPrototypePrefix, gamePath, journal, prepared);
 
                 Dictionary<string, DtaEntry> normandySource =
                     DirectFiles(archive, NormandySourcePrefix);
@@ -104,8 +121,12 @@ namespace HD2CommunityInstaller
                     normandySource, normandyPrototype);
                 ValidateNormandyInventory(
                     normandySource, normandyPrototype, normandyBase);
-                written += InstallEntries(archive, normandyBase, NormandyPrototypePrefix,
-                    gamePath, journal, prepared);
+                List<DtaEntry> normandyComplete = CompletePrototype(
+                    normandyPrototype, normandyBase);
+                ValidateCompletePrototype(
+                    normandyComplete, NormandyMissionFiles, "Normandy3 Zone");
+                written += InstallEntries(archive, normandyComplete,
+                    NormandyPrototypePrefix, gamePath, journal, prepared);
             }
 
             string scriptsPath = Path.Combine(gamePath, "Scripts.dta");
@@ -146,6 +167,8 @@ namespace HD2CommunityInstaller
             {
                 string folder = Path.Combine(
                     gamePath, "Missions", "NORMANDY3_MP_ZONE");
+                foreach (string file in NormandyMissionFiles)
+                    if (!HasFile(folder, file, 0)) return false;
                 return HasFile(folder, "map.4ds", 1000)
                     && HasFile(folder, "tree.klz", 1000000)
                     && HasFile(folder, "scene.4ds", 1000000)
@@ -154,7 +177,7 @@ namespace HD2CommunityInstaller
             }
 
             string missionFolder = Path.Combine(gamePath, "Missions", "AFRIKA5_MP");
-            foreach (string file in AfricaBaseFiles)
+            foreach (string file in AfricaMissionFiles)
                 if (!HasFile(missionFolder, file, 0)) return false;
             string scriptFolder = Path.Combine(gamePath, "Scripts", "AFRIKA5_MP");
             for (int number = 1; number <= 7; number++)
@@ -316,6 +339,36 @@ namespace HD2CommunityInstaller
                 return StringComparer.OrdinalIgnoreCase.Compare(left.Name, right.Name);
             });
             return missing;
+        }
+
+        private static List<DtaEntry> CompletePrototype(
+            Dictionary<string, DtaEntry> prototype,
+            IList<DtaEntry> complements)
+        {
+            Dictionary<string, DtaEntry> complete =
+                new Dictionary<string, DtaEntry>(
+                    prototype, StringComparer.OrdinalIgnoreCase);
+            foreach (DtaEntry complement in complements)
+                complete[FileName(complement.Name)] = complement;
+            return new List<DtaEntry>(complete.Values);
+        }
+
+        private static void ValidateCompletePrototype(
+            IList<DtaEntry> entries, string[] expectedFiles, string displayName)
+        {
+            HashSet<string> names = new HashSet<string>(
+                StringComparer.OrdinalIgnoreCase);
+            foreach (DtaEntry entry in entries)
+                names.Add(FileName(entry.Name));
+            if (names.Count != expectedFiles.Length)
+                throw new InvalidDataException(
+                    "Le dossier autonome du prototype " + displayName
+                    + " est incomplet.");
+            foreach (string expected in expectedFiles)
+                if (!names.Contains(expected))
+                    throw new InvalidDataException(
+                        "Fichier du prototype " + displayName
+                        + " manquant : " + expected + ".");
         }
 
         private static string AddMap(

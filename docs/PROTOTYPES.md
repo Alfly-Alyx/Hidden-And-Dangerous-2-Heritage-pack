@@ -11,11 +11,11 @@
 
 ### Normandy3 Zone
 
-Variante officielle absente de la liste finale. Treize fichiers lui sont propres, mais quatre fichiers de décor ou de chargement ne sont que des marqueurs de 16 à 19 octets et `volumy.bin` manque. Le pack reprend donc exactement les cinq bases correspondantes de `NORMANDY3_MP`, tout en conservant les données propres de la zone. Elle est ajoutée sous le nom `PROTOTYPE - Normandy3 Zone (exploration libre)` dans le mode **Occupation**.
+Variante officielle absente de la liste finale. Treize fichiers lui sont propres, mais quatre fichiers de décor ou de chargement ne sont que des marqueurs de 16 à 19 octets et `volumy.bin` manque. Le pack reprend donc exactement les cinq bases correspondantes de `NORMANDY3_MP`, tout en conservant les neuf données propres exploitables de la zone. Les quatorze fichiers obtenus sont tous déployés dans un dossier autonome : le jeu ne dépend ainsi d'aucun mélange implicite entre ce dossier et `missions.dta`. Elle est ajoutée sous le nom `PROTOTYPE - Normandy3 Zone (exploration libre)` dans le mode **Occupation**.
 
 ### Africa5 Prototype
 
-`AFRIKA5_MP` conserve sept fichiers propres. Six ressources manquantes peuvent être reprises d'`AFRICA5_MP`. Ses sept scripts de citernes subsistent sous `Scripts/AFRICA5_MP` ; le pack les rend aussi disponibles sous l'orthographe attendue par le prototype, `Scripts/AFRIKA5_MP`. La carte complétée est déclarée sous le nom `PROTOTYPE - Africa5 (exploration libre)` dans le mode **Deathmatch**.
+`AFRIKA5_MP` conserve sept fichiers propres. Six ressources manquantes peuvent être reprises d'`AFRICA5_MP`. Le pack déploie les treize fichiers de la carte complétée dans un dossier autonome. Ses sept scripts de citernes subsistent sous `Scripts/AFRICA5_MP` ; le pack les rend aussi disponibles sous l'orthographe attendue par le prototype, `Scripts/AFRIKA5_MP`, et leurs sept propriétaires sont présents dans la scène propre du vestige. La carte est déclarée sous le nom `PROTOTYPE - Africa5 (exploration libre)` dans le mode **Deathmatch**.
 
 Ces vestiges ne sont pas ajoutes au menu solo natif : ils ne contiennent ni definition complete de mission solo, ni objectifs, ni fin de mission. Ils sont accessibles directement dans le jeu par Multijoueur > Creer > LAN : Africa5 en Deathmatch et Normandy3 Zone en Occupation.
 
