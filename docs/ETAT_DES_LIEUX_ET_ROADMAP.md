@@ -292,6 +292,7 @@ Objectif : livrer un paquet robuste.
 
 - options séparées par stabilité et niveau de spéculation ;
 - téléchargement à la demande de la CMP officielle épinglée, sans embarquer ses fichiers tant qu'aucune autorisation explicite de redistribution n'est établie ;
+- conservation de l'empreinte, de la provenance et de la licence MIT du correctif écran large embarqué, suivie d'un essai Internet vérifiant l'absence de conflit de clé ;
 - sauvegardes et restauration testées ;
 - contrôle de taille et d'empreinte pour chaque dépendance ;
 - guide joueur et rapport des découvertes intégrés ;

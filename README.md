@@ -58,6 +58,13 @@ aucune licence, une redistribution embarquée restera exclue sans autorisation
 explicite. La provenance, les crédits et cette règle sont consignés dans
 `docs/CONTENU_COMMUNAUTAIRE.md`.
 
+Le correctif écran large est, lui, embarqué légalement sous licence MIT. Le
+fichier conservé dans le dépôt est bit-à-bit identique à l'asset officiel
+ThirteenAG publié pour H&D2 ; sa taille, son empreinte d'archive, ses six
+contenus et leurs empreintes sont contrôlés avant installation. La notice
+`docs/DEPENDANCES_EMBARQUEES.md` en consigne la source, la licence et
+l'historique de sa correction multijoueur.
+
 Le chantier exhaustif est commencé : 79 registres, 71 dossiers, 5 347 scripts commerciaux et 54 entrées de catalogue (33 solo, 21 coopératives) sont maintenant indexés dans `docs/AUDIT_COMPLET_JEU.md`. Les écarts entre missions solo et coopératives sont suivis séparément dans `docs/AUDIT_OBJECTIFS_COOP.md`, afin de distinguer une vraie rupture d'une renumérotation, d'une fusion ou d'un scénario différent. Les composants qui demandent une création nouvelle sont réservés à la fin.
 
 Les 25 variantes multijoueurs officielles possédant un registre ont également
@@ -84,6 +91,11 @@ Le contrôle `tools/community_package_policy_audit.py` protège séparément
 l'intégration communautaire : provenance épinglée, taille et empreinte,
 validation de structure et de chemins, option d'interface, exclusion de toute
 archive CMP embarquée et présence de la notice de crédits.
+
+Le contrôle `tools/embedded_dependency_audit.py` vérifie hors compilation que
+l'unique dépendance binaire embarquée est exactement la release écran large
+officielle attendue, que l'installateur n'accepte que ses six fichiers connus et
+qu'il installe sa licence MIT.
 
 Un prototype de menu solo distinct est maintenant préparé dans une copie de
 test séparée. La scène `.4ds` seule ne suffisait pas ; la copie de l'exécutable
