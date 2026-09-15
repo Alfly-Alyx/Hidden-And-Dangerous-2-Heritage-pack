@@ -61,6 +61,11 @@ de leur état jusqu'à l'option effectivement appliquée.
 
 Les conversions de cartes multijoueur vers de vraies missions solo sont suivies dans `docs/MULTIJOUEUR_VERS_SOLO.md`, avec leur niveau de preuve et leur état de test.
 
+Le contrôle `tools/state_journal_audit.py` relit sans modification le journal de
+restauration, vérifie le confinement de chaque chemin, la présence des fichiers
+et sauvegardes, puis peut recalculer toutes les empreintes avec
+`--verify-hashes`. La publication finale exigera en plus `--require-sealed`.
+
 Un prototype de menu solo distinct est maintenant préparé dans une copie de
 test séparée. La scène `.4ds` seule ne suffisait pas ; la copie de l'exécutable
 a donc été décompactée et reconstruite hors ligne avec la prise en charge de
