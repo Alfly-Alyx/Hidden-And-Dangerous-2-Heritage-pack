@@ -71,6 +71,9 @@ def audit(root: Path) -> dict[str, object]:
     africa1_cards_path = installer / "Africa1CardPlayersInstaller.cs"
     africa1_ambient_routes_path = installer / "Africa1AmbientRoutesInstaller.cs"
     africa2_guard_signals_path = installer / "Africa2GuardSignalInstaller.cs"
+    alps1_civil_alarm_path = installer / "Alps1CivilAlarmInstaller.cs"
+    africa3_vehicle_path = installer / "Africa3VehicleDiscoveryInstaller.cs"
+    arctic3_car_hit_path = installer / "Arctic3CarHitInstaller.cs"
     arctic4_dog_patrol_path = installer / "Arctic4DogPatrolInstaller.cs"
     arctic4_ice_fall_path = installer / "Arctic4IceFallInstaller.cs"
     czech5_weather_path = installer / "Czech5WeatherInstaller.cs"
@@ -110,6 +113,9 @@ def audit(root: Path) -> dict[str, object]:
     africa2_guard_signals = africa2_guard_signals_path.read_text(
         encoding="utf-8-sig"
     )
+    alps1_civil_alarm = alps1_civil_alarm_path.read_text(encoding="utf-8-sig")
+    africa3_vehicle = africa3_vehicle_path.read_text(encoding="utf-8-sig")
+    arctic3_car_hit = arctic3_car_hit_path.read_text(encoding="utf-8-sig")
     arctic4_dog_patrol = arctic4_dog_patrol_path.read_text(encoding="utf-8-sig")
     arctic4_ice_fall = arctic4_ice_fall_path.read_text(encoding="utf-8-sig")
     czech5_weather = czech5_weather_path.read_text(encoding="utf-8-sig")
@@ -478,6 +484,30 @@ def audit(root: Path) -> dict[str, object]:
             "Africa 2 can reconnect AF2_03 even though its commercial actor is absent"
         )
 
+    alps1_civil_uses_actor_registry = all((
+        '"Missions/ALPS1/scene2.bin", MissionArchives,' in alps1_civil_alarm,
+        'new[] { "ci03alarmer", "ci03alarmer1" });' in alps1_civil_alarm,
+        '"Missions/ALPS1/actors.bin", MissionArchives,' in alps1_civil_alarm,
+        'new[] { "ci_03" });' in alps1_civil_alarm,
+        'new[] { "ci03alarmer", "ci03alarmer1", "ci_03" }'
+        not in alps1_civil_alarm,
+    ))
+    if not alps1_civil_uses_actor_registry:
+        errors.append("Alps 1 civil validation does not use the actor registry")
+
+    later_actor_validations_use_actor_registries = all((
+        '"Missions/AFRICA3/scene2.bin", MissionArchives,' in africa3_vehicle,
+        'new[] { "AF3a_obj2" });' in africa3_vehicle,
+        '"Missions/AFRICA3/actors.bin", MissionArchives,' in africa3_vehicle,
+        'new[] { "La_OpelAf2", "AF3a_21" });' in africa3_vehicle,
+        '"Missions/ARCTIC3/actors.bin", MissionArchives,' in arctic3_car_hit,
+        '"Missions/ARCTIC3/scene2.bin", MissionArchives,' not in arctic3_car_hit,
+    ))
+    if not later_actor_validations_use_actor_registries:
+        errors.append(
+            "Africa 3 or Arctic 3 actor validation still targets scene2.bin"
+        )
+
     arctic4_dog_patrol_requires_active_walk = all((
         arctic4_dog_patrol.count(
             '@"^[ \\t]*Label\\s+DeAlarm'
@@ -665,6 +695,10 @@ def audit(root: Path) -> dict[str, object]:
         ),
         "africa2_excludes_missing_guard03_actor": (
             africa2_excludes_missing_guard03_actor
+        ),
+        "alps1_civil_uses_actor_registry": alps1_civil_uses_actor_registry,
+        "later_actor_validations_use_actor_registries": (
+            later_actor_validations_use_actor_registries
         ),
         "arctic4_dog_patrol_requires_active_walk": (
             arctic4_dog_patrol_requires_active_walk

@@ -204,7 +204,10 @@ namespace HD2CommunityInstaller
                 });
             ValidateAsset(gamePath,
                 "Missions/AFRICA3/scene2.bin", MissionArchives,
-                new[] { "AF3a_obj2", "La_OpelAf2", "AF3a_21" });
+                new[] { "AF3a_obj2" });
+            ValidateAsset(gamePath,
+                "Missions/AFRICA3/actors.bin", MissionArchives,
+                new[] { "La_OpelAf2", "AF3a_21" });
 
             DormantSource registry = ResolveSource(
                 gamePath, RegistryPath, MissionArchives);

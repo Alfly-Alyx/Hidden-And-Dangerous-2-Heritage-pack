@@ -204,7 +204,7 @@ namespace HD2CommunityInstaller
                     new[] { "OnSignal(4)" });
 
             ValidateAsset(gamePath,
-                "Missions/ARCTIC3/scene2.bin", MissionArchives,
+                "Missions/ARCTIC3/actors.bin", MissionArchives,
                 new[] {
                     "Opel_01", "Car_1", "Car_2", "Car_3",
                     "Car_4", "Car_5", "Car_6"

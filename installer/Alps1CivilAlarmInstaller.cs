@@ -195,7 +195,10 @@ namespace HD2CommunityInstaller
                 });
             ValidateAsset(gamePath,
                 "Missions/ALPS1/scene2.bin", MissionArchives,
-                new[] { "ci03alarmer", "ci03alarmer1", "ci_03" });
+                new[] { "ci03alarmer", "ci03alarmer1" });
+            ValidateAsset(gamePath,
+                "Missions/ALPS1/actors.bin", MissionArchives,
+                new[] { "ci_03" });
 
             DormantSource registry = ResolveSource(
                 gamePath, RegistryPath, MissionArchives);
