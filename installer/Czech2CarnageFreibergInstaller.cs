@@ -163,14 +163,13 @@ namespace HD2CommunityInstaller
 
             string carnage = Encoding.GetEncoding(1252).GetString(ReadSource(
                 ResolveSource(gamePath, CarnageScriptPath, ScriptArchives)));
-            Require(carnage, @"HUMAN_SETAIMODE_Aggressive\s*\(\s*\)",
-                "Mode hostile absent du script Carnage de Freiberg.");
-            Require(carnage, @"_PlayerInRange\s*\(\s*15\s*\)",
-                "Declencheur de proximite absent du script Carnage de Freiberg.");
-            Require(carnage, @"SetAlarmType\s*\(\s*1023\s*,\s*1\s*\)",
-                "Activation d'alarme absente du script Carnage de Freiberg.");
-            Require(carnage, @"HUMAN_WeaponOnArm\s*\(\s*1\s*\)",
-                "Armement absent du script Carnage de Freiberg.");
+            Require(carnage,
+                @"Whenever\s+\w+\s*\(\s*_PlayerInRange\s*\(\s*15\s*\)\s*\)"
+                + @"\s*\{[\s\S]{0,320}?HUMAN_Suspend\s*\(\s*0\s*\)\s*;"
+                + @"[\s\S]{0,200}?SetAlarmType\s*\(\s*1023\s*,\s*1\s*\)\s*;"
+                + @"[\s\S]{0,200}?HUMAN_WeaponOnArm\s*\(\s*1\s*\)\s*;"
+                + @"[\s\S]{0,160}?HUMAN_SETMODE_Crouch\s*\(\s*\)\s*;",
+                "Sequence hostile officielle absente du script Carnage de Freiberg.");
 
             string scene = Encoding.GetEncoding(1252).GetString(ReadSource(
                 ResolveSource(gamePath, ScenePath, MissionArchives)));
