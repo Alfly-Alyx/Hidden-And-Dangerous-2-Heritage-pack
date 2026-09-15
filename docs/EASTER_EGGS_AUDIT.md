@@ -13,7 +13,9 @@ Sources publiques :
 
 ## Tutorial
 
-Le lingot d'or, l'interrupteur, les cibles et le déclencheur subsistent. La route historique utilise le capot et le toit d'un camion pour atteindre le garage. Le patch 1.12 désactive l'escalade sur les véhicules, rendant la route normalement inaccessible. Le paquet ne déplace pas encore le lingot : cela demanderait de choisir une position nouvelle et donc spéculative.
+Le lingot d'or, l'interrupteur, les cibles et le déclencheur subsistent. L'audit reproductible `tools/tutorial_easter_egg_audit.py` confirme onze liaisons actives : le bouton alimente `la_Bedford_1` et révèle l'objet 245, l'activateur exige cet objet, puis lance quatre cibles successives et cinq feux d'artifice. `T_EE_Weather.scr` et `T_EE_Light.scr` sont des vestiges distincts sans liaison commerciale au secret ; les ajouter ici serait une reconstruction non attestée.
+
+La route historique utilise le capot et le toit du Bedford pour atteindre le garage. La comparaison des correctifs officiels montre que le 1.06 ne livre que des binaires moteur, alors que le 1.12 remplace aussi le moteur et ajoute `Patch.dta`. Les témoignages d'époque attribuent précisément la rupture à la désactivation de l'escalade des véhicules. Remplacer le moteur 1.12 par celui du 1.06 sacrifierait la compatibilité Sabre Squadron et les correctifs ultérieurs : cette méthode est exclue. Le paquet ne déplace pas encore le lingot ; une adaptation physique locale, clairement étiquetée, reste confiée au laboratoire expérimental.
 
 ## Africa 1 - Spaghetti Airport
 
