@@ -2,16 +2,38 @@
 
 ## Deux lance-flammes
 
-Les noms Flamethrower Portable No. 2 et Flammenwerfer 35, ainsi que leurs munitions, subsistent dans les listes historiques et identifiants d'objets.
+Les noms Flamethrower Portable No. 2 et Flammenwerfer 35, ainsi que leurs
+munitions, subsistent dans les listes historiques et identifiants d'objets.
 
 L'examen local corrige toutefois une interprétation fréquente :
 
-- les entrées de modèles d'arme attendues entre le MG 81 et le Flak 38 sont absentes ;
+- la table Sabre conserve un record allemand de 135 octets nommé
+  `Flammewerfer`, qui référence `w_flmwrFPV`, `wi_ge-flmwr35`,
+  `w_flmwr` et le texte 1044 ;
+- les deux modèles référencés par ce record sont absents ;
+- le record britannique suivant a été réemployé par `Flak TMP`, le texte 1046
+  et l'icône `wi_flak38`, mais conserve encore les fragments `_FlameFPV` et
+  `_Flame` de l'ancienne arme ;
+- les deux records de munition de 508 octets sont intacts et identiques entre
+  le jeu de base et Sabre Squadron : textes 1207/1208, masse 5, catégorie 2,
+  modèle générique `w_ammo` et icônes propres ;
+- les quatre icônes principales d'arme et de munition, avec leurs seize
+  variantes de texture, subsistent dans `maps.dta` ;
 - flame1.4ds ne pèse que 471 octets ;
-- il ne contient qu'un objet fire01 ;
-- c'est un effet de flamme, pas le modèle du lance-flammes.
+- il ne contient qu'un objet `fire01`, huit sommets et quatre faces ;
+- le bloc 25 `plamenomet` d'effet est identique dans les tables Base et Sabre ;
+- aucune entrée correspondante n'existe dans `item_shoot.tbl` ou
+  `FpvAnims.sav`, et aucun script commercial ne pilote ces armes ;
+- les deux mentions sonores retrouvées sont des réactions vocales face au
+  lance-flammes, pas un son de tir ou de rechargement.
 
 Il n'existe donc pas une option cachée qu'il suffirait de cocher. Une version jouable demanderait de créer le modèle tenu et posé, les animations, le réservoir, les sons, la portée, les dégâts, les réactions de l'IA et les règles multijoueurs. Elle serait une reconstruction communautaire inspirée d'une arme annoncée.
+
+`tools/flamethrower_evidence_audit.py` contrôle automatiquement les quatre
+records, les vingt ressources d'icônes, le modèle et l'effet, les textes
+anglais/français, ainsi que l'absence des liaisons nécessaires à une arme
+jouable. Les empreintes servent à empêcher qu'une future archive différente
+soit prise pour cette version commerciale.
 
 Sources contemporaines :
 - https://www.gamespot.com/articles/hidden-and-dangerous-2-qanda/1100-2713950/

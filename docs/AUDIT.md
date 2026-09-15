@@ -156,7 +156,14 @@ La comparaison exhaustive des catalogues solo et coopératifs, avec les renumér
 
 Les dossiers ENGLAND, CASTLE1 et CASTLE2 ne possèdent pas ici une carte complète autonome. Ils prouvent des branches internes, pas des niveaux immédiatement jouables. ALPS3_OBJ et ARDENS1_OBJ sont des variantes de scripts recouvertes par Sabre Squadron, dont les versions complètes sont déjà actives.
 
-Les modèles M323, La-5, Aichi, Fa 223, Fw 200, Li-2 et DFS 230 sont présents dans l'archive commerciale. Le Ju 52 est aussi utilisé par une scène d'Africa 1. Aucun de ces constats ne prouve un véhicule pilotable fini.
+Les modèles M323, La-5, Aichi, Fa 223, Fw 200, Li-2 et DFS 230 sont présents
+dans l'archive commerciale. Le Ju 52 est utilisé par deux scènes actives,
+dans Africa 1 et Africa 2. Dans la seconde, le script suit
+`fight_stage01`, anime les hélices, crée la fumée 16, masque puis fait
+exploser `HoriciJunkers`. La liaison orpheline
+`AF2_particle_junkers.scr` ne révèle pas un second comportement
+reconstructible. Aucun des 49 `car_table.dat` commerciaux ne référence ces
+appareils, donc rien ne prouve un véhicule pilotable fini.
 
 ## Limites et prochains essais
 

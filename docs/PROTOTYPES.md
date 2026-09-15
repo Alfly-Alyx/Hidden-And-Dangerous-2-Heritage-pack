@@ -116,7 +116,13 @@ La recherche exacte dans Models.dta corrige plusieurs faux négatifs :
 
 Les modèles M323, La-5, Aichi et Fa 223 contiennent moteurs, hélices ou rotors, surfaces mobiles, sièges et caméras. Cela les place au-dessus d'un simple dessin. En revanche, aucune mission, physique, commande et interface de véhicule pilotable complète n'est démontrée. Le bon statut est : modèle de véhicule présent, jouabilité annoncée historiquement, véhicule pilotable fini non prouvé.
 
-Le Ju 52 est explicitement appelé dans une scène d'Africa 1. Il est présent et utilisé comme élément de scène ; il n'est pas absent.
+Le Ju 52 est explicitement appelé dans deux scènes actives. Africa 1 utilise
+`CUTjunkers` et `CUTjunkersB` dans sa cinématique ; Africa 2 fait suivre
+`fight_stage01` à `HoriciJunkers`, anime ses hélices, crée sa fumée puis le
+masque et le fait exploser. Il est donc présent et utilisé comme élément de
+scène ; il n'est pas absent. La liaison Africa 2 vers le fichier manquant
+`AF2_particle_junkers.scr` reste un vestige incomplet, pas une fonction à
+réactiver aveuglément.
 
 ## Faisabilité de finition
 

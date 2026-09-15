@@ -26,7 +26,9 @@ Premier balayage lexical des archives. Les nombres comptent des noms ou sous-cha
 
 Lecture manuelle recoupée :
 
-- le Ju 52 est le seul aéronef retiré dont un usage exact dans une mission soit prouvé : il reste un décor scénarisé dans Africa 1 ;
+- le Ju 52 est le seul aéronef retiré dont des usages exacts dans des missions
+  soient prouvés : il reste un décor scénarisé actif dans Africa 1 et
+  Africa 2 ;
 - les modèles La-5, Aichi, M323, Li-2, Fa 223, Fw 200 et DFS/DSF 230 sont réellement présents et articulés, mais aucune chaîne commerciale de placement ou de pilotage ne subsiste ;
 - les scripts nommés Li-2 pilotent des sons d’ambiance, pas le modèle d’avion ;
 - les correspondances lexicales La-5 dans `posila5`, par exemple, sont des faux positifs distincts : elles ne remettent pas en cause la présence du vrai modèle `la_La-5.4ds` ;
@@ -59,7 +61,18 @@ décodé ; une occurrence ambiguë ferait échouer le contrôle.
 
 ## Armes incomplètes
 
-Les deux lance-flammes conservent icônes, munitions, sons et effet. `flame1.4ds` ne pèse que 471 octets et contient seulement `fire01` : c’est un effet, pas une arme. Modèle, animations et comportement doivent être créés.
+Le Flammenwerfer conserve un record d'arme complet comme référence, mais ses
+modèles `w_flmwrFPV` et `w_flmwr` sont absents. Le record britannique a été
+remplacé par `Flak TMP` et ne conserve que les fragments `_FlameFPV` et
+`_Flame`. Les deux munitions, vingt ressources d'icônes et l'effet 25
+subsistent. `flame1.4ds` ne pèse que 471 octets et contient seulement
+`fire01`, huit sommets et quatre faces : c'est un effet, pas une arme. Les
+libellés sonores retrouvés sont deux réactions vocales, pas les sons de tir ou
+de recharge. Aucune table de tir, animation FPV ou logique de script n'est
+reliée ; modèles, animations et comportement doivent donc être créés.
+
+`tools/flamethrower_evidence_audit.py` vérifie ces preuves et leurs empreintes
+exactes sans exporter les données commerciales dans le dépôt.
 
 La MG 34 portative conserve une munition, des icônes et des sons, mais ni modèle portatif, ni animations FPV, ni entrée Weapon autonome. Il ne faut pas la confondre avec la MG 34 de char active. Le FG 42 ne subsiste que comme texte désactivé et munition. Garota et ZK-383 nécessitent des sources nouvelles ou une création moderne explicitement annoncée.
 
@@ -73,5 +86,15 @@ placement commercial attesté ; ils restent séparés des mines finales actives.
 ## Aéronefs
 
 Les modèles exacts La-5, `la_aici`, `LA_M323`, Li-2, `la_Fa 223`, Fw 200 et DFS 230 sont présents avec leurs LOD et plusieurs pièces articulées. Cela permet un banc décoratif et des essais de collision, pas de revendiquer un véhicule jouable : commandes, physique de vol, HUD, dégâts, IA et synchronisation réseau manquent.
+
+`tools/aircraft_scenic_audit.py` vérifie les modèles et empreintes du Ju 52,
+du La-5 et de l'Aichi, les 49 `car_table.dat` commerciaux, ainsi que les deux
+chaînes Ju 52 encore actives. Africa 1 utilise `CUTjunkers` et
+`CUTjunkersB` dans sa cinématique ; Africa 2 anime `HoriciJunkers` sur
+`fight_stage01`, tourne ses trois hélices, crée la fumée 16 puis masque et
+fait exploser l'appareil. La liaison vers `AF2_particle_junkers.scr` subsiste,
+mais le fichier manque dans Base, Patch et Sabre ; son rôle ne doit pas être
+inventé dans le paquet stable puisque `AF2_actprelet.scr` assure déjà la
+fumée et son nettoyage.
 
 Le prochain ordre de travail reste : Benelli additive, test du Vickers K monté, banc décoratif Ju 52/La-5/Aichi, puis seulement lance-flammes, FG 42, MG 34 portative, Garota, ZK-383 et pilotage complet.

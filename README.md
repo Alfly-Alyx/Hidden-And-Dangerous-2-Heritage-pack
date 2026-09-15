@@ -110,6 +110,18 @@ maître répond sur le port 28910 et que l’installateur conserve le même
 câblage. L’affichage de la liste Internet et l’entrée effective sur un serveur
 restent volontairement des essais en jeu.
 
+Le contrôle `tools/flamethrower_evidence_audit.py` fige séparément les traces
+des deux lance-flammes : record allemand, emplacement britannique réemployé,
+munitions, icônes et effet présents, mais modèles d'arme, animations, table de
+tir, scripts et sons de fonctionnement absents. Il empêche de présenter leur
+future reconstruction comme une simple activation.
+
+Le contrôle `tools/aircraft_scenic_audit.py` distingue les deux scènes Ju 52
+officielles encore actives dans Africa 1 et Africa 2 des modèles La-5/Aichi
+orphelins. Il vérifie également qu'aucun des 49 catalogues commerciaux de
+véhicules ne rend ces appareils pilotables et isole le script de particules
+Africa 2 réellement manquant.
+
 Un prototype de menu solo distinct est maintenant préparé dans une copie de
 test séparée. La scène `.4ds` seule ne suffisait pas ; la copie de l'exécutable
 a donc été décompactée et reconstruite hors ligne avec la prise en charge de

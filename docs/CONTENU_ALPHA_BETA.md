@@ -50,7 +50,8 @@ Le projet a subi un changement de moteur et une refonte de conception. Il faut d
 - CASTLE1 et CASTLE2 : branches anciennes ; CASTLE2 conserve un cinquième objectif commenté.
 - LONDON_MP : arène inachevée dans le jeu de base, achevée sous le nom Poland dans Sabre Squadron.
 - modèles d'aéronefs : M323, Aichi, La-5, Fa 223, Fw 200, Li-2, DSF 230 et Ju 52 présents.
-- Ju 52 : utilisé par une scène d'Africa 1.
+- Ju 52 : utilisé par deux scènes officielles actives, dans Africa 1 et
+  Africa 2 ; aucune définition de véhicule pilotable.
 - lance-flammes : noms et munitions, mais pas de modèle d'arme utilisable.
 - sept easter eggs : six publics et un septième neutralisé dans Africa 4.
 

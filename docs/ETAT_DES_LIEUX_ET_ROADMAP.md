@@ -155,9 +155,14 @@ Le projet doit produire un ensemble installable pour Hidden & Dangerous 2: Sabre
 - campagne Angleterre/Londres distinguée de l'arène London_mp/Poland ;
 - intrigue Gary Bristol / Scarred Man, Dunkerque et M. Murrau recoupée avec la presse d'époque ;
 - modèles M323, Aichi, La-5, Fa 223, Fw 200, Li-2, DFS 230 et Ju 52 retrouvés ;
-- Ju 52 confirmé dans une scène d'Africa 1 ;
-- deux lance-flammes diagnostiqués : noms et munitions présents, modèle d'arme et comportement absents ;
-- flame1.4ds identifié comme un simple effet fire01 de 471 octets.
+- Ju 52 confirmé dans deux scènes officielles actives, Africa 1 et Africa 2 ;
+- aucun des 49 `car_table.dat` commerciaux ni des 105 tables libres
+  actuellement installées ne définit Ju 52, La-5 ou Aichi comme véhicule ;
+- deux lance-flammes diagnostiqués : record allemand conservé mais modèles
+  absents, record britannique réemployé par le Flak, deux munitions et vingt
+  ressources d'icônes présentes, sans animation, table de tir ni script ;
+- `flame1.4ds` identifié comme un simple effet `fire01` de 471 octets, huit
+  sommets et quatre faces ; l'effet 25 est identique dans Base et Sabre.
 
 ## Démarrage de l'audit exhaustif
 

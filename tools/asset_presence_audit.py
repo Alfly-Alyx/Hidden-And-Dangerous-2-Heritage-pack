@@ -305,7 +305,7 @@ def markdown(report):
             f"{item['table_entries']} | {item['classification']} |"
         )
     lines += ["", "Lecture manuelle recoupée :", "",
-        "- le Ju 52 est le seul aéronef retiré dont un usage exact dans une mission soit prouvé : il reste un décor scénarisé dans Africa 1 ;",
+        "- le Ju 52 est le seul aéronef retiré dont des usages exacts dans des missions soient prouvés : il reste un décor scénarisé actif dans Africa 1 et Africa 2 ;",
         "- les modèles La-5, Aichi, M323, Li-2, Fa 223, Fw 200 et DFS/DSF 230 sont réellement présents et articulés, mais aucune chaîne commerciale de placement ou de pilotage ne subsiste ;",
         "- les scripts nommés Li-2 pilotent des sons d’ambiance, pas le modèle d’avion ;",
         "- les correspondances lexicales La-5 dans `posila5`, par exemple, sont des faux positifs distincts : elles ne remettent pas en cause la présence du vrai modèle `la_La-5.4ds` ;",
@@ -318,7 +318,7 @@ def markdown(report):
         "Le record de la boussole dans Sabre Squadron conserve simultanément les fragments `M4`, `_benelliFPV` et `lli` autour de `KOMPAS` et `ii_compas` : il confirme que l’ancien emplacement Benelli a été réemployé. Aucun modèle extérieur/posé complet n’est conservé et les liaisons numériques vers les animations, le record de tir et la munition ne sont pas encore démontrées.", "",
         "Une restauration doit donc créer une nouvelle entrée sans écraser la boussole. L’ID 359 est le premier candidat après la plage commerciale publiée et était libre dans les catalogues locaux inspectés, mais reste provisoire : toute collision doit être vérifiée puis refusée explicitement. Le modèle monde, les liaisons internes et toute valeur non prouvée doivent être signalés comme reconstruction moderne. L’arme reste hors du lot stable jusqu’à validation solo et réseau.", "",
         "## Armes incomplètes", "",
-        "Les deux lance-flammes conservent icônes, munitions, sons et effet. `flame1.4ds` ne pèse que 471 octets et contient seulement `fire01` : c’est un effet, pas une arme. Modèle, animations et comportement doivent être créés.", "",
+        "Le lance-flammes allemand conserve son record d'arme, mais ses modèles sont absents ; le record britannique a été réemployé par le Flak. Les deux munitions, vingt ressources d'icônes et l'effet 25 subsistent. `flame1.4ds` ne pèse que 471 octets et contient seulement `fire01` : c'est un effet, pas une arme. Les deux libellés sonores sont des réactions vocales, pas des sons de fonctionnement. Modèles, animations, tir et comportement doivent être créés.", "",
         "La MG 34 portative conserve une munition, des icônes et des sons, mais ni modèle portatif, ni animations FPV, ni entrée Weapon autonome. Il ne faut pas la confondre avec la MG 34 de char active. Le FG 42 ne subsiste que comme texte désactivé et munition. Garota et ZK-383 nécessitent des sources nouvelles ou une création moderne explicitement annoncée.", "",
         "## Aéronefs", "",
         "Les modèles exacts La-5, `la_aici`, `LA_M323`, Li-2, `la_Fa 223`, Fw 200 et DFS 230 sont présents avec leurs LOD et plusieurs pièces articulées. Cela permet un banc décoratif et des essais de collision, pas de revendiquer un véhicule jouable : commandes, physique de vol, HUD, dégâts, IA et synchronisation réseau manquent.", "",
