@@ -59,14 +59,14 @@ CLASSIFICATIONS = {
     "mg81": "armement monté seulement",
     "garrote": "aucune ressource locale",
     "zk383": "aucune ressource locale",
-    "me323": "modèle présent, non placé et non pilotable",
-    "aichi": "modèle présent, non placé et non pilotable",
-    "fa223": "modèle présent, non placé et non pilotable",
-    "la5": "modèle présent, non placé et non pilotable",
-    "ju52": "décor scénarisé actif, non pilotable",
-    "fw200": "modèle présent, non placé et non pilotable",
-    "li2": "modèle présent, non placé et non pilotable",
-    "dfs230": "modèle présent, non placé et non pilotable",
+    "me323": "modèle présent ; pilotage non démontré",
+    "aichi": "modèle présent ; pilotage non démontré",
+    "fa223": "modèle présent ; pilotage non démontré",
+    "la5": "modèle présent ; pilotage non démontré",
+    "ju52": "décor scénarisé actif ; pilotage non démontré",
+    "fw200": "modèle présent ; pilotage non démontré",
+    "li2": "modèle présent ; pilotage non démontré",
+    "dfs230": "modèle présent ; pilotage non démontré",
 }
 EXACT_MODEL_NAMES = {
     "flamethrower": {"models/flame1.4ds"},
@@ -306,10 +306,11 @@ def markdown(report):
         )
     lines += ["", "Lecture manuelle recoupée :", "",
         "- le Ju 52 est le seul aéronef retiré dont des usages exacts dans des missions soient prouvés : il reste un décor scénarisé actif dans Africa 1 et Africa 2 ;",
-        "- les modèles La-5, Aichi, M323, Li-2, Fa 223, Fw 200 et DFS/DSF 230 sont réellement présents et articulés, mais aucune chaîne commerciale de placement ou de pilotage ne subsiste ;",
+        "- les modèles La-5, Aichi, M323, Li-2, Fa 223, Fw 200 et DSF 230 sont réellement présents et articulés, mais aucune liaison par identifiant exact ne subsiste dans les 3 059 scènes, registres et scripts commerciaux examinés ;",
         "- les scripts nommés Li-2 pilotent des sons d’ambiance, pas le modèle d’avion ;",
         "- les correspondances lexicales La-5 dans `posila5`, par exemple, sont des faux positifs distincts : elles ne remettent pas en cause la présence du vrai modèle `la_La-5.4ds` ;",
-        "- Garota et ZK-383 n’ont aucune ressource locale identifiable par ces noms.", "",
+        "- Garota et ZK-383 n’ont aucune ressource locale identifiable par ces noms.",
+        "- aucun des 49 `car_table.dat` commerciaux ne contient sous forme lisible les identifiants exacts de ces aéronefs ; leur format binaire n’étant pas décodé, ce résultat n’exclut pas une ancienne liaison numérique ou indirecte.", "",
         "## Armes déjà actives ou faussement présentées comme retirées", "",
         "Le Garand et le fusil juxtaposé Stevens disposent de leurs modèles monde et FPV, animations, entrées Weapon et munitions : ils sont déjà jouables. Le P08 silencieux, le G43, le MAS 36 et le Panzerschreck de Sabre Squadron sont eux aussi complets et actifs. Le Flak 38 et le canon de 17 mm sont déjà employés comme armes fixes.", "",
         "Le Vickers K n’est pas une arme portative oubliée. `w_vickerKFPV.4ds` est l’arme montée de la Jeep SAS : le modèle de Jeep conserve ses sièges, caméras et l’ancrage `BARREL01_00`, et une mission CMP relie encore exactement cet ancrage au modèle FPV. MG 15 et MG 81 n’ont pas de modèles portatifs démontrés ; leurs entrées correspondent à des armements montés.", "",
@@ -321,7 +322,8 @@ def markdown(report):
         "Le lance-flammes allemand conserve son record d'arme, mais ses modèles sont absents ; le record britannique a été réemployé par le Flak. Les deux munitions, vingt ressources d'icônes et l'effet 25 subsistent. `flame1.4ds` ne pèse que 471 octets et contient seulement `fire01` : c'est un effet, pas une arme. Les deux libellés sonores sont des réactions vocales, pas des sons de fonctionnement. Modèles, animations, tir et comportement doivent être créés.", "",
         "La MG 34 portative conserve une munition, des icônes et des sons, mais ni modèle portatif, ni animations FPV, ni entrée Weapon autonome. Il ne faut pas la confondre avec la MG 34 de char active. Le FG 42 ne subsiste que comme texte désactivé et munition. Garota et ZK-383 nécessitent des sources nouvelles ou une création moderne explicitement annoncée.", "",
         "## Aéronefs", "",
-        "Les modèles exacts La-5, `la_aici`, `LA_M323`, Li-2, `la_Fa 223`, Fw 200 et DFS 230 sont présents avec leurs LOD et plusieurs pièces articulées. Cela permet un banc décoratif et des essais de collision, pas de revendiquer un véhicule jouable : commandes, physique de vol, HUD, dégâts, IA et synchronisation réseau manquent.", "",
+        "Les modèles exacts La-5, `la_aici`, `LA_M323`, Li-2, `la_Fa 223`, Fw 200 et DSF 230 sont présents avec leurs LOD et plusieurs pièces articulées. Le M323 est le vestige le plus fourni avec six moteurs, plusieurs sièges, caméras et ancrages d’arme ; Fa 223, Li-2 et DSF 230 conservent eux aussi des sièges et caméras, tandis que le Fw 200 est plus proche d’un décor animé. Cela permet un banc décoratif et des essais de collision, pas de revendiquer un véhicule jouable : commandes, physique de vol, HUD, dégâts, IA et synchronisation réseau manquent.", "",
+        "`tools/aircraft_scenic_audit.py` vérifie les modèles et empreintes des huit types d’aéronefs, les 49 `car_table.dat` commerciaux, les 3 059 ressources de mission pertinentes et les deux chaînes Ju 52 encore actives.", "",
         "Le prochain ordre de travail reste : Benelli additive, test du Vickers K monté, banc décoratif Ju 52/La-5/Aichi, puis seulement lance-flammes, FG 42, MG 34 portative, Garota, ZK-383 et pilotage complet.", ""]
     return "\n".join(lines)
 
