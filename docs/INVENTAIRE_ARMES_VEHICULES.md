@@ -4,13 +4,13 @@ Premier balayage lexical des archives. Les nombres comptent des noms ou sous-cha
 
 | Élément | Correspondances lexicales | Ressources modèle/animation exactes | Scripts | Tables | Classement |
 |---|---:|---:|---:|---:|---|
-| Benelli M4 | 27 | 18 | 0 | 9 | reconstruction additive prioritaire |
+| Benelli M4 | 29 | 18 | 0 | 11 | reconstruction additive prioritaire |
 | Deux lance-flammes | 5 | 1 | 0 | 4 | effet seul ; armes à reconstruire |
-| FG 42 | 4 | 0 | 0 | 4 | catalogue incomplet |
-| MG 34 portative | 6 | 0 | 0 | 6 | armement de char actif ; portative incomplète |
+| FG 42 | 6 | 0 | 0 | 6 | catalogue incomplet |
+| MG 34 portative | 8 | 0 | 0 | 8 | armement de char actif ; portative incomplète |
 | Vickers K | 1 | 1 | 0 | 0 | arme montée active sur Jeep SAS |
-| MG 15 | 6 | 0 | 0 | 6 | armement monté seulement |
-| MG 81 | 6 | 0 | 0 | 6 | armement monté seulement |
+| MG 15 | 8 | 0 | 0 | 8 | armement monté seulement |
+| MG 81 | 8 | 0 | 0 | 8 | armement monté seulement |
 | Modèle `w_m1gran` | 1 | 1 | 0 | 0 | modèle orphelin, fonction exacte non démontrée |
 | Anciennes mines | 5 | 5 | 0 | 0 | variantes techniques sans chaîne d'objet complète |
 | Garota | 0 | 0 | 0 | 0 | aucune ressource locale |
@@ -43,9 +43,11 @@ Le Vickers K n’est pas une arme portative oubliée. `w_vickerKFPV.4ds` est l�
 
 ## Benelli M4
 
-La Benelli est le candidat expérimental le mieux conservé. Neuf couples d’animation `#FPVBeneli*.4ds/.5DS`, les textures et icônes, les sons de tir et de rechargement, le bloc `FpvAnims.sav` et la munition 179 subsistent. En revanche, l’ancien rang Weapon est occupé par la boussole et aucun modèle extérieur/posé ni paramètres originaux complets n’ont été retrouvés.
+La Benelli est le candidat expérimental le mieux conservé. Neuf couples d’animation `#FPVBeneli*.4ds/.5DS`, les textures et icônes, les sons de tir et de rechargement, le bloc `FpvAnims.sav` et la munition 179 subsistent. Surtout, `others.DTA::TABLES/item_shoot.tbl` conserve un record balistique complet `Benelli` de 135 octets, aux offsets 1547–1682, dont le SHA-256 est `56A60C8F6846A86E24137BAE21877935EA4F0D113F94F73B0CE6750F951ED7E7`.
 
-Une restauration doit donc ajouter une nouvelle entrée sans écraser la boussole, recréer un modèle monde et signaler comme reconstruits la capacité, la cadence, les dégâts et la dispersion. Elle reste hors du lot stable jusqu’à validation en jeu.
+Le record de 135 octets occupé par la boussole dans `SabreSquadron.dta::Tables/item_base_items.tbl` conserve simultanément `M4`, `_benelliFPV` et `lli` autour de `KOMPAS` et `ii_compas`. Son empreinte exacte est `3E040CBC5BFE0A4D3DBE8728F484928E4081636FBBE7A7D13DD3B15C583E115F`. Ces fragments confirment que l’ancien emplacement Benelli a été réemployé ; les valeurs numériques actuelles appartiennent toutefois à la boussole et ne sont pas des réglages d’arme récupérables.
+
+Une restauration doit donc créer une nouvelle entrée sans écraser la boussole. L’ID 359 est le premier candidat après la plage commerciale publiée et était libre dans les 80 `items.dat` commerciaux et 144 communautaires inspectés ; il reste provisoire et toute collision devra être refusée explicitement. Aucun modèle extérieur/posé complet n’est conservé, et les liaisons numériques vers `FpvAnims.sav`, le record de tir et la munition 179 doivent encore être démontrées. Le modèle monde, ces liaisons et toute valeur non prouvée restent une reconstruction moderne, hors du lot stable jusqu’aux essais solo et réseau.
 
 ## Armes incomplètes
 

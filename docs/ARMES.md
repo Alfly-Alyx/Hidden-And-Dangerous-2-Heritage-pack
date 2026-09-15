@@ -20,9 +20,11 @@ Sources contemporaines :
 
 ## Benelli M4 Super 90
 
-C’est le vestige d’arme le plus complet retrouvé. Les archives conservent neuf couples d’animations FPV `#FPVBeneli` (visée, tir, rechargement, enrayage, armement et désarmement), avec les bras, le chargeur, la culasse et les points d’éjection. Les textures, l’icône, la munition ID 179 et les sons officiels de tir `f_bene_a.wav` et de rechargement `bene_r.wav` sont également présents.
+C’est le vestige d’arme le plus complet retrouvé. Les archives conservent neuf couples d’animations FPV `#FPVBeneli` (visée, tir, rechargement, enrayage, armement et désarmement), avec les bras, le chargeur, la culasse et les points d’éjection. Les textures, l’icône, la munition ID 179 et les sons officiels de tir `f_bene_a.wav` et de rechargement `bene_r.wav` sont également présents. `others.DTA::TABLES/item_shoot.tbl` contient en plus un record balistique complet `Benelli` de 135 octets, dont l’empreinte et les premiers champs sont désormais contrôlés automatiquement.
 
-La table d’animations place ce bloc exactement entre le Mosin et le Garand. Cependant, l’emplacement d’objet correspondant est devenu la boussole : l’entrée Weapon d’origine a donc été remplacée. Aucun modèle extérieur ou posé `w_benelli*` n’est conservé, et les paramètres originaux de chargeur, cadence, dégâts et dispersion manquent. Une activation stable écraserait un objet livré ou inventerait ces valeurs ; seule une entrée additive expérimentale est acceptable.
+La table d’animations place ce bloc exactement entre le Mosin et le Garand. Le record d’objet correspondant est devenu la boussole, mais conserve encore les fragments `M4`, `_benelliFPV` et `lli` mêlés à `KOMPAS`, `ii_compas` et `d_compas` : l’entrée Weapon d’origine a donc été remplacée, pas simplement masquée. Aucun modèle extérieur ou posé `w_benelli*` n’est conservé, et les clés reliant le record balistique, les animations et la munition ne sont pas encore prouvées.
+
+L’ID additif 359, premier numéro après la plage commerciale publiée, était libre dans les 80 catalogues commerciaux et 144 catalogues communautaires locaux inspectés. Il reste une proposition expérimentale : le prototype devra vérifier sa disponibilité au moment de l’installation et refuser toute collision, sans numéro de repli silencieux. Toute capacité, cadence, dispersion, liaison ou géométrie non démontrée doit rester marquée comme création moderne. Une activation stable écraserait un objet livré ou inventerait encore des données ; seule cette reconstruction additive isolée est acceptable.
 
 ## Garrote
 

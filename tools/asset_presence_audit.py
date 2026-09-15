@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import struct
 from pathlib import Path
 
 from dta_archive import DtaArchive
@@ -97,11 +99,80 @@ EXPECTED_EXACT_MODEL_COUNTS = {
     "li2": 2,
     "dfs230": 2,
 }
-TEXT_SUFFIXES = (".scr", ".txt", ".def", ".tab", ".cfg", ".sav", ".dta", ".bin")
+TEXT_SUFFIXES = (
+    ".scr", ".txt", ".def", ".tab", ".tbl", ".cfg", ".sav", ".dta", ".bin",
+)
+BENELLI_SHOOT_START = 1547
+BENELLI_SHOOT_END = 1682
+BENELLI_SHOOT_SHA256 = (
+    "56A60C8F6846A86E24137BAE21877935EA4F0D113F94F73B0CE6750F951ED7E7"
+)
+BENELLI_COMPASS_START = 1485
+BENELLI_COMPASS_END = 1620
+BENELLI_COMPASS_SHA256 = (
+    "3E040CBC5BFE0A4D3DBE8728F484928E4081636FBBE7A7D13DD3B15C583E115F"
+)
 
 
 def normalized_name(value: str) -> str:
     return value.replace("\\", "/").lower()
+
+
+def sha256(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest().upper()
+
+
+def benelli_shoot_evidence(data: bytes) -> dict[str, object]:
+    record = data[BENELLI_SHOOT_START:BENELLI_SHOOT_END]
+    evidence: dict[str, object] = {
+        "archive": "others.DTA",
+        "entry": "TABLES/item_shoot.tbl",
+        "offset_start": BENELLI_SHOOT_START,
+        "offset_end": BENELLI_SHOOT_END,
+        "size": len(record),
+        "sha256": sha256(record),
+        "header_ok": False,
+    }
+    if len(record) == 135:
+        evidence.update({
+            "record_type": struct.unpack_from("<I", record, 0)[0],
+            "marker": record[4],
+            "name": record[5:12].decode("ascii", errors="replace"),
+            "category": struct.unpack_from("<I", record, 13)[0],
+            "value_1": struct.unpack_from("<f", record, 17)[0],
+            "value_2": struct.unpack_from("<f", record, 21)[0],
+        })
+        evidence["header_ok"] = (
+            evidence["record_type"] == 1
+            and evidence["marker"] == 1
+            and evidence["name"] == "Benelli"
+            and record[12] == 0
+            and evidence["category"] == 2
+            and abs(float(evidence["value_1"]) - 0.3) < 0.000001
+            and evidence["value_2"] == 1500.0
+        )
+    return evidence
+
+
+def benelli_compass_evidence(data: bytes) -> dict[str, object]:
+    record = data[BENELLI_COMPASS_START:BENELLI_COMPASS_END]
+    fragments = {
+        "compass_name": data[1486:1493] == b"KOMPAS\x00",
+        "m4": data[1493:1496] == b" M4",
+        "fpv_model_tail": data[1511:1523] == b"_benelliFPV\x00",
+        "compass_icon": data[1526:1536] == b"ii_compas\x00",
+        "world_model_tail": data[1536:1540] == b"lli\x00",
+    }
+    return {
+        "archive": "SabreSquadron.dta",
+        "entry": "Tables/item_base_items.tbl",
+        "offset_start": BENELLI_COMPASS_START,
+        "offset_end": BENELLI_COMPASS_END,
+        "size": len(record),
+        "sha256": sha256(record),
+        "fragments": fragments,
+        "fragments_ok": all(fragments.values()),
+    }
 
 
 def is_exact_model(category: str, entry: str) -> bool:
@@ -122,17 +193,37 @@ def hits(data: bytes):
 
 def audit(game: Path):
     matches = []
+    benelli_evidence: dict[str, object] = {}
     for archive_name in ARCHIVES:
         with DtaArchive(game / archive_name) as archive:
             for entry in archive.entries:
                 name_data = entry.name.lower().encode("cp1252", errors="replace")
                 found = hits(name_data)
                 kinds = ["name"] if found else []
+                content = None
                 if entry.size <= 4 * 1024 * 1024 and entry.name.lower().endswith(TEXT_SUFFIXES):
-                    content_hits = hits(archive.read(entry))
+                    content = archive.read(entry)
+                    content_hits = hits(content)
                     if content_hits:
                         found = sorted(set(found) | set(content_hits))
                         kinds.append("content")
+                entry_name = normalized_name(entry.name)
+                if (
+                    archive_name.casefold() == "others.dta"
+                    and entry_name == "tables/item_shoot.tbl"
+                ):
+                    if content is None:
+                        content = archive.read(entry)
+                    benelli_evidence["item_shoot"] = benelli_shoot_evidence(content)
+                if (
+                    archive_name.casefold() == "sabresquadron.dta"
+                    and entry_name == "tables/item_base_items.tbl"
+                ):
+                    if content is None:
+                        content = archive.read(entry)
+                    benelli_evidence["compass_record"] = (
+                        benelli_compass_evidence(content)
+                    )
                 if found:
                     matches.append({"archive": archive_name, "entry": entry.name,
                                     "size": entry.size, "terms": found, "match_kinds": kinds})
@@ -151,7 +242,12 @@ def audit(game: Path):
             "model_entries": sum(1 for item in items if item["entry"].lower().endswith(".4ds")),
             "exact_model_entries": sum(1 for item in items if is_exact_model(category, item["entry"])),
             "script_entries": sum(1 for item in items if item["entry"].lower().endswith(".scr")),
-            "table_entries": sum(1 for item in items if item["entry"].lower().endswith((".sav", ".def", ".tab"))),
+            "table_entries": sum(
+                1 for item in items
+                if item["entry"].lower().endswith(
+                    (".sav", ".def", ".tab", ".tbl")
+                )
+            ),
             "classification": CLASSIFICATIONS[category]}
     evidence_errors = []
     for category, expected in EXPECTED_EXACT_MODEL_COUNTS.items():
@@ -167,6 +263,24 @@ def audit(game: Path):
             )
     if summary["benelli"]["table_entries"] < 2:
         evidence_errors.append("benelli: FPV/table evidence is incomplete")
+    shoot = benelli_evidence.get("item_shoot")
+    if (
+        not isinstance(shoot, dict)
+        or shoot.get("sha256") != BENELLI_SHOOT_SHA256
+        or shoot.get("header_ok") is not True
+    ):
+        evidence_errors.append(
+            "benelli: exact official item_shoot record is missing or changed"
+        )
+    compass = benelli_evidence.get("compass_record")
+    if (
+        not isinstance(compass, dict)
+        or compass.get("sha256") != BENELLI_COMPASS_SHA256
+        or compass.get("fragments_ok") is not True
+    ):
+        evidence_errors.append(
+            "benelli: Compass/Benelli mixed record is missing or changed"
+        )
     if summary["ju52"]["script_entries"] < 1:
         evidence_errors.append("ju52: commercial scripted-scene evidence is missing")
     return {
@@ -174,6 +288,7 @@ def audit(game: Path):
         "evidence_ok": not evidence_errors,
         "evidence_errors": evidence_errors,
         "summary": summary,
+        "benelli_evidence": benelli_evidence,
         "matches": matches,
     }
 
@@ -199,8 +314,9 @@ def markdown(report):
         "Le Garand et le fusil juxtaposé Stevens disposent de leurs modèles monde et FPV, animations, entrées Weapon et munitions : ils sont déjà jouables. Le P08 silencieux, le G43, le MAS 36 et le Panzerschreck de Sabre Squadron sont eux aussi complets et actifs. Le Flak 38 et le canon de 17 mm sont déjà employés comme armes fixes.", "",
         "Le Vickers K n’est pas une arme portative oubliée. `w_vickerKFPV.4ds` est l’arme montée de la Jeep SAS : le modèle de Jeep conserve ses sièges, caméras et l’ancrage `BARREL01_00`, et une mission CMP relie encore exactement cet ancrage au modèle FPV. MG 15 et MG 81 n’ont pas de modèles portatifs démontrés ; leurs entrées correspondent à des armements montés.", "",
         "## Benelli M4", "",
-        "La Benelli est le candidat expérimental le mieux conservé. Neuf couples d’animation `#FPVBeneli*.4ds/.5DS`, les textures et icônes, les sons de tir et de rechargement, le bloc `FpvAnims.sav` et la munition 179 subsistent. En revanche, l’ancien rang Weapon est occupé par la boussole et aucun modèle extérieur/posé ni paramètres originaux complets n’ont été retrouvés.", "",
-        "Une restauration doit donc ajouter une nouvelle entrée sans écraser la boussole, recréer un modèle monde et signaler comme reconstruits la capacité, la cadence, les dégâts et la dispersion. Elle reste hors du lot stable jusqu’à validation en jeu.", "",
+        "La Benelli est le candidat expérimental le mieux conservé. Neuf couples d’animation `#FPVBeneli*.4ds/.5DS`, les textures et icônes, les sons de tir et de rechargement, le bloc `FpvAnims.sav` et la munition 179 subsistent. Surtout, `others.DTA::TABLES/item_shoot.tbl` conserve un record balistique complet `Benelli` de 135 octets, contrôlé par son offset et son SHA-256.", "",
+        "Le record de la boussole dans Sabre Squadron conserve simultanément les fragments `M4`, `_benelliFPV` et `lli` autour de `KOMPAS` et `ii_compas` : il confirme que l’ancien emplacement Benelli a été réemployé. Aucun modèle extérieur/posé complet n’est conservé et les liaisons numériques vers les animations, le record de tir et la munition ne sont pas encore démontrées.", "",
+        "Une restauration doit donc créer une nouvelle entrée sans écraser la boussole. L’ID 359 est le premier candidat après la plage commerciale publiée et était libre dans les catalogues locaux inspectés, mais reste provisoire : toute collision doit être vérifiée puis refusée explicitement. Le modèle monde, les liaisons internes et toute valeur non prouvée doivent être signalés comme reconstruction moderne. L’arme reste hors du lot stable jusqu’à validation solo et réseau.", "",
         "## Armes incomplètes", "",
         "Les deux lance-flammes conservent icônes, munitions, sons et effet. `flame1.4ds` ne pèse que 471 octets et contient seulement `fire01` : c’est un effet, pas une arme. Modèle, animations et comportement doivent être créés.", "",
         "La MG 34 portative conserve une munition, des icônes et des sons, mais ni modèle portatif, ni animations FPV, ni entrée Weapon autonome. Il ne faut pas la confondre avec la MG 34 de char active. Le FG 42 ne subsiste que comme texte désactivé et munition. Garota et ZK-383 nécessitent des sources nouvelles ou une création moderne explicitement annoncée.", "",
