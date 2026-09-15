@@ -16,14 +16,17 @@ GameSpy n'assure plus le service officiel. RpR publie encore en 2026 un serveur 
     78.47.255.224 hd2.master.gamespy.com
     78.47.255.224 hd2.ms14.gamespy.com
 
-Le point 78.47.255.224:28910 répond encore au test TCP du 15 septembre 2026. Les trois noms se résolvent bien vers cette adresse sur la machine de test. Une requête maître historique complète de 146 octets pour le jeu `hd2` reçoit en plus une réponse chiffrée dont l’enveloppe EncTypeX est structurellement valide. `tools/network_master_audit.py` rend ces trois résolutions, la connexion, l’échange protocolaire et le câblage correspondant de l’installateur reproductibles dans un seul rapport horodaté. Il ne déchiffre pas encore les lignes de serveurs : leur affichage et la connexion effective restent à valider dans le jeu. La page d'accueil RpR affiche toujours sept serveurs H&D2 sur les ports 11001 à 11025 (coopération, deathmatch, objectifs, occupation et tests) et signalait leur redémarrage le même jour. La documentation RpR confirme aussi la nécessité de la version 1.12 et de DirectPlay sur Windows moderne.
+Le point 78.47.255.224:28910 répond encore au test TCP du 15 septembre 2026. Les trois noms se résolvent bien vers cette adresse sur la machine de test. Une requête maître historique complète de 146 octets pour le jeu `hd2` reçoit en plus une réponse chiffrée dont l’enveloppe EncTypeX est structurellement valide. `tools/network_master_audit.py` rend ces trois résolutions, la connexion, l’échange protocolaire et le câblage correspondant de l’installateur reproductibles dans un seul rapport horodaté. Il ne déchiffre pas encore les lignes de serveurs : leur affichage et la connexion effective restent à valider dans le jeu.
 
-Statut honnête : infrastructure trouvée et joignable, configuration automatisée, mais affichage de la liste et connexion dans le jeu encore à valider visuellement sur la machine du joueur.
+La disponibilité des serveurs publiés a aussi été testée indépendamment de la liste maître. `tools/gamespy2_server_probe.py` envoie une requête GameSpy2 limitée aux informations du serveur, sans demander les joueurs ni les équipes. Les sept ports de jeu RpR 11001, 11005, 11009, 11013, 11017, 11021 et 11025 ont répondu sur leur port d’information `port + 3`. Les réponses valides annonçaient toutes H&D2 1.12 et les services Campaign, Justice, Josua Deathmatch, Objectives, Maptest, Occupation et NWM Maptest. Cela confirme sept serveurs de jeu actifs au niveau protocolaire au moment du contrôle, mais pas encore la réussite d’une connexion de joueur.
+
+Statut honnête : serveur maître et sept serveurs de jeu trouvés et joignables, configuration automatisée, mais affichage de la liste et connexion dans le jeu encore à valider visuellement sur la machine du joueur.
 
 Sources :
 - https://www.rprclan.com/hd2/play-online
 - https://rprclan.com/
 - https://www.rprclan.com/hd2/create-server
+- https://int64.org/docs/gamestat-protocols/gamespy2.html
 
 ## Cartes et exploration
 

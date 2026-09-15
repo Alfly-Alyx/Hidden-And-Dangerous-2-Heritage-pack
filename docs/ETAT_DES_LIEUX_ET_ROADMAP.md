@@ -24,6 +24,8 @@ Le projet doit produire un ensemble installable pour Hidden & Dangerous 2: Sabre
 
 - serveur maître communautaire RpR identifié, joignable et répondant à une
   requête maître H&D2 complète par une enveloppe EncTypeX valide ;
+- sept serveurs H&D2 1.12 publiés confirmés joignables par leur réponse GameSpy2,
+  sans collecte de la liste des joueurs ;
 - redirection des trois noms GameSpy automatisée ;
 - DirectPlay contrôlé ;
 - CMP 2.6.5 figée par commit, taille et SHA-256 ;

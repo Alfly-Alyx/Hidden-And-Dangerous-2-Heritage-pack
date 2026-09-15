@@ -108,8 +108,12 @@ Le contrôle `tools/network_master_audit.py` vérifie sans lancer le jeu que les
 trois anciens noms GameSpy aboutissent à l’adresse RpR attendue, que le serveur
 maître répond sur le port 28910, accepte la requête historique H&D2 de
 146 octets et renvoie une enveloppe EncTypeX structurellement valide, puis que
-l’installateur conserve le même câblage. Le contenu chiffré n’est pas interprété
-par ce contrôle ; l’affichage de la liste Internet et l’entrée effective sur un
+l’installateur conserve le même câblage. Le contrôle complémentaire
+`tools/gamespy2_server_probe.py` interroge uniquement les informations publiques
+des serveurs, sans demander la liste des joueurs. Le 15 septembre 2026, les sept
+ports de jeu RpR publiés ont tous répondu en GameSpy2 sur leur port d’information
+`port + 3`, avec la version 1.12. Le contenu chiffré de la liste maître n’est pas
+interprété ; l’affichage de la liste Internet et l’entrée effective sur un
 serveur restent volontairement des essais en jeu.
 
 Le contrôle `tools/flamethrower_evidence_audit.py` fige séparément les traces
