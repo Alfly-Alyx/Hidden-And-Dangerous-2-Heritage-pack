@@ -130,14 +130,17 @@ namespace HD2CommunityInstaller
         private static Regex ActiveSequenceRegex()
         {
             return new Regex(
-                @"OnCutscene\s*\(\s*20\s*\)\s*\{[\s\S]{0,350}?"
-                + @"HUMAN_Stop\s*\(\s*\)\s*;[\s\S]{0,180}?"
-                + @"HUMAN_Move\s*\(\s*""AF4_blesz_end""\s*\)\s*;"
-                + @"[\s\S]{0,180}?HUMAN_SetMODE_Crouch\s*\(\s*\)\s*;"
-                + @"[\s\S]{0,120}?goto\s+END\s*;[\s\S]{0,80}?\}"
-                + @"[\s\S]{0,160}?OnCutsceneDone\s*\(\s*20\s*\)"
-                + @"\s*\{[\s\S]{0,100}?EndScript\s*\(\s*\)\s*;",
-                RegexOptions.IgnoreCase);
+                @"^[ \t]*OnCutscene\s*\(\s*20\s*\)\s*\{[ \t]*(?=\r?$)"
+                + @"[\s\S]{0,350}?^[ \t]*HUMAN_Stop\s*\(\s*\)\s*;"
+                + @"[\s\S]{0,180}?^[ \t]*HUMAN_Move\s*"
+                + @"\(\s*""AF4_blesz_end""\s*\)\s*;"
+                + @"[\s\S]{0,180}?^[ \t]*HUMAN_SetMODE_Crouch\s*\(\s*\)\s*;"
+                + @"[\s\S]{0,120}?^[ \t]*goto\s+END\s*;"
+                + @"[\s\S]{0,80}?^[ \t]*\}[ \t]*(?=\r?$)"
+                + @"[\s\S]{0,160}?^[ \t]*OnCutsceneDone\s*\(\s*20\s*\)"
+                + @"\s*\{[ \t]*(?=\r?$)[\s\S]{0,100}?"
+                + @"^[ \t]*EndScript\s*\(\s*\)\s*;",
+                RegexOptions.IgnoreCase | RegexOptions.Multiline);
         }
 
         private static void ValidatePatched(byte[] data)
@@ -151,7 +154,8 @@ namespace HD2CommunityInstaller
                 + @"\s*\(\s*20\s*\)",
                 0, "Un gestionnaire de l'embuscade de Schumann reste desactive.");
             RequireCount(text,
-                @"HUMAN_Move\s*\(\s*""AF4_blesz_end""\s*\)",
+                @"(?m)^[ \t]*HUMAN_Move\s*"
+                + @"\(\s*""AF4_blesz_end""\s*\)",
                 1, "Le point final de Schumann est absent ou duplique.");
         }
 
