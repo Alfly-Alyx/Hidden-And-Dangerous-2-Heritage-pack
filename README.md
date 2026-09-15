@@ -50,6 +50,12 @@ Les deux PDF sont aussi copiés dans le dossier Guides du jeu. La CMP demande en
 
 Le chantier exhaustif est commencé : 79 registres, 71 dossiers, 5 347 scripts commerciaux et 54 entrées de catalogue (33 solo, 21 coopératives) sont maintenant indexés dans `docs/AUDIT_COMPLET_JEU.md`. Les écarts entre missions solo et coopératives sont suivis séparément dans `docs/AUDIT_OBJECTIFS_COOP.md`, afin de distinguer une vraie rupture d'une renumérotation, d'une fusion ou d'un scénario différent. Les composants qui demandent une création nouvelle sont réservés à la fin.
 
+Les 25 variantes multijoueurs officielles possédant un registre ont également
+été fermées une par une. Le contrôle `tools/installer_wiring_audit.py` garantit
+sans compiler que les autocontrôles, les étapes d'installation et les 73 états
+détaillés restent synchronisés à mesure que de nouvelles restaurations sont
+ajoutées.
+
 Les conversions de cartes multijoueur vers de vraies missions solo sont suivies dans `docs/MULTIJOUEUR_VERS_SOLO.md`, avec leur niveau de preuve et leur état de test.
 
 Un prototype de menu solo distinct est maintenant préparé dans une copie de

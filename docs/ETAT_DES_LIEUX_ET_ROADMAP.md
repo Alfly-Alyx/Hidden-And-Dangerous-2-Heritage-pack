@@ -160,6 +160,9 @@ Le premier inventaire automatisé couvre désormais les trois couches commercial
 - comparaison des catalogues de neuf couples solo/coopératif présentant 28 omissions, 9 ajouts ou plusieurs renumérotations, avec trois chaînes déjà restaurées de façon stable ;
 - inventaire des modèles, scripts et tables liés aux armes et véhicules retirés.
 - audit manuel complet du Tutoriel, d'Arctic 1 à Arctic 4, de Czech 1 à Czech 6, de Normandy 1 à Normandy 2, de Norway, Sicily 1–2, Burgundy 1–3, Burma 1–2, Libye 1–3 et Africa 1–6 : les restaurations démontrables sont intégrées aux sources, tandis que les branches incomplètes, remplacées ou réellement manquantes restent isolées ;
+- audit de fermeture des 25 variantes multijoueurs officielles possédant un registre : 203 liaisons, 172 scripts utilisés, 183 scripts disponibles, 12 scripts libres classés et une seule liaison manquante ; cette dernière restaure le placement aléatoire officiel de la radio de Burma 2 Objectif ;
+- couverture multijoueur fermée : les 47 dossiers commerciaux et les deux prototypes sont tous déclarés après installation, sans troisième carte cachée complète ;
+- contrôle statique permanent du câblage de l'installateur : chaque restauration détectée est reliée à son autocontrôle et à son étape d'installation, et le compteur détaillé vérifie lui-même son total.
 
 L'ordre de traitement est désormais : restaurer tout ce qui possède encore ses données suffisantes, y compris les véhicules utilisables comme décors ou objets scriptés ; tester ; puis réserver pour la fin les créations qui exigent géométrie, modèles, animations, physique ou scripts nouveaux.
 
@@ -179,6 +182,7 @@ Objectif : prouver dans le jeu ce qui est déjà automatisé.
 - tester en solo et en coopération la reprise de `ge_cesticka` après une alarme et la boucle de marmonnement de `gumak` dans Burgundy 2.
 - tester dans Burgundy 3 la ronde du garde 32, la séquence complète 59990052–59990056 du premier SAS, puis une sauvegarde et un chargement avant et après sa libération.
 - tester dans Libye 1 coopératif les dialogues 08–12 et 33–34 avec fin normale, alarme et mort d'un participant ; tester dans Libye 3 coopératif l'échange des drapeaux et les deux mitrailleurs de toit.
+- tester dans Arctic 1 Objectif l'extinction conjointe des deux halos du transformateur, dans Burma 2 Objectif les deux emplacements aléatoires de la radio, et dans Normandy MP les deux états successifs du phare (rotation et trois lumières).
 
 Sortie attendue : tableau de tests signé avec captures et anomalies.
 
