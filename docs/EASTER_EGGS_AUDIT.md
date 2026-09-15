@@ -27,6 +27,14 @@ Les deux tonneaux rouges parfois cités dans les guides ne sont pas exigés par 
 
 Trois crânes envoient chacun un signal. L'activation ne part que si tous les ennemis sont déjà morts au moment où le troisième crâne est détruit. L'ordre est donc essentiel.
 
+L'audit reproductible `tools/burma1_easter_egg_audit.py` confirme les quatre liaisons du registre (`BU1_EE`, `lebka`, `lebka2`, `lebka3`), le compteur à trois, la garde sur le nombre d'ennemis et les trois silhouettes déclenchées. Il décode aussi les positions exactes dans `scene2.bin` du Patch 1.12 :
+
+- `lebka` : 12,628406 ; 3,475543 ; -18,529207 ;
+- `lebka2` : -109,692360 ; -3,072645 ; 106,144691 ;
+- `lebka3` : -135,529770 ; -4,413265 ; 49,811054.
+
+Le premier est proche du centre de l'étendue de scène ; les deux autres occupent son bord occidental. Ces coordonnées permettront une carte annotée exacte. Les repères visuels définitifs restent à confirmer par captures en jeu avant de remplacer dans le guide joueur la consigne générale « cherchez les trois crânes ».
+
 ## Alps 1 - Babes in the Wood
 
 Quatre membres de l'équipage du half-track doivent être réunis à moins de deux mètres du point caché sur le rocher. Le script ne teste pas explicitement leur état, mais la procédure prévue consiste à y porter les quatre corps.

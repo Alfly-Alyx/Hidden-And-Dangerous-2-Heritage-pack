@@ -141,6 +141,7 @@ Le projet doit produire un ensemble installable pour Hidden & Dangerous 2: Sabre
 - septième easter egg Africa 4 confirmé dans les fichiers ;
 - neutralisations explicites d'Africa 1 et Africa 4 par le patch 1.12 inversées ;
 - positions des trois clés Africa 4 relevées ;
+- positions exactes des trois crânes Burma 1 décodées dans la scène Patch 1.12 et protégées par un audit de leurs quatre liaisons et de leur compteur ;
 - carte schématique originale préparée pour le guide joueur ;
 - route Tutorial identifiée, mais l'escalade du camion reste bloquée en 1.12.
 
@@ -199,7 +200,7 @@ Objectif : rendre le septième ensemble de secrets réellement accessible en 1.1
 - essayer de restaurer l'escalade uniquement dans Tutorial ;
 - si impossible, créer un nouvel accès physique vers le toit en conservant le lingot à sa cache d'origine ;
 - n'utiliser le déplacement du lingot qu'en dernier recours et l'indiquer comme adaptation ;
-- relever les positions exactes des trois crânes Burma 1 et des autres caches difficiles ;
+- transformer les positions exactes déjà décodées des trois crânes Burma 1 en repères visuels validés par captures, puis relever les autres caches difficiles ;
 - enrichir le guide joueur après vérification visuelle.
 
 Sortie attendue : sept procédures toutes réalisables sous 1.12.

@@ -1,0 +1,56 @@
+{
+  "game": "D:\\Games\\Hidden and Dangerous 2",
+  "ok": true,
+  "errors": [],
+  "sources": {
+    "missions/burma1/scene2.bin": "Patch.dta",
+    "missions/burma1/scripts.dta": "Patch.dta",
+    "scripts/burma1/bu1_ee.scr": "Scripts.dta",
+    "scripts/burma1/bu1_lebka1.scr": "Scripts.dta"
+  },
+  "bindings": {
+    "bu1_ee": "bu1_ee.scr",
+    "lebka": "bu1_lebka1.scr",
+    "lebka2": "bu1_lebka1.scr",
+    "lebka3": "bu1_lebka1.scr"
+  },
+  "contracts": {
+    "enemy_count_arms_activation": true,
+    "three_skulls_required": true,
+    "activation_guarded": true,
+    "three_figures_signalled": true,
+    "skull_death_signals_controller": true
+  },
+  "positions": {
+    "lebka": {
+      "name": "lebka",
+      "position": [
+        12.628406,
+        3.475543,
+        -18.529207
+      ],
+      "record_kind": 16400,
+      "record_offset": 656227
+    },
+    "lebka2": {
+      "name": "lebka2",
+      "position": [
+        -109.69236,
+        -3.072645,
+        106.144691
+      ],
+      "record_kind": 16400,
+      "record_offset": 26647
+    },
+    "lebka3": {
+      "name": "lebka3",
+      "position": [
+        -135.52977,
+        -4.413265,
+        49.811054
+      ],
+      "record_kind": 16400,
+      "record_offset": 26793
+    }
+  }
+}
