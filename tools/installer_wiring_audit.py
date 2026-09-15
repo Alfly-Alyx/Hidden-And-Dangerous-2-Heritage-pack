@@ -536,6 +536,19 @@ def audit(root: Path) -> dict[str, object]:
             "Co_Libye1 dialogue completion checks actor names instead of script variables"
         )
 
+    co_libye1_controller_uses_scene_registry = all((
+        '"Missions/Co_Libye1/actors.bin"' in co_libye1_dialogues,
+        '"Missions/Co_Libye1/scene2.bin"' in co_libye1_dialogues,
+        "ContainsNullTerminated(actors, dialogue.Controller)"
+        not in co_libye1_dialogues,
+        "ContainsNullTerminated(scene, dialogue.Controller)"
+        in co_libye1_dialogues,
+    ))
+    if not co_libye1_controller_uses_scene_registry:
+        errors.append(
+            "Co_Libye1 dialogue controller is not validated in scene2.bin"
+        )
+
     arctic4_dog_patrol_requires_active_walk = all((
         arctic4_dog_patrol.count(
             '@"^[ \\t]*Label\\s+DeAlarm'
@@ -731,6 +744,9 @@ def audit(root: Path) -> dict[str, object]:
         ),
         "co_libye1_end_signals_use_script_variables": (
             co_libye1_end_signals_use_script_variables
+        ),
+        "co_libye1_controller_uses_scene_registry": (
+            co_libye1_controller_uses_scene_registry
         ),
         "arctic4_dog_patrol_requires_active_walk": (
             arctic4_dog_patrol_requires_active_walk

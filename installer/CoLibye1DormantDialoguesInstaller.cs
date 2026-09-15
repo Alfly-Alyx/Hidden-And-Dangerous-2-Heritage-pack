@@ -343,15 +343,22 @@ namespace HD2CommunityInstaller
             byte[] actors = ReadSource(ResolveSource(
                 gamePath, "Missions/Co_Libye1/actors.bin",
                 MissionArchives));
+            byte[] scene = ReadSource(ResolveSource(
+                gamePath, "Missions/Co_Libye1/scene2.bin",
+                MissionArchives));
             foreach (DialogueSpec dialogue in Dialogues)
             {
                 foreach (string actor in new[] {
-                    dialogue.ActorA, dialogue.ActorB, dialogue.Controller
+                    dialogue.ActorA, dialogue.ActorB
                 })
                     if (!ContainsNullTerminated(actors, actor))
                         throw new InvalidDataException(
                             "Acteur de dialogue Libye 1 absent : "
                             + actor + ".");
+                if (!ContainsNullTerminated(scene, dialogue.Controller))
+                    throw new InvalidDataException(
+                        "Controleur de dialogue Libye 1 absent : "
+                        + dialogue.Controller + ".");
 
                 ValidateParticipants(gamePath, dialogue);
                 byte[] solo = ReadSource(ResolveSource(
