@@ -483,9 +483,11 @@ Dans le seul organisateur de l'attaque, la valeur sauvegardée était cependant 
 
 Le groupe initial utilise deux commandes d'alerte déjà complètes : le signal 20 rejoint directement la route `ALERT`, tandis que le signal 5 interrompt l'animation puis conduit vers le chemin d'alerte propre à chaque soldat. Deux envois officiels sont croisés : l'activateur adresse le signal 5 à `AF2_02`, qui ne gère que 20, et l'alarme générale adresse 20 à `AF2_05`, qui ne gère que 5. `AF2_03` est pour sa part retiré des trois émetteurs par sept lignes commentées : les déclarations de son acteur, deux activations au signal 1, l'alerte directe 5 et l'alarme générale 20.
 
-Le paquet remplace uniquement les deux numéros croisés et réactive les sept lignes officielles d'`AF2_03`. Ses gestionnaires 1, 5 et 20, sa ronde `AF2_03_01` à `AF2_03_06`, son trajet `AF2_03_alert`, son acteur et les trois émetteurs sont tous présents dans les données commerciales. Aucun comportement n'est inventé.
+Le paquet remplace uniquement les deux numéros croisés, réactive les sept lignes officielles d'`AF2_03` et rattache son script commercial à l'acteur libre du même nom dans le registre de mission. Ses gestionnaires 1, 5 et 20, sa ronde `AF2_03_01` à `AF2_03_06`, son trajet `AF2_03_alert`, son acteur et les trois émetteurs sont tous présents dans les données commerciales. Aucun comportement n'est inventé.
 
 Le même lot réactive la scène rapprochée des gardes `AF2_14` et `AF2_15`. À 130 mètres, `AF2_15` envoie le signal 10 déjà géré par `AF2_14`, puis suit les trois points `AF2_14_01` à `AF2_14_03`. Le script commercial contient aussi l'arrêt de ce détecteur dans `OnAlarm`; les cinq lignes commentées sont remises ensemble afin que la séquence ne détourne pas les gardes après une alerte.
+
+Deux asymétries supplémentaires sont complètes et sans donnée à inventer. `AF2_14` était le seul garde du groupe dont le filtre initial de l'alarme 512 restait commenté, alors que ce même filtre est actif après son retour au calme et dans tous les scripts voisins. `AF2_posily_01` était aussi le seul des quatre renforts à ne pas passer en posture accroupie à la fin de `OnAlarm`. Le paquet réactive exactement ces deux lignes, sans remplir les quatre sections `ACTIVITY` marquées `doplnit` et sans remettre en service l'ancienne route de camion située derrière un arrêt explicite.
 
 ### Alerte croisée du groupe de commandement dans Africa 1
 
