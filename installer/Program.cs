@@ -87,11 +87,13 @@ namespace HD2CommunityInstaller
                         Console.WriteLine(Alps1CombatPostsInstaller.ValidateOnly(game));
                         Console.WriteLine(Alps2ShotAlarmInstaller.ValidateOnly(game));
                         Console.WriteLine(Burma2DormantScenesInstaller.ValidateOnly(game));
+                        Console.WriteLine(Burma2RandomRadioInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa3VehicleDiscoveryInstaller.ValidateOnly(game));
                         Console.WriteLine(Arctic3CarHitInstaller.ValidateOnly(game));
                         Console.WriteLine(Czech5OpelEffectInstaller.ValidateOnly(game));
                         Console.WriteLine(Normandy2Red26Installer.ValidateOnly(game));
                         Console.WriteLine(Normandy2BlueCounterfireInstaller.ValidateOnly(game));
+                        Console.WriteLine(NormandyMpLighthouseToggleInstaller.ValidateOnly(game));
                         Console.WriteLine(Burgundy1GateInstaller.ValidateOnly(game));
                         Console.WriteLine(Burgundy1CutsceneDialogueInstaller.ValidateOnly(game));
                         Console.WriteLine(NorwayApproachInstaller.ValidateOnly(game));
@@ -174,11 +176,13 @@ namespace HD2CommunityInstaller
                         Console.WriteLine(Alps1CombatPostsInstaller.ValidateOnly(game));
                         Console.WriteLine(Alps2ShotAlarmInstaller.ValidateOnly(game));
                         Console.WriteLine(Burma2DormantScenesInstaller.ValidateOnly(game));
+                        Console.WriteLine(Burma2RandomRadioInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa3VehicleDiscoveryInstaller.ValidateOnly(game));
                         Console.WriteLine(Arctic3CarHitInstaller.ValidateOnly(game));
                         Console.WriteLine(Czech5OpelEffectInstaller.ValidateOnly(game));
                         Console.WriteLine(Normandy2Red26Installer.ValidateOnly(game));
                         Console.WriteLine(Normandy2BlueCounterfireInstaller.ValidateOnly(game));
+                        Console.WriteLine(NormandyMpLighthouseToggleInstaller.ValidateOnly(game));
                         Console.WriteLine(Burgundy1GateInstaller.ValidateOnly(game));
                         Console.WriteLine(Burgundy1CutsceneDialogueInstaller.ValidateOnly(game));
                         Console.WriteLine(NorwayApproachInstaller.ValidateOnly(game));

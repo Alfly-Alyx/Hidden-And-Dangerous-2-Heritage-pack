@@ -214,7 +214,9 @@ Parmi les treize autres scripts libres, `cut2_2.scr` est une ancienne révision 
 - `BU2_22` reçoit toujours le signal 2 de `BU2_22_A2` lorsque le joueur approche à deux mètres. Sa cible `BU2_22_shoot01` existe encore et les soldats alliés voisins utilisent la même commande de tir : le tir de mise en scène est réactivé.
 - `BU2_Allied11` possède une boucle de panique complète et un détecteur à quarante mètres qui le réveille et lance son animation. Les deux instructions initiales qui le suspendent puis l'envoient au point d'attente sont remises ensemble.
 - `BU2_xplo22` conserve ses deux déclencheurs, son cadre d'explosion et toutes ses commandes commentées. Son jumeau actif `BU2_xplo23` confirme les sons, particules, dégâts et souffle à restaurer. Le second son 6/8, également commenté dans le jumeau actif, reste volontairement désactivé.
-- `l_b2str_4` appelle `CUTSOUNDSHLIDKA.scr`, absent de toutes les archives installées : ce contrôleur est confié à la 
+- Dans Burma 2 Objectif, le patch fournit `Burma2_mp_mrtvoly.scr`, qui conserve le tirage aléatoire, la radio et son emplacement alternatif entre les deux cadavres. `dummy_mrtvoly`, `l_mrtvol_01`, `l_mrtvol_02` et `dummy_vysilacka` existent toujours ; seule la liaison au contrôleur manquait et elle est restaurée.
+- `Burma2_mp_mrtvola.scr` ne tue rien malgré son commentaire : il récupère son propriétaire puis termine immédiatement. Sans acteur ni comportement, il reste désactivé.
+- `l_b2str_4` appelle `CUTSOUNDSHLIDKA.scr`, absent de toutes les archives installées : ce contrôleur est confié à la reconstruction.
 
 ## Arctic 3 — audit exhaustif terminé
 
@@ -237,3 +239,18 @@ Le registre possède 124 liaisons, 98 scripts directement affectés et deux incl
 La chute de glace `dummy_bouchni` est reliée, déclenchée à douze mètres et active déjà le fragment `ulomek_4`. Son unique explosion `MakeExplosion(FRM, 5000000, 3500)` était commentée au milieu de cette chaîne complète ; elle est restaurée sous l'option des séquences dormantes sans changer ses valeurs.
 
 Les autres lacunes restent expérimentales : destruction de la radio devenue indestructible, jappement du chien via une primitive non prouvée, animations de froid ou de stupeur sans asset exact, réactions supplémentaires non nommées autour des trois chutes de glace et poste fixe du garde 3 qui remplacerait son combat libre. Elles sont isolées dans `experimental/` et ne sont pas mélangées au correctif stable.
+
+## Variantes multijoueur officielles — audit structurel complet
+
+Les 25 répertoires multijoueur officiels possédant un registre ont été contrôlés séparément des neuf grandes missions coopératives. Ils totalisent 203 liaisons, 172 scripts effectivement utilisés et 183 scripts disponibles. Seize variantes ne possèdent ni script libre, ni liaison manquante, ni chemin ou cible de scène absent : `africa1_mp`, `africa2_mp_zone`, `africa5_mp`, `africa5_mp_zone`, `arctic1_mp`, `arctic3_obj`, `ardens1_obj`, `burgundy3_mp`, `burma1_mp`, `burma1_mp_zone`, `burma1_obj`, `czech1_obj`, `czech2_mp_zone`, `czech2_obj`, `czech5_mp_zone` et `normandy_mp`. Normandy contient toutefois une erreur logique active détaillée ci-dessous.
+
+Quatre résultats stables ressortent de l'ensemble :
+
+- Arctic 1 Objectif retrouve les deux halos du transformateur également employés par son clignotement actif.
+- Burma 2 Objectif retrouve la liaison de `dummy_mrtvoly` au choix aléatoire de la radio fourni par le patch.
+- Czech 4 Zone conserve `door35.scr` et l'acteur `door35` sans liaison ; cette porte était déjà réactivée par le paquet.
+- Normandy MP met bien `zapnute=0` et arrête la rotation au second usage du phare, mais laissait ses trois effets sur `true`. Les trois états de cette branche sont corrigés en `false`, tandis que la branche d'allumage reste inchangée.
+
+Les douze scripts libres restants ne donnent pas douze restaurations. Les organisateurs de barricade d'Africa 3/Africa 4 et l'initialisateur d'équipe Arctic 1 répètent des états déjà actifs. Le second fichier Burma 2 ne fait qu'appeler `EndScript()`. Les sept anciens effets de citerne d'Africa 5 Zone doublent l'explosion active. `africa1_obj` et `alps3_obj` conservent respectivement une ancienne variante aérienne et trois anciens véhicules, mais leur retour remplacerait les modes actuels et reste additif. `czech3_radio.scr` a perdu sa cible sonore exacte et a été transmis à la reconstruction.
+
+L'unique script affecté mais absent est `v_a1_vitr_stromy.scr` dans `alps1_mp_zone`. Son homologue solo suppose aussi un objet de rafale absent de cette zone : il ne peut pas être copié tel quel et reste dans la reconstruction expérimentale. Aucun de ces cas n'est présenté comme une activation certaine.

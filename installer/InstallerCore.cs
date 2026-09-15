@@ -237,6 +237,9 @@ namespace HD2CommunityInstaller
                     Burma2DormantScenesInstaller.Install(
                         options.GamePath, journal, prepared, progress);
                 if (options.RestoreDormantSequences)
+                    Burma2RandomRadioInstaller.Install(
+                        options.GamePath, journal, prepared, progress);
+                if (options.RestoreDormantSequences)
                     CoBrestHintInstaller.Install(
                         options.GamePath, journal, prepared, progress);
                 if (options.RestoreDormantSequences)
@@ -253,6 +256,9 @@ namespace HD2CommunityInstaller
                         options.GamePath, journal, prepared, progress);
                 if (options.RestoreDormantSequences)
                     Normandy2BlueCounterfireInstaller.Install(
+                        options.GamePath, journal, prepared, progress);
+                if (options.RestoreDormantSequences)
+                    NormandyMpLighthouseToggleInstaller.Install(
                         options.GamePath, journal, prepared, progress);
                 if (options.RestoreDormantSequences)
                     Burgundy1GateInstaller.Install(

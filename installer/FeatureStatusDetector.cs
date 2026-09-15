@@ -166,11 +166,13 @@ namespace HD2CommunityInstaller
             if (Alps1CombatPostsInstaller.IsActive(gamePath)) ready++;
             if (Alps2ShotAlarmInstaller.IsActive(gamePath)) ready++;
             if (Burma2DormantScenesInstaller.IsActive(gamePath)) ready++;
+            if (Burma2RandomRadioInstaller.IsActive(gamePath)) ready++;
             if (Africa3VehicleDiscoveryInstaller.IsActive(gamePath)) ready++;
             if (Arctic3CarHitInstaller.IsActive(gamePath)) ready++;
             if (Czech5OpelEffectInstaller.IsActive(gamePath)) ready++;
             if (Normandy2Red26Installer.IsActive(gamePath)) ready++;
             if (Normandy2BlueCounterfireInstaller.IsActive(gamePath)) ready++;
+            if (NormandyMpLighthouseToggleInstaller.IsActive(gamePath)) ready++;
             if (Burgundy1GateInstaller.IsActive(gamePath)) ready++;
             if (Burgundy1CutsceneDialogueInstaller.IsActive(gamePath)) ready++;
             if (NorwayApproachInstaller.IsActive(gamePath)) ready++;
@@ -198,7 +200,7 @@ namespace HD2CommunityInstaller
                 && africa3Dialogue.IndexOf(
                     "079915604", StringComparison.Ordinal) < 0)
                 ready++;
-            return CountStatus(ready, 71);
+            return CountStatus(ready, 73);
         }
 
         private static string DetectEasterEggs(string gamePath)

@@ -119,6 +119,7 @@ L'hypothèse d'un objectif jadis validé par trois actions puis réduit à une d
 - **Burma 1** : les conditions du pont, des documents et de l'extraction sont actives, avec une exigence supplémentaire d'élimination en mode Carnage.
 - **Burma 2** : la prise du bunker attend toujours la mort des deux gardes `BU2_06` et `BU2_22`, chacun relié au même compteur.
 - **Burma 2, mise en scène du bunker** : l'approche de `BU2_22_A2` signalait encore au garde `BU2_22` de se lever et de passer en alerte, mais son tir vers `BU2_22_shoot01` était commenté. La cible et le déclencheur existent ; le tir est restauré sans réduire ni remplacer les deux morts requises pour l'objectif.
+- **Burma 2 Objectif** : la radio conserve un placement initial et un point alternatif entre les deux cadavres. Le contrôleur officiel ajouté par le patch choisit toujours l'un des deux avec `_RandomInt(2)` ; le paquet restaure uniquement sa liaison manquante, sans modifier les trois objectifs du mode.
 - **Libye 2 coopératif** : les huit véhicules ennemis surveillés alimentent encore l'objectif optionnel 3 ; seule sa déclaration dans la liste multijoueur manquait.
 - **Libye 3 coopératif** : l'officier, l'équipement du Liberator et les réserves de carburant alimentent chacun `last_objectives`; le rassemblement final ne s'active qu'à trois.
 - **Brest coopératif** : les deux charges des générateurs sont encore vérifiées par le script solo recopié à l'identique ; l'acteur et l'objectif 15504 manquaient seulement de liaison et de déclaration.
@@ -152,6 +153,8 @@ L'audit continue sur les autres compteurs, en exigeant la même chaîne de preuv
 ## Route française restaurée
 
 Operation Overlord - Lighthouse se déroule en France. La version commerciale garde cinq caméras, deux trajectoires et les deux accès souterrains, mais la liaison qui devait lancer le guidage est absente. Le paquet reconnecte Spawnsingle01 à X_N1_player01.scr.
+
+La carte Normandy MP conserve séparément un phare utilisable deux fois. La première activation allume ses trois effets et lance la rotation. La seconde mettait déjà l'état interne sur éteint et stoppait la rotation, mais réappliquait par erreur `true` aux trois effets ; ces trois valeurs sont corrigées en `false` sans modifier l'allumage.
 
 Cette restauration ne crée pas un tunnel. Elle rétablit le choix visuel d'origine entre les accès déjà présents.
 
