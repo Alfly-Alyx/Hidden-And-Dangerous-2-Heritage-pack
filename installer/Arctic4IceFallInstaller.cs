@@ -123,9 +123,11 @@ namespace HD2CommunityInstaller
         private static bool IsPatched(string text)
         {
             return Regex.IsMatch(text,
-                @"OnSignal\s*\(\s*1\s*\)\s*\{[\s\S]{0,220}"
-                + @"MakeExplosion\s*\(\s*FRM\s*,\s*5000000\s*,\s*3500\s*\)\s*;"
-                + @"[\s\S]{0,140}SetActorState\s*\(\s*Ulomek\s*,\s*1\s*\)\s*;",
+                @"^[ \t]*OnSignal\s*\(\s*1\s*\)[\s\S]{0,220}"
+                + @"^[ \t]*MakeExplosion\s*"
+                + @"\(\s*FRM\s*,\s*5000000\s*,\s*3500\s*\)\s*;"
+                + @"[\s\S]{0,140}^[ \t]*SetActorState\s*"
+                + @"\(\s*Ulomek\s*,\s*1\s*\)\s*;",
                 RegexOptions.IgnoreCase | RegexOptions.Multiline);
         }
 

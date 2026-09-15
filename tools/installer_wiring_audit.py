@@ -70,6 +70,7 @@ def audit(root: Path) -> dict[str, object]:
     africa3_mechanic_path = installer / "Africa3MechanicCoverInstaller.cs"
     africa1_cards_path = installer / "Africa1CardPlayersInstaller.cs"
     arctic4_dog_patrol_path = installer / "Arctic4DogPatrolInstaller.cs"
+    arctic4_ice_fall_path = installer / "Arctic4IceFallInstaller.cs"
     assembly_path = installer / "AssemblyInfo.cs"
     build_path = root / "build.ps1"
     icon_path = installer / "assets" / "hd2-heritage-icon.ico"
@@ -101,6 +102,7 @@ def audit(root: Path) -> dict[str, object]:
     africa3_mechanic = africa3_mechanic_path.read_text(encoding="utf-8-sig")
     africa1_cards = africa1_cards_path.read_text(encoding="utf-8-sig")
     arctic4_dog_patrol = arctic4_dog_patrol_path.read_text(encoding="utf-8-sig")
+    arctic4_ice_fall = arctic4_ice_fall_path.read_text(encoding="utf-8-sig")
     assembly = assembly_path.read_text(encoding="utf-8-sig")
     build = build_path.read_text(encoding="utf-8-sig")
     readme = readme_path.read_text(encoding="utf-8-sig")
@@ -443,6 +445,17 @@ def audit(root: Path) -> dict[str, object]:
             "Arctic 4 dog-patrol detection can mistake the test comment for walking"
         )
 
+    arctic4_ice_fall_requires_active_explosion = all((
+        '@"^[ \\t]*OnSignal\\s*\\(\\s*1' in arctic4_ice_fall,
+        '@"^[ \\t]*MakeExplosion\\s*"' in arctic4_ice_fall,
+        '@"[\\s\\S]{0,140}^[ \\t]*SetActorState\\s*"'
+        in arctic4_ice_fall,
+    ))
+    if not arctic4_ice_fall_requires_active_explosion:
+        errors.append(
+            "Arctic 4 ice-fall detection can mistake its commented explosion for code"
+        )
+
     historical_icon = (
         icon_path.is_file()
         and hashlib.sha256(icon_path.read_bytes()).hexdigest().upper()
@@ -574,6 +587,9 @@ def audit(root: Path) -> dict[str, object]:
         ),
         "arctic4_dog_patrol_requires_active_walk": (
             arctic4_dog_patrol_requires_active_walk
+        ),
+        "arctic4_ice_fall_requires_active_explosion": (
+            arctic4_ice_fall_requires_active_explosion
         ),
         "historical_icon": historical_icon,
         "artifact_identity": artifact_identity,
