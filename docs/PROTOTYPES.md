@@ -13,12 +13,27 @@
 
 Variante officielle absente de la liste finale. Treize fichiers lui sont propres, mais quatre fichiers de décor ou de chargement ne sont que des marqueurs de 16 à 19 octets et `volumy.bin` manque. Trois autres conteneurs sont réellement tronqués : `actors.bin` annonce 21 970 octets mais n'en conserve que 3 768, `scene2.bin` en annonce 6 309 393 mais n'en conserve que 2 814, et `sounds.bin` en annonce 8 603 mais n'en conserve que 70. Ces longueurs internes incohérentes expliquent le blocage du client multijoueur.
 
-Le pack reprend donc exactement huit bases correspondantes de `NORMANDY3_MP` : les cinq fichiers absents ou factices et ces trois conteneurs incomplets. Il conserve les six données propres encore structurellement valides de la zone. Les quatorze fichiers obtenus sont tous déployés dans un dossier autonome ; le jeu ne dépend ainsi d'aucun mélange implicite entre ce dossier et `missions.dta`. Elle est ajoutée sous le nom `PROTOTYPE - Normandy3 Zone (exploration libre)` dans le mode **Occupation**.
+La comparaison binaire écarte une réparation par simple concaténation. Les 25
+noms de cadres lisibles dans l'`actors.bin` Zone existent dans la base MP, mais
+les enregistrements sont supprimés, déplacés ou ajustés avec des décalages
+variables. `scene2.bin` saute déjà environ 6,4 Ko de la base alors que sa taille
+finale déclarée devait la dépasser de 37 316 octets. Dans `sounds.bin`, le seul
+nom Zone conservé correspond à un enregistrement situé presque à la fin du
+conteneur MP. Les parties perdues ne sont donc pas un suffixe récupérable.
+
+Faute d'une seconde copie dans les archives commerciales ou d'époque, le pack
+emploie un **fallback de compatibilité** : il reprend huit fichiers complets de
+`NORMANDY3_MP`, dont les trois conteneurs, et conserve les six fichiers Zone
+encore structurellement valides. Cela produit un dossier autonome susceptible
+d'être chargé, mais ce n'est pas la reconstruction fidèle de la variante
+originale. Toute fusion de ses enregistrements serait une création moderne et
+devra rester une variante A/B additive. La carte est ajoutée sous le nom
+`PROTOTYPE - Normandy3 Zone (exploration libre)` dans le mode **Occupation**.
 
 La préparation des deux prototypes s'exécute après l'éventuelle installation
 de la CMP, puis avant le dernier nettoyage des collisions. Un fichier
 communautaire de même nom ne peut donc plus remplacer silencieusement la
-version officielle complétée, et leurs `tree.klz` reçoivent toujours le
+version préparée, et leurs `tree.klz` reçoivent toujours le
 traitement final d'exploration libre.
 
 ### Africa5 Prototype
@@ -44,7 +59,10 @@ nom visible dans le menu ne suffit donc plus à déclarer un prototype installé
 
 ## Combien existe-t-il de cartes prototypes ?
 
-Dans l'installation commerciale 1.12 étudiée, **deux dossiers de cartes distinctes sont actuellement assez complets pour être restaurés et explorés sans inventer une nouvelle géométrie** : `NORMANDY3_MP_ZONE` et `AFRIKA5_MP`.
+Dans l'installation commerciale 1.12 étudiée, **deux dossiers de cartes
+distinctes peuvent actuellement être rendus chargeables sans inventer une
+nouvelle géométrie** : `AFRIKA5_MP` par complément de ressources appariées et
+`NORMANDY3_MP_ZONE` au moyen du fallback de compatibilité décrit ci-dessus.
 
 Le jeu conserve davantage de vestiges historiques, mais ils ne constituent pas d'autres cartes autonomes immédiatement jouables : `ENGLAND`, `CASTLE1` et `CASTLE2` sont surtout des ensembles de scripts ; `ALPS3_OBJ` et `ARDENS1_OBJ` sont d'anciennes variantes de missions ensuite finalisées dans Sabre Squadron. Ils restent des pistes de reconstruction, pas trois ou cinq cartes supplémentaires déjà prêtes à activer.
 

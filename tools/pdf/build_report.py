@@ -142,7 +142,7 @@ def build_report():
         ["CASTLE2","55 scripts, personnages, quatre objectifs + cinquième commenté","Démonstration possible avec création moderne"],
         ["ALPS3_OBJ","Sous-version de scripts","Recouverte par la mission Sabre complète déjà active"],
         ["ARDENS1_OBJ","Ancien squelette de scripts","Recouvert par la version Sabre complète déjà active"],
-        ["NORMANDY3_MP_ZONE","Variante officielle complète non déclarée","Activée comme vestige expérimental"],
+        ["NORMANDY3_MP_ZONE","Variante officielle tronquée ; six fichiers propres valides","Fallback Normandy3 MP, compatible mais non fidèle"],
         ["AFRIKA5_MP","7 fichiers propres + 6 ressources identiques disponibles","Complétée et activée comme prototype"]
     ],[32*mm,86*mm,50*mm]))
     s.append(P("Finir les créations très incomplètes","h2"))

@@ -67,7 +67,7 @@ namespace HD2CommunityInstaller
                 List<DtaEntry> normandyBase = NormandyComplements(
                     archive, normandySource, normandyPrototype);
                 ValidateNormandyInventory(
-                    normandySource, normandyPrototype, normandyBase);
+                    archive, normandySource, normandyPrototype, normandyBase);
                 ValidateCompletePrototype(CompletePrototype(
                     normandyPrototype, normandyBase), NormandyMissionFiles,
                     "Normandy3 Zone");
@@ -87,7 +87,8 @@ namespace HD2CommunityInstaller
                     StringComparison.OrdinalIgnoreCase) < 0)
                 throw new InvalidDataException("Activation des vestiges incomplete.");
             return "Prototypes verifies : Normandy3 Zone " + normandyOwn
-                + " fichiers propres + " + normandyCopies + " bases recuperables; Africa5 "
+                + " fichiers propres + " + normandyCopies
+                + " remplacements de compatibilite; Africa5 "
                 + africaOwn + " fichiers propres + " + africaCopies
                 + " bases recuperables + " + scripts + " scripts recuperables.";
         }
@@ -97,7 +98,7 @@ namespace HD2CommunityInstaller
             Action<string> progress)
         {
             InstallerCore.Report(progress,
-                "Completion des deux cartes prototypes officielles...");
+                "Preparation des deux cartes prototypes officielles...");
             int written = 0;
             string missionsPath = Path.Combine(gamePath, "missions.dta");
             using (DtaArchive archive = new DtaArchive(missionsPath))
@@ -123,7 +124,7 @@ namespace HD2CommunityInstaller
                 List<DtaEntry> normandyBase = NormandyComplements(
                     archive, normandySource, normandyPrototype);
                 ValidateNormandyInventory(
-                    normandySource, normandyPrototype, normandyBase);
+                    archive, normandySource, normandyPrototype, normandyBase);
                 List<DtaEntry> normandyComplete = CompletePrototype(
                     normandyPrototype, normandyBase);
                 ValidateCompletePrototype(
@@ -155,8 +156,10 @@ namespace HD2CommunityInstaller
                 WriteTextAtomically(mapListPath, updatedMapList, ansi);
                 journal.RecordHash(relativeMapList, CmpInstaller.ComputeSha256(mapListPath));
             }
-            InstallerCore.Log("Prototypes completes : Normandy3 Zone et Africa5; "
-                + written + " ressources officielles ecrites.");
+            InstallerCore.Log("Prototypes prepares : Africa5 complete depuis ses "
+                + "ressources appariees; Normandy3 Zone emploie huit remplacements "
+                + "de compatibilite issus de Normandy3_MP; " + written
+                + " ressources officielles ecrites.");
             InstallerCore.Report(progress,
                 "Deux cartes PROTOTYPE preparees pour exploration locale ("
                 + written + " ressources completees ou verifiees). Africa5 : Deathmatch; "
@@ -200,7 +203,7 @@ namespace HD2CommunityInstaller
             string result = AddMap(
                 mapList, "teamplay", "Normandy3", "Normandy3_mp",
                 NormandyPrototypeName, "NORMANDY3_MP_ZONE",
-                "Official unfinished zone variant completed from Normandy3_MP base geometry.");
+                "Official truncated zone variant using a Normandy3_MP compatibility fallback; not a faithful reconstruction.");
             result = AddMap(
                 result, "deathmatch", "Africa5", "Africa5_mp",
                 AfricaPrototypeName, "AFRIKA5_MP",
@@ -403,6 +406,7 @@ namespace HD2CommunityInstaller
         }
 
         private static void ValidateNormandyInventory(
+            DtaArchive archive,
             Dictionary<string, DtaEntry> source,
             Dictionary<string, DtaEntry> prototype,
             List<DtaEntry> complements)
@@ -419,6 +423,49 @@ namespace HD2CommunityInstaller
                 || prototype.ContainsKey("volumy.bin"))
                 throw new InvalidDataException(
                     "Structure du prototype NORMANDY3_MP_ZONE differente de l'archive 1.12 attendue.");
+            ValidateNormandyContainerSignature(
+                archive, prototype, "actors.bin", 3768, 21970,
+                "AB184852C982CB1BE964923AEF86FC7DDDE1712D4F74CED1FBCE19F01F95EEC0",
+                "Zone");
+            ValidateNormandyContainerSignature(
+                archive, prototype, "scene2.bin", 2814, 6309393,
+                "532A2BC104878A79F727A477B3659DE8810DDB63A91314DD26D67E4FBB9E9E5B",
+                "Zone");
+            ValidateNormandyContainerSignature(
+                archive, prototype, "sounds.bin", 70, 8603,
+                "D9F17AEF097AD69D29FB49F86E965263D47AE3BA0862527E63CDFB96846AC678",
+                "Zone");
+            ValidateNormandyContainerSignature(
+                archive, source, "actors.bin", 22628, 22628,
+                "1390CB6BD9AF550F0E36462F18BD3D9AED347D176D0C7707D3D3A88447364D4B",
+                "base");
+            ValidateNormandyContainerSignature(
+                archive, source, "scene2.bin", 6272077, 6272077,
+                "6A7B9E07A5486B70D33E3A26B40F781FA2AC561F4C23D7D6806C0272CA60CA43",
+                "base");
+            ValidateNormandyContainerSignature(
+                archive, source, "sounds.bin", 8735, 8735,
+                "84CD9DD848BDB04F6D4ED34DD9ED98A6FA1C61722F57AB7892A11E8BEF110C5E",
+                "base");
+        }
+
+        private static void ValidateNormandyContainerSignature(
+            DtaArchive archive, Dictionary<string, DtaEntry> entries,
+            string name, int storedSize, uint declaredSize,
+            string expectedSha256, string sourceLabel)
+        {
+            DtaEntry entry;
+            if (!entries.TryGetValue(name, out entry))
+                throw new InvalidDataException(
+                    "Conteneur Normandy3 " + sourceLabel + " manquant : " + name + ".");
+            byte[] data = archive.Read(entry);
+            uint declared = data.Length >= 6 ? BitConverter.ToUInt32(data, 2) : 0;
+            if (data.Length != storedSize || declared != declaredSize
+                || !String.Equals(ComputeSha256(data), expectedSha256,
+                    StringComparison.OrdinalIgnoreCase))
+                throw new InvalidDataException(
+                    "Signature du conteneur Normandy3 " + sourceLabel
+                    + " inattendue : " + name + ".");
         }
 
         private static Dictionary<string, DtaEntry> DirectFiles(

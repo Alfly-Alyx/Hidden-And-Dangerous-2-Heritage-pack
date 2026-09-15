@@ -133,7 +133,7 @@ Le projet doit produire un ensemble installable pour Hidden & Dangerous 2: Sabre
 
 ### Cartes et prototypes
 
-- Normandy3 Zone activable ;
+- Normandy3 Zone rendue chargeable par un fallback Normandy3 MP explicitement classé comme inférence de compatibilité, car ses trois conteneurs tronqués ne sont pas reconstructibles fidèlement ;
 - Africa5 Prototype complété à partir de ressources officielles identiques ;
 - ENGLAND, CASTLE1 et CASTLE2 classés comme branches internes, pas faussement annoncés comme cartes complètes ;
 - ALPS3_OBJ : version Sabre complète déjà active, plus un prototype Base distinct à trois véhicules qui exige une reconstruction additive ; ARDENS1_OBJ conserve une composition Base inachevée avec un Sherman et un Tiger supplémentaires, à préserver seulement sous forme d'une variante additive distincte de la version Sabre complète.

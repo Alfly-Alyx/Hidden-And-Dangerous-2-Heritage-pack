@@ -8,6 +8,7 @@ entry while still exposing only the incomplete commercial placeholder files.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -31,6 +32,18 @@ NORMANDY_COMPLEMENTS = (
     "actors.bin", "scene2.bin", "sounds.bin",
 )
 NORMANDY_TRUNCATED_CONTAINERS = ("actors.bin", "scene2.bin", "sounds.bin")
+NORMANDY_CONTAINER_SIGNATURES = {
+    "zone": {
+        "actors.bin": (3768, 21970, "ab184852c982cb1be964923aef86fc7ddde1712d4f74ced1fbce19f01f95eec0"),
+        "scene2.bin": (2814, 6309393, "532a2bc104878a79f727a477b3659de8810ddb63a91314dd26d67e4fbb9e9e5b"),
+        "sounds.bin": (70, 8603, "d9f17aef097ad69d29fb49f86e965263d47ae3ba0862527e63cdfb96846ac678"),
+    },
+    "base": {
+        "actors.bin": (22628, 22628, "1390cb6bd9af550f0e36462f18bd3d9aed347d176d0c7707d3d3a88447364d4b"),
+        "scene2.bin": (6272077, 6272077, "6a7b9e07a5486b70d33e3a26b40f781fa2ac561f4c23d7d6806c0272ca60ca43"),
+        "sounds.bin": (8735, 8735, "84cd9dd848bdb04f6d4ed34dd9ed98a6fa1c61722f57ab7892a11e8bef110c5e"),
+    },
+}
 AFRICA_SCRIPTS = tuple(
     f"af5_mp_cisterna{number}.scr" for number in range(1, 8)
 )
@@ -85,6 +98,7 @@ def archived_container_status(
         "valid": declared == len(data),
         "stored_size": len(data),
         "declared_size": declared,
+        "sha256": hashlib.sha256(data).hexdigest(),
         "truncated_bytes": (
             declared - len(data) if declared is not None else None
         ),
@@ -228,6 +242,21 @@ def archive_plan(game: Path):
         errors.append(
             "une base complète de conteneur Normandy3 est invalide"
         )
+    for source_label, statuses in (
+        ("zone", normandy_truncated),
+        ("base", normandy_base_containers),
+    ):
+        for name, expected in NORMANDY_CONTAINER_SIGNATURES[source_label].items():
+            status = statuses[name]
+            actual = (
+                status.get("stored_size"),
+                status.get("declared_size"),
+                status.get("sha256"),
+            )
+            if actual != expected:
+                errors.append(
+                    f"signature Normandy3 {source_label} inattendue : {name}"
+                )
     if normandy_complete != set(NORMANDY_FILES):
         errors.append("le plan Normandy3 Zone ne produit pas les 14 fichiers autonomes")
 
