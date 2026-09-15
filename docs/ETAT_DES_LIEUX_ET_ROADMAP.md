@@ -252,9 +252,17 @@ Sortie attendue : prototypes séparant clairement données officielles et créat
 
 ### Phase 5 - Armes incomplètes
 
-Objectif : produire un lance-flammes expérimental crédible.
+Objectif : reconstruire d’abord le vestige d’arme le mieux documenté.
 
-- inventorier animations compatibles, sons, effets et paramètres de dégâts ;
+- pour la Benelli, préserver les deux records officiels de 135 octets, prouver
+  les liaisons vers les animations, le tir et la munition 179, et vérifier
+  l’ID additif provisoire 359 contre tous les catalogues présents ;
+- dériver un modèle expérimental sous un nouveau nom sans publier les binaires
+  commerciaux et sans remplacer la boussole ;
+- tester équipement, tir, recharge, enrayage, dépôt, reprise, sauvegarde et
+  synchronisation réseau avant toute promotion ;
+- seulement ensuite, inventorier les animations compatibles, sons, effets et
+  paramètres de dégâts des lance-flammes ;
 - créer les modèles britannique et allemand ;
 - intégrer tenue, visée, réservoir et rechargement ;
 - tester IA, incendie, performance et multijoueur ;

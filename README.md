@@ -97,6 +97,13 @@ l'unique dépendance binaire embarquée est exactement la release écran large
 officielle attendue, que l'installateur n'accepte que ses six fichiers connus et
 qu'il installe sa licence MIT.
 
+Le contrôle `tools/item_id_collision_audit.py` parse séparément les objets
+affectés et posés des `items.dat` commerciaux et communautaires, puis vérifie
+aussi les déclarations de `mpmaplist.txt`. Il confirme actuellement que l'ID
+additif provisoire 359 proposé pour le prototype Benelli n'entre en collision
+avec aucun ItemID installé ; cette vérification devra être répétée au moment de
+chaque installation expérimentale.
+
 Un prototype de menu solo distinct est maintenant préparé dans une copie de
 test séparée. La scène `.4ds` seule ne suffisait pas ; la copie de l'exécutable
 a donc été décompactée et reconstruite hors ligne avec la prise en charge de

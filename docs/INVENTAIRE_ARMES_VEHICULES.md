@@ -49,6 +49,14 @@ Le record de 135 octets occupé par la boussole dans `SabreSquadron.dta::Tables/
 
 Une restauration doit donc créer une nouvelle entrée sans écraser la boussole. L’ID 359 est le premier candidat après la plage commerciale publiée et était libre dans les 80 `items.dat` commerciaux et 144 communautaires inspectés ; il reste provisoire et toute collision devra être refusée explicitement. Aucun modèle extérieur/posé complet n’est conservé, et les liaisons numériques vers `FpvAnims.sav`, le record de tir et la munition 179 doivent encore être démontrées. Le modèle monde, ces liaisons et toute valeur non prouvée restent une reconstruction moderne, hors du lot stable jusqu’aux essais solo et réseau.
 
+`tools/item_id_collision_audit.py` rend cette vérification reproductible. Sur
+l’installation inspectée, il a décodé 149 462 enregistrements dans les 80
+fichiers commerciaux et 144 missions installées, contrôlé 7 135 déclarations
+de `mpmaplist.txt` et n’a trouvé aucun ItemID 359. Pour les neuf fichiers
+anciens ou tronqués que le parseur ne peut finir, le verdict n’est accepté que
+si les octets candidats sont absents ou entièrement situés dans le préfixe déjà
+décodé ; une occurrence ambiguë ferait échouer le contrôle.
+
 ## Armes incomplètes
 
 Les deux lance-flammes conservent icônes, munitions, sons et effet. `flame1.4ds` ne pèse que 471 octets et contient seulement `fire01` : c’est un effet, pas une arme. Modèle, animations et comportement doivent être créés.
