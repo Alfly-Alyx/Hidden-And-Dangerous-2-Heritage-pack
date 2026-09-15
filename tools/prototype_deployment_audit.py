@@ -27,7 +27,9 @@ NORMANDY_FILES = (
 )
 NORMANDY_COMPLEMENTS = (
     "map.4ds", "tree.klz", "scene.4ds", "loader.4ds", "volumy.bin",
+    "actors.bin", "scene2.bin", "sounds.bin",
 )
+NORMANDY_TRUNCATED_CONTAINERS = ("actors.bin", "scene2.bin", "sounds.bin")
 AFRICA_SCRIPTS = tuple(
     f"af5_mp_cisterna{number}.scr" for number in range(1, 8)
 )
@@ -58,6 +60,31 @@ def direct_entries(archive: DtaArchive, prefix: str):
     return result
 
 
+def archived_container_status(
+    archive: DtaArchive, prefix: str, filename: str
+) -> dict[str, object]:
+    wanted = normalized(prefix).rstrip("/") + "/" + filename.casefold()
+    matches = [
+        entry for entry in archive.entries
+        if normalized(entry.name) == wanted
+    ]
+    if len(matches) != 1:
+        return {
+            "valid": False,
+            "error": f"{len(matches)} entrée(s) trouvée(s)",
+        }
+    data = archive.read(matches[0])
+    declared = int.from_bytes(data[2:6], "little") if len(data) >= 6 else None
+    return {
+        "valid": declared == len(data),
+        "stored_size": len(data),
+        "declared_size": declared,
+        "truncated_bytes": (
+            declared - len(data) if declared is not None else None
+        ),
+    }
+
+
 def archive_plan(game: Path):
     errors: list[str] = []
     with DtaArchive(game / "missions.dta") as archive:
@@ -65,6 +92,18 @@ def archive_plan(game: Path):
         africa_own = direct_entries(archive, "Missions/AFRIKA5_MP")
         normandy_source = direct_entries(archive, "Missions/NORMANDY3_MP")
         normandy_own = direct_entries(archive, "Missions/NORMANDY3_MP_ZONE")
+        normandy_truncated = {
+            name: archived_container_status(
+                archive, "Missions/NORMANDY3_MP_ZONE", name
+            )
+            for name in NORMANDY_TRUNCATED_CONTAINERS
+        }
+        normandy_base_containers = {
+            name: archived_container_status(
+                archive, "Missions/NORMANDY3_MP", name
+            )
+            for name in NORMANDY_TRUNCATED_CONTAINERS
+        }
     with DtaArchive(game / "Scripts.dta") as archive:
         africa_scripts = direct_entries(archive, "Scripts/AFRICA5_MP")
 
@@ -75,7 +114,12 @@ def archive_plan(game: Path):
     normandy_complements = []
     for name in NORMANDY_COMPLEMENTS:
         own = normandy_own.get(name)
-        if own is None or own["size"] <= 19:
+        if (
+            own is None
+            or own["size"] <= 19
+            or name in NORMANDY_TRUNCATED_CONTAINERS
+            and not normandy_truncated[name]["valid"]
+        ):
             normandy_complements.append(name)
     normandy_complete = set(normandy_own) | set(normandy_complements)
 
@@ -90,7 +134,19 @@ def archive_plan(game: Path):
     if set(normandy_source) != set(NORMANDY_FILES):
         errors.append("NORMANDY3_MP commercial ne contient pas exactement les 14 bases attendues")
     if len(normandy_own) != 13 or normandy_complements != list(NORMANDY_COMPLEMENTS):
-        errors.append("Normandy3 Zone n'exige pas exactement les cinq compléments attendus")
+        errors.append("Normandy3 Zone n'exige pas exactement les huit compléments attendus")
+    if any(
+        status["valid"] for status in normandy_truncated.values()
+    ):
+        errors.append(
+            "les trois conteneurs Normandy3 Zone attendus tronqués ne le sont plus"
+        )
+    if not all(
+        status["valid"] for status in normandy_base_containers.values()
+    ):
+        errors.append(
+            "une base complète de conteneur Normandy3 est invalide"
+        )
     if normandy_complete != set(NORMANDY_FILES):
         errors.append("le plan Normandy3 Zone ne produit pas les 14 fichiers autonomes")
 
@@ -109,6 +165,8 @@ def archive_plan(game: Path):
             "own_files": len(normandy_own),
             "copied_bases": normandy_complements,
             "completed_files": len(normandy_complete),
+            "truncated_containers": normandy_truncated,
+            "base_containers": normandy_base_containers,
         },
     }
 
@@ -163,6 +221,20 @@ def tree_status(path: Path):
         return {"valid": False, "error": str(exc)}
 
 
+def loose_container_status(path: Path) -> dict[str, object]:
+    if not path.is_file():
+        return {"valid": False, "error": "absent"}
+    size = path.stat().st_size
+    with path.open("rb") as source:
+        header = source.read(6)
+    declared = int.from_bytes(header[2:6], "little") if len(header) == 6 else None
+    return {
+        "valid": declared == size,
+        "stored_size": size,
+        "declared_size": declared,
+    }
+
+
 def installed_state(game: Path):
     missions = game / "Missions"
     scripts = game / "Scripts"
@@ -181,6 +253,15 @@ def installed_state(game: Path):
         normandy.get("loader.4ds", 0) > 1000,
         normandy.get("volumy.bin", 0) > 100_000,
     ))
+    normandy_containers = {
+        name: loose_container_status(
+            missions / "NORMANDY3_MP_ZONE" / name
+        )
+        for name in NORMANDY_TRUNCATED_CONTAINERS
+    }
+    normandy_containers_ok = all(
+        status["valid"] for status in normandy_containers.values()
+    )
     tree_reports = {
         "africa": tree_status(missions / "AFRIKA5_MP" / "tree.klz"),
         "normandy": tree_status(missions / "NORMANDY3_MP_ZONE" / "tree.klz"),
@@ -203,7 +284,11 @@ def installed_state(game: Path):
         }
 
     africa_ready = not africa_missing and not script_missing
-    normandy_ready = not normandy_missing and normandy_base_sizes_ok
+    normandy_ready = (
+        not normandy_missing
+        and normandy_base_sizes_ok
+        and normandy_containers_ok
+    )
     exploration_clean = all(
         report.get("valid") and report.get("clean")
         for report in tree_reports.values()
@@ -224,6 +309,8 @@ def installed_state(game: Path):
             "files_expected": len(NORMANDY_FILES),
             "missing": normandy_missing,
             "base_sizes_ok": normandy_base_sizes_ok,
+            "runtime_containers": normandy_containers,
+            "runtime_containers_ok": normandy_containers_ok,
             "ready": normandy_ready,
         },
         "bindings": binding_reports,
@@ -263,6 +350,9 @@ def main() -> int:
         "normandy_installed": (
             f"{report['installed']['normandy']['files_present']}/"
             f"{report['installed']['normandy']['files_expected']}"
+        ),
+        "normandy_containers_ok": (
+            report["installed"]["normandy"]["runtime_containers_ok"]
         ),
         "exploration_clean": report["installed"]["exploration_clean"],
     }, ensure_ascii=False))

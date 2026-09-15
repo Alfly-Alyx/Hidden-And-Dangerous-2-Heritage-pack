@@ -28,7 +28,7 @@ La version 0.7.5 réunit le retour du jeu en ligne, la collection communautaire 
 - complète Libye 3 avec les cinq étapes G3_02 à G3_06 de la route officielle suivie par le remplaçant du mitrailleur ;
 - rend à Brest, en solo et en coopération, 49 animations d'observation de sentinelles et 10 réactions de proximité à un cadavre, toutes encore reliées à leurs acteurs et déclencheurs commerciaux ;
 - complète Africa 1 avec le changement de lumière de la porte `HL_dvh_x01` et la prise de poste du garde 06 sur sa MG42 encore présente ;
-- complète `PROTOTYPE - Normandy3 Zone` avec les cinq bases officielles absentes ou factices, et `PROTOTYPE - Africa5` avec les ressources et les sept scripts officiels attendus ; chaque prototype est désormais déployé comme un dossier autonome complet afin que le serveur local charge aussi ses fichiers propres au lieu de rester bloqué à la connexion ;
+- complète `PROTOTYPE - Normandy3 Zone` avec huit bases officielles : cinq fichiers absents ou factices et trois conteneurs tronqués qui expliquaient le blocage à la connexion ; `PROTOTYPE - Africa5` reçoit ses ressources et ses sept scripts officiels attendus ; chaque prototype est déployé comme un dossier autonome complet ;
 - place les deux vestiges dans le menu multijoueur : PROTOTYPE - Africa5 en Deathmatch et PROTOTYPE - Normandy3 Zone en Occupation ;
 - détecte CPU, mémoire, carte graphique, mémoire vidéo et résolution physique de l'écran — sans être trompé par le zoom Windows —, installe le correctif écran large vérifié, applique la résolution physique complète sans plafond 4K artificiel, puis adapte seulement le niveau de qualité aux performances ;
 - réactive les easter eggs d'Africa 1 et d'Africa 4 neutralisés par la mise à jour 1.12 ;

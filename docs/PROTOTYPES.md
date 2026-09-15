@@ -11,7 +11,9 @@
 
 ### Normandy3 Zone
 
-Variante officielle absente de la liste finale. Treize fichiers lui sont propres, mais quatre fichiers de décor ou de chargement ne sont que des marqueurs de 16 à 19 octets et `volumy.bin` manque. Le pack reprend donc exactement les cinq bases correspondantes de `NORMANDY3_MP`, tout en conservant les neuf données propres exploitables de la zone. Les quatorze fichiers obtenus sont tous déployés dans un dossier autonome : le jeu ne dépend ainsi d'aucun mélange implicite entre ce dossier et `missions.dta`. Elle est ajoutée sous le nom `PROTOTYPE - Normandy3 Zone (exploration libre)` dans le mode **Occupation**.
+Variante officielle absente de la liste finale. Treize fichiers lui sont propres, mais quatre fichiers de décor ou de chargement ne sont que des marqueurs de 16 à 19 octets et `volumy.bin` manque. Trois autres conteneurs sont réellement tronqués : `actors.bin` annonce 21 970 octets mais n'en conserve que 3 768, `scene2.bin` en annonce 6 309 393 mais n'en conserve que 2 814, et `sounds.bin` en annonce 8 603 mais n'en conserve que 70. Ces longueurs internes incohérentes expliquent le blocage du client multijoueur.
+
+Le pack reprend donc exactement huit bases correspondantes de `NORMANDY3_MP` : les cinq fichiers absents ou factices et ces trois conteneurs incomplets. Il conserve les six données propres encore structurellement valides de la zone. Les quatorze fichiers obtenus sont tous déployés dans un dossier autonome ; le jeu ne dépend ainsi d'aucun mélange implicite entre ce dossier et `missions.dta`. Elle est ajoutée sous le nom `PROTOTYPE - Normandy3 Zone (exploration libre)` dans le mode **Occupation**.
 
 ### Africa5 Prototype
 
@@ -23,7 +25,8 @@ Le contrôle indépendant `tools/prototype_deployment_audit.py` vérifie deux é
 distincts : la possibilité de reconstruire les dossiers complets depuis les
 archives commerciales, puis leur présence réelle sur le disque. La validation
 finale exigera `13/13` fichiers et sept scripts pour Africa5, `14/14` fichiers
-pour Normandy3 Zone, les deux entrées correctement nommées dans leur mode
+pour Normandy3 Zone, l'intégrité déclarée de `actors.bin`, `scene2.bin` et
+`sounds.bin`, les deux entrées correctement nommées dans leur mode
 multijoueur et zéro drapeau ou objet `border` dans leurs collisions. Un simple
 nom visible dans le menu ne suffit donc plus à déclarer un prototype installé.
 

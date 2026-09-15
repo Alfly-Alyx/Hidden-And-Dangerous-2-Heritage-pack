@@ -16,7 +16,8 @@ namespace HD2CommunityInstaller
         private const string AfricaScriptTargetPrefix = "Scripts/AFRIKA5_MP/";
 
         private static readonly string[] NormandyBaseFiles = {
-            "map.4ds", "tree.klz", "scene.4ds", "loader.4ds", "volumy.bin"
+            "map.4ds", "tree.klz", "scene.4ds", "loader.4ds", "volumy.bin",
+            "actors.bin", "scene2.bin", "sounds.bin"
         };
 
         private static readonly string[] AfricaMissionFiles = {
@@ -63,7 +64,7 @@ namespace HD2CommunityInstaller
                 Dictionary<string, DtaEntry> normandyPrototype =
                     DirectFiles(archive, NormandyPrototypePrefix);
                 List<DtaEntry> normandyBase = NormandyComplements(
-                    normandySource, normandyPrototype);
+                    archive, normandySource, normandyPrototype);
                 ValidateNormandyInventory(
                     normandySource, normandyPrototype, normandyBase);
                 ValidateCompletePrototype(CompletePrototype(
@@ -118,7 +119,7 @@ namespace HD2CommunityInstaller
                 Dictionary<string, DtaEntry> normandyPrototype =
                     DirectFiles(archive, NormandyPrototypePrefix);
                 List<DtaEntry> normandyBase = NormandyComplements(
-                    normandySource, normandyPrototype);
+                    archive, normandySource, normandyPrototype);
                 ValidateNormandyInventory(
                     normandySource, normandyPrototype, normandyBase);
                 List<DtaEntry> normandyComplete = CompletePrototype(
@@ -173,7 +174,10 @@ namespace HD2CommunityInstaller
                     && HasFile(folder, "tree.klz", 1000000)
                     && HasFile(folder, "scene.4ds", 1000000)
                     && HasFile(folder, "loader.4ds", 1000)
-                    && HasFile(folder, "volumy.bin", 100000);
+                    && HasFile(folder, "volumy.bin", 100000)
+                    && HasCompleteContainer(folder, "actors.bin")
+                    && HasCompleteContainer(folder, "scene2.bin")
+                    && HasCompleteContainer(folder, "sounds.bin");
             }
 
             string missionFolder = Path.Combine(gamePath, "Missions", "AFRIKA5_MP");
@@ -236,6 +240,7 @@ namespace HD2CommunityInstaller
         }
 
         private static List<DtaEntry> NormandyComplements(
+            DtaArchive archive,
             Dictionary<string, DtaEntry> source,
             Dictionary<string, DtaEntry> prototype)
         {
@@ -246,12 +251,33 @@ namespace HD2CommunityInstaller
                 if (!source.TryGetValue(file, out sourceEntry))
                     throw new InvalidDataException(
                         "Base Normandy3 manquante : " + file + ".");
+                if ((String.Equals(file, "actors.bin",
+                            StringComparison.OrdinalIgnoreCase)
+                        || String.Equals(file, "scene2.bin",
+                            StringComparison.OrdinalIgnoreCase)
+                        || String.Equals(file, "sounds.bin",
+                            StringComparison.OrdinalIgnoreCase))
+                    && IsTruncatedContainer(archive.Read(sourceEntry)))
+                    throw new InvalidDataException(
+                        "Conteneur de base Normandy3 incomplet : " + file + ".");
                 DtaEntry prototypeEntry;
-                if (!prototype.TryGetValue(file, out prototypeEntry)
-                    || prototypeEntry.Size <= 19)
-                    result.Add(sourceEntry);
+                bool absent = !prototype.TryGetValue(file, out prototypeEntry);
+                bool placeholder = !absent && prototypeEntry.Size <= 19;
+                bool truncated = !absent && !placeholder
+                    && IsTruncatedContainer(archive.Read(prototypeEntry));
+                if (!absent && !placeholder && !truncated)
+                    throw new InvalidDataException(
+                        "Le complement Normandy3 Zone n'est plus incomplet : "
+                        + file + ".");
+                result.Add(sourceEntry);
             }
             return result;
+        }
+
+        private static bool IsTruncatedContainer(byte[] data)
+        {
+            return data == null || data.Length < 6
+                || BitConverter.ToUInt32(data, 2) != data.Length;
         }
 
         private static int ValidateAfricaScripts(string gamePath)
@@ -298,9 +324,10 @@ namespace HD2CommunityInstaller
             Dictionary<string, DtaEntry> prototype,
             List<DtaEntry> complements)
         {
-            if (source.Count != 14 || prototype.Count != 13 || complements.Count != 5
+            if (source.Count != 14 || prototype.Count != 13 || complements.Count != 8
                 || !prototype.ContainsKey("scene2.bin")
                 || !prototype.ContainsKey("actors.bin")
+                || !prototype.ContainsKey("sounds.bin")
                 || !prototype.ContainsKey("items.dat")
                 || prototype["tree.klz"].Size != 16
                 || prototype["map.4ds"].Size != 19
@@ -431,6 +458,22 @@ namespace HD2CommunityInstaller
         {
             string path = Path.Combine(folder, name);
             return File.Exists(path) && new FileInfo(path).Length > minimumSize;
+        }
+
+        private static bool HasCompleteContainer(string folder, string name)
+        {
+            string path = Path.Combine(folder, name);
+            if (!File.Exists(path)) return false;
+            byte[] header = new byte[6];
+            using (FileStream input = new FileStream(
+                path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                if (input.Length < header.Length
+                    || input.Length > UInt32.MaxValue
+                    || input.Read(header, 0, header.Length) != header.Length)
+                    return false;
+                return BitConverter.ToUInt32(header, 2) == input.Length;
+            }
         }
 
         private static string ComputeSha256(byte[] data)
