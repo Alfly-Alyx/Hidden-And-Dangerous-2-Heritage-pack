@@ -11,6 +11,8 @@ Premier balayage lexical des archives. Les nombres comptent des noms ou sous-cha
 | Vickers K | 1 | 1 | 0 | 0 | arme montée active sur Jeep SAS |
 | MG 15 | 6 | 0 | 0 | 6 | armement monté seulement |
 | MG 81 | 6 | 0 | 0 | 6 | armement monté seulement |
+| Modèle `w_m1gran` | 1 | 1 | 0 | 0 | modèle orphelin, fonction exacte non démontrée |
+| Anciennes mines | 5 | 5 | 0 | 0 | variantes techniques sans chaîne d'objet complète |
 | Garota | 0 | 0 | 0 | 0 | aucune ressource locale |
 | ZK-383 | 0 | 0 | 0 | 0 | aucune ressource locale |
 | Me 323 | 6 | 2 | 0 | 0 | modèle présent, non placé et non pilotable |
@@ -29,6 +31,9 @@ Lecture manuelle recoupée :
 - les scripts nommés Li-2 pilotent des sons d’ambiance, pas le modèle d’avion ;
 - les correspondances lexicales La-5 dans `posila5`, par exemple, sont des faux positifs distincts : elles ne remettent pas en cause la présence du vrai modèle `la_La-5.4ds` ;
 - Garota et ZK-383 n’ont aucune ressource locale identifiable par ces noms.
+- aucun des 49 `car_table.dat` commerciaux — 33 de base, deux du Patch et
+  quatorze de Sabre Squadron — ne référence exactement La-5, Aichi, M323,
+  Li-2, Fa 223, Fw 200, DFS 230 ou Ju 52 comme véhicule pilotable.
 
 ## Armes déjà actives ou faussement présentées comme retirées
 
@@ -47,6 +52,13 @@ Une restauration doit donc ajouter une nouvelle entrée sans écraser la boussol
 Les deux lance-flammes conservent icônes, munitions, sons et effet. `flame1.4ds` ne pèse que 471 octets et contient seulement `fire01` : c’est un effet, pas une arme. Modèle, animations et comportement doivent être créés.
 
 La MG 34 portative conserve une munition, des icônes et des sons, mais ni modèle portatif, ni animations FPV, ni entrée Weapon autonome. Il ne faut pas la confondre avec la MG 34 de char active. Le FG 42 ne subsiste que comme texte désactivé et munition. Garota et ZK-383 nécessitent des sources nouvelles ou une création moderne explicitement annoncée.
+
+`w_m1gran.4ds` conserve un modèle et une référence de texture
+`W_GRANATUS.BMP`, mais aucune entrée d'objet, animation FPV, occurrence de
+mission ou fonction explicitement nommée. Le trou 1065 du catalogue textuel
+n'est pas une preuve suffisante de son identité. Les cinq modèles
+`w_mine*`/mine technique n'ont eux non plus ni chaîne d'objet complète ni
+placement commercial attesté ; ils restent séparés des mines finales actives.
 
 ## Aéronefs
 

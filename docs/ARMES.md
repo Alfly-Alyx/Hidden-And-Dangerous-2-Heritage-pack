@@ -36,6 +36,19 @@ Le ZK-383 apparaît dans l'iconographie alpha/bêta communautaire. Aucun ensembl
 
 Le FG 42 est explicitement marqué `DISABLED` dans un catalogue ancien et conserve une munition, mais ni modèle ni icône. La MG 34 portative conserve une munition et des icônes, sans modèle portatif identifiable. MG 15 et MG 81 possèdent des entrées, icônes et sons compatibles avec des montages de véhicule, mais aucune chaîne d’arme portative démontrée. Ces traces ne sont pas activables seules.
 
+`w_m1gran.4ds` est un petit modèle monde dont la texture interne se nomme
+`W_GRANATUS.BMP`. Il n'a toutefois ni entrée d'objet, ni animation FPV, ni
+texte explicite, ni comportement et n'apparaît dans aucune mission
+commerciale. L'identifiant de texte libre 1065, placé près des grenades et
+équipements, ne suffit pas à lui attribuer un nom ou une fonction. Il reste un
+modèle orphelin de reconstruction, pas une grenade cachée réactivable.
+
+Les modèles `w_mine`, `w_specmine`, `w_mineg`, `w_minedecor` et
+`w_mdtank` sont également des variantes anciennes ou techniques sans chaîne
+complète d'objet, d'animation, de comportement et de placement. Les mines
+antipersonnel, antichar et magnétique livrées sont déjà actives ; ces cinq
+modèles ne doivent pas les remplacer.
+
 ## Faux positifs
 
 - Le M1 Garand est présent dans le jeu final.
@@ -44,7 +57,7 @@ Le FG 42 est explicitement marqué `DISABLED` dans un catalogue ancien et conser
 - Le P08 silencieux, le G43, le MAS 36 et le Panzerschreck sont des éléments livrés avec Sabre Squadron.
 - Le Vickers K est le composant monté de la jeep SAS déjà active, pas une arme portative dormante.
 - Le canon de 17 mm est utilisé activement dans `Ardens1_obj` ; sa mention désactivée dans une ancienne liste ne décrit pas son état final.
-- Les modèles La-5, Aichi, M323, Li-2, Fa 223, Fw 200 et DFS 230 sont bien présents, mais sans chaîne de pilotage complète.
+- Les modèles La-5, Aichi, M323, Li-2, Fa 223, Fw 200 et DFS 230 sont bien présents, mais aucun des 49 `car_table.dat` commerciaux analysés ne les référence comme véhicule pilotable.
 
 ## Décision actuelle
 
