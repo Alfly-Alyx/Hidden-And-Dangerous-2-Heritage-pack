@@ -416,6 +416,18 @@ Les scripts coopératifs `AF1_33`, `AF1_50`, `AF1_52` et `AF1_53` conservent cha
 
 La même syntaxe booléenne est active dans la mission solo Libye 1 et dans Libye 3 de Sabre Squadron, en plus de nombreux scripts du jeu de base. Le paquet réactive donc ces huit lignes : `AF1_33` fume pendant la pause de deux minutes déjà prévue dans sa boucle, tandis que les trois gardes de rempart reprennent la cigarette à leur poste. Tous l'arrêtent avant leur traitement d'alarme ; aucun déplacement ni réglage de difficulté n'est modifié.
 
+### Deux conversations complètes de Libye 1 coopératif
+
+Les contrôleurs `AF1_08_AF1_12_speech` et `AF1_33_AF1_34_speech` sont reliés dans les deux registres coopératifs, comme leurs quatre participants. Chaque paire envoie bien deux signaux de départ au compteur de synchronisation. Après la dernière réplique, les deux acteurs reçoivent leur signal de retour ; une alarme ou la mort de l'un d'eux arrête la parole et termine le contrôleur.
+
+Les scripts coopératifs conservent exactement les mêmes onze et neuf appels vocaux que les scripts solo actifs, mais leurs quarante lignes de condition et de parole ont été commentées. Les vingt fichiers WAV et les vingt données labiales correspondantes sont présents et non vides dans l'archive de langue. Le paquet réactive uniquement ces lignes. Le dialogue 23–24 n'est pas mélangé à ce lot, car seul le premier acteur envoie encore le signal de départ ; le dialogue 48–49 reste lui aussi au laboratoire avec ses raccords manquants.
+
+### Drapeaux et second mitrailleur dans Libye 3 coopératif
+
+`Objective1.scr` initialise le drapeau allemand visible et le britannique masqué, puis valide la capture du poste. Ses six commandes de recherche et de permutation des deux drapeaux étaient commentées, alors que `d_gerflag_` et `d_gbflag_` existent dans la scène et que le contrôleur est relié dans les deux registres. Elles sont réactivées ensemble : la capture rend désormais le changement de contrôle visible.
+
+`Village_Roof_7.scr` amène déjà le garde à sa MG `Kulas2`, mais son embarquement était commenté. Le garde parallèle `Village_Roof_2` exécute activement la même commande sur `Kulas3`; les deux gardes et les deux armes sont présents. Le second embarquement est donc restauré sans changer les routes, l'alarme ou les objectifs.
+
 ### Marche de la patrouille au chien dans Arctic 4
 
 Dans `R_Arc3_walking_guard_3.scr`, le mode marche placé juste après le mode garde est commenté avec la note tchèque « remettre plus tard — seulement pour le test avec le chien ». Les deux autres gardes conservent une ronde comparable et la branche de retour d'alarme du troisième utilise déjà `HUMAN_SETMODE_Walk()`.
@@ -573,6 +585,8 @@ Un écart du graphe ne doit pas être réactivé :
 - Alps 2 : le délai d'échec de 90 secondes, la course de l'agent et les anciens envois Carnage vers `detectoral204`, `_2` et `_3` sont des branches remplacées. Leur étude doit préserver simultanément le comportement release, sous forme de mode historique ou de variante choisie.
 - Tutoriel : `t_dummy_speech.scr` et `TUT_Talker_01` conservent une conversation d'ambiance complète, tandis que `TUT_Talker_02` n'est plus placé et que sa position d'origine n'est pas prouvée. La scène est confiée à la reconstruction.
 - Co_Libye3 : `Opel.scr` immobilise son véhicule en mettant son carburant à zéro, mais aucun propriétaire exact ne subsiste et deux Opel sont plausibles. Deux variantes de test doivent être comparées avant toute intégration.
+- Co_Libye3 : les scripts des passagers `Hammer1_SMG_3` et `Hammer1_LMG_1` conservent un premier mouvement commenté vers `HAMMER1_GO4_1` et `HAMMER1_GO5_1`, mais ces deux points ont disparu alors que les étapes `_2` sont actives. Les points et les routes doivent être recréés comme variante additive, en conservant le débarquement direct de la release.
+- Co_Libye1 : le dialogue 23–24 possède ses douze voix et ses deux retours, mais le second soldat n'envoie plus le signal qui ferait atteindre `sync == 2`. Le départ manquant doit être reconstruit et testé sans activer aveuglément les répliques.
 - Co_Burgundy3 : dix scripts d'ambiance et leurs cadres sonores survivent à l'identique du solo, mais les dix contrôleurs qui les portaient ont disparu. Ils doivent être recréés avec des positions vérifiables.
 - Arctic 2 : plusieurs émetteurs de lightmap de portes sont orphelins et les gestionnaires de leurs secondes portes ont été commentés lorsque les portes ont été réunies pour fermer les portails. Leur retour exige une variante additive avec portails et portes indépendants, pas une simple liaison.
 - Czech 3 : quatre comportements humains, une victime `Shocker_1` et trois barils explosifs subsistent sous forme de scripts, alors que leurs acteurs et leur déclencheur ont disparu. Plusieurs chemins de villa sont encore présents ; l'événement complet est confié à une reconstruction séparée.

@@ -90,6 +90,8 @@ Le projet doit produire un ensemble installable pour Hidden & Dangerous 2: Sabre
 - dans Africa 3, le distributeur d'alarme global avertit de nouveau `AF3a_22` et `AF3a_23` par le signal 20 ; les deux acteurs, leurs liaisons et leurs gestionnaires complets sont présents, et aucun autre émetteur ne leur envoie déjà ce signal ;
 - dans la cinématique d’arrivée en Jeep d’Africa 3, les deux fumées sont déjà créées et détruites ; le paquet réactive le son `cut_para` aux mêmes instants, comme le fait la variante Opel, après vérification de son ancre sonore et des quatre cadres de particules ;
 - dans Libye 1 coopératif, `AF1_33`, `AF1_50`, `AF1_52` et `AF1_53` relancent leur animation de cigarette dans les branches déjà prévues et l'arrêtent à l'alarme ; les mêmes appels sont actifs dans la version solo et dans Libye 3 ;
+- dans Libye 1 coopératif, les conversations 08–12 et 33–34 retrouvent leurs vingt répliques officielles, avec leurs synchronisations, acteurs, sons, animations labiales et retours complets ;
+- dans Libye 3 coopératif, la capture du poste échange de nouveau les drapeaux allemand et britannique et le garde de toit 7 reprend sa MG `Kulas2`, comme le garde parallèle sur `Kulas3` ;
 - dans Libye 2, la conversation des soldats 16–17 retrouve ses deux réponses finales enregistrées 53990012 et 53990013 en solo et en coopération ; les acteurs atteignent déjà le lieu du combat, et les sons ainsi que les animations labiales sont présents ;
 - dans Libye 3, le soldat `Li3_German_3` emprunte de nouveau les cinq points G3_02 à G3_06 de sa route détaillée avant de remplacer le servant de la mitrailleuse ; tous les checkpoints, le signal de relève et la MG sont présents ;
 - dans Brest, 33 scripts reliés retrouvent 49 animations d'observation de sentinelles et 10 réactions à la découverte d'un cadavre en solo et en coopération ; les cibles, activités et déclencheurs commerciaux sont tous présents ;
@@ -176,6 +178,7 @@ Objectif : prouver dans le jeu ce qui est déjà automatisé.
 - tester les six boutons d'alarme de Sicily 1 en solo et en coopération, puis sauvegarde, chargement et restauration complète.
 - tester en solo et en coopération la reprise de `ge_cesticka` après une alarme et la boucle de marmonnement de `gumak` dans Burgundy 2.
 - tester dans Burgundy 3 la ronde du garde 32, la séquence complète 59990052–59990056 du premier SAS, puis une sauvegarde et un chargement avant et après sa libération.
+- tester dans Libye 1 coopératif les dialogues 08–12 et 33–34 avec fin normale, alarme et mort d'un participant ; tester dans Libye 3 coopératif l'échange des drapeaux et les deux mitrailleurs de toit.
 
 Sortie attendue : tableau de tests signé avec captures et anomalies.
 

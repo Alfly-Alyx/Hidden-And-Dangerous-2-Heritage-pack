@@ -181,6 +181,8 @@ namespace HD2CommunityInstaller
             if (Arctic2DynamicLightInstaller.IsActive(gamePath)) ready++;
             if (Sicily1AlarmButtonInstaller.IsActive(gamePath)) ready++;
             if (CoSicily2GunSoundInstaller.IsActive(gamePath)) ready++;
+            if (CoLibye3DormantDetailsInstaller.IsActive(gamePath)) ready++;
+            if (CoLibye1DormantDialoguesInstaller.IsActive(gamePath)) ready++;
             if (CrossMissionScriptInstaller.IsActive(gamePath)) ready++;
             string africa3Dialogue = ReadOptional(
                 gamePath, "Scripts/AFRICA3/AF3a_rozhovor_05.scr");
@@ -195,7 +197,7 @@ namespace HD2CommunityInstaller
                 && africa3Dialogue.IndexOf(
                     "079915604", StringComparison.Ordinal) < 0)
                 ready++;
-            return CountStatus(ready, 68);
+            return CountStatus(ready, 70);
         }
 
         private static string DetectEasterEggs(string gamePath)

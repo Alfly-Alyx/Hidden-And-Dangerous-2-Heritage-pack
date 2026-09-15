@@ -408,6 +408,12 @@ namespace HD2CommunityInstaller
                     CoSicily2GunSoundInstaller.Install(
                         options.GamePath, journal, prepared, progress);
                 if (options.RestoreDormantSequences)
+                    CoLibye3DormantDetailsInstaller.Install(
+                        options.GamePath, journal, prepared, progress);
+                if (options.RestoreDormantSequences)
+                    CoLibye1DormantDialoguesInstaller.Install(
+                        options.GamePath, journal, prepared, progress);
+                if (options.RestoreDormantSequences)
                     CrossMissionScriptInstaller.Install(
                         options.GamePath, journal, prepared, progress);
                 if (options.RestoreDormantSequences)
