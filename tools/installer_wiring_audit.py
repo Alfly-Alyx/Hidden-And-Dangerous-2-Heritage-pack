@@ -69,6 +69,7 @@ def audit(root: Path) -> dict[str, object]:
     burgundy3_guard32_path = installer / "Burgundy3Guard32PatrolInstaller.cs"
     africa3_mechanic_path = installer / "Africa3MechanicCoverInstaller.cs"
     africa1_cards_path = installer / "Africa1CardPlayersInstaller.cs"
+    africa1_ambient_routes_path = installer / "Africa1AmbientRoutesInstaller.cs"
     arctic4_dog_patrol_path = installer / "Arctic4DogPatrolInstaller.cs"
     arctic4_ice_fall_path = installer / "Arctic4IceFallInstaller.cs"
     czech5_weather_path = installer / "Czech5WeatherInstaller.cs"
@@ -102,6 +103,9 @@ def audit(root: Path) -> dict[str, object]:
     burgundy3_guard32 = burgundy3_guard32_path.read_text(encoding="utf-8-sig")
     africa3_mechanic = africa3_mechanic_path.read_text(encoding="utf-8-sig")
     africa1_cards = africa1_cards_path.read_text(encoding="utf-8-sig")
+    africa1_ambient_routes = africa1_ambient_routes_path.read_text(
+        encoding="utf-8-sig"
+    )
     arctic4_dog_patrol = arctic4_dog_patrol_path.read_text(encoding="utf-8-sig")
     arctic4_ice_fall = arctic4_ice_fall_path.read_text(encoding="utf-8-sig")
     czech5_weather = czech5_weather_path.read_text(encoding="utf-8-sig")
@@ -431,6 +435,28 @@ def audit(root: Path) -> dict[str, object]:
             "Africa 1 card-player detection can mistake its commented loop for code"
         )
 
+    africa1_ambient_routes_accept_mixed_active_state = all((
+        "if (!BytesEqual(mechanic, patchedMechanic)) pending++;"
+        in africa1_ambient_routes,
+        "if (!BytesEqual(patrol, patchedPatrol)) pending++;"
+        in africa1_ambient_routes,
+        "|| BytesEqual(patrol, patchedPatrol)" not in africa1_ambient_routes,
+    ))
+    africa1_patrol_requires_active_route = all((
+        '@"^[ \\t]*OnAlarmDone' in africa1_ambient_routes,
+        '@"^[ \\t]*Label[ \\t]+LOOP' in africa1_ambient_routes,
+        africa1_ambient_routes.count('@"^[ \\t]*HUMAN_Move') >= 4,
+        '@"^[ \\t]*goto[ \\t]+LOOP' in africa1_ambient_routes,
+        "RegexOptions.IgnoreCase | RegexOptions.Multiline"
+        in africa1_ambient_routes,
+    ))
+    if not africa1_ambient_routes_accept_mixed_active_state:
+        errors.append("Africa 1 route validation rejects a mixed active state")
+    if not africa1_patrol_requires_active_route:
+        errors.append(
+            "Africa 1 patrol detection can mistake its commented route for code"
+        )
+
     arctic4_dog_patrol_requires_active_walk = all((
         arctic4_dog_patrol.count(
             '@"^[ \\t]*Label\\s+DeAlarm'
@@ -609,6 +635,12 @@ def audit(root: Path) -> dict[str, object]:
         ),
         "africa1_cards_require_complete_active_loop": (
             africa1_cards_require_complete_active_loop
+        ),
+        "africa1_ambient_routes_accept_mixed_active_state": (
+            africa1_ambient_routes_accept_mixed_active_state
+        ),
+        "africa1_patrol_requires_active_route": (
+            africa1_patrol_requires_active_route
         ),
         "arctic4_dog_patrol_requires_active_walk": (
             arctic4_dog_patrol_requires_active_walk

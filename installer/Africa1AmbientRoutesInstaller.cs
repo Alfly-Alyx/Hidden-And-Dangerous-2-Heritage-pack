@@ -29,10 +29,12 @@ namespace HD2CommunityInstaller
                 gamePath, PatrolPath, ScriptArchives));
             byte[] patchedMechanic = PatchMechanic(mechanic);
             byte[] patchedPatrol = PatchPatrol(patrol);
-            if (BytesEqual(mechanic, patchedMechanic)
-                || BytesEqual(patrol, patchedPatrol))
+            int pending = 0;
+            if (!BytesEqual(mechanic, patchedMechanic)) pending++;
+            if (!BytesEqual(patrol, patchedPatrol)) pending++;
+            if (pending == 0)
                 throw new InvalidDataException(
-                    "Une sequence ambiante d'Africa 1 semble deja restauree.");
+                    "Les deux sequences ambiantes d'Africa 1 semblent deja restaurees.");
             ValidateMechanic(patchedMechanic);
             ValidatePatrol(patchedPatrol);
             if (!BytesEqual(patchedMechanic, PatchMechanic(patchedMechanic))
@@ -40,7 +42,8 @@ namespace HD2CommunityInstaller
                 throw new InvalidDataException(
                     "La restauration des trajets Africa 1 n'est pas idempotente.");
             ValidateAssets(gamePath);
-            return "Africa 1 verifie : le mecanicien 16 rejoint son avion et le garde 19 retrouve sa ronde complete apres alerte.";
+            return "Africa 1 verifie : " + pending
+                + " sequence(s) dormante(s), le mecanicien 16 rejoint son avion et le garde 19 retrouve sa ronde complete apres alerte.";
         }
 
         public static bool IsActive(string gamePath)
@@ -190,13 +193,13 @@ namespace HD2CommunityInstaller
         private static bool IsPatrolPatched(string text)
         {
             return Regex.IsMatch(text,
-                @"OnAlarmDone\s*\(\s*\)\s*\{[\s\S]{0,500}"
-                + @"Label[ \t]+LOOP\s*:[\s\S]{0,100}"
-                + @"HUMAN_Move\s*\(\s*""AF1_18_02""\s*\)\s*;[\s\S]{0,100}"
-                + @"HUMAN_Move\s*\(\s*""AF1_19_01""\s*\)\s*;[\s\S]{0,100}"
-                + @"HUMAN_Move\s*\(\s*""AF1_19_02""\s*\)\s*;[\s\S]{0,100}"
-                + @"HUMAN_Move\s*\(\s*""AF1_18_03""\s*\)\s*;[\s\S]{0,100}"
-                + @"goto[ \t]+LOOP\s*;",
+                @"^[ \t]*OnAlarmDone\s*\(\s*\)\s*\{[\s\S]{0,500}"
+                + @"^[ \t]*Label[ \t]+LOOP\s*:[ \t]*(?=\r?$)[\s\S]{0,100}"
+                + @"^[ \t]*HUMAN_Move\s*\(\s*""AF1_18_02""\s*\)\s*;[ \t]*(?=\r?$)[\s\S]{0,100}"
+                + @"^[ \t]*HUMAN_Move\s*\(\s*""AF1_19_01""\s*\)\s*;[ \t]*(?=\r?$)[\s\S]{0,100}"
+                + @"^[ \t]*HUMAN_Move\s*\(\s*""AF1_19_02""\s*\)\s*;[ \t]*(?=\r?$)[\s\S]{0,100}"
+                + @"^[ \t]*HUMAN_Move\s*\(\s*""AF1_18_03""\s*\)\s*;[ \t]*(?=\r?$)[\s\S]{0,100}"
+                + @"^[ \t]*goto[ \t]+LOOP\s*;[ \t]*(?=\r?$)",
                 RegexOptions.IgnoreCase | RegexOptions.Multiline);
         }
 
@@ -218,8 +221,8 @@ namespace HD2CommunityInstaller
                 throw new InvalidDataException(
                     "La ronde restauree d'AF1_19 est incomplete.");
             Require(text,
-                @"OnAlarmDone\s*\(\s*\)\s*\{[\s\S]{0,220}"
-                + @"HUMAN_SETMODE_Walk\s*\(\s*\)\s*;",
+                @"^[ \t]*OnAlarmDone\s*\(\s*\)\s*\{[\s\S]{0,220}"
+                + @"^[ \t]*HUMAN_SETMODE_Walk\s*\(\s*\)\s*;[ \t]*(?=\r?$)",
                 "Le retour d'alarme officiel d'AF1_19 a ete altere.");
         }
 
