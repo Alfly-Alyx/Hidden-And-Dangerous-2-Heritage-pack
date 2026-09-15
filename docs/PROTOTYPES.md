@@ -19,6 +19,12 @@ Le pack reprend donc exactement huit bases correspondantes de `NORMANDY3_MP` : l
 
 `AFRIKA5_MP` conserve sept fichiers propres. Six ressources manquantes peuvent être reprises d'`AFRICA5_MP`. Le pack déploie les treize fichiers de la carte complétée dans un dossier autonome. Ses sept scripts de citernes subsistent sous `Scripts/AFRICA5_MP` ; le pack les rend aussi disponibles sous l'orthographe attendue par le prototype, `Scripts/AFRIKA5_MP`, et leurs sept propriétaires sont présents dans la scène propre du vestige. La carte est déclarée sous le nom `PROTOTYPE - Africa5 (exploration libre)` dans le mode **Deathmatch**.
 
+Le registre repris d'`AFRICA5_MP` contient exactement sept liaisons, de
+`m_nadrz_` à `m_nadrz_7`, vers `AF5_mp_cisterna1.scr` à
+`AF5_mp_cisterna7.scr`. L'audit vérifie désormais ces paires, la présence des
+sept propriétaires dans les données propres d'`AFRIKA5_MP` et l'intégrité
+interne des conteneurs `actors.bin`, `scene2.bin` et `sounds.bin`.
+
 Ces vestiges ne sont pas ajoutes au menu solo natif : ils ne contiennent ni definition complete de mission solo, ni objectifs, ni fin de mission. Ils sont accessibles directement dans le jeu par Multijoueur > Creer > LAN : Africa5 en Deathmatch et Normandy3 Zone en Occupation.
 
 Le contrôle indépendant `tools/prototype_deployment_audit.py` vérifie deux états

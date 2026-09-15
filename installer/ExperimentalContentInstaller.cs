@@ -53,7 +53,8 @@ namespace HD2CommunityInstaller
                 Dictionary<string, DtaEntry> africaPrototype =
                     DirectFiles(archive, AfricaPrototypePrefix);
                 List<DtaEntry> africaMissing = MissingFiles(africaSource, africaPrototype);
-                ValidateAfricaInventory(africaSource, africaPrototype, africaMissing);
+                ValidateAfricaInventory(
+                    archive, africaSource, africaPrototype, africaMissing);
                 ValidateCompletePrototype(CompletePrototype(
                     africaPrototype, africaMissing), AfricaMissionFiles, "Africa5");
                 africaOwn = africaPrototype.Count;
@@ -106,7 +107,8 @@ namespace HD2CommunityInstaller
                 Dictionary<string, DtaEntry> africaPrototype =
                     DirectFiles(archive, AfricaPrototypePrefix);
                 List<DtaEntry> africaMissing = MissingFiles(africaSource, africaPrototype);
-                ValidateAfricaInventory(africaSource, africaPrototype, africaMissing);
+                ValidateAfricaInventory(
+                    archive, africaSource, africaPrototype, africaMissing);
                 List<DtaEntry> africaComplete = CompletePrototype(
                     africaPrototype, africaMissing);
                 ValidateCompletePrototype(
@@ -187,7 +189,10 @@ namespace HD2CommunityInstaller
             for (int number = 1; number <= 7; number++)
                 if (!HasFile(scriptFolder,
                     "AF5_mp_cisterna" + number + ".scr", 0)) return false;
-            return true;
+            return HasCompleteContainer(missionFolder, "actors.bin")
+                && HasCompleteContainer(missionFolder, "scene2.bin")
+                && HasCompleteContainer(missionFolder, "sounds.bin")
+                && HasAfricaRuntimeLinks(missionFolder);
         }
 
         internal static string AddVestiges(string mapList)
@@ -305,6 +310,7 @@ namespace HD2CommunityInstaller
         }
 
         private static void ValidateAfricaInventory(
+            DtaArchive archive,
             Dictionary<string, DtaEntry> source,
             Dictionary<string, DtaEntry> prototype,
             List<DtaEntry> missing)
@@ -317,6 +323,83 @@ namespace HD2CommunityInstaller
                 || !prototype.ContainsKey("tree.klz"))
                 throw new InvalidDataException(
                     "Structure du prototype AFRIKA5_MP differente de l'archive 1.12 attendue.");
+            foreach (string file in new[] { "actors.bin", "scene2.bin" })
+                if (IsTruncatedContainer(archive.Read(prototype[file])))
+                    throw new InvalidDataException(
+                        "Conteneur propre AFRIKA5_MP incomplet : " + file + ".");
+            if (IsTruncatedContainer(archive.Read(source["sounds.bin"])))
+                throw new InvalidDataException(
+                    "Conteneur sonore Africa5_MP incomplet.");
+            ValidateAfricaRuntimeLinks(
+                archive.Read(source["mpscripts.dta"]),
+                archive.Read(prototype["actors.bin"]),
+                archive.Read(prototype["scene2.bin"]));
+        }
+
+        private static void ValidateAfricaRuntimeLinks(
+            byte[] registry, byte[] actors, byte[] scene)
+        {
+            Dictionary<string, string> bindings = ReadRegistryBindings(registry);
+            if (bindings.Count != 7)
+                throw new InvalidDataException(
+                    "Le registre du prototype Africa5 ne contient pas sept liaisons.");
+            string frames = Encoding.GetEncoding(1252).GetString(actors)
+                + Encoding.GetEncoding(1252).GetString(scene);
+            for (int number = 1; number <= 7; number++)
+            {
+                string actor = number == 1
+                    ? "m_nadrz_" : "m_nadrz_" + number;
+                string script = "AF5_mp_cisterna" + number + ".scr";
+                string actual;
+                if (!bindings.TryGetValue(actor, out actual)
+                    || !String.Equals(actual, script,
+                        StringComparison.OrdinalIgnoreCase))
+                    throw new InvalidDataException(
+                        "Liaison Africa5 absente : " + actor + " -> "
+                        + script + ".");
+                if (frames.IndexOf(actor,
+                    StringComparison.OrdinalIgnoreCase) < 0)
+                    throw new InvalidDataException(
+                        "Acteur Africa5 absent des donnees propres : " + actor + ".");
+            }
+        }
+
+        private static Dictionary<string, string> ReadRegistryBindings(byte[] data)
+        {
+            if (data == null || data.Length < 6)
+                throw new InvalidDataException(
+                    "Registre du prototype Africa5 trop court.");
+            Dictionary<string, string> result =
+                new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            int offset = 6;
+            while (offset < data.Length)
+            {
+                string actor = ReadRegistryString(data, ref offset);
+                string script = ReadRegistryString(data, ref offset);
+                if (result.ContainsKey(actor))
+                    throw new InvalidDataException(
+                        "Acteur duplique dans le registre Africa5 : " + actor + ".");
+                result.Add(actor, script);
+            }
+            return result;
+        }
+
+        private static string ReadRegistryString(byte[] data, ref int offset)
+        {
+            if (offset < 0 || offset + 6 > data.Length
+                || BitConverter.ToUInt16(data, offset) != 1)
+                throw new InvalidDataException(
+                    "Champ invalide dans le registre Africa5.");
+            uint total = BitConverter.ToUInt32(data, offset + 2);
+            if (total < 7 || total > Int32.MaxValue
+                || offset > data.Length - (int)total
+                || data[offset + (int)total - 1] != 0)
+                throw new InvalidDataException(
+                    "Taille de champ invalide dans le registre Africa5.");
+            string value = Encoding.GetEncoding(1252).GetString(
+                data, offset + 6, (int)total - 7);
+            offset += (int)total;
+            return value;
         }
 
         private static void ValidateNormandyInventory(
@@ -473,6 +556,25 @@ namespace HD2CommunityInstaller
                     || input.Read(header, 0, header.Length) != header.Length)
                     return false;
                 return BitConverter.ToUInt32(header, 2) == input.Length;
+            }
+        }
+
+        private static bool HasAfricaRuntimeLinks(string missionFolder)
+        {
+            try
+            {
+                byte[] registry = File.ReadAllBytes(
+                    Path.Combine(missionFolder, "mpscripts.dta"));
+                byte[] actors = File.ReadAllBytes(
+                    Path.Combine(missionFolder, "actors.bin"));
+                byte[] scene = File.ReadAllBytes(
+                    Path.Combine(missionFolder, "scene2.bin"));
+                ValidateAfricaRuntimeLinks(registry, actors, scene);
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 

@@ -13,6 +13,7 @@ import re
 from pathlib import Path
 
 from dta_archive import DtaArchive
+from script_binding_audit import parse_bindings, scene_frame_names
 from tree_klz import audit_bytes
 
 AFRICA_FILES = (
@@ -40,6 +41,11 @@ EXPECTED_BINDINGS = {
     "afrika5_mp": (
         "deathmatch", "PROTOTYPE - Africa5 (exploration libre)"
     ),
+}
+AFRICA_RUNTIME_BINDINGS = {
+    ("m_nadrz_" if number == 1 else f"m_nadrz_{number}"):
+        f"af5_mp_cisterna{number}.scr"
+    for number in range(1, 8)
 }
 
 
@@ -85,6 +91,53 @@ def archived_container_status(
     }
 
 
+def archived_data(
+    archive: DtaArchive, prefix: str, filename: str
+) -> bytes:
+    wanted = normalized(prefix).rstrip("/") + "/" + filename.casefold()
+    matches = [
+        entry for entry in archive.entries
+        if normalized(entry.name) == wanted
+    ]
+    if len(matches) != 1:
+        raise ValueError(
+            f"{wanted}: {len(matches)} entrée(s) trouvée(s)"
+        )
+    return archive.read(matches[0])
+
+
+def africa_runtime_status(
+    registry: bytes, actors: bytes, scene: bytes
+) -> dict[str, object]:
+    try:
+        bindings = {
+            actor.casefold(): script.casefold()
+            for actor, script in parse_bindings(registry)
+        }
+        frames = scene_frame_names(actors) | scene_frame_names(scene)
+        missing_bindings = sorted(
+            f"{actor} -> {script}"
+            for actor, script in AFRICA_RUNTIME_BINDINGS.items()
+            if bindings.get(actor) != script
+        )
+        missing_owners = sorted(
+            actor for actor in AFRICA_RUNTIME_BINDINGS
+            if actor not in frames
+        )
+        return {
+            "valid": (
+                len(bindings) == len(AFRICA_RUNTIME_BINDINGS)
+                and not missing_bindings
+                and not missing_owners
+            ),
+            "binding_count": len(bindings),
+            "missing_bindings": missing_bindings,
+            "missing_owners": missing_owners,
+        }
+    except ValueError as error:
+        return {"valid": False, "error": str(error)}
+
+
 def archive_plan(game: Path):
     errors: list[str] = []
     with DtaArchive(game / "missions.dta") as archive:
@@ -103,6 +156,28 @@ def archive_plan(game: Path):
                 archive, "Missions/NORMANDY3_MP", name
             )
             for name in NORMANDY_TRUNCATED_CONTAINERS
+        }
+        africa_runtime = africa_runtime_status(
+            archived_data(
+                archive, "Missions/AFRICA5_MP", "mpscripts.dta"
+            ),
+            archived_data(
+                archive, "Missions/AFRIKA5_MP", "actors.bin"
+            ),
+            archived_data(
+                archive, "Missions/AFRIKA5_MP", "scene2.bin"
+            ),
+        )
+        africa_containers = {
+            "actors.bin": archived_container_status(
+                archive, "Missions/AFRIKA5_MP", "actors.bin"
+            ),
+            "scene2.bin": archived_container_status(
+                archive, "Missions/AFRIKA5_MP", "scene2.bin"
+            ),
+            "sounds.bin": archived_container_status(
+                archive, "Missions/AFRICA5_MP", "sounds.bin"
+            ),
         }
     with DtaArchive(game / "Scripts.dta") as archive:
         africa_scripts = direct_entries(archive, "Scripts/AFRICA5_MP")
@@ -131,6 +206,12 @@ def archive_plan(game: Path):
         errors.append("le plan Africa5 ne produit pas les 13 fichiers autonomes")
     if set(africa_scripts) != set(AFRICA_SCRIPTS):
         errors.append("les sept scripts de citernes Africa5 ne sont pas tous récupérables")
+    if not all(status["valid"] for status in africa_containers.values()):
+        errors.append("un conteneur d'exécution Africa5 est incomplet")
+    if not africa_runtime["valid"]:
+        errors.append(
+            "le registre Africa5 ne relie pas exactement les sept citernes"
+        )
     if set(normandy_source) != set(NORMANDY_FILES):
         errors.append("NORMANDY3_MP commercial ne contient pas exactement les 14 bases attendues")
     if len(normandy_own) != 13 or normandy_complements != list(NORMANDY_COMPLEMENTS):
@@ -159,6 +240,8 @@ def archive_plan(game: Path):
             "copied_bases": africa_missing,
             "completed_files": len(africa_complete),
             "recoverable_scripts": len(africa_scripts),
+            "runtime_containers": africa_containers,
+            "runtime_links": africa_runtime,
         },
         "normandy": {
             "source_files": len(normandy_source),
@@ -235,6 +318,27 @@ def loose_container_status(path: Path) -> dict[str, object]:
     }
 
 
+def loose_africa_runtime_status(mission_folder: Path) -> dict[str, object]:
+    paths = {
+        "registry": mission_folder / "mpscripts.dta",
+        "actors": mission_folder / "actors.bin",
+        "scene": mission_folder / "scene2.bin",
+    }
+    missing = [
+        label for label, path in paths.items() if not path.is_file()
+    ]
+    if missing:
+        return {
+            "valid": False,
+            "error": "absent : " + ", ".join(missing),
+        }
+    return africa_runtime_status(
+        paths["registry"].read_bytes(),
+        paths["actors"].read_bytes(),
+        paths["scene"].read_bytes(),
+    )
+
+
 def installed_state(game: Path):
     missions = game / "Missions"
     scripts = game / "Scripts"
@@ -262,6 +366,18 @@ def installed_state(game: Path):
     normandy_containers_ok = all(
         status["valid"] for status in normandy_containers.values()
     )
+    africa_containers = {
+        name: loose_container_status(
+            missions / "AFRIKA5_MP" / name
+        )
+        for name in ("actors.bin", "scene2.bin", "sounds.bin")
+    }
+    africa_containers_ok = all(
+        status["valid"] for status in africa_containers.values()
+    )
+    africa_runtime = loose_africa_runtime_status(
+        missions / "AFRIKA5_MP"
+    )
     tree_reports = {
         "africa": tree_status(missions / "AFRIKA5_MP" / "tree.klz"),
         "normandy": tree_status(missions / "NORMANDY3_MP_ZONE" / "tree.klz"),
@@ -283,7 +399,12 @@ def installed_state(game: Path):
             "ok": ok,
         }
 
-    africa_ready = not africa_missing and not script_missing
+    africa_ready = (
+        not africa_missing
+        and not script_missing
+        and africa_containers_ok
+        and africa_runtime["valid"]
+    )
     normandy_ready = (
         not normandy_missing
         and normandy_base_sizes_ok
@@ -302,6 +423,9 @@ def installed_state(game: Path):
             "scripts_present": len(set(AFRICA_SCRIPTS) & set(africa_scripts)),
             "scripts_expected": len(AFRICA_SCRIPTS),
             "scripts_missing": script_missing,
+            "runtime_containers": africa_containers,
+            "runtime_containers_ok": africa_containers_ok,
+            "runtime_links": africa_runtime,
             "ready": africa_ready,
         },
         "normandy": {
@@ -346,6 +470,9 @@ def main() -> int:
         "africa_installed": (
             f"{report['installed']['africa']['files_present']}/"
             f"{report['installed']['africa']['files_expected']}"
+        ),
+        "africa_runtime_ok": (
+            report["installed"]["africa"]["runtime_links"]["valid"]
         ),
         "normandy_installed": (
             f"{report['installed']['normandy']['files_present']}/"
