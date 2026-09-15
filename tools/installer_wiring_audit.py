@@ -70,6 +70,7 @@ def audit(root: Path) -> dict[str, object]:
     africa3_mechanic_path = installer / "Africa3MechanicCoverInstaller.cs"
     africa1_cards_path = installer / "Africa1CardPlayersInstaller.cs"
     africa1_ambient_routes_path = installer / "Africa1AmbientRoutesInstaller.cs"
+    africa2_guard_signals_path = installer / "Africa2GuardSignalInstaller.cs"
     arctic4_dog_patrol_path = installer / "Arctic4DogPatrolInstaller.cs"
     arctic4_ice_fall_path = installer / "Arctic4IceFallInstaller.cs"
     czech5_weather_path = installer / "Czech5WeatherInstaller.cs"
@@ -104,6 +105,9 @@ def audit(root: Path) -> dict[str, object]:
     africa3_mechanic = africa3_mechanic_path.read_text(encoding="utf-8-sig")
     africa1_cards = africa1_cards_path.read_text(encoding="utf-8-sig")
     africa1_ambient_routes = africa1_ambient_routes_path.read_text(
+        encoding="utf-8-sig"
+    )
+    africa2_guard_signals = africa2_guard_signals_path.read_text(
         encoding="utf-8-sig"
     )
     arctic4_dog_patrol = arctic4_dog_patrol_path.read_text(encoding="utf-8-sig")
@@ -457,6 +461,23 @@ def audit(root: Path) -> dict[str, object]:
             "Africa 1 patrol detection can mistake its commented route for code"
         )
 
+    africa2_excludes_missing_guard03_actor = all((
+        '"Scripts/AFRICA2/AF2_01_cardet.scr"' not in africa2_guard_signals,
+        "PatchGuard03Connections" not in africa2_guard_signals,
+        "PatchRegistry" not in africa2_guard_signals,
+        "WriteRegistryField" not in africa2_guard_signals,
+        'return ReplaceSignal(data, "af2_02", 5, 20);'
+        in africa2_guard_signals,
+        'return ReplaceSignal(data, "en05", 20, 5);'
+        in africa2_guard_signals,
+        "AF2_03 reste exclu car son acteur commercial est absent"
+        in africa2_guard_signals,
+    ))
+    if not africa2_excludes_missing_guard03_actor:
+        errors.append(
+            "Africa 2 can reconnect AF2_03 even though its commercial actor is absent"
+        )
+
     arctic4_dog_patrol_requires_active_walk = all((
         arctic4_dog_patrol.count(
             '@"^[ \\t]*Label\\s+DeAlarm'
@@ -641,6 +662,9 @@ def audit(root: Path) -> dict[str, object]:
         ),
         "africa1_patrol_requires_active_route": (
             africa1_patrol_requires_active_route
+        ),
+        "africa2_excludes_missing_guard03_actor": (
+            africa2_excludes_missing_guard03_actor
         ),
         "arctic4_dog_patrol_requires_active_walk": (
             arctic4_dog_patrol_requires_active_walk

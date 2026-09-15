@@ -10,7 +10,6 @@ namespace HD2CommunityInstaller
     {
         private static readonly string[] ScriptPaths = {
             "Scripts/AFRICA2/AF2_activator.scr",
-            "Scripts/AFRICA2/AF2_01_cardet.scr",
             "Scripts/AFRICA2/AF2_14.scr",
             "Scripts/AFRICA2/AF2_15.scr",
             "Scripts/AFRICA2/AF2_dummy_alert01.scr",
@@ -20,8 +19,6 @@ namespace HD2CommunityInstaller
         private const string RegistryPath = "Missions/AFRICA2/Scripts.dta";
         private const string ActorsPath = "Missions/AFRICA2/actors.bin";
         private const string CheckpointsPath = "Missions/AFRICA2/check2.bin";
-        private const string Guard03Actor = "AF2_03";
-        private const string Guard03Script = "AF2_03.scr";
 
         private static readonly string[] ScriptArchives = {
             "Scripts.dta", "Patch.dta", "SabreSquadron.dta"
@@ -47,20 +44,10 @@ namespace HD2CommunityInstaller
                     throw new InvalidDataException(
                         "Le correctif des gardes Africa 2 n'est pas idempotent.");
             }
-            byte[] registry = ReadSource(ResolveSource(
-                gamePath, RegistryPath, MissionArchives));
-            byte[] patchedRegistry = PatchRegistry(registry);
-            if (BytesEqual(registry, patchedRegistry))
-                throw new InvalidDataException(
-                    "La liaison du garde AF2_03 semble deja restauree.");
-            ValidateRegistry(patchedRegistry);
-            if (!BytesEqual(patchedRegistry, PatchRegistry(patchedRegistry)))
-                throw new InvalidDataException(
-                    "La liaison du garde AF2_03 n'est pas idempotente.");
             ValidateAssets(gamePath);
             return "Africa 2 verifie : AF2_02 et AF2_05 retrouvent leurs bons signaux, "
-                + "AF2_03 ses trois raccordements officiels, la coordination 14-15 est reactivee, "
-                + "le garde 14 ignore de nouveau l'alarme technique 512 et le premier renfort se met a couvert.";
+                + "la coordination 14-15 est reactivee, le garde 14 ignore de nouveau l'alarme "
+                + "technique 512 et le premier renfort se met a couvert; AF2_03 reste exclu car son acteur commercial est absent.";
         }
 
         public static bool IsActive(string gamePath)
@@ -73,10 +60,6 @@ namespace HD2CommunityInstaller
                     if (!File.Exists(target)) return false;
                     ValidatePatched(relative, File.ReadAllBytes(target));
                 }
-                string registry = InstallerCore.SafeGameTarget(
-                    gamePath, RegistryPath);
-                if (!File.Exists(registry)) return false;
-                ValidateRegistry(File.ReadAllBytes(registry));
                 return true;
             }
             catch
@@ -121,54 +104,17 @@ namespace HD2CommunityInstaller
                 }
                 changed++;
             }
-            DormantSource registrySource = ResolveSource(
-                gamePath, RegistryPath, MissionArchives);
-            string registryTarget = InstallerCore.SafeGameTarget(
-                gamePath, RegistryPath);
-            byte[] registryOriginal = File.Exists(registryTarget)
-                ? File.ReadAllBytes(registryTarget)
-                : ReadSource(registrySource);
-            byte[] registryPatched = PatchRegistry(registryOriginal);
-            ValidateRegistry(registryPatched);
-            if (!BytesEqual(registryOriginal, registryPatched))
-            {
-                InstallerCore.PrepareTarget(
-                    gamePath, RegistryPath, registryTarget,
-                    journal, prepared);
-                Directory.CreateDirectory(
-                    Path.GetDirectoryName(registryTarget));
-                string temporary = registryTarget + ".hd2pack.tmp";
-                try
-                {
-                    File.WriteAllBytes(temporary, registryPatched);
-                    File.Copy(temporary, registryTarget, true);
-                    journal.RecordHash(
-                        RegistryPath,
-                        CmpInstaller.ComputeSha256(temporary));
-                }
-                finally
-                {
-                    if (File.Exists(temporary)) File.Delete(temporary);
-                }
-                changed++;
-            }
             InstallerCore.Log(
                 "Africa 2 : " + changed + " scripts de comportement corriges.");
             InstallerCore.Report(progress,
-                "AF2_02 et AF2_05 retrouvent leurs bons signaux, AF2_03 ses trois declencheurs, les gardes 14-15 leur sequence rapprochee et le premier renfort sa mise a couvert.");
+                "AF2_02 et AF2_05 retrouvent leurs bons signaux, les gardes 14-15 leur sequence rapprochee et le premier renfort sa mise a couvert. AF2_03 reste reserve a une reconstruction ulterieure.");
         }
 
         private static byte[] PatchScript(string relative, byte[] data)
         {
             if (relative.EndsWith("AF2_activator.scr",
                 StringComparison.OrdinalIgnoreCase))
-            {
-                data = ReplaceSignal(data, "af2_02", 5, 20);
-                return PatchGuard03Connections(data, "af2_03", 1, 5);
-            }
-            if (relative.EndsWith("AF2_01_cardet.scr",
-                StringComparison.OrdinalIgnoreCase))
-                return PatchGuard03Connections(data, "af2_03", 1);
+                return ReplaceSignal(data, "af2_02", 5, 20);
             if (relative.EndsWith("AF2_14.scr",
                 StringComparison.OrdinalIgnoreCase))
                 return PatchGuard14AlarmFilter(data);
@@ -183,57 +129,6 @@ namespace HD2CommunityInstaller
                 return PatchFirstReinforcementCover(data);
             throw new InvalidDataException(
                 "Script Africa 2 non pris en charge : " + relative);
-        }
-
-        private static byte[] PatchRegistry(byte[] data)
-        {
-            if (data == null || data.Length < 6)
-                throw new InvalidDataException(
-                    "Registre de scripts Africa 2 trop court.");
-            int offset = 6;
-            while (offset < data.Length)
-            {
-                string actor = ReadRegistryField(data, ref offset);
-                string script = ReadRegistryField(data, ref offset);
-                if (!String.Equals(actor, Guard03Actor,
-                    StringComparison.OrdinalIgnoreCase))
-                    continue;
-                if (String.Equals(script, Guard03Script,
-                    StringComparison.OrdinalIgnoreCase))
-                    return data;
-                throw new InvalidDataException(
-                    "Le garde AF2_03 possede deja un autre script : "
-                    + script + ".");
-            }
-
-            Encoding ansi = Encoding.GetEncoding(1252);
-            using (MemoryStream result = new MemoryStream())
-            using (BinaryWriter writer = new BinaryWriter(result, ansi))
-            {
-                writer.Write(data);
-                WriteRegistryField(writer, ansi.GetBytes(Guard03Actor));
-                WriteRegistryField(writer, ansi.GetBytes(Guard03Script));
-                return result.ToArray();
-            }
-        }
-
-        private static void ValidateRegistry(byte[] data)
-        {
-            int found = 0;
-            int offset = 6;
-            while (offset < data.Length)
-            {
-                string actor = ReadRegistryField(data, ref offset);
-                string script = ReadRegistryField(data, ref offset);
-                if (String.Equals(actor, Guard03Actor,
-                        StringComparison.OrdinalIgnoreCase)
-                    && String.Equals(script, Guard03Script,
-                        StringComparison.OrdinalIgnoreCase))
-                    found++;
-            }
-            if (found != 1)
-                throw new InvalidDataException(
-                    "Liaison du garde AF2_03 absente ou ambigue.");
         }
 
         private static byte[] PatchShortRangeCoordination(byte[] data)
@@ -292,8 +187,7 @@ namespace HD2CommunityInstaller
 
         private static byte[] PatchGlobalAlert(byte[] data)
         {
-            data = ReplaceSignal(data, "en05", 20, 5);
-            return PatchGuard03Connections(data, "en03", 20);
+            return ReplaceSignal(data, "en05", 20, 5);
         }
 
         private static byte[] PatchGuard14AlarmFilter(byte[] data)
@@ -341,65 +235,6 @@ namespace HD2CommunityInstaller
             return new Regex(pattern, RegexOptions.IgnoreCase);
         }
 
-        private static byte[] PatchGuard03Connections(
-            byte[] data, string handle, params int[] signals)
-        {
-            Encoding ansi = Encoding.GetEncoding(1252);
-            string text = ansi.GetString(data);
-            text = ActivateLine(text,
-                Guard03DeclarationRegex(handle, true),
-                Guard03DeclarationRegex(handle, false),
-                "declaration " + handle);
-            foreach (int signal in signals)
-                text = ActivateLine(text,
-                    Guard03SignalRegex(handle, signal, true),
-                    Guard03SignalRegex(handle, signal, false),
-                    "signal " + signal + " vers " + handle);
-            return ansi.GetBytes(text);
-        }
-
-        private static Regex Guard03DeclarationRegex(
-            string handle, bool dormant)
-        {
-            string actor = Regex.Escape(handle);
-            string pattern = dormant
-                ? @"(?m)^([ \t]*)//([ \t]*)(FRAME[ \t]+" + actor
-                    + @"[ \t]*;[ \t]*FRM_FindFrame[ \t]*\([ \t]*"
-                    + actor + @"[ \t]*,[ \t]*""AF2_03""[ \t]*\)"
-                    + @"[ \t]*;[^\r\n]*)(\r?)$"
-                : @"(?m)^[ \t]*FRAME[ \t]+" + actor
-                    + @"[ \t]*;[ \t]*FRM_FindFrame[ \t]*\([ \t]*"
-                    + actor + @"[ \t]*,[ \t]*""AF2_03""[ \t]*\)"
-                    + @"[ \t]*;[^\r\n]*\r?$";
-            return new Regex(pattern, RegexOptions.IgnoreCase);
-        }
-
-        private static Regex Guard03SignalRegex(
-            string handle, int signal, bool dormant)
-        {
-            string actor = Regex.Escape(handle);
-            string pattern = dormant
-                ? @"(?m)^([ \t]*)//([ \t]*)(SendSignal\s*\(\s*"
-                    + actor + @"\s*,\s*" + signal
-                    + @"\s*\)\s*;[ \t]*)(\r?)$"
-                : @"(?m)^[ \t]*SendSignal\s*\(\s*" + actor
-                    + @"\s*,\s*" + signal + @"\s*\)\s*;[ \t]*\r?$";
-            return new Regex(pattern, RegexOptions.IgnoreCase);
-        }
-
-        private static string ActivateLine(
-            string text, Regex dormant, Regex active,
-            string label)
-        {
-            int dormantCount = dormant.Matches(text).Count;
-            int activeCount = active.Matches(text).Count;
-            if (dormantCount == 0 && activeCount == 1) return text;
-            if (dormantCount != 1 || activeCount != 0)
-                throw new InvalidDataException(
-                    "Structure inattendue de " + label + ".");
-            return dormant.Replace(text, "$1$2$3$4", 1);
-        }
-
         private static byte[] ReplaceSignal(
             byte[] data, string actor, int wrong, int correct)
         {
@@ -431,13 +266,7 @@ namespace HD2CommunityInstaller
             string text = Encoding.GetEncoding(1252).GetString(data);
             if (relative.EndsWith("AF2_activator.scr",
                 StringComparison.OrdinalIgnoreCase))
-            {
                 RequireOnlySignal(text, "af2_02", 20, 5);
-                RequireGuard03Connections(text, "af2_03", 1, 5);
-            }
-            else if (relative.EndsWith("AF2_01_cardet.scr",
-                StringComparison.OrdinalIgnoreCase))
-                RequireGuard03Connections(text, "af2_03", 1);
             else if (relative.EndsWith("AF2_14.scr",
                 StringComparison.OrdinalIgnoreCase))
                 ValidateDormantCall(text,
@@ -448,10 +277,7 @@ namespace HD2CommunityInstaller
                 ValidateShortRangeCoordination(text);
             else if (relative.EndsWith("AF2_dummy_alert01.scr",
                 StringComparison.OrdinalIgnoreCase))
-            {
                 RequireOnlySignal(text, "en05", 5, 20);
-                RequireGuard03Connections(text, "en03", 20);
-            }
             else if (relative.EndsWith("AF2_posily_01.scr",
                 StringComparison.OrdinalIgnoreCase))
                 ValidateDormantCall(text,
@@ -495,23 +321,6 @@ namespace HD2CommunityInstaller
                     "Restauration incomplete de " + label + ".");
         }
 
-        private static void RequireGuard03Connections(
-            string text, string handle, params int[] signals)
-        {
-            if (Guard03DeclarationRegex(handle, false).Matches(text).Count != 1
-                || Guard03DeclarationRegex(handle, true).Matches(text).Count != 0)
-                throw new InvalidDataException(
-                    "Declaration invalide pour " + handle + ".");
-            foreach (int signal in signals)
-                if (Guard03SignalRegex(handle, signal, false)
-                        .Matches(text).Count != 1
-                    || Guard03SignalRegex(handle, signal, true)
-                        .Matches(text).Count != 0)
-                    throw new InvalidDataException(
-                        "Raccordement invalide du signal " + signal
-                        + " vers " + handle + ".");
-        }
-
         private static void RequireOnlySignal(
             string text, string actor, int expected, int forbidden)
         {
@@ -530,21 +339,6 @@ namespace HD2CommunityInstaller
             Require(actor02,
                 @"OnSignal\s*\(\s*20\s*\)[\s\S]{0,60}goto\s+ALERT[\s\S]{0,3000}Label\s+ALERT\s*:[\s\S]{0,300}HUMAN_Move\s*\(\s*""AF2_02_alert""\s*\)",
                 "Route d'alerte officielle AF2_02 incomplete.");
-
-            string actor03 = ReadText(ResolveSource(gamePath,
-                "Scripts/AFRICA2/AF2_03.scr", ScriptArchives));
-            RequireHandler(actor03, 1, "AF2_03");
-            RequireHandler(actor03, 5, "AF2_03");
-            RequireHandler(actor03, 20, "AF2_03");
-            Require(actor03,
-                @"OnSignal\s*\(\s*1\s*\)[\s\S]{0,60}goto\s+ACTIVATE[\s\S]{0,3000}Label\s+ACTIVATE\s*:[\s\S]{0,300}HUMAN_Move\s*\(\s*""AF2_03_01""\s*\)",
-                "Route d'activation officielle AF2_03 incomplete.");
-            Require(actor03,
-                @"OnSignal\s*\(\s*5\s*\)[\s\S]{0,300}HUMAN_Move\s*\(\s*""AF2_03_alert""\s*\)",
-                "Reaction directe officielle AF2_03 incomplete.");
-            Require(actor03,
-                @"OnSignal\s*\(\s*20\s*\)[\s\S]{0,60}goto\s+ALERT[\s\S]{0,3000}Label\s+ALERT\s*:[\s\S]{0,300}HUMAN_Move\s*\(\s*""AF2_03_alert""\s*\)",
-                "Route d'alerte officielle AF2_03 incomplete.");
 
             string actor14 = ReadText(ResolveSource(gamePath,
                 "Scripts/AFRICA2/AF2_14.scr", ScriptArchives));
@@ -604,8 +398,6 @@ namespace HD2CommunityInstaller
                 gamePath, RegistryPath, MissionArchives));
             if (!HasBinding(registry, "af2_activator", "AF2_activator.scr")
                 || !HasBinding(registry,
-                    "AF2_01_cardet", "AF2_01_cardet.scr")
-                || !HasBinding(registry,
                     "dummy_alert01", "AF2_dummy_alert01.scr")
                 || !HasBinding(registry, "AF2_02", "AF2_02.scr")
                 || !HasBinding(registry, "AF2_05", "AF2_05.scr")
@@ -615,9 +407,6 @@ namespace HD2CommunityInstaller
                     "AF2_posily_01", "AF2_posily_01.scr"))
                 throw new InvalidDataException(
                     "Liaisons officielles du groupe de gardes Africa 2 incompletes.");
-            if (HasActorBinding(registry, Guard03Actor))
-                throw new InvalidDataException(
-                    "Le garde AF2_03 n'est plus libre dans le registre source.");
 
             ValidateCoordinationAssets(gamePath);
         }
@@ -626,9 +415,7 @@ namespace HD2CommunityInstaller
         {
             byte[] actors = ReadSource(ResolveSource(
                 gamePath, ActorsPath, MissionArchives));
-            foreach (string actor in new[] {
-                "AF2_03", "AF2_14", "AF2_15"
-            })
+            foreach (string actor in new[] { "AF2_14", "AF2_15" })
                 if (CountTypedString(actors, actor) != 1)
                     throw new InvalidDataException(
                         "Acteur officiel " + actor + " absent ou ambigu.");
@@ -730,33 +517,6 @@ namespace HD2CommunityInstaller
                     return true;
             }
             return false;
-        }
-
-        private static bool HasActorBinding(
-            byte[] data, string wantedActor)
-        {
-            if (data.Length < 6)
-                throw new InvalidDataException(
-                    "Registre de scripts Africa 2 trop court.");
-            int offset = 6;
-            while (offset < data.Length)
-            {
-                string actor = ReadRegistryField(data, ref offset);
-                ReadRegistryField(data, ref offset);
-                if (String.Equals(actor, wantedActor,
-                    StringComparison.OrdinalIgnoreCase))
-                    return true;
-            }
-            return false;
-        }
-
-        private static void WriteRegistryField(
-            BinaryWriter writer, byte[] value)
-        {
-            writer.Write((ushort)1);
-            writer.Write(checked((uint)(value.Length + 7)));
-            writer.Write(value);
-            writer.Write((byte)0);
         }
 
         private static string ReadRegistryField(byte[] data, ref int offset)
