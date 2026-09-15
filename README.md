@@ -66,6 +66,12 @@ restauration, vérifie le confinement de chaque chemin, la présence des fichier
 et sauvegardes, puis peut recalculer toutes les empreintes avec
 `--verify-hashes`. La publication finale exigera en plus `--require-sealed`.
 
+Le contrôle `tools/installer_composition_audit.py` protège les cibles partagées
+par plusieurs restaurations. Il vérifie l'ordre des modules, la lecture de la
+version déjà modifiée, la sauvegarde unique de l'original et l'enregistrement de
+l'empreinte finale. Les ajouts au catalogue multijoueur et aux registres de Brest
+coopératif peuvent ainsi se cumuler sans que le dernier module efface les autres.
+
 Un prototype de menu solo distinct est maintenant préparé dans une copie de
 test séparée. La scène `.4ds` seule ne suffisait pas ; la copie de l'exécutable
 a donc été décompactée et reconstruite hors ligne avec la prise en charge de
