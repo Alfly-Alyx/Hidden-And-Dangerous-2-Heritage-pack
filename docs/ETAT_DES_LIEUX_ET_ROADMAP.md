@@ -41,6 +41,7 @@ Le projet doit produire un ensemble installable pour Hidden & Dangerous 2: Sabre
 ### Affichage et performances
 
 - la résolution appliquée est toujours la résolution physique active de l'écran principal ; elle n'est plus abaissée à 1080p ou 1440p selon le profil matériel et n'est plus plafonnée artificiellement à 4K ;
+- le dépassement de capacité observé dans une ancienne mise à jour venait de l'encodage octet par octet de `LS3D_setup` ; l'écriture actuelle masque explicitement chaque octet et son autocontrôle relit largeur, hauteur et profondeur avant toute installation ;
 - le profil de qualité reste indépendant et additionne des indices CPU, mémoire vive, mémoire vidéo et famille de GPU ;
 - le contrôle de câblage refuse désormais une régression qui réintroduirait un plafond 4K, oublierait une des trois familles de performances ou appliquerait la résolution avant le correctif écran large.
 

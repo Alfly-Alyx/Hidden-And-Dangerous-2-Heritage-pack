@@ -210,6 +210,19 @@ def audit(root: Path) -> dict[str, object]:
         errors.append(
             "Graphics configuration must use the physical desktop resolution without a 4K cap"
         )
+    graphics_integer_encoding = all((
+        "data[offset] = (byte)(value & 0xFF);" in graphics,
+        "data[offset + 1] = (byte)((value >> 8) & 0xFF);" in graphics,
+        "data[offset + 2] = (byte)((value >> 16) & 0xFF);" in graphics,
+        "data[offset + 3] = (byte)((value >> 24) & 0xFF);" in graphics,
+        "ReadInt32(encodingProbe, 2) != profile.Width" in graphics,
+        "ReadInt32(encodingProbe, 6) != profile.Height" in graphics,
+        "Convert.ToByte(value" not in graphics,
+    ))
+    if not graphics_integer_encoding:
+        errors.append(
+            "Graphics integer encoding can overflow or lacks its round-trip self-test"
+        )
     adaptive_quality_policy = all((
         "profile.GpuRamBytes" in graphics,
         "profile.RamBytes" in graphics,
@@ -330,6 +343,7 @@ def audit(root: Path) -> dict[str, object]:
         "exploration_postpass": exploration_postpass,
         "safe_update_preflight": safe_update_preflight,
         "native_resolution_policy": native_resolution_policy,
+        "graphics_integer_encoding": graphics_integer_encoding,
         "adaptive_quality_policy": adaptive_quality_policy,
         "widescreen_before_resolution": widescreen_before_resolution,
         "africa4_exact_bindings": africa4_exact_bindings,
