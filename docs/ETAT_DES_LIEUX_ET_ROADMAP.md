@@ -157,7 +157,7 @@ Le premier inventaire automatisé couvre désormais les trois couches commercial
 - inventaire séparé des dossiers de cartes non déclarés dans le multijoueur ;
 - comparaison des catalogues de neuf couples solo/coopératif présentant 28 omissions, 9 ajouts ou plusieurs renumérotations, avec trois chaînes déjà restaurées de façon stable ;
 - inventaire des modèles, scripts et tables liés aux armes et véhicules retirés.
-- audit manuel complet d'Arctic 1 à Arctic 4, de Czech 1 à Czech 6, de Normandy 1 à Normandy 2, de Norway, Sicily 1–2, Burgundy 1–3, Libye 1–3 et Africa 1–5 : les restaurations démontrables sont intégrées aux sources, tandis que les branches incomplètes, remplacées ou réellement manquantes restent isolées ;
+- audit manuel complet du Tutoriel, d'Arctic 1 à Arctic 4, de Czech 1 à Czech 6, de Normandy 1 à Normandy 2, de Norway, Sicily 1–2, Burgundy 1–3, Burma 1–2, Libye 1–3 et Africa 1–6 : les restaurations démontrables sont intégrées aux sources, tandis que les branches incomplètes, remplacées ou réellement manquantes restent isolées ;
 
 L'ordre de traitement est désormais : restaurer tout ce qui possède encore ses données suffisantes, y compris les véhicules utilisables comme décors ou objets scriptés ; tester ; puis réserver pour la fin les créations qui exigent géométrie, modèles, animations, physique ou scripts nouveaux.
 
