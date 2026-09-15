@@ -197,6 +197,14 @@ Objectif : prouver dans le jeu ce qui est déjà automatisé.
 
 Sortie attendue : tableau de tests signé avec captures et anomalies.
 
+Le registre exécutable de cette phase est conservé dans
+`validation/runtime-validation.json`. Il impose pour tout résultat réussi
+l'identité du testeur, la date, le hash exact de la construction et au moins
+une capture ou un journal. `tools/runtime_validation_audit.py` contrôle aussi
+que les deux déclencheurs possibles de l'easter egg d'Africa 4, les deux
+prototypes multijoueurs, le réseau, l'exploration, la résolution, la
+restauration et la barrière multijoueur-vers-solo ne puissent pas être oubliés.
+
 ### Phase 2 - Tutorial et guide des secrets
 
 Objectif : rendre le septième ensemble de secrets réellement accessible en 1.12.
