@@ -390,6 +390,12 @@ namespace HD2CommunityInstaller
 
         private static void VerifySha256(string path, string expected)
         {
+            long actualBytes = new FileInfo(path).Length;
+            if (actualBytes != AppConfig.CmpArchiveBytes)
+                throw new InvalidDataException(
+                    "Taille de l'archive CMP incorrecte. Attendue "
+                    + AppConfig.CmpArchiveBytes + " octets, obtenue "
+                    + actualBytes + " octets.");
             string actual = ComputeSha256(path);
             if (!String.Equals(actual, expected, StringComparison.OrdinalIgnoreCase))
                 throw new InvalidDataException(

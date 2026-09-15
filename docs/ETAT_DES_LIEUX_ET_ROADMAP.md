@@ -291,6 +291,7 @@ Sortie attendue : campagne expérimentale clairement étiquetée.
 Objectif : livrer un paquet robuste.
 
 - options séparées par stabilité et niveau de spéculation ;
+- téléchargement à la demande de la CMP officielle épinglée, sans embarquer ses fichiers tant qu'aucune autorisation explicite de redistribution n'est établie ;
 - sauvegardes et restauration testées ;
 - contrôle de taille et d'empreinte pour chaque dépendance ;
 - guide joueur et rapport des découvertes intégrés ;

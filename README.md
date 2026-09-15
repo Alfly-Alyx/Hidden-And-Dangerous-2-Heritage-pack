@@ -50,6 +50,14 @@ La version 0.7.5 réunit le retour du jeu en ligne, la collection communautaire 
 
 Les deux PDF sont aussi copiés dans le dossier Guides du jeu. La CMP demande environ 1,08 Go de téléchargement et 3,12 Go une fois installée. Si elle est déjà détectée, elle n'est pas retéléchargée.
 
+La CMP n'est pas incorporée au programme d'installation ni republiée par ce
+dépôt. La case correspondante télécharge à la demande l'archive officielle
+2.6.5 au commit épinglé, puis exige sa taille exacte, son SHA-256 et sa
+structure attendue avant toute copie. Le dépôt source ne déclarant actuellement
+aucune licence, une redistribution embarquée restera exclue sans autorisation
+explicite. La provenance, les crédits et cette règle sont consignés dans
+`docs/CONTENU_COMMUNAUTAIRE.md`.
+
 Le chantier exhaustif est commencé : 79 registres, 71 dossiers, 5 347 scripts commerciaux et 54 entrées de catalogue (33 solo, 21 coopératives) sont maintenant indexés dans `docs/AUDIT_COMPLET_JEU.md`. Les écarts entre missions solo et coopératives sont suivis séparément dans `docs/AUDIT_OBJECTIFS_COOP.md`, afin de distinguer une vraie rupture d'une renumérotation, d'une fusion ou d'un scénario différent. Les composants qui demandent une création nouvelle sont réservés à la fin.
 
 Les 25 variantes multijoueurs officielles possédant un registre ont également
@@ -71,6 +79,11 @@ par plusieurs restaurations. Il vérifie l'ordre des modules, la lecture de la
 version déjà modifiée, la sauvegarde unique de l'original et l'enregistrement de
 l'empreinte finale. Les ajouts au catalogue multijoueur et aux registres de Brest
 coopératif peuvent ainsi se cumuler sans que le dernier module efface les autres.
+
+Le contrôle `tools/community_package_policy_audit.py` protège séparément
+l'intégration communautaire : provenance épinglée, taille et empreinte,
+validation de structure et de chemins, option d'interface, exclusion de toute
+archive CMP embarquée et présence de la notice de crédits.
 
 Un prototype de menu solo distinct est maintenant préparé dans une copie de
 test séparée. La scène `.4ds` seule ne suffisait pas ; la copie de l'exécutable
