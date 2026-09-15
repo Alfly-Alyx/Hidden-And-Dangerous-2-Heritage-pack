@@ -13,6 +13,8 @@ namespace HD2CommunityInstaller
         public string Gpu;
         public ulong RamBytes;
         public int LogicalProcessors;
+        public int NativeWidth;
+        public int NativeHeight;
         public int Width;
         public int Height;
 
@@ -20,7 +22,10 @@ namespace HD2CommunityInstaller
         {
             get
             {
-                return Width + " x " + Height + ", profil " + Level
+                string resolution = Width + " x " + Height;
+                if (Width != NativeWidth || Height != NativeHeight)
+                    resolution += " sur ecran " + NativeWidth + " x " + NativeHeight;
+                return resolution + ", profil " + Level
                     + " (" + LogicalProcessors + " processeurs logiques, "
                     + Math.Max(1, (long)(RamBytes / (1024UL * 1024 * 1024))) + " Go RAM"
                     + (String.IsNullOrWhiteSpace(Gpu) ? "" : ", " + Gpu) + ")";
@@ -31,6 +36,44 @@ namespace HD2CommunityInstaller
     internal static class GraphicsConfigurator
     {
         private const string RegistryPath = @"SOFTWARE\Illusion Softworks\Hidden & Dangerous 2";
+        private const int EnumCurrentSettings = -1;
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        private struct DisplayMode
+        {
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string DeviceName;
+            public short SpecVersion;
+            public short DriverVersion;
+            public short Size;
+            public short DriverExtra;
+            public int Fields;
+            public int PositionX;
+            public int PositionY;
+            public int DisplayOrientation;
+            public int DisplayFixedOutput;
+            public short Color;
+            public short Duplex;
+            public short YResolution;
+            public short TTOption;
+            public short Collate;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string FormName;
+            public short LogPixels;
+            public int BitsPerPel;
+            public int PelsWidth;
+            public int PelsHeight;
+            public int DisplayFlags;
+            public int DisplayFrequency;
+            public int ICMMethod;
+            public int ICMIntent;
+            public int MediaType;
+            public int DitherType;
+            public int Reserved1;
+            public int Reserved2;
+            public int PanningWidth;
+            public int PanningHeight;
+        }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
         private sealed class MemoryStatus
@@ -49,6 +92,10 @@ namespace HD2CommunityInstaller
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern bool GlobalMemoryStatusEx([In, Out] MemoryStatus buffer);
 
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern bool EnumDisplaySettings(
+            string deviceName, int modeNumber, ref DisplayMode mode);
+
         public static HardwareProfile DetectHardware()
         {
             HardwareProfile profile = new HardwareProfile();
@@ -65,8 +112,11 @@ namespace HD2CommunityInstaller
                 && profile.LogicalProcessors >= 2;
             profile.Level = high ? "eleve" : (balanced ? "equilibre" : "compatibilite");
 
-            int nativeWidth = Math.Max(800, Screen.PrimaryScreen.Bounds.Width);
-            int nativeHeight = Math.Max(600, Screen.PrimaryScreen.Bounds.Height);
+            int nativeWidth;
+            int nativeHeight;
+            DetectNativeResolution(out nativeWidth, out nativeHeight);
+            profile.NativeWidth = nativeWidth;
+            profile.NativeHeight = nativeHeight;
             int maxWidth = high ? 3840 : (balanced ? 2560 : 1920);
             int maxHeight = high ? 2160 : (balanced ? 1440 : 1080);
             double scale = Math.Min(1.0,
@@ -113,6 +163,9 @@ namespace HD2CommunityInstaller
                 || ReadInt32(encodingProbe, 6) != profile.Height
                 || ReadInt32(encodingProbe, 10) != 32)
                 throw new InvalidOperationException("Encodage de resolution invalide.");
+            if (profile.NativeWidth < profile.Width || profile.NativeHeight < profile.Height
+                || profile.Width > 3840 || profile.Height > 2160)
+                throw new InvalidOperationException("Resolution d'ecran incoherente.");
             return "Configuration graphique validable : " + profile.Description + ".";
         }
 
@@ -185,6 +238,21 @@ namespace HD2CommunityInstaller
                 return best;
             }
             catch { return null; }
+        }
+
+        private static void DetectNativeResolution(out int width, out int height)
+        {
+            DisplayMode mode = new DisplayMode();
+            mode.Size = checked((short)Marshal.SizeOf(typeof(DisplayMode)));
+            if (EnumDisplaySettings(null, EnumCurrentSettings, ref mode)
+                && mode.PelsWidth >= 800 && mode.PelsHeight >= 600)
+            {
+                width = mode.PelsWidth;
+                height = mode.PelsHeight;
+                return;
+            }
+            width = Math.Max(800, Screen.PrimaryScreen.Bounds.Width);
+            height = Math.Max(600, Screen.PrimaryScreen.Bounds.Height);
         }
 
         private static bool ContainsAny(string value, params string[] needles)
