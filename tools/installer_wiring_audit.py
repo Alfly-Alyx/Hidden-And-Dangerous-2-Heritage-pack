@@ -151,6 +151,16 @@ def audit(root: Path) -> dict[str, object]:
         )
     if "journal.SealMissingHashes(options.GamePath)" not in core:
         errors.append("InstallerCore does not seal legacy missing hashes")
+    updating = core.find("bool updating = File.Exists(AppConfig.StateFile);")
+    update_preflight = core.find("EnsureSafeUpdate(options.GamePath);")
+    open_journal = core.find("StateJournal.OpenExisting(options.GamePath)")
+    safe_update_preflight = (
+        min(updating, update_preflight, open_journal) >= 0
+        and updating < update_preflight < open_journal
+        and "List<string> conflicts = FindModifiedFiles(state);" in core
+    )
+    if not safe_update_preflight:
+        errors.append("Updates do not check tracked-file conflicts before opening the journal")
     prototype_install = core.find("ExperimentalContentInstaller.Install(")
     cmp_install = core.find("CmpInstaller.Install(")
     loose_tree_pass = core.find("OfficialContentInstaller.PatchLooseMissionTrees(")
@@ -216,6 +226,7 @@ def audit(root: Path) -> dict[str, object]:
         "unhashed_mutation_sources": unhashed_mutation_sources,
         "interface_options": len(OPTION_MAP),
         "exploration_postpass": exploration_postpass,
+        "safe_update_preflight": safe_update_preflight,
         "errors": errors,
     }
 

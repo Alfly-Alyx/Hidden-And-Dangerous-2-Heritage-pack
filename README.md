@@ -34,6 +34,7 @@ La version 0.7.5 réunit le retour du jeu en ligne, la collection communautaire 
 - réactive les easter eggs d'Africa 1 et d'Africa 4 neutralisés par la mise à jour 1.12 ;
 - installe un guide joueur des secrets et un rapport séparé des découvertes ;
 - sauvegarde tout fichier remplacé et permet une restauration complète ;
+- suspend une mise à jour avant toute écriture si un fichier suivi ou le réglage graphique a été modifié depuis l'installation précédente ;
 - complète automatiquement les empreintes absentes des anciens journaux après une mise à jour réussie, afin que la restauration puisse détecter toute modification ultérieure ;
 - restaure le verrouillage initial du profil seulement s'il n'a pas été rejoué depuis, afin de ne jamais écraser une nouvelle progression.
 

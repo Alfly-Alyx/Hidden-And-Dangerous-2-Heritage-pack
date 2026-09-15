@@ -154,6 +154,8 @@ namespace HD2CommunityInstaller
                 GraphicsConfigurator.ValidateOnly();
             }
             bool updating = File.Exists(AppConfig.StateFile);
+            if (updating)
+                EnsureSafeUpdate(options.GamePath);
 
             StateJournal journal = null;
             try
@@ -446,8 +448,10 @@ namespace HD2CommunityInstaller
                     journal = null;
                     if (updating)
                         throw new InvalidOperationException(
-                            "Echec de la mise a jour; le journal et l'installation existante "
-                            + "ont ete conserves. " + original.Message, original);
+                            "Echec de la mise a jour; le journal et les sauvegardes sont "
+                            + "conserves. Certains changements de ce passage peuvent deja "
+                            + "avoir ete appliques; corrigez la cause puis relancez la mise "
+                            + "a jour. " + original.Message, original);
                     try
                     {
                         Uninstall(progress);
@@ -603,6 +607,35 @@ namespace HD2CommunityInstaller
             if (GraphicsConfigurator.HasRestoreConflict(state))
                 conflicts.Add("Registre LS3D_setup (modifie)");
             return conflicts;
+        }
+
+        private static void EnsureSafeUpdate(string gamePath)
+        {
+            InstallState state = InstallState.Load();
+            if (state == null)
+                throw new InvalidOperationException(
+                    "Journal de mise a jour introuvable.");
+            ValidateStatePaths(state);
+            string requested = Path.GetFullPath(gamePath)
+                .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            string recorded = Path.GetFullPath(state.GamePath)
+                .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            if (!String.Equals(requested, recorded, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException(
+                    "Le journal existant appartient a une autre installation du jeu.");
+
+            List<string> conflicts = FindModifiedFiles(state);
+            if (conflicts.Count == 0) return;
+            StringBuilder message = new StringBuilder(
+                "Mise a jour suspendue: des fichiers suivis ont ete modifies depuis "
+                + "l'installation precedente.\r\n");
+            for (int index = 0; index < Math.Min(8, conflicts.Count); index++)
+                message.AppendLine(" - " + conflicts[index]);
+            if (conflicts.Count > 8)
+                message.AppendLine(" - ... et " + (conflicts.Count - 8) + " autres");
+            message.AppendLine(
+                "Le jeu, le journal et les sauvegardes restent inchanges.");
+            throw new InvalidOperationException(message.ToString());
         }
 
         private static void ValidateStatePaths(InstallState state)
