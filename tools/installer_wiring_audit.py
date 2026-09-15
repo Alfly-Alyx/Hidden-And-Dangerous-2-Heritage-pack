@@ -381,6 +381,15 @@ def audit(root: Path) -> dict[str, object]:
             "The installer cannot verify the preserved Africa 5 face in Maps.dta"
         )
 
+    language_archive_key = all((
+        "identifier == 0xA0A0B100U" in dta_archive,
+        "key = 0xA0A0A0A0A0A0A0A0UL;" in dta_archive,
+    ))
+    if not language_archive_key:
+        errors.append(
+            "The installer cannot verify preserved dialogue in LangEnglish.dta"
+        )
+
     burgundy3_guard32_requires_active_patrol = all((
         '@"^[ \\t]*Label\\s+ACTIVITY_LOOP' in burgundy3_guard32,
         burgundy3_guard32.count(
@@ -535,6 +544,7 @@ def audit(root: Path) -> dict[str, object]:
             africa5_schumann_requires_active_handlers
         ),
         "maps_archive_key": maps_archive_key,
+        "language_archive_key": language_archive_key,
         "burgundy3_guard32_requires_active_patrol": (
             burgundy3_guard32_requires_active_patrol
         ),
