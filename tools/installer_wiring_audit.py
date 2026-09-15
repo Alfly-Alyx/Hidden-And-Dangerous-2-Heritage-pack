@@ -52,12 +52,14 @@ def audit(root: Path) -> dict[str, object]:
     config_path = installer / "Config.cs"
     main_form_path = installer / "MainForm.cs"
     graphics_path = installer / "GraphicsConfigurator.cs"
+    easter_egg_path = installer / "Africa4EasterEggInstaller.cs"
     program = program_path.read_text(encoding="utf-8-sig")
     core = core_path.read_text(encoding="utf-8-sig")
     status = status_path.read_text(encoding="utf-8-sig")
     config = config_path.read_text(encoding="utf-8-sig")
     main_form = main_form_path.read_text(encoding="utf-8-sig")
     graphics = graphics_path.read_text(encoding="utf-8-sig")
+    easter_eggs = easter_egg_path.read_text(encoding="utf-8-sig")
     mutation_sources = []
     unhashed_mutation_sources = []
     for source in sorted(installer.glob("*.cs")):
@@ -210,6 +212,18 @@ def audit(root: Path) -> dict[str, object]:
     if not widescreen_before_resolution:
         errors.append("Widescreen support must be installed before applying resolution")
 
+    africa4_exact_bindings = all((
+        'registry, "dummy_ee", "AF3b_ee.scr"' in easter_eggs,
+        '"dummy_ee_activator",' in easter_eggs,
+        '"w_mg42Lie_00",' in easter_eggs,
+        '"AF3b_ee_activator.scr"' in easter_eggs,
+        "RegistryContainsBinding(" in easter_eggs,
+    ))
+    if not africa4_exact_bindings:
+        errors.append(
+            "Africa 4 validation does not require both commercial trigger owners"
+        )
+
     declared_options = set(re.findall(r"public bool ([A-Za-z0-9_]+)\s*=", config))
     expected_options = set(OPTION_MAP)
     if declared_options != expected_options:
@@ -265,6 +279,7 @@ def audit(root: Path) -> dict[str, object]:
         "native_resolution_policy": native_resolution_policy,
         "adaptive_quality_policy": adaptive_quality_policy,
         "widescreen_before_resolution": widescreen_before_resolution,
+        "africa4_exact_bindings": africa4_exact_bindings,
         "errors": errors,
     }
 

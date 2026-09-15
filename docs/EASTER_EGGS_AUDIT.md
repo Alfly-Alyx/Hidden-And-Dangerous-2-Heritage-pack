@@ -101,11 +101,16 @@ Le garde `N48` se trouve initialement en
 
 Les clés A, B et C portent les identifiants 240, 241 et 242. Le script d'origine vérifie qu'elles sont toutes dans un rayon de trois mètres. Le patch 1.12 redirige alors l'exécution vers la fin au lieu du bloc ACTIVATED. La scène contient toujours meteor01, sa trajectoire et l'effet de particules. Le paquet restaure ce saut.
 
-Positions relevées :
+L'audit reproductible `tools/africa4_key_trigger_audit.py` décode les trois
+enregistrements de placement de `items.dat`, contrôle leurs rotations et
+vérifie les liaisons exactes du registre. Positions relevées :
 
-- clé A : 11,21 ; 0,26 ; -5,25, secteur sud-ouest de l'enceinte ;
-- clé B : 31,57 ; 0,33 ; 14,57, secteur central-est ;
-- clé C : 37,45 ; 0,64 ; 35,17, secteur nord-est.
+- clé A, objet 240 / instance 317 : 11,214910 ; 0,264778 ; -5,249491,
+  secteur sud-ouest de l'enceinte ;
+- clé B, objet 241 / instance 318 : 31,565689 ; 0,334397 ; 14,565742,
+  secteur central-est ;
+- clé C, objet 242 / instance 319 : 37,451393 ; 0,644349 ; 35,168266,
+  secteur nord-est.
 
 Le guide joueur traduit ces coordonnées en repères visuels et explique comment réunir les trois clés.
 

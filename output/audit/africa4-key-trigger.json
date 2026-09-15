@@ -1,0 +1,95 @@
+{
+  "game": "D:\\Games\\Hidden and Dangerous 2",
+  "ok": true,
+  "errors": [],
+  "sources": {
+    "missions/africa4/items.dat": "missions.dta",
+    "missions/africa4/scripts.dta": "missions.dta",
+    "scripts/africa4/af3b_ee_activator.scr": "Patch.dta"
+  },
+  "keys": [
+    {
+      "item_id": 240,
+      "instance_id": 317,
+      "world_position": [
+        11.21491,
+        0.264778,
+        -5.249491
+      ],
+      "rotation": [
+        0.102564,
+        -0.108526,
+        0.679134,
+        0.718666
+      ],
+      "record_offset": 12547
+    },
+    {
+      "item_id": 241,
+      "instance_id": 318,
+      "world_position": [
+        31.565689,
+        0.334397,
+        14.565742
+      ],
+      "rotation": [
+        -0.049469,
+        -0.025993,
+        -0.704899,
+        0.707103
+      ],
+      "record_offset": 12608
+    },
+    {
+      "item_id": 242,
+      "instance_id": 319,
+      "world_position": [
+        37.451393,
+        0.644349,
+        35.168266
+      ],
+      "rotation": [
+        0.021756,
+        0.70008,
+        -0.713413,
+        0.021351
+      ],
+      "record_offset": 12669
+    }
+  ],
+  "proximity_radius_metres": 3,
+  "proximity_checks": {
+    "240": true,
+    "241": true,
+    "242": true
+  },
+  "trigger_owners": [
+    "dummy_ee_activator",
+    "w_mg42Lie_00"
+  ],
+  "trigger_positions": [
+    {
+      "name": "w_mg42Lie_00",
+      "world_position": [
+        49.037258,
+        6.798772,
+        -22.116121
+      ],
+      "blob": "missions/africa4/actors.bin",
+      "archive": "Patch.dta"
+    },
+    {
+      "name": "dummy_ee_activator",
+      "world_position": [
+        0.37798,
+        -4.089648,
+        2.210202
+      ],
+      "blob": "missions/africa4/scene2.bin",
+      "archive": "missions.dta"
+    }
+  ],
+  "disabled_by_patch_1_12": true,
+  "static_conclusion": "The original three-key branch is complete but its shared script is bound to two distinct owners.",
+  "runtime_validation_required": "Test each owner separately after restoration before publishing a definitive player-facing drop point."
+}

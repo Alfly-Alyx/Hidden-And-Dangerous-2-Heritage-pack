@@ -223,10 +223,14 @@ namespace HD2CommunityInstaller
 
             byte[] registry = ReadSource(ResolveSource(
                 gamePath, Africa4RegistryPath, MissionArchives));
-            string registryText = Encoding.GetEncoding(1252).GetString(registry);
-            if (registryText.IndexOf("AF3b_ee.scr", StringComparison.OrdinalIgnoreCase) < 0
-                || registryText.IndexOf("AF3b_ee_activator.scr",
-                    StringComparison.OrdinalIgnoreCase) < 0)
+            if (!RegistryContainsBinding(
+                    registry, "dummy_ee", "AF3b_ee.scr")
+                || !RegistryContainsBinding(
+                    registry, "dummy_ee_activator",
+                    "AF3b_ee_activator.scr")
+                || !RegistryContainsBinding(
+                    registry, "w_mg42Lie_00",
+                    "AF3b_ee_activator.scr"))
                 throw new InvalidDataException(
                     "Les scripts caches Africa 4 ne sont plus lies a la mission.");
 
@@ -236,6 +240,43 @@ namespace HD2CommunityInstaller
                     "meteor01", StringComparison.OrdinalIgnoreCase) < 0)
                 throw new InvalidDataException(
                     "Le modele de meteore Africa 4 est absent de la scene.");
+        }
+
+        private static bool RegistryContainsBinding(
+            byte[] data, string wantedActor, string wantedScript)
+        {
+            if (data == null || data.Length < 6)
+                throw new InvalidDataException(
+                    "Registre de scripts de mission incomplet.");
+            int offset = 6;
+            while (offset < data.Length)
+            {
+                string actor = ReadRegistryString(data, ref offset);
+                string script = ReadRegistryString(data, ref offset);
+                if (String.Equals(actor, wantedActor,
+                        StringComparison.OrdinalIgnoreCase)
+                    && String.Equals(script, wantedScript,
+                        StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+            return false;
+        }
+
+        private static string ReadRegistryString(byte[] data, ref int offset)
+        {
+            if (offset < 0 || offset + 6 > data.Length)
+                throw new InvalidDataException(
+                    "Champ tronque dans le registre de scripts de mission.");
+            ushort marker = BitConverter.ToUInt16(data, offset);
+            int total = BitConverter.ToInt32(data, offset + 2);
+            if (marker != 1 || total < 7 || offset + total > data.Length
+                || data[offset + total - 1] != 0)
+                throw new InvalidDataException(
+                    "Champ invalide dans le registre de scripts de mission.");
+            string value = Encoding.GetEncoding(1252).GetString(
+                data, offset + 6, total - 7);
+            offset += total;
+            return value;
         }
 
         private static void WriteOverride(
