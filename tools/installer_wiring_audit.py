@@ -61,6 +61,7 @@ def audit(root: Path) -> dict[str, object]:
     objectives_path = installer / "ObjectiveFixInstaller.cs"
     czech2_carnage_path = installer / "Czech2CarnageFreibergInstaller.cs"
     czech2_smoke_path = installer / "Czech2CutsceneSmokeInstaller.cs"
+    czech3_sequences_path = installer / "Czech3DormantSequencesInstaller.cs"
     assembly_path = installer / "AssemblyInfo.cs"
     build_path = root / "build.ps1"
     icon_path = installer / "assets" / "hd2-heritage-icon.ico"
@@ -79,6 +80,7 @@ def audit(root: Path) -> dict[str, object]:
     objectives = objectives_path.read_text(encoding="utf-8-sig")
     czech2_carnage = czech2_carnage_path.read_text(encoding="utf-8-sig")
     czech2_smoke = czech2_smoke_path.read_text(encoding="utf-8-sig")
+    czech3_sequences = czech3_sequences_path.read_text(encoding="utf-8-sig")
     assembly = assembly_path.read_text(encoding="utf-8-sig")
     build = build_path.read_text(encoding="utf-8-sig")
     readme = readme_path.read_text(encoding="utf-8-sig")
@@ -313,6 +315,18 @@ def audit(root: Path) -> dict[str, object]:
             "Czech 2 smoke detection can mistake the dormant comment for active code"
         )
 
+    czech3_sequences_require_active_lines = all((
+        czech3_sequences.count("ContainsOrderedActiveLines(text, new[]") == 2,
+        "HasActiveLine(\n                    death.Groups[\"body\"].Value"
+        in czech3_sequences,
+        "Match found = activeLine.Match(text, offset);" in czech3_sequences,
+        "CountActiveLines(text, instruction) != 1" in czech3_sequences,
+    ))
+    if not czech3_sequences_require_active_lines:
+        errors.append(
+            "Czech 3 dormant-sequence detection can mistake comments for active code"
+        )
+
     historical_icon = (
         icon_path.is_file()
         and hashlib.sha256(icon_path.read_bytes()).hexdigest().upper()
@@ -421,6 +435,9 @@ def audit(root: Path) -> dict[str, object]:
         ),
         "czech2_smoke_requires_active_cleanup": (
             czech2_smoke_requires_active_cleanup
+        ),
+        "czech3_sequences_require_active_lines": (
+            czech3_sequences_require_active_lines
         ),
         "historical_icon": historical_icon,
         "artifact_identity": artifact_identity,

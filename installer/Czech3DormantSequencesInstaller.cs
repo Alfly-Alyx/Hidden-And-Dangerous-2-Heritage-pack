@@ -168,7 +168,7 @@ namespace HD2CommunityInstaller
 
         private static bool IsTruckPatched(string text)
         {
-            return ContainsOrdered(text, new[] {
+            return ContainsOrderedActiveLines(text, new[] {
                 "HUMAN_Drive(\"BMW_15\",10);",
                 "HUMAN_Drive(\"BMW_16\",5);",
                 "HUMAN_Drive(\"couvej1\",5);",
@@ -216,9 +216,8 @@ namespace HD2CommunityInstaller
                 @"OnDeath\s*\(\s*\)\s*\{(?<body>[\s\S]{0,420}?)\}",
                 RegexOptions.IgnoreCase | RegexOptions.Multiline);
             return death.Success
-                && death.Groups["body"].Value.IndexOf(
-                    "SendSignal(kecac,2);",
-                    StringComparison.OrdinalIgnoreCase) >= 0;
+                && HasActiveLine(
+                    death.Groups["body"].Value, "SendSignal(kecac,2);");
         }
 
         private static void ValidateMechanic(byte[] data)
@@ -247,7 +246,7 @@ namespace HD2CommunityInstaller
 
         private static bool IsRadioOperatorPatched(string text)
         {
-            return ContainsOrdered(text, new[] {
+            return ContainsOrderedActiveLines(text, new[] {
                 "HUMAN_WeaponOnArm(1);",
                 "HUMAN_Move(\"spojar1\");",
                 "HUMAN_SETMODE_Crouch();",
@@ -285,22 +284,36 @@ namespace HD2CommunityInstaller
         private static void RequireActiveLine(
             string text, string instruction, string message)
         {
-            string pattern = @"(?m)^[ \t]*" + Regex.Escape(instruction)
-                + @"[ \t]*(?=\r?$)";
-            if (Regex.Matches(text, pattern,
-                    RegexOptions.IgnoreCase).Count != 1)
+            if (CountActiveLines(text, instruction) != 1)
                 throw new InvalidDataException(message);
         }
 
-        private static bool ContainsOrdered(string text, string[] instructions)
+        private static bool HasActiveLine(string text, string instruction)
+        {
+            return CountActiveLines(text, instruction) > 0;
+        }
+
+        private static int CountActiveLines(string text, string instruction)
+        {
+            string pattern = @"(?m)^[ \t]*" + Regex.Escape(instruction)
+                + @"[ \t]*(?=\r?$)";
+            return Regex.Matches(text, pattern,
+                RegexOptions.IgnoreCase).Count;
+        }
+
+        private static bool ContainsOrderedActiveLines(
+            string text, string[] instructions)
         {
             int offset = 0;
             foreach (string instruction in instructions)
             {
-                int found = text.IndexOf(
-                    instruction, offset, StringComparison.OrdinalIgnoreCase);
-                if (found < 0) return false;
-                offset = found + instruction.Length;
+                Regex activeLine = new Regex(
+                    @"(?m)^[ \t]*" + Regex.Escape(instruction)
+                    + @"[ \t]*(?=\r?$)",
+                    RegexOptions.IgnoreCase);
+                Match found = activeLine.Match(text, offset);
+                if (!found.Success) return false;
+                offset = found.Index + found.Length;
             }
             return true;
         }
