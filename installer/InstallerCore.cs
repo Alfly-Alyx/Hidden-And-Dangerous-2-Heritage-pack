@@ -405,6 +405,9 @@ namespace HD2CommunityInstaller
                     Sicily1AlarmButtonInstaller.Install(
                         options.GamePath, journal, prepared, progress);
                 if (options.RestoreDormantSequences)
+                    CoSicily2GunSoundInstaller.Install(
+                        options.GamePath, journal, prepared, progress);
+                if (options.RestoreDormantSequences)
                     CrossMissionScriptInstaller.Install(
                         options.GamePath, journal, prepared, progress);
                 if (options.RestoreDormantSequences)

@@ -24,7 +24,7 @@ Lecture manuelle recoupée :
 - les deux lance-flammes conservent icônes, munitions, sons et effet, mais pas une chaîne d’arme fonctionnelle ;
 - Garota et ZK-383 n’ont aucune ressource locale identifiable par ces noms.
 - la Benelli M4 conserve animations FPV, textures, icône, munition 179 et sons de tir/rechargement, mais son entrée Weapon a été remplacée par la boussole et son modèle extérieur manque ;
-- le Vickers K appartient à la jeep SAS active, et le canon de 17 mm est déjà employé dans `Ardens1_obj` ;
+- le Vickers K appartient à la jeep SAS active : son modèle FPV, ses axes de tourelle et son ancrage `BARREL01_00` subsistent, et une mission CMP conserve la liaison exacte vers `w_vickerKFPV`; le canon de 17 mm est déjà employé dans `Ardens1_obj` ;
 - FG 42 et MG 34 portative restent des vestiges de catalogue incomplets ; MG 15 et MG 81 ne sont attestés que comme armements montés.
 
 Les modèles exacts La-5, `la_aici`, `LA_M323`, Li-2, `la_Fa 223`, Fw 200 et DFS 230 sont présents et articulés. Ce constat prouve des véhicules conservés comme ressources, pas leur pilotage : seul le Ju 52 possède une utilisation commerciale de scène directement reliée. Les scripts Li-2 repérés séparément sont des ambiances sonores et ne constituent pas une chaîne de vol.

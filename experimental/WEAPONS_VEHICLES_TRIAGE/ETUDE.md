@@ -24,12 +24,15 @@ utilisable comme décor de scène, mais son pilotage libre reste spéculatif.
 | --- | ---: | --- |
 | M1 Garand, Stevens 311, Flak 38 | 1 | faux contenus coupés : chaînes commerciales présentes |
 | P08 silencieux, G43, MAS 36, Panzerschreck | 1 | livrés par Sabre Squadron, modèles et chaînes FPV présents |
+| Vickers K monté sur jeep SAS | 1 | arme, animation et ancrage de tourelle actifs ; faux positif portatif |
 | Ju 52 comme élément de scène | 1 | explicitement appelé dans Africa 1 et présent dans plusieurs variantes Africa |
 | Ju 52 comme décor animé réemployable | 3 | modèles, pièces et scripts officiels permettent un usage borné |
 | La-5, Aichi, M323, Li-2, Fa 223, Fw 200, DFS 230 | 2 | modèles articulés présents, aucune chaîne pilotable démontrée |
 | Li-2 comme ambiance de mission | 3 | quatre scripts sonores Libye 2, sans liaison exacte au modèle prouvée |
 | Deux lance-flammes : identité, icônes, munitions, effet | 3 | enveloppe officielle partielle récupérable |
 | Deux lance-flammes fonctionnels | 4 | modèles tenu/sol, animations, jet, dégâts et IA absents |
+| Benelli M4 : animations, textures, sons et munition | 3 | enveloppe FPV très complète, mais entrée Weapon remplacée et modèle monde absent |
+| Benelli M4 comme arme complète | 4 | nouvelle entrée additive et paramètres de tir à reconstruire sans écraser la boussole |
 | Pilotage libre des aéronefs | 4 | physique, commandes, dégâts, HUD, IA et réseau non démontrés |
 | Garota et ZK-383 | 4 | aucune ressource locale identifiable |
 | FG 42 ou MG 34 portative | 4 | vestiges de catalogue, chaîne d'arme portable non démontrée |
@@ -57,6 +60,21 @@ utilisable comme décor de scène, mais son pilotage libre reste spéculatif.
 
 Test : vérifier une fois équipement, visée, tir, rechargement, dépôt/retrait et
 sauvegarde. Aucun correctif si ce test passe.
+
+### Vickers K : arme montée de la jeep SAS
+
+`w_vickerKFPV.4ds` (26 098 octets) contient `fpv_weapon`, `gunlock`, `base`,
+`cock` et `magazine`, avec les textures `w_vickersK.bmp` et
+`w_vickersmagazine.tga`. Le modèle `la_Jeepsas.4ds` (328 870 octets) possède
+déjà les sièges, caméras, axes `HORT01`/`VERT01`, bouche `BARREL01_00`, point
+`SHDUM01`, munitions et culasse nécessaires à son montage. Une mission CMP
+installée conserve même la liaison littérale
+`la_Jeepsas_01.BARREL01_00 -> w_vickerKFPV`.
+
+Le Vickers K n'est donc pas une arme supprimée à recréer : c'est un composant
+fonctionnel du véhicule. Un unique test en jeu de la jeep SAS doit confirmer
+tir, orientation, munitions et changement de siège ; aucune version portative
+ne sera inférée de cette chaîne montée.
 
 ### Ju 52 : usage commercial direct
 
@@ -112,6 +130,24 @@ siège ; puis tester roulage, décollage, décrochage, atterrissage, dommages,
 sauvegarde et retour au personnage. Répéter en coopératif avant intégration.
 
 ## 3 — Données partielles restaurables fidèlement
+
+### Benelli M4 : enveloppe FPV officielle
+
+Les archives conservent neuf couples 4DS/5DS
+`#FPVBeneliAim`, `AimShot`, `Arm`, `Daim`, `Disarm`, `Idle1`, `Jammed`, `Rel`
+et `Shot`. `#FPVBeneliAim.4ds` pèse 63 906 octets et contient 45 nœuds, dont
+l'arme, les bras, la culasse, la douille et le magasin. Le bloc complet de
+`TABLES/FpvAnims.sav`, identique dans Sabre Squadron, est placé entre le Mosin
+et le Garand. Les textures `wi_it-benelli.bmp`, `d_benellim4.bmp` et
+`d_benellim4paz.bmp`, les sons `f_bene_a.wav` et `bene_r.wav`, leurs
+définitions de tir/rechargement, ainsi que la munition 179 subsistent.
+
+Le rang `Weapon` correspondant est toutefois occupé dans la version finale par
+l'ID 9 de la boussole. Aucun modèle monde/posé `w_benelli*` ni paramètre
+original de capacité, cadence, dégâts ou dispersion n'est retrouvé. La tranche
+fidèle se limite donc à préserver et tester les ressources FPV ; toute arme
+utilisable doit recevoir une entrée nouvelle, un modèle monde et des valeurs
+explicitement reconstruites, sans remplacer la boussole.
 
 ### Ju 52 comme décor animé
 
@@ -177,13 +213,14 @@ qu'une chaîne ancienne complète n'est pas retrouvée.
 
 ## Ordre recommandé
 
-1. Valider les faux positifs déjà jouables, puis les retirer de la liste.
-2. Rejouer et enregistrer la scène Ju 52 d'Africa 1 comme référence.
-3. Tester les huit modèles un par un, sans siège joueur inventé.
-4. Identifier visuellement la fonction des scripts sonores Li-2.
-5. Tester l'effet 25 du lance-flammes sans créer d'arme.
-6. Choisir un démonstrateur : Ju 52 décoratif ou comparaison La-5/Aichi.
-7. Reporter pilotage, lance-flammes fonctionnels, Garota, ZK-383, FG 42 et MG 34
+1. Valider les faux positifs déjà jouables, notamment le Vickers K monté.
+2. Construire la Benelli comme entrée additive expérimentale, sans remplacer la boussole.
+3. Rejouer et enregistrer la scène Ju 52 d'Africa 1 comme référence.
+4. Tester les huit modèles un par un, sans siège joueur inventé.
+5. Identifier visuellement la fonction des scripts sonores Li-2.
+6. Tester l'effet 25 du lance-flammes sans créer d'arme.
+7. Choisir un démonstrateur : Ju 52 décoratif ou comparaison La-5/Aichi.
+8. Reporter pilotage, lance-flammes fonctionnels, Garota, ZK-383, FG 42 et MG 34
    portative à la phase spéculative finale.
 
 ## Prototypes documentaires associés

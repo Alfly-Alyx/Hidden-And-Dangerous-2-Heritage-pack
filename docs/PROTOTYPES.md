@@ -47,6 +47,21 @@ La mission Objectifs livrée par Sabre Squadron est complète, déclarée dans l
 
 La carte Objectifs de Sabre est complète, publiée et déjà active. Le script Base est identique à son initialiseur final et ne conserve aucune ancienne route ni action de validation ; la scène Base est seulement une composition antérieure et inachevée de la même carte. Elle contient néanmoins trois Sherman et deux Tiger, contre deux Sherman et un Tiger dans la version finale. Une conservation de ce roster ne peut prendre que la forme d'une seconde variante `PROTOTYPE/LEGACY`, avec une logique d'objectifs à recréer, sans remplacer la carte Sabre.
 
+### PROLEZACKA
+
+Ce nom ne désigne pas une troisième carte cachée. Les archives ne contiennent
+aucun dossier `Missions/PROLEZACKA`, aucune entrée de catalogue, aucun registre
+de scripts, aucune scène, aucun acteur ni aucun checkpoint associé. Il ne reste
+que neuf scripts `German1.scr` à `German9.scr` : huit décrivent des rondes et
+réactions d'alarme vers des points `G1_01` à `G9_04`, tandis que
+`German4.scr` joue une boucle de cigarette. Aucun de leurs acteurs ou trajets
+n'est placé dans une mission commerciale.
+
+Ces fichiers peuvent servir de référence à un banc d'essai moderne de gardes,
+clairement étiqueté comme reconstruction, mais pas à la restauration fidèle
+d'une carte perdue. Leur cas est confié au laboratoire expérimental sans être
+ajouté au menu multijoueur stable.
+
 ## Aéronefs et véhicules
 
 La recherche exacte dans Models.dta corrige plusieurs faux négatifs :

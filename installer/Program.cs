@@ -101,6 +101,7 @@ namespace HD2CommunityInstaller
                         Console.WriteLine(Arctic2RadioInstaller.ValidateOnly(game));
                         Console.WriteLine(Arctic2DynamicLightInstaller.ValidateOnly(game));
                         Console.WriteLine(Sicily1AlarmButtonInstaller.ValidateOnly(game));
+                        Console.WriteLine(CoSicily2GunSoundInstaller.ValidateOnly(game));
                         Console.WriteLine(CrossMissionScriptInstaller.ValidateOnly(game));
                         Console.WriteLine(MissionUnlockInstaller.ValidateOnly(game));
                         return 0;
@@ -184,6 +185,7 @@ namespace HD2CommunityInstaller
                         Console.WriteLine(Arctic2RadioInstaller.ValidateOnly(game));
                         Console.WriteLine(Arctic2DynamicLightInstaller.ValidateOnly(game));
                         Console.WriteLine(Sicily1AlarmButtonInstaller.ValidateOnly(game));
+                        Console.WriteLine(CoSicily2GunSoundInstaller.ValidateOnly(game));
                         Console.WriteLine(CrossMissionScriptInstaller.ValidateOnly(game));
                         Console.WriteLine(MissionUnlockInstaller.ValidateOnly(game));
                         return 0;
