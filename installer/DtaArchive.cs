@@ -40,6 +40,8 @@ namespace HD2CommunityInstaller
             uint identifier = ReadUInt32(encryptedHeader, 0) & 0xFFFFFF00U;
             if (identifier == 0x7654A100U)
                 key = 0x22BCDA987654A3F0UL;
+            else if (identifier == 0xB438AB00U)
+                key = 0xF26527FAB438D0A5UL;
             else if (identifier == 0x5D805600U)
                 key = 0x10ACB2525D805270UL;
             else if (identifier == 0x0AB4EB00U)
@@ -48,7 +50,7 @@ namespace HD2CommunityInstaller
                 key = 0xA0A0A0A0A0A0A0A1UL;
             else
                 throw new InvalidDataException(
-                    "Archive DTA non reconnue pour les missions (identifiant "
+                    "Archive DTA non reconnue (identifiant "
                     + identifier.ToString("X8") + ").");
 
             Xor(encryptedHeader);

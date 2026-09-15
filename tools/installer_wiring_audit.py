@@ -64,6 +64,8 @@ def audit(root: Path) -> dict[str, object]:
     czech3_sequences_path = installer / "Czech3DormantSequencesInstaller.cs"
     africa5_storage_alarm_path = installer / "Africa5StorageAlarmInstaller.cs"
     africa5_schumann_path = installer / "Africa5SchumannAmbushInstaller.cs"
+    africa5_dormant_actors_path = installer / "Africa5DormantActorsInstaller.cs"
+    dta_archive_path = installer / "DtaArchive.cs"
     assembly_path = installer / "AssemblyInfo.cs"
     build_path = root / "build.ps1"
     icon_path = installer / "assets" / "hd2-heritage-icon.ico"
@@ -87,6 +89,10 @@ def audit(root: Path) -> dict[str, object]:
         encoding="utf-8-sig"
     )
     africa5_schumann = africa5_schumann_path.read_text(encoding="utf-8-sig")
+    africa5_dormant_actors = africa5_dormant_actors_path.read_text(
+        encoding="utf-8-sig"
+    )
+    dta_archive = dta_archive_path.read_text(encoding="utf-8-sig")
     assembly = assembly_path.read_text(encoding="utf-8-sig")
     build = build_path.read_text(encoding="utf-8-sig")
     readme = readme_path.read_text(encoding="utf-8-sig")
@@ -359,6 +365,16 @@ def audit(root: Path) -> dict[str, object]:
             "Africa 5 Schumann detection can mistake commented handlers for active code"
         )
 
+    maps_archive_key = all((
+        "identifier == 0xB438AB00U" in dta_archive,
+        "key = 0xF26527FAB438D0A5UL;" in dta_archive,
+        'Path.Combine(gamePath, "Maps.dta")' in africa5_dormant_actors,
+    ))
+    if not maps_archive_key:
+        errors.append(
+            "The installer cannot verify the preserved Africa 5 face in Maps.dta"
+        )
+
     historical_icon = (
         icon_path.is_file()
         and hashlib.sha256(icon_path.read_bytes()).hexdigest().upper()
@@ -477,6 +493,7 @@ def audit(root: Path) -> dict[str, object]:
         "africa5_schumann_requires_active_handlers": (
             africa5_schumann_requires_active_handlers
         ),
+        "maps_archive_key": maps_archive_key,
         "historical_icon": historical_icon,
         "artifact_identity": artifact_identity,
         "version": version,
