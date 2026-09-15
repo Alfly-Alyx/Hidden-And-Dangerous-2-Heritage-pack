@@ -54,6 +54,11 @@ def audit(root: Path) -> dict[str, object]:
     graphics_path = installer / "GraphicsConfigurator.cs"
     easter_egg_path = installer / "Africa4EasterEggInstaller.cs"
     tree_patcher_path = installer / "TreeKlzPatcher.cs"
+    assembly_path = installer / "AssemblyInfo.cs"
+    readme_path = root / "README.md"
+    runtime_validation_path = root / "validation" / "runtime-validation.json"
+    report_builder_path = root / "tools" / "pdf" / "build_report.py"
+    player_guide_builder_path = root / "tools" / "pdf" / "build_player_guide.py"
     program = program_path.read_text(encoding="utf-8-sig")
     core = core_path.read_text(encoding="utf-8-sig")
     status = status_path.read_text(encoding="utf-8-sig")
@@ -62,6 +67,15 @@ def audit(root: Path) -> dict[str, object]:
     graphics = graphics_path.read_text(encoding="utf-8-sig")
     easter_eggs = easter_egg_path.read_text(encoding="utf-8-sig")
     tree_patcher = tree_patcher_path.read_text(encoding="utf-8-sig")
+    assembly = assembly_path.read_text(encoding="utf-8-sig")
+    readme = readme_path.read_text(encoding="utf-8-sig")
+    runtime_validation = json.loads(
+        runtime_validation_path.read_text(encoding="utf-8-sig")
+    )
+    report_builder = report_builder_path.read_text(encoding="utf-8-sig")
+    player_guide_builder = player_guide_builder_path.read_text(
+        encoding="utf-8-sig"
+    )
     mutation_sources = []
     unhashed_mutation_sources = []
     for source in sorted(installer.glob("*.cs")):
@@ -238,6 +252,31 @@ def audit(root: Path) -> dict[str, object]:
             "Free exploration no longer clears area flags and border objects"
         )
 
+    version_match = re.search(
+        r'public const string Version\s*=\s*"([^"]+)"', config
+    )
+    assembly_match = re.search(
+        r'AssemblyFileVersion\("([^"]+)"\)', assembly
+    )
+    readme_match = re.search(r"La version\s+([0-9.]+)", readme)
+    version = version_match.group(1) if version_match else None
+    expected_assembly = version + ".0" if version else None
+    version_consistency = bool(
+        version
+        and assembly_match
+        and assembly_match.group(1) == expected_assembly
+        and readme_match
+        and readme_match.group(1) == version
+        and runtime_validation.get("milestone") == version
+        and f"Révision {version}" in report_builder
+        and f"Edition {version}" in player_guide_builder
+    )
+    if not version_consistency:
+        errors.append(
+            "Installer, assembly, README, runtime register and PDF sources "
+            "do not share the same version"
+        )
+
     declared_options = set(re.findall(r"public bool ([A-Za-z0-9_]+)\s*=", config))
     expected_options = set(OPTION_MAP)
     if declared_options != expected_options:
@@ -295,6 +334,8 @@ def audit(root: Path) -> dict[str, object]:
         "widescreen_before_resolution": widescreen_before_resolution,
         "africa4_exact_bindings": africa4_exact_bindings,
         "boundary_object_policy": boundary_object_policy,
+        "version": version,
+        "version_consistency": version_consistency,
         "errors": errors,
     }
 

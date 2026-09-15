@@ -18,7 +18,7 @@ Le projet doit produire un ensemble installable pour Hidden & Dangerous 2: Sabre
 - fournit un second PDF expliquant les découvertes ;
 - installe le tout par un exécutable réversible.
 
-## Acquis au jalon 0.5
+## Acquis au jalon 0.7.5
 
 ### Réseau et communauté
 
@@ -179,7 +179,7 @@ L'ordre de traitement est désormais : restaurer tout ce qui possède encore ses
 
 ## Roadmap
 
-### Phase 1 - Validation du jalon 0.5
+### Phase 1 - Validation du jalon 0.7.5
 
 Objectif : prouver dans le jeu ce qui est déjà automatisé.
 

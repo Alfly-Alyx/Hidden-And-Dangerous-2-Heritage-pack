@@ -6,7 +6,7 @@ Date de référence : 15 septembre 2026.
 
 ## Résultat global
 
-Le paquet 0.5.0 est construit autour de modifications réversibles. Il ne remplace pas les archives commerciales dans le dépôt : il lit l'installation légitime, produit des fichiers de surcharge locaux et conserve une sauvegarde de chaque cible remplacée.
+Le paquet 0.7.5 est construit autour de modifications réversibles. Il ne remplace pas les archives commerciales dans le dépôt : il lit l'installation légitime, produit des fichiers de surcharge locaux et conserve une sauvegarde de chaque cible remplacée.
 
 ## Jeu en ligne
 
