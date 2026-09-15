@@ -10,7 +10,7 @@ La version 0.7.5 réunit le retour du jeu en ligne, la collection communautaire 
 
 - rétablit les anciens noms GameSpy vers le serveur maître communautaire RpR ;
 - vérifie et active DirectPlay si nécessaire ;
-- détecte au lancement les fonctions déjà actives et les décoche automatiquement ;
+- détecte au lancement les fonctions déjà actives et les décoche automatiquement ; la comparaison exacte distingue notamment un serveur configuré d'un état non configuré ou partiel ;
 - télécharge la CMP 2.6.5 depuis sa source, puis contrôle taille et SHA-256 avant installation ;
 - installe 156 missions coopératives communautaires, accessibles par `Multijoueur → Créer → LAN → Coopération` ;
 - propose une case pour débloquer les 24 missions HD2 et les 9 missions Sabre Squadron du profil actif, sans importer de sauvegarde terminée ;

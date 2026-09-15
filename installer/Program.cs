@@ -29,6 +29,7 @@ namespace HD2CommunityInstaller
                     {
                         Console.WriteLine(WidescreenInstaller.ValidateOnly());
                         Console.WriteLine(GraphicsConfigurator.ValidateOnly());
+                        Console.WriteLine(DiagnosticStatusMatcher.ValidateOnly());
                         Console.WriteLine(ExperimentalContentInstaller.ValidateOnly(game));
                         Console.WriteLine(OfficialContentInstaller.ValidateOnly(game));
                         Console.WriteLine(Arctic1FreeExplorationInstaller.ValidateOnly(game));
@@ -118,6 +119,7 @@ namespace HD2CommunityInstaller
                         Console.WriteLine(CmpInstaller.ValidateOnly(args[2], game));
                         Console.WriteLine(WidescreenInstaller.ValidateOnly());
                         Console.WriteLine(GraphicsConfigurator.ValidateOnly());
+                        Console.WriteLine(DiagnosticStatusMatcher.ValidateOnly());
                         Console.WriteLine(ExperimentalContentInstaller.ValidateOnly(game));
                         Console.WriteLine(OfficialContentInstaller.ValidateOnly(game));
                         Console.WriteLine(Arctic1FreeExplorationInstaller.ValidateOnly(game));

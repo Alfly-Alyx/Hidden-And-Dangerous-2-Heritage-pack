@@ -269,36 +269,26 @@ namespace HD2CommunityInstaller
 
         private void ApplyDetectedState(string diagnostic)
         {
-            master.Checked = !HasDetectedStatus(
+            master.Checked = !DiagnosticStatusMatcher.HasStatus(
                 diagnostic, "Serveurs Internet communautaires :", "configuree");
-            directPlay.Checked = !HasDetectedStatus(
+            directPlay.Checked = !DiagnosticStatusMatcher.HasStatus(
                 diagnostic, "DirectPlay :", "deja actif");
-            cmp.Checked = !HasDetectedStatus(
+            cmp.Checked = !DiagnosticStatusMatcher.HasStatus(
                 diagnostic, "CMP 2.6.5 :", "deja installee");
-            exploration.Checked = !HasDetectedStatus(
+            exploration.Checked = !DiagnosticStatusMatcher.HasStatus(
                 diagnostic, "Exploration libre :", "deja active");
-            objectives.Checked = !HasDetectedStatus(
+            objectives.Checked = !DiagnosticStatusMatcher.HasStatus(
                 diagnostic, "Objectifs optionnels :", "deja actifs");
-            dormant.Checked = !HasDetectedStatus(
+            dormant.Checked = !DiagnosticStatusMatcher.HasStatus(
                 diagnostic, "Guidages, routes et scripts officiels :", "deja actifs");
-            officialEasterEggs.Checked = !HasDetectedStatus(
+            officialEasterEggs.Checked = !DiagnosticStatusMatcher.HasStatus(
                 diagnostic, "Easter eggs Africa 1 et Africa 4 :", "deja actifs");
-            unlockMissions.Checked = !HasDetectedStatus(
+            unlockMissions.Checked = !DiagnosticStatusMatcher.HasStatus(
                 diagnostic, "Deblocage des missions", "deja actif");
-            graphics.Checked = !(HasDetectedStatus(
+            graphics.Checked = !(DiagnosticStatusMatcher.HasStatus(
                 diagnostic, "Correctif ecran large :", "deja actif")
-                && HasDetectedStatus(diagnostic, "Graphismes automatiques :", "deja applique"));
-        }
-
-        private static bool HasDetectedStatus(
-            string diagnostic, string prefix, string status)
-        {
-            foreach (string line in diagnostic.Split(new[] { "\r\n", "\n", "\r" },
-                StringSplitOptions.RemoveEmptyEntries))
-                if (line.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)
-                    && line.IndexOf(status, StringComparison.OrdinalIgnoreCase) >= 0)
-                    return true;
-            return false;
+                && DiagnosticStatusMatcher.HasStatus(
+                    diagnostic, "Graphismes automatiques :", "deja applique"));
         }
         private void AppendLog(string message)
         {

@@ -92,7 +92,10 @@ def audit(root: Path) -> dict[str, object]:
     if "CmpInstaller" in local:
         errors.append("Local self-test must not require the external CMP archive")
 
-    expected_full = set(installed) | {"GraphicsConfigurator"}
+    expected_full = set(installed) | {
+        "DiagnosticStatusMatcher",
+        "GraphicsConfigurator",
+    }
     if set(full) != expected_full:
         missing = sorted(set(installed) - set(full))
         extra = sorted(set(full) - expected_full)
