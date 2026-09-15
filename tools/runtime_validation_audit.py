@@ -13,7 +13,7 @@ ALLOWED_STATES = {"pending", "blocked", "passed", "failed"}
 REQUIRED_AREAS = {
     "alternate_paths", "community_maps", "dormant_sequences", "easter_eggs",
     "exploration", "graphics", "installation", "mp_to_solo", "network",
-    "objectives", "progression", "prototypes", "rollback",
+    "objectives", "progression", "prototypes", "rollback", "custom_missions",
 }
 REQUIRED_CASES = {
     "install.clean_112", "install.update_existing", "install.modified_conflict",
@@ -27,6 +27,8 @@ REQUIRED_CASES = {
     "alternate.czech4_plaza", "alternate.alps1_doghandler",
     "multiplayer.prototype_normandy3", "multiplayer.prototype_africa5",
     "multiplayer.community_package", "conversion.mp_to_solo_gate",
+    "custom.single_setup_integration", "custom.three_categories",
+    "custom.manager_roundtrip",
 }
 EVIDENCE_FIELDS = {"tester", "date", "build_hash", "captures", "logs", "notes"}
 MP_SOLO_RUNTIME_FIELDS = {

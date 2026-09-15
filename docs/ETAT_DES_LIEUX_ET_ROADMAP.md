@@ -214,6 +214,7 @@ Objectif : prouver dans le jeu ce qui est déjà automatisé.
 - tester dans Burgundy 3 la ronde du garde 32, la séquence complète 59990052–59990056 du premier SAS, puis une sauvegarde et un chargement avant et après sa libération.
 - tester dans Libye 1 coopératif les dialogues 08–12 et 33–34 avec fin normale, alarme et mort d'un participant ; tester dans Libye 3 coopératif l'échange des drapeaux et les deux mitrailleurs de toit.
 - tester dans Arctic 1 Objectif l'extinction conjointe des deux halos du transformateur, dans Burma 2 Objectif les deux emplacements aléatoires de la radio, et dans Normandy MP les deux états successifs du phare (rotation et trois lumières).
+- après validation du travail externe, intégrer le menu et le gestionnaire de missions personnalisées dans l'unique setup Heritage Pack, puis vérifier les trois rubriques, la détection d'état, l'installation d'un paquet, sa localisation et sa restauration complète.
 
 Sortie attendue : tableau de tests signé avec captures et anomalies.
 
