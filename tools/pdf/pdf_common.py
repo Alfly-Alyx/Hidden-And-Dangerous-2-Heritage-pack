@@ -11,7 +11,7 @@ from reportlab.platypus import (
     Table, TableStyle, Flowable, ListFlowable, ListItem, NextPageTemplate
 )
 
-ROOT = Path(r"D:\Projets\GITHUB\H&D2")
+ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "output" / "pdf"
 OUT.mkdir(parents=True, exist_ok=True)
 
@@ -150,7 +150,7 @@ def body_page(canvas, doc):
 
 class HD2Doc(BaseDocTemplate):
     def __init__(self, filename, label):
-        super().__init__(filename,pagesize=A4,leftMargin=MARGIN_X,rightMargin=MARGIN_X,topMargin=TOP,bottomMargin=BOTTOM,title=label,author="HD2 Community Pack")
+        super().__init__(filename,pagesize=A4,leftMargin=MARGIN_X,rightMargin=MARGIN_X,topMargin=TOP,bottomMargin=BOTTOM,title=label,author="H&D2 Heritage Pack")
         self._doc_label = label
         frame = Frame(MARGIN_X,BOTTOM,PAGE_W-2*MARGIN_X,PAGE_H-BOTTOM-TOP,leftPadding=0,rightPadding=0,topPadding=0,bottomPadding=0)
         self.addPageTemplates([

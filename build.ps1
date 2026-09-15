@@ -22,6 +22,21 @@ $widescreen = Join-Path $projectRoot 'installer\assets\HiddenandDangerous2.Wides
 if (-not (Test-Path -LiteralPath $guide) -or -not (Test-Path -LiteralPath $report)) {
     throw 'The two final PDF guides must be generated before building the installer.'
 }
+$pdfCommon = Join-Path $projectRoot 'tools\pdf\pdf_common.py'
+$playerSource = Join-Path $projectRoot 'tools\pdf\build_player_guide.py'
+$reportSource = Join-Path $projectRoot 'tools\pdf\build_report.py'
+foreach ($pair in @(
+    @($guide, $pdfCommon, $playerSource),
+    @($report, $pdfCommon, $reportSource)
+)) {
+    $outputInfo = Get-Item -LiteralPath $pair[0]
+    $latestSource = Get-Item -LiteralPath $pair[1], $pair[2] |
+        Sort-Object LastWriteTimeUtc -Descending |
+        Select-Object -First 1
+    if ($outputInfo.LastWriteTimeUtc -lt $latestSource.LastWriteTimeUtc) {
+        throw "PDF output is older than its source: $($outputInfo.Name). Regenerate and verify it first."
+    }
+}
 if (-not (Test-Path -LiteralPath $icon)) {
     throw 'The Windows icon is missing.'
 }

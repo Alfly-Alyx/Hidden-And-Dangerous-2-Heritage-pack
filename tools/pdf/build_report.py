@@ -6,20 +6,22 @@ def build_report():
     path = OUT / "HD2-Rapport-des-Decouvertes.pdf"
     doc = HD2Doc(str(path), "HD2 - Rapport des découvertes")
     s = []
-    cover(s, "Dossier d'archéologie - Révision 0.5", "Rapport des<br/>découvertes",
+    cover(s, "Dossier d'archéologie - Révision 0.7.5", "Rapport des<br/>découvertes",
           "Contenu coupé, variantes internes, objectifs fragiles, routes, armes, véhicules et faisabilité de restauration.",
-          "Installation commerciale 1.12 + Sabre Squadron<br/>Recherche locale et sources d'époque - 13 septembre 2026")
+          "Installation commerciale 1.12 + Sabre Squadron<br/>Recherche locale et sources d'époque - 15 septembre 2026")
 
     section(s,"00","Synthèse")
     s.append(info_box("Conclusion centrale",
         "L'installation contient davantage de vestiges exploitables qu'un simple inventaire des menus ne le laisse voir. "
-        "Deux cartes expérimentales, trois objectifs fragiles, trois guidages coupés et deux easter eggs neutralisés peuvent être restaurés sans inventer une nouvelle histoire."))
+        "L'audit stable couvre désormais les 33 missions solo, les neuf scénarios coopératifs commerciaux et les 25 variantes multijoueurs scriptées. Il restaure les données encore complètes et isole les créations nécessaires au lieu de les présenter comme du contenu officiel retrouvé."))
     s.append(Spacer(1,4*mm))
     s.append(P("Les découvertes les plus solides","h2"))
     s.append(bullet([
         "33 missions solo déclarées et retrouvées : aucune campagne finale complète n'est simplement oubliée.",
         "82 arbres officiels lisibles ; 104 405 surfaces de zone neutralisables dans 70 arbres.",
         "CMP 2.6.5 figée : 23 600 entrées, 23 277 fichiers et 156 entrées de cartes.",
+        "Les 47 dossiers multijoueurs commerciaux et les deux prototypes sont tous déclarés après installation.",
+        "Les 25 variantes multijoueurs scriptées totalisent 203 liaisons et 183 scripts disponibles ; leurs douze scripts libres ont été classés.",
         "Africa 1 et Africa 4 sont explicitement neutralisés par la mise à jour 1.12 alors que leurs scènes restent complètes.",
         "ENGLAND, CASTLE1 et CASTLE2 prouvent des branches internes, mais pas des cartes autonomes complètes.",
         "M323, Aichi, La-5 et Fa 223 ont bien des modèles dans l'archive ; la jouabilité pilotable n'est pas démontrée.",
@@ -108,7 +110,7 @@ def build_report():
     s.append(P("Les clés A, B et C sont les objets 240, 241 et 242. Lorsqu'elles sont toutes à moins de trois mètres, le script d'origine active une valeur persistante et la scène meteor01. La mise à jour 1.12 neutralise uniquement le branchement. Les modèles, trajectoires et particules restent en place."))
     s.append(P("Africa 1 - seconde neutralisation confirmée","h2"))
     s.append(P("La comparaison de versions montre que le patch 1.12 force à zéro une condition nécessaire aux quatre morts de la mise en scène du jeep. Les trois invités, l'armure rouge, le portail de feu et la caméra sont toujours liés à la mission."))
-    s.append(info_box("Décision 0.5",
+    s.append(info_box("Décision 0.7.5",
         "Restaurer Africa 1 et Africa 4 avec une surcharge de leurs déclencheurs. Ne pas modifier les cinq secrets qui fonctionnent déjà. Le Tutorial reste en étude pour une solution 1.12 qui ne déplace pas arbitrairement le lingot."))
     s.append(PageBreak())
 
@@ -167,6 +169,8 @@ def build_report():
     section(s,"08","Armes et équipements")
     s.append(table([
         ["Élément","Trace","Conclusion"],
+        ["Benelli M4","18 animations de vue, sons, icône, texture et munition 179","Meilleur candidat additif ; emplacement objet remplacé par la boussole"],
+        ["Vickers K","Montée et utilisée sur la Jeep SAS","Active comme arme de véhicule, pas comme arme portative"],
         ["Flammenwerfer 35","Nom + munition ; pas de modèle d'arme complet","Arme annoncée et retirée ; reconstruction nécessaire"],
         ["Portable No. 2","Nom + munition ; même lacune","Arme annoncée et retirée"],
         ["flame1.4ds","471 octets, seul objet fire01","Effet de flamme, pas lance-flammes"],
@@ -224,13 +228,13 @@ def build_report():
         ["Chantier","Acquis","Étape suivante"],
         ["Réseau","Serveur maître joignable, configuration automatisée","Voir la liste et rejoindre une partie dans le jeu"],
         ["Campagnes officielles","33 sur 33 inventoriées","Chercher variantes, branches et objectifs, pas une campagne finale manquante"],
-        ["Exploration","82 arbres pris en charge","Tester les bords, collisions et secteurs mission par mission"],
-        ["Objectifs","3 correctifs reproductibles","Jouer les routes alternatives et sauvegarder/recharger"],
+        ["Exploration","82 arbres officiels et 225 arbres libres locaux contrôlés","Tester les bords, collisions et secteurs mission par mission"],
+        ["Objectifs","14 ensembles suivis et 73 états détaillés","Jouer les routes alternatives et sauvegarder/recharger"],
         ["Easter eggs","Africa 1 et Africa 4 réactivés","Valider en jeu ; résoudre le Tutorial 1.12"],
         ["Vestiges","Normandy3 Zone et Africa5 Prototype activés","Essais IA, modes et stabilité"],
         ["Londres","Campagne annoncée distinguée de Poland","Rechercher d'autres assets avant toute recréation"],
         ["Prototypes","ENGLAND et CASTLE1/2 classés","Démonstration CASTLE2 avec objectif 5"],
-        ["Armes","Lance-flammes correctement diagnostiqués","Prototype séparé modèle, animation et comportement"],
+        ["Armes","Benelli priorisé ; lance-flammes correctement diagnostiqués","Prototype additif séparé, puis modèles et comportements nouveaux"],
         ["Aéronefs","Modèles exacts retrouvés","Choisir un appareil et construire un banc d'essai"],
         ["Communauté","CMP 2.6.5 intégrée","Évaluer d'autres paquets un par un avec licences et conflits"]
     ],[42*mm,63*mm,63*mm]))
