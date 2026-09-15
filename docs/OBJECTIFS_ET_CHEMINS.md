@@ -568,6 +568,16 @@ Les états d'objectifs commentés en tête des deux contrôleurs sont remplacés
 - Africa 5 : le registre conserve encore `dummy_runway01 -> AF4_runway01_detector.scr`, mais le script a disparu. Le contrôleur actif `AF4_runway_detector.scr` surveille déjà les trois points de piste, reçoit le signal de démarrage prévu et met à jour l'objectif 4 ainsi que la valeur sauvegardée 40. L'ancien détecteur unitaire a donc été remplacé par cette version centralisée.
 Un écart du graphe ne doit pas être réactivé :
 
+- Africa 2 : `AF2_13` envoie le signal 1 à `AF2_activator` avant son
+  signal 5 actif. Le volume de l’activateur réveille pourtant déjà le groupe à
+  320 unités, avant le seuil autonome de 300 unités d’AF2_13, et le signal 5
+  déclenche ensuite la réaction conservée. Ajouter un gestionnaire 1
+  dupliquerait donc un réveil déjà effectué sans restaurer une action distincte.
+- Alps 2 Carnage : `AL2_alarm_carn` envoie encore le signal 2 à `AL2_35`,
+  mais son commentaire indique explicitement que cet acteur est désactivé dans
+  ce mode et le contrôleur coupe ensuite ses signaux. Le récepteur 1 d’AL2_35
+  appartient à sa scène normale ; transformer 2 en 1 introduirait cette scène
+  dans Carnage contrairement au sélecteur commercial.
 - Libye 2 envoie un signal 2 seulement après la destruction de tous les véhicules, jeeps comprises. La réussite optionnelle est déjà validée par le signal 1 après les huit véhicules du parc, tandis que la perte de tous les véhicules est contrôlée séparément et fait échouer l'extraction. Le signal 2 est donc un doublon sans fonction distincte.
 - Czech 3 : à leur mort, les deux civils envoient un signal 2 à `e_ktable3`, acteur utilisé uniquement pour lancer `setobjectives.scr`. Ce script d'initialisation n'a aucun récepteur et le vrai contrôleur d'objectifs emploie déjà son signal 2 pour la sécurisation de la zone. La conversion coopérative publique retire ces deux envois tout en conservant la mort, l'arrêt des voix et la séquence d'évacuation ; ils sont donc classés résidus d'un ancien protocole, sans correctif à ajouter.
 
@@ -577,6 +587,18 @@ Un écart du graphe ne doit pas être réactivé :
 
 ## Vestiges de signaux confiés à la reconstruction
 
+- Alps 2 : le volume officiel `AL2_01_A1`, placé en
+  `(5,439143 ; 1,000002 ; 18,688917)`, est encore relié, mais son détecteur
+  de proximité est désactivé et aucun script ne lui envoie son signal
+  d’armement 1. Même réarmé, il transmettrait le signal 1 à `AL2_01`, dont
+  le script ne gère plus que 4, 6 et 8. La branche est donc coupée à ses deux
+  extrémités ; ni le déclencheur ni la réaction ne peuvent être choisis
+  fidèlement sans source supplémentaire.
+- Arctic 2 : les sept walkers `R_Arc1B_W1` à `W7` envoient tous le signal
+  3 à `dummy_GlobalAlarm` à leur mort. Le contrôleur global encore lié ne
+  traite que 1 et 2 ; aucun compteur, seuil ou effet associé à 3 ne subsiste.
+  Les sept émetteurs prouvent une intention collective, mais pas la conséquence
+  à recréer.
 - Africa 3, paire 22/23 : le registre attend `AF3a_2223synchronizer.scr`, mais aucun fichier ni gestionnaire correspondant ne subsiste. Les deux soldats déclarent chacun l'autre sans utiliser cette référence, ce qui confirme un lien perdu sans révéler son comportement. La coordination doit être reconstruite comme variante expérimentale.
 - Tutoriel : l'instructeur envoie cinq fois le signal 17 à dummy_BA_counter lorsque les cinq groupes sont terminés, mais ce compteur ne gère que les signaux 1 à 5. Un ancien compteur montre un arrêt complet possible, sans conserver le gestionnaire exact du signal 17. Un arrêt ou une remise à zéro peut être prototypé, mais doit rester étiqueté reconstruction moderne.
 - Tutoriel : les signaux vers dummy_WI et T_HR_Check réactivent des détecteurs déjà actifs ; ils sont classés redondants. Les deux signaux du piquet visent en revanche un contrôleur de route qui ne les gère plus, sans assez de données pour choisir la réaction d'origine.
