@@ -37,7 +37,8 @@ namespace HD2CommunityInstaller
         public static string ValidateOnly(string gamePath)
         {
             Dictionary<string, ObjectiveScriptSource> sources = ResolveSources(gamePath);
-            int changed = 0;
+            int pending = 0;
+            int alreadyActive = 0;
             foreach (string relative in ScriptPaths)
             {
                 ObjectiveScriptSource source = sources[relative];
@@ -45,14 +46,16 @@ namespace HD2CommunityInstaller
                 {
                     byte[] original = archive.Read(archive.Entries[source.EntryIndex]);
                     byte[] patched = PatchScript(relative, original);
-                    if (!BytesEqual(original, patched)) changed++;
+                    if (BytesEqual(original, patched)) alreadyActive++;
+                    else pending++;
                     ValidatePatched(relative, patched);
+                    if (!BytesEqual(patched, PatchScript(relative, patched)))
+                        throw new InvalidDataException(
+                            "Un correctif d'objectif n'est pas idempotent : " + relative);
                 }
             }
-            if (changed != ScriptPaths.Length)
-                throw new InvalidDataException(
-                    "Un ou plusieurs objectifs semblent deja modifies dans les archives.");
-            return "Objectifs verifies : 11 correctifs reproductibles "
+            return "Objectifs verifies : 11 ensembles reproductibles, "
+                + pending + " a activer et " + alreadyActive + " deja actifs "
                 + "(Carnage Africa 1, Arctic 3, cinq charges Arctic 2, Africa 2, Normandy 2, "
                 + "Libye 3, survie dans Africa 6, "
                 + "compteur des cinq avions Africa 5, second sabotage de Burgundy 1, "

@@ -58,6 +58,7 @@ def audit(root: Path) -> dict[str, object]:
     graphics_path = installer / "GraphicsConfigurator.cs"
     easter_egg_path = installer / "Africa4EasterEggInstaller.cs"
     tree_patcher_path = installer / "TreeKlzPatcher.cs"
+    objectives_path = installer / "ObjectiveFixInstaller.cs"
     assembly_path = installer / "AssemblyInfo.cs"
     build_path = root / "build.ps1"
     icon_path = installer / "assets" / "hd2-heritage-icon.ico"
@@ -73,6 +74,7 @@ def audit(root: Path) -> dict[str, object]:
     graphics = graphics_path.read_text(encoding="utf-8-sig")
     easter_eggs = easter_egg_path.read_text(encoding="utf-8-sig")
     tree_patcher = tree_patcher_path.read_text(encoding="utf-8-sig")
+    objectives = objectives_path.read_text(encoding="utf-8-sig")
     assembly = assembly_path.read_text(encoding="utf-8-sig")
     build = build_path.read_text(encoding="utf-8-sig")
     readme = readme_path.read_text(encoding="utf-8-sig")
@@ -272,6 +274,17 @@ def audit(root: Path) -> dict[str, object]:
             "Free exploration no longer clears area flags and border objects"
         )
 
+    objective_validation_accepts_active = all((
+        "int alreadyActive = 0;" in objectives,
+        "if (BytesEqual(original, patched)) alreadyActive++;" in objectives,
+        "BytesEqual(patched, PatchScript(relative, patched))" in objectives,
+        "changed != ScriptPaths.Length" not in objectives,
+    ))
+    if not objective_validation_accepts_active:
+        errors.append(
+            "Objective validation no longer accepts a mixed active/pending game"
+        )
+
     historical_icon = (
         icon_path.is_file()
         and hashlib.sha256(icon_path.read_bytes()).hexdigest().upper()
@@ -374,6 +387,7 @@ def audit(root: Path) -> dict[str, object]:
         "widescreen_before_resolution": widescreen_before_resolution,
         "africa4_exact_bindings": africa4_exact_bindings,
         "boundary_object_policy": boundary_object_policy,
+        "objective_validation_accepts_active": objective_validation_accepts_active,
         "historical_icon": historical_icon,
         "artifact_identity": artifact_identity,
         "version": version,
