@@ -106,9 +106,11 @@ chaque installation expérimentale.
 
 Le contrôle `tools/network_master_audit.py` vérifie sans lancer le jeu que les
 trois anciens noms GameSpy aboutissent à l’adresse RpR attendue, que le serveur
-maître répond sur le port 28910 et que l’installateur conserve le même
-câblage. L’affichage de la liste Internet et l’entrée effective sur un serveur
-restent volontairement des essais en jeu.
+maître répond sur le port 28910, accepte la requête historique H&D2 de
+146 octets et renvoie une enveloppe EncTypeX structurellement valide, puis que
+l’installateur conserve le même câblage. Le contenu chiffré n’est pas interprété
+par ce contrôle ; l’affichage de la liste Internet et l’entrée effective sur un
+serveur restent volontairement des essais en jeu.
 
 Le contrôle `tools/flamethrower_evidence_audit.py` fige séparément les traces
 des deux lance-flammes : record allemand, emplacement britannique réemployé,

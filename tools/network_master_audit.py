@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import hashlib
 import json
 import socket
 from pathlib import Path
@@ -17,6 +18,19 @@ ALIASES = (
     "hd2.master.gamespy.com",
     "hd2.ms14.gamespy.com",
 )
+QUERY_VALIDATE = b"Ghfg0Vhq"
+QUERY_FIELDS = (
+    b"\\hostname\\gamemode\\gametype\\mapname\\numplayers\\maxplayers"
+    b"\\hostport\\isdedicated\\gamever\\password\\voicechat\\expansion"
+)
+QUERY_BODY = (
+    b"\x00\x01\x03\x01\x00\x00\x00hd2\x00hd2\x00"
+    + QUERY_VALIDATE
+    + b"\x00"
+    + QUERY_FIELDS
+    + b"\x00\x00\x00\x00\x00"
+)
+MASTER_QUERY = (len(QUERY_BODY) + 2).to_bytes(2, "big") + QUERY_BODY
 
 
 def resolved_ipv4(alias: str) -> tuple[list[str], str | None]:
@@ -47,6 +61,56 @@ def tcp_probe(host: str, port: int, timeout: float) -> dict[str, object]:
             "peer": None,
             "error": str(error),
         }
+
+
+def protocol_probe(host: str, port: int, timeout: float) -> dict[str, object]:
+    response = bytearray()
+    peer: str | None = None
+    error: str | None = None
+    try:
+        with socket.create_connection((host, port), timeout=timeout) as stream:
+            stream.settimeout(timeout)
+            endpoint = stream.getpeername()
+            peer = f"{endpoint[0]}:{endpoint[1]}"
+            stream.sendall(MASTER_QUERY)
+            while len(response) < 65536:
+                try:
+                    chunk = stream.recv(4096)
+                except TimeoutError:
+                    break
+                if not chunk:
+                    break
+                response.extend(chunk)
+    except OSError as protocol_error:
+        error = str(protocol_error)
+
+    header_length: int | None = None
+    key_material_length: int | None = None
+    encrypted_payload_offset: int | None = None
+    header_layout_valid = False
+    if response:
+        header_length = (response[0] ^ 0xEC) + 2
+        if 2 <= header_length <= len(response):
+            key_material_length = response[header_length - 1] ^ 0xEA
+            encrypted_payload_offset = header_length + key_material_length
+            header_layout_valid = encrypted_payload_offset <= len(response)
+
+    return {
+        "responded": bool(response),
+        "peer": peer,
+        "request_bytes": len(MASTER_QUERY),
+        "request_sha256": hashlib.sha256(MASTER_QUERY).hexdigest().upper(),
+        "response_bytes": len(response),
+        "response_sha256": (
+            hashlib.sha256(response).hexdigest().upper() if response else None
+        ),
+        "enctypex_header_length": header_length,
+        "enctypex_key_material_length": key_material_length,
+        "encrypted_payload_offset": encrypted_payload_offset,
+        "header_layout_valid": header_layout_valid,
+        "decoded_server_count": None,
+        "error": error,
+    }
 
 
 def audit(root: Path, timeout: float) -> dict[str, object]:
@@ -108,6 +172,16 @@ def audit(root: Path, timeout: float) -> dict[str, object]:
             f"{EXPECTED_IP}:{EXPECTED_PORT}: {tcp['error']}"
         )
 
+    protocol = protocol_probe(ALIASES[-1], EXPECTED_PORT, timeout)
+    protocol_valid = (
+        protocol["responded"] and protocol["header_layout_valid"]
+    )
+    if not protocol_valid:
+        errors.append(
+            "The master accepted TCP but did not return a structurally valid "
+            f"H&D2 EncTypeX response: {protocol['error'] or 'no response'}"
+        )
+
     return {
         "ok": not errors,
         "checked_at_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
@@ -118,10 +192,14 @@ def audit(root: Path, timeout: float) -> dict[str, object]:
         },
         "aliases": aliases,
         "tcp": tcp,
+        "hd2_master_query": protocol,
+        "master_protocol_response_validated": protocol_valid,
         "in_game_server_list_validated": False,
         "in_game_note": (
-            "The Internet list and a full join still require the runtime "
-            "validation register."
+            "The audit sends the historical 146-byte H&D2 query and verifies "
+            "the encrypted response envelope only. Decrypting the current "
+            "server rows, displaying them in game and joining one still "
+            "require runtime validation."
         ),
         "errors": errors,
     }
