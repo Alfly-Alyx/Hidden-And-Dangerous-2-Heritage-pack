@@ -311,8 +311,8 @@ namespace HD2CommunityInstaller
                 "L'interruption du dialogue a ete alteree : "
                     + dialogue.Controller + ".");
             foreach (string actor in new[] {
-                dialogue.ActorA.ToLowerInvariant(),
-                dialogue.ActorB.ToLowerInvariant()
+                dialogue.VariableA,
+                dialogue.VariableB
             })
                 Require(text,
                     @"SendSignal[ \t]*\([ \t]*" + Regex.Escape(actor)

@@ -74,6 +74,7 @@ def audit(root: Path) -> dict[str, object]:
     alps1_civil_alarm_path = installer / "Alps1CivilAlarmInstaller.cs"
     africa3_vehicle_path = installer / "Africa3VehicleDiscoveryInstaller.cs"
     arctic3_car_hit_path = installer / "Arctic3CarHitInstaller.cs"
+    co_libye1_dialogues_path = installer / "CoLibye1DormantDialoguesInstaller.cs"
     arctic4_dog_patrol_path = installer / "Arctic4DogPatrolInstaller.cs"
     arctic4_ice_fall_path = installer / "Arctic4IceFallInstaller.cs"
     czech5_weather_path = installer / "Czech5WeatherInstaller.cs"
@@ -116,6 +117,7 @@ def audit(root: Path) -> dict[str, object]:
     alps1_civil_alarm = alps1_civil_alarm_path.read_text(encoding="utf-8-sig")
     africa3_vehicle = africa3_vehicle_path.read_text(encoding="utf-8-sig")
     arctic3_car_hit = arctic3_car_hit_path.read_text(encoding="utf-8-sig")
+    co_libye1_dialogues = co_libye1_dialogues_path.read_text(encoding="utf-8-sig")
     arctic4_dog_patrol = arctic4_dog_patrol_path.read_text(encoding="utf-8-sig")
     arctic4_ice_fall = arctic4_ice_fall_path.read_text(encoding="utf-8-sig")
     czech5_weather = czech5_weather_path.read_text(encoding="utf-8-sig")
@@ -523,6 +525,17 @@ def audit(root: Path) -> dict[str, object]:
             "Africa 3 or Arctic 3 actor validation still targets scene2.bin"
         )
 
+    co_libye1_end_signals_use_script_variables = all((
+        "dialogue.VariableA," in co_libye1_dialogues,
+        "dialogue.VariableB" in co_libye1_dialogues,
+        "dialogue.ActorA.ToLowerInvariant()" not in co_libye1_dialogues,
+        "dialogue.ActorB.ToLowerInvariant()" not in co_libye1_dialogues,
+    ))
+    if not co_libye1_end_signals_use_script_variables:
+        errors.append(
+            "Co_Libye1 dialogue completion checks actor names instead of script variables"
+        )
+
     arctic4_dog_patrol_requires_active_walk = all((
         arctic4_dog_patrol.count(
             '@"^[ \\t]*Label\\s+DeAlarm'
@@ -715,6 +728,9 @@ def audit(root: Path) -> dict[str, object]:
         "alps1_civil_uses_actor_registry": alps1_civil_uses_actor_registry,
         "later_actor_validations_use_actor_registries": (
             later_actor_validations_use_actor_registries
+        ),
+        "co_libye1_end_signals_use_script_variables": (
+            co_libye1_end_signals_use_script_variables
         ),
         "arctic4_dog_patrol_requires_active_walk": (
             arctic4_dog_patrol_requires_active_walk
