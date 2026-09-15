@@ -128,6 +128,32 @@ def audit(root: Path) -> dict[str, object]:
     missing_cases = sorted(REQUIRED_CASES - set(ids))
     if missing_cases:
         errors.append("Missing required cases: " + ", ".join(missing_cases))
+    internet_join = next(
+        (
+            case for case in cases
+            if isinstance(case, dict)
+            and case.get("id") == "network.internet_join"
+        ),
+        None,
+    )
+    if internet_join is not None:
+        join_text = " ".join(
+            item
+            for field in ("steps", "expected")
+            for item in (
+                internet_join.get(field)
+                if isinstance(internet_join.get(field), list) else []
+            )
+            if isinstance(item, str)
+        )
+        if (
+            "correctif écran large" not in join_text
+            or "CD-Key in use" not in join_text
+        ):
+            errors.append(
+                "network.internet_join must test the active widescreen fix "
+                "and the historical CD-Key in use failure"
+            )
 
     mp_solo = json.loads(mp_solo_path.read_text(encoding="utf-8"))
     if mp_solo.get("schema_version") != 1:
