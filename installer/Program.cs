@@ -56,6 +56,7 @@ namespace HD2CommunityInstaller
                         Console.WriteLine(Africa5StorageAlarmInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa5GateSmokeInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa5SchumannAmbushInstaller.ValidateOnly(game));
+                        Console.WriteLine(Africa5DormantActorsInstaller.ValidateOnly(game));
                         Console.WriteLine(Burgundy2PolishingInstaller.ValidateOnly(game));
                         Console.WriteLine(Burgundy2DormantBehaviorInstaller.ValidateOnly(game));
                         Console.WriteLine(Burgundy3Guard32PatrolInstaller.ValidateOnly(game));
@@ -138,6 +139,7 @@ namespace HD2CommunityInstaller
                         Console.WriteLine(Africa5StorageAlarmInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa5GateSmokeInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa5SchumannAmbushInstaller.ValidateOnly(game));
+                        Console.WriteLine(Africa5DormantActorsInstaller.ValidateOnly(game));
                         Console.WriteLine(Burgundy2PolishingInstaller.ValidateOnly(game));
                         Console.WriteLine(Burgundy2DormantBehaviorInstaller.ValidateOnly(game));
                         Console.WriteLine(Burgundy3Guard32PatrolInstaller.ValidateOnly(game));

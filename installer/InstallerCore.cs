@@ -312,6 +312,9 @@ namespace HD2CommunityInstaller
                     Africa5SchumannAmbushInstaller.Install(
                         options.GamePath, journal, prepared, progress);
                 if (options.RestoreDormantSequences)
+                    Africa5DormantActorsInstaller.Install(
+                        options.GamePath, journal, prepared, progress);
+                if (options.RestoreDormantSequences)
                     Burgundy2PolishingInstaller.Install(
                         options.GamePath, journal, prepared, progress);
                 if (options.RestoreDormantSequences)

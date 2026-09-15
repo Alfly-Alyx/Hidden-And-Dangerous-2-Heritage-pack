@@ -330,6 +330,24 @@ Le détecteur `dummy_attack_schumann` lance encore la cinématique 20 lorsque le
 
 Le gestionnaire correspondant d’`AF4_23` était entièrement commenté. Il arrête son activité, le fait rejoindre `AF4_blesz_end`, l’accroupit et termine son script à la fin de la cinématique. Ce point existe une fois dans la carte, et les trois acteurs sont toujours reliés. Le paquet restaure ce bloc sans modifier la conversation facultative de Schumann, le déclencheur de l’embuscade ni le comportement du tireur.
 
+### Réception des alertes du garde caché 43 dans Africa 5
+
+`AF4_43` commence suspendu dans la maison, mais son script conserve exactement `HUMAN_SetEvents(true)` en commentaire juste après cette suspension. Il possède déjà une réaction `OnAlarm()` complète et un réveil local à quinze mètres. Cette combinaison suspension plus événements actifs est employée par de nombreux gardes commerciaux, notamment les mécaniciens 01 et 02 de la même mission.
+
+Le paquet réactive uniquement cette ligne afin que l'alarme puisse atteindre le garde avant l'entrée du joueur dans son rayon. Les deux signaux 5 envoyés par `AF4_44` et `AF4_49` restent une reconstruction séparée : aucun gestionnaire 5 exact ni trajet correspondant n'a survécu chez `AF4_43`.
+
+### Visage féminin d’AF4_10 dans Africa 5
+
+Le distributeur de visages affecte explicitement `e_f0w2` à `AF4_12`, tandis que la ligne parallèle `AF4_10 -> e_f0w1` est commentée. Les deux femmes sont placées, reliées et utilisées par le contrôleur final ; les textures `e_f0w1.bmp` et `e_f0w2.bmp` sont encore dans `Maps.dta`.
+
+Le paquet réactive seulement l'affectation `e_f0w1`. Il conserve la répartition déterministe des visages allemands ; les anciennes graines aléatoires, qui remplaceraient ce comportement, restent un profil expérimental.
+
+### Alerte vocale du garde du magasin dans Africa 5
+
+La version de base d'`AF4_sklad01.scr` joue une fois le son 9/36 à la première alarme, attend une seconde et verrouille la variable `played`. Le patch 1.12 retire ce bloc mais conserve la variable et tout le reste du gestionnaire. Le mécanicien `AF4_sklad04` emploie toujours le même canal 9 pour son alerte de groupe.
+
+Le paquet remet le bloc commercial de base à son emplacement exact, sans modifier la branche d'alarme 2 ni les réactions des six autres hommes du magasin.
+
 ### Ronde du garde 32 dans Burgundy 3
 
 Dans la mission solo, `BUR03_32` rejoint bien son label de ronde, arme au bras et en mode garde, mais les deux déplacements vers `32_01` et `32_02` sont commentés. Ces deux points sont présents une seule fois dans la carte solo. La version coopérative de Burgundy 3 contient le même script avec les deux lignes actives dans le même ordre.
