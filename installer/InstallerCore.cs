@@ -396,6 +396,9 @@ namespace HD2CommunityInstaller
                     Arctic1RadioButtonInstaller.Install(
                         options.GamePath, journal, prepared, progress);
                 if (options.RestoreDormantSequences)
+                    Arctic1TransformerLightsInstaller.Install(
+                        options.GamePath, journal, prepared, progress);
+                if (options.RestoreDormantSequences)
                     Arctic2RadioInstaller.Install(
                         options.GamePath, journal, prepared, progress);
                 if (options.RestoreDormantSequences)

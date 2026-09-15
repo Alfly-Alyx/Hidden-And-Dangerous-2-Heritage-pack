@@ -224,6 +224,12 @@ Les autres commentaires inspectés ne forment pas de restauration stable supplé
 
 Le contrôleur d'objectifs se termine en revanche par la note explicite « compléter l'échec lors de la destruction du bateau ». `ELKO` est bien lié à `R_Ar3_Amik_Boat.scr`, mais ce script ne possède aucun détecteur de dégâts ou de destruction, et aucune voix ni aucun sous-titre n'est conservé pour cette conséquence. Une reconstruction isolée propose deux détecteurs alternatifs, `OnDeath()` ou surveillance d'état, à valider sur une copie de test avant toute intégration.
 
+## Arctic 1 Objectif — extinction complète du transformateur
+
+Le même acteur `la_A1_trans_` porte à la fois le clignotement général de la base et le script de destruction du transformateur. Deux halos, `m_svets_.Rectangle01` et `m_svets_2.Rectangle01`, sont actifs dans la première liste mais commentés dans la seconde avec exactement les mêmes commandes et le même état. Ils sont rétablis dans la séquence de destruction afin de rester éteints après le sabotage.
+
+Les cinq autres commandes commentées (`st_2`, `light`, `s_p16`, `m_svets2.Rectangle01` et `m_svets4.Rectangle01`) ne correspondent plus à des objets nommés dans la scène et ne sont pas activées. Les références actives mais incomplètement résolues du clignotement ne sont pas étendues au script de destruction sans preuve supplémentaire.
+
 ## Arctic 4 — audit exhaustif terminé
 
 Le registre possède 124 liaisons, 98 scripts directement affectés et deux inclusions ; les 100 scripts disponibles sont tous atteignables et aucun fichier affecté ne manque. Les chaînes des huit objectifs ont été suivies : exploration, radio, documents, occupation du sous-marin, prévention de sa plongée, transmission finale et deux objectifs optionnels. Les commentaires d'états d'objectif au début du contrôleur sont un banc de test ; les chasseurs reçoivent déjà leur signal 13 ; les anciennes jumelles d'inventaire ont été remplacées par l'activité dédiée ; la seconde montée au toit est explicitement rejetée par le script.

@@ -98,6 +98,7 @@ namespace HD2CommunityInstaller
                         Console.WriteLine(NorwayTirpitzAmbienceInstaller.ValidateOnly(game));
                         Console.WriteLine(NorwayGuardTimerInstaller.ValidateOnly(game));
                         Console.WriteLine(Arctic1RadioButtonInstaller.ValidateOnly(game));
+                        Console.WriteLine(Arctic1TransformerLightsInstaller.ValidateOnly(game));
                         Console.WriteLine(Arctic2RadioInstaller.ValidateOnly(game));
                         Console.WriteLine(Arctic2DynamicLightInstaller.ValidateOnly(game));
                         Console.WriteLine(Sicily1AlarmButtonInstaller.ValidateOnly(game));
@@ -184,6 +185,7 @@ namespace HD2CommunityInstaller
                         Console.WriteLine(NorwayTirpitzAmbienceInstaller.ValidateOnly(game));
                         Console.WriteLine(NorwayGuardTimerInstaller.ValidateOnly(game));
                         Console.WriteLine(Arctic1RadioButtonInstaller.ValidateOnly(game));
+                        Console.WriteLine(Arctic1TransformerLightsInstaller.ValidateOnly(game));
                         Console.WriteLine(Arctic2RadioInstaller.ValidateOnly(game));
                         Console.WriteLine(Arctic2DynamicLightInstaller.ValidateOnly(game));
                         Console.WriteLine(Sicily1AlarmButtonInstaller.ValidateOnly(game));

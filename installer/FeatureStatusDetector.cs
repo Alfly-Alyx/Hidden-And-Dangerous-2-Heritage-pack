@@ -177,6 +177,7 @@ namespace HD2CommunityInstaller
             if (NorwayTirpitzAmbienceInstaller.IsActive(gamePath)) ready++;
             if (NorwayGuardTimerInstaller.IsActive(gamePath)) ready++;
             if (Arctic1RadioButtonInstaller.IsActive(gamePath)) ready++;
+            if (Arctic1TransformerLightsInstaller.IsActive(gamePath)) ready++;
             if (Arctic2RadioInstaller.IsActive(gamePath)) ready++;
             if (Arctic2DynamicLightInstaller.IsActive(gamePath)) ready++;
             if (Sicily1AlarmButtonInstaller.IsActive(gamePath)) ready++;
@@ -197,7 +198,7 @@ namespace HD2CommunityInstaller
                 && africa3Dialogue.IndexOf(
                     "079915604", StringComparison.Ordinal) < 0)
                 ready++;
-            return CountStatus(ready, 70);
+            return CountStatus(ready, 71);
         }
 
         private static string DetectEasterEggs(string gamePath)
