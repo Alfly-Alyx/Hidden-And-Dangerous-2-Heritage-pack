@@ -58,7 +58,29 @@ Le ZK-383 apparaît dans l'iconographie alpha/bêta communautaire. Aucun ensembl
 
 ## Traces orphelines
 
-Le FG 42 est explicitement marqué `DISABLED` dans un catalogue ancien et conserve une munition, mais ni modèle ni icône. La MG 34 portative conserve une munition et des icônes, sans modèle portatif identifiable. MG 15 et MG 81 possèdent des entrées, icônes et sons compatibles avec des montages de véhicule, mais aucune chaîne d’arme portative démontrée. Ces traces ne sont pas activables seules.
+Le FG 42 conserve davantage qu'un simple nom : le record de tir 27 est complet,
+avec ses références `FG42_F` et `FG42_R`, et la munition 196 subsiste dans les
+catalogues Base et Sabre. Son ancien emplacement d'objet 27 a toutefois été
+réemployé par le casque `G HELM SS`, malgré le fragment résiduel `_42FGfpv`.
+Aucun modèle, aucune icône de munition et aucun son FG 42 identifiable ne
+complètent cette chaîne. Réutiliser l'ID 27 écraserait donc un objet livré.
+
+La MG 34 portative conserve elle aussi un record de tir complet, la munition
+201, ses icônes et ses sons. Son ancien emplacement d'objet 32 a été réemployé
+par le casque `G HELM NO`, qui conserve le fragment `_34mgFPV`. Aucun modèle
+portatif ni bloc d'animations FPV identifiable n'est présent. La munition 211,
+largement placée, appartient à la MG 34 de char active et ne prouve pas une
+arme portative.
+
+MG 15 et MG 81 possèdent quatre entrées d'armement monté, des icônes et des
+sons. Le décalage entre l'entrée de tir 55 nommée MG 15 et l'objet 55 nommé
+MG 81 montre qu'au moins un emplacement a été réemployé ou désynchronisé.
+Aucun modèle portatif n'est démontré. Ces traces ne sont pas activables seules.
+
+`tools/orphan_weapon_evidence_audit.py` fige les records, offsets, empreintes,
+modèles, icônes et sons de ces cinq familles, et interdit explicitement de
+réemployer les IDs 27 et 32 ou de confondre la munition de char avec une preuve
+de MG 34 portative.
 
 `w_m1gran.4ds` est un petit modèle monde dont la texture interne se nomme
 `W_GRANATUS.BMP`. Il n'a toutefois ni entrée d'objet, ni animation FPV, ni

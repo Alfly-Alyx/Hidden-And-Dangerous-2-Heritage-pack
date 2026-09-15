@@ -116,6 +116,13 @@ munitions, icônes et effet présents, mais modèles d'arme, animations, table d
 tir, scripts et sons de fonctionnement absents. Il empêche de présenter leur
 future reconstruction comme une simple activation.
 
+Le contrôle `tools/orphan_weapon_evidence_audit.py` vérifie les records de tir,
+objets, munitions, icônes, sons et modèles du FG 42, de la MG 34 portative, des
+MG 15/MG 81 et du Vickers K. Il confirme que le Vickers K est déjà monté sur la
+Jeep SAS, que les anciens emplacements FG 42 et MG 34 ont été réemployés par
+des casques, et qu'aucune de ces traces incomplètes ne peut entrer dans le lot
+stable par une simple activation.
+
 Le contrôle `tools/aircraft_scenic_audit.py` distingue les deux scènes Ju 52
 officielles encore actives dans Africa 1 et Africa 2 des sept autres aéronefs
 orphelins. Il fige les modèles et LOD de La-5, Aichi, DSF 230, Fa 223, Fw 200,

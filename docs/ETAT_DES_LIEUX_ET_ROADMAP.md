@@ -167,6 +167,13 @@ Le projet doit produire un ensemble installable pour Hidden & Dangerous 2: Sabre
   ressources d'icônes présentes, sans animation, table de tir ni script ;
 - `flame1.4ds` identifié comme un simple effet `fire01` de 471 octets, huit
   sommets et quatre faces ; l'effet 25 est identique dans Base et Sabre.
+- FG 42 et MG 34 portative confirmés avec un record de tir et une munition
+  complets, mais leurs anciens emplacements 27 et 32 sont réemployés par des
+  casques ; le FG 42 a perdu modèle, icône de munition et son, tandis que la
+  MG 34 a perdu modèle et animations FPV ;
+- MG 15 et MG 81 classés comme armements montés incomplets, avec un emplacement
+  55 incohérent entre les tables ; le Vickers K est déjà l'arme montée active
+  de la Jeep SAS, pas une arme portative dormante.
 
 ## Démarrage de l'audit exhaustif
 
@@ -275,6 +282,10 @@ Objectif : reconstruire d’abord le vestige d’arme le mieux documenté.
 - créer les modèles britannique et allemand ;
 - intégrer tenue, visée, réservoir et rechargement ;
 - tester IA, incendie, performance et multijoueur ;
+- reconstruire le FG 42 et la MG 34 portative sous de nouveaux IDs, sans jamais
+  écraser les casques qui occupent désormais leurs anciens emplacements ;
+- préserver MG 15/MG 81 comme bancs d'armement monté tant que modèle,
+  animation et véhicule propriétaire ne sont pas démontrés ;
 - étudier ensuite Garota et ZK-383.
 
 Sortie attendue : module optionnel, jamais présenté comme simple réactivation.
