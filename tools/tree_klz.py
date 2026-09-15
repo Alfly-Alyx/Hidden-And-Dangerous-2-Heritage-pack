@@ -41,6 +41,7 @@ class Audit:
     warning_flags: int
     failure_flags: int
     both_flags: int
+    boundary_labels: int
 
 
 def _u32(data: bytes | bytearray, offset: int) -> int:
@@ -83,17 +84,58 @@ def _record_offsets(data: bytes | bytearray):
         position = end
 
 
+def _boundary_label_offsets(data: bytes | bytearray):
+    """Yield object-label offsets containing the engine's `border` marker."""
+    if len(data) == 16:
+        return
+    if len(data) < MIN_HEADER or _u32(data, 0) != MAGIC:
+        raise ValueError("invalid tree.klz signature")
+    count = _u32(data, 12)
+    if count > (len(data) - MIN_HEADER) // 4:
+        raise ValueError("object table outside file")
+    for index in range(count):
+        label_offset = _u32(data, MIN_HEADER + index * 4) + 4
+        if label_offset < 0 or label_offset >= len(data):
+            raise ValueError("object label outside file")
+        end = data.find(b"\x00", label_offset)
+        if end < 0:
+            raise ValueError("unterminated object label")
+        label = bytes(data[label_offset:end]).lower()
+        if b"border" in label:
+            yield label_offset, end
+
+
+def _rename_boundary_labels(data: bytearray) -> int:
+    changed = 0
+    for start, end in _boundary_label_offsets(data):
+        label = bytes(data[start:end])
+        lowered = label.lower()
+        position = 0
+        touched = False
+        while True:
+            found = lowered.find(b"border", position)
+            if found < 0:
+                break
+            absolute = start + found
+            data[absolute : absolute + 6] = b"H2BORD"
+            position = found + 6
+            touched = True
+        changed += touched
+    return changed
+
+
 def audit_bytes(data: bytes | bytearray, path: str = "") -> Audit:
     if len(data) == 16:
-        return Audit(path, True, 0, 0, 0, 0)
+        return Audit(path, True, 0, 0, 0, 0, 0)
     records = warning = failure = both = 0
+    boundary_labels = sum(1 for _ in _boundary_label_offsets(data))
     for _, offset in _record_offsets(data):
         flags = data[offset + 1] & MISSION_AREA_MASK
         records += 1
         warning += flags == 0x40
         failure += flags == 0x20
         both += flags == MISSION_AREA_MASK
-    return Audit(path, False, records, warning, failure, both)
+    return Audit(path, False, records, warning, failure, both, boundary_labels)
 
 
 def patch_bytes(data: bytes) -> tuple[bytes, Audit, Audit]:
@@ -101,6 +143,7 @@ def patch_bytes(data: bytes) -> tuple[bytes, Audit, Audit]:
     if before.placeholder:
         return data, before, before
     result = bytearray(data)
+    _rename_boundary_labels(result)
     for _, offset in _record_offsets(result):
         result[offset + 1] &= ~MISSION_AREA_MASK
     after = audit_bytes(result)
@@ -124,13 +167,14 @@ def main() -> int:
                 temporary.write_bytes(patched)
                 temporary.replace(path)
             report = before
-            if after.warning_flags or after.failure_flags or after.both_flags:
+            if (after.warning_flags or after.failure_flags or after.both_flags
+                    or after.boundary_labels):
                 raise ValueError(f"mission-area flags remain in {path}")
         else:
             report = audit_bytes(source, str(path))
         reports.append(Audit(str(path), report.placeholder, report.records,
                              report.warning_flags, report.failure_flags,
-                             report.both_flags))
+                             report.both_flags, report.boundary_labels))
 
     if args.json:
         print(json.dumps([asdict(item) for item in reports], indent=2))
@@ -142,11 +186,12 @@ def main() -> int:
             sum(item.warning_flags for item in reports),
             sum(item.failure_flags for item in reports),
             sum(item.both_flags for item in reports),
+            sum(item.boundary_labels for item in reports),
         )
         print(
             f"{len(reports)} files, {totals.records} records, "
             f"warning={totals.warning_flags}, failure={totals.failure_flags}, "
-            f"both={totals.both_flags}"
+            f"both={totals.both_flags}, borders={totals.boundary_labels}"
         )
     return 0
 

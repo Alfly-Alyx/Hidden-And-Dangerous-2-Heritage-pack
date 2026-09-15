@@ -19,6 +19,14 @@ Variante officielle absente de la liste finale. Treize fichiers lui sont propres
 
 Ces vestiges ne sont pas ajoutes au menu solo natif : ils ne contiennent ni definition complete de mission solo, ni objectifs, ni fin de mission. Ils sont accessibles directement dans le jeu par Multijoueur > Creer > LAN : Africa5 en Deathmatch et Normandy3 Zone en Occupation.
 
+Le contrôle indépendant `tools/prototype_deployment_audit.py` vérifie deux états
+distincts : la possibilité de reconstruire les dossiers complets depuis les
+archives commerciales, puis leur présence réelle sur le disque. La validation
+finale exigera `13/13` fichiers et sept scripts pour Africa5, `14/14` fichiers
+pour Normandy3 Zone, les deux entrées correctement nommées dans leur mode
+multijoueur et zéro drapeau ou objet `border` dans leurs collisions. Un simple
+nom visible dans le menu ne suffit donc plus à déclarer un prototype installé.
+
 ## Combien existe-t-il de cartes prototypes ?
 
 Dans l'installation commerciale 1.12 étudiée, **deux dossiers de cartes distinctes sont actuellement assez complets pour être restaurés et explorés sans inventer une nouvelle géométrie** : `NORMANDY3_MP_ZONE` et `AFRIKA5_MP`.

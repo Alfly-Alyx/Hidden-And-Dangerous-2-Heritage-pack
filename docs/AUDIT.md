@@ -2,7 +2,7 @@
 
 Installation étudiée : édition GOG anglaise de Hidden & Dangerous 2: Sabre Squadron 1.12, dossier D:\Games\Hidden and Dangerous 2.
 
-Date de référence : 14 septembre 2026.
+Date de référence : 15 septembre 2026.
 
 ## Résultat global
 
@@ -16,7 +16,7 @@ GameSpy n'assure plus le service officiel. RpR publie encore en 2026 un serveur 
     78.47.255.224 hd2.master.gamespy.com
     78.47.255.224 hd2.ms14.gamespy.com
 
-Le point 78.47.255.224:28910 répond encore au test TCP du 14 septembre 2026. La page d'accueil RpR affiche sept serveurs H&D2 sur cette adresse, répartis sur les ports 11001 à 11025 (coopération, deathmatch, objectifs, occupation et tests). La documentation RpR confirme aussi la nécessité de la version 1.12 et de DirectPlay sur Windows moderne.
+Le point 78.47.255.224:28910 répond encore au test TCP du 15 septembre 2026. Les trois noms se résolvent bien vers cette adresse sur la machine de test. La page d'accueil RpR affiche toujours sept serveurs H&D2 sur les ports 11001 à 11025 (coopération, deathmatch, objectifs, occupation et tests) et signalait leur redémarrage le même jour. La documentation RpR confirme aussi la nécessité de la version 1.12 et de DirectPlay sur Windows moderne.
 
 Statut honnête : infrastructure trouvée et joignable, configuration automatisée, mais affichage de la liste et connexion dans le jeu encore à valider visuellement sur la machine du joueur.
 
