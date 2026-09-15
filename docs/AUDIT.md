@@ -1,0 +1,202 @@
+# Audit général
+
+Installation étudiée : édition GOG anglaise de Hidden & Dangerous 2: Sabre Squadron 1.12, dossier D:\Games\Hidden and Dangerous 2.
+
+Date de référence : 14 septembre 2026.
+
+## Résultat global
+
+Le paquet 0.5.0 est construit autour de modifications réversibles. Il ne remplace pas les archives commerciales dans le dépôt : il lit l'installation légitime, produit des fichiers de surcharge locaux et conserve une sauvegarde de chaque cible remplacée.
+
+## Jeu en ligne
+
+GameSpy n'assure plus le service officiel. RpR publie encore en 2026 un serveur maître de remplacement, des serveurs actifs et la procédure de redirection des trois anciens noms :
+
+    78.47.255.224 hd2.available.gamespy.com
+    78.47.255.224 hd2.master.gamespy.com
+    78.47.255.224 hd2.ms14.gamespy.com
+
+Le point 78.47.255.224:28910 répond encore au test TCP du 14 septembre 2026. La page d'accueil RpR affiche sept serveurs H&D2 sur cette adresse, répartis sur les ports 11001 à 11025 (coopération, deathmatch, objectifs, occupation et tests). La documentation RpR confirme aussi la nécessité de la version 1.12 et de DirectPlay sur Windows moderne.
+
+Statut honnête : infrastructure trouvée et joignable, configuration automatisée, mais affichage de la liste et connexion dans le jeu encore à valider visuellement sur la machine du joueur.
+
+Sources :
+- https://www.rprclan.com/hd2/play-online
+- https://rprclan.com/
+- https://www.rprclan.com/hd2/create-server
+
+## Cartes et exploration
+
+L'inventaire final trouve 33 missions solo déclarées sur 33, ainsi que 82 arbres de collision officiels distincts. Deux dossiers multijoueurs non déclarés sont exploitables comme vestiges : NORMANDY3_MP_ZONE et AFRIKA5_MP.
+
+La sortie de zone est portée par deux bits de surface :
+
+- 0x40 : avertissement ;
+- 0x20 : échec.
+
+Le paquet efface seulement le masque 0x60. Il ne retire ni murs, ni sols, ni obstacles. Les arbres gardent exactement leur taille. Sur le corpus officiel, 104 405 surfaces de zone sont neutralisables dans 70 arbres sur 82, parmi 2 446 014 collisions. Le test intégré de la CMP trouve en plus 1 202 limites neutralisables dans son échantillon de validation.
+
+Cette liberté n'invente pas du terrain au-delà de la géométrie existante. Des bords vides, collisions ou secteurs non chargés peuvent toujours limiter l'exploration.
+
+Arctic 1 ajoutait un second verrou dans le script vocal d'Albert : lorsque le joueur le suivait sur sa route de retour, trois avertissements précédaient le signal 14 d'échec. Les deux routes commerciales activaient cette surveillance par les signaux 30 et 31. L'option d'exploration maintient désormais le détecteur désactivé dans les deux cas ; les voix, la branche historique et les deux routes restent dans le fichier mais deviennent inaccessibles pendant l'exploration libre.
+
+## CMP 2.6.5
+
+Version figée : commit 793d979748b27a9924fccc30fa0fba6edb7cd70f.
+
+- archive : 1 084 146 265 octets ;
+- SHA-256 : DD0CA6FED1FB056DCB064813C223E0423F1FD9B13E291D106D8B983C467ABC33 ;
+- 23 600 entrées ;
+- 23 277 fichiers installables ;
+- 156 entrées de cartes ;
+- 3 118 285 955 octets déployés.
+
+Source : https://github.com/ehylla93/had2-cmp/
+
+## Restaurations et corrections
+
+- Arctic 3 : la référence Amik_2 est remplacée par l'acteur présent Amik_1. L'objectif est fragile mais peut être contourné dans certaines routes ; il ne doit pas être qualifié d'impossible dans tous les cas.
+- Arctic 2 : les cinq charges et leurs dix signaux sont actifs. À cinq charges, le gestionnaire écrivait toutefois dans l'état 5 de l'alarme au lieu de l'état 6 explicitement lu pour l'objectif optionnel « Explosifs posés dans tous les emplacements appropriés ». L'écriture 5 est corrigée en 6, ce qui restaure cet objectif sans invalider à tort la discrétion.
+- Africa 2 : la destruction du char est reliée au gestionnaire qui valide l'objectif.
+- Normandy 2 : la survie des cinq alliés est recomptée correctement à la validation finale.
+- Libye 3 : l'objectif optionnel officiel de survie de toute l'unité est validé à l'extraction.
+- Africa 6 : le bloc officiel de validation de la survie de toute l'équipe, resté entièrement commenté après la réussite du vol, est réactivé sans changer sa condition.
+- Africa 5 : le gestionnaire de l'objectif 8 initialise deux fois l'état du quatrième avion et jamais celui du cinquième, alors que les cinq avions et leurs cinq scripts sont reliés et enregistrent chacun leur état propre. La seconde initialisation 24 est corrigée en 25 afin que les cinq destructions soient réellement nécessaires.
+- Burgundy 1 solo : après le contact avec la Résistance, le bloc officiel qui révèle le sabotage du dépôt de carburant était entièrement commenté. Sa copie coopérative est active et le script solo de destruction et de validation existe au complet ; les quatre lignes sont réactivées sans ajout de logique.
+- Libye 2 coopératif : le texte 15523, les huit véhicules ennemis suivis par `AF2_obj3.scr`, le signal et la validation de l'objectif 3 sont complets, mais le bloc multijoueur ne déclarait que les deux objectifs principaux. L'entrée officielle de dégâts au parc automobile est ajoutée sans modifier sa condition.
+- Brest coopératif : `obj_gener.scr` est identique au solo et valide les deux explosifs, tandis que l'acteur `OBJ_gener` est libre dans la scène. L'objectif 15504 est ajouté et l'acteur est relié au script dans les deux registres coopératifs.
+- Burgundy 1 coopératif : les objectifs 15566 et 15567 sont soutenus par deux branches actives du même contrôleur. La branche de pose discrète écrivait 5 au lieu de 6 ; la correction la rend identique au solo, puis les deux textes sont ajoutés au catalogue coopératif.
+- Burgundy 3 coopératif : l'objectif principal « Sauvez le plus de prisonniers possible » était déclaré mais caché, et ses cinq validations autour du compteur des trois groupes ainsi que son échec étaient commentés. Ces lignes sont réactivées. Le test du dernier groupe est aussi aligné sur la version solo : succès avec au moins un survivant, échec seulement si les quatre meurent, et perte partielle transmise au contrôle de l'objectif optionnel « tous les prisonniers ».
+- Czech 2 : l'objectif 2 « Quittez la zone » existe dans le catalogue et endgame.scr envoie déjà le signal 2 lorsque tous les joueurs et Freiberg atteignent la sortie. Le contrôleur validait la capture sans activer cette étape et ignorait le signal final. Le paquet active l'objectif à la capture puis traite ce signal commercial, sans changer la zone ni sa condition.
+- Africa 1 Carnage : l’acteur et le contrôleur dédiés sont reliés, mais l’initialisation et la validation de l'objectif 8 « Tuez l'ennemi » étaient entièrement commentées. Le bloc officiel, déjà limité aux types Carnage 3 et 7, est réactivé sans modifier la campagne normale.
+- Africa 3 Carnage : l’objectif 6 et son contrôleur relié subsistent, mais toute la logique est commentée et la garde de mode 3/7 a disparu ; ce cas est confié au module expérimental afin de ne pas créer un doublon en campagne normale.
+- Czech 3 objectif 4 et Libye 3 objectif 6 : ce sont respectivement un doublon sémantique et un doublon exact des objectifs Carnage déjà pilotés. Aucun second corps de validation n’est conservé ; ils ne sont pas annoncés comme objectifs secondaires restaurables.
+- Arctic 1 : deux séquences de guidage complètes neutralisées par des constantes de saut sont restaurées.
+- Arctic 1 : la radio conserve son bouton `m_radiog_.tlac_hide`, son acteur et son script d'interaction. Comme dans la radio sœur active d'Arctic 3, son affichage initial et son masquage à la destruction sont restaurés. Le support `objimka`, absent de la scène, reste désactivé.
+- Arctic 2 : le script complet du second poste radio est reconnecté à son modèle destructible.
+- Arctic 2 : les cinq anciens émetteurs de portes libres correspondent aux secondes portes retirées lorsque les paires ont été réunies pour fermer les portails ; leurs gestionnaires secondaires sont commentés avec cette justification. Le bouton d'alarme libre est un doublon exact du script actif, la porte des toilettes est remplacée par un contrôleur qui la déverrouille et réveille aussi `Static_9`, et `sledovac.scr` est un moniteur de débogage. Aucun de ces fichiers n'est raccordé au lot stable.
+- Arctic 2 : la première radio reste fonctionnelle mais son second émetteur sonore est explicitement laissé vide avec la note « son à compléter ». Cette finition est confiée à la reconstruction, faute de cadre sonore prouvé.
+- Brest : le second détecteur retrouve son script alternatif en solo et en coopération ; le conseil contextuel 15600 de la variante coopérative retrouve aussi la liaison identique présente au même emplacement en solo.
+- Burgundy 1 coopératif : le journal officiel, déjà appelé par la carte mais rangé seulement avec les scripts solo, est recopié dans le dossier attendu. La liaison manquante vers `bur1_obj_carnage.scr` est conservée comme vestige : ce contrôleur ne s'active que dans les types Carnage solo 3/7 et vise l'objectif 8, absent du catalogue coopératif ; il n'est donc plus installé ni présenté comme une restauration stable.
+- Burgundy 1 solo et coopératif : le garde ouvre la barrière avec le signal 1, attend vingt secondes, puis lui envoie par erreur le signal 0, que son script ne gère pas. La commande de fermeture officielle est le signal 2 ; le correctif remplace uniquement ce numéro. Son déplacement commenté vers `04_01` est aussi réactivé : le checkpoint existe, il se place entre la fermeture et la valeur 61 qui lance la conversation puis fait repartir le camion.
+- Burgundy 1 : la cinématique finale omet la réplique 57990065 entre les phrases 57990064 et 57990066, mais conserve les deux commandes commentées, l'acteur `maki`, la liaison `dummy_csc02 → CSC_dabing.scr`, la voix anglaise et ses données labiales. Le paquet réactive exactement cette réplique enregistrée.
+- Burgundy 2 : le garde `ge_cesticka` produit encore l'état 5, possède toujours son label 5 et le checkpoint `ge_cesticka2`, mais son répartiteur d'alarme omettait uniquement `if(a==5) goto 5`. Cette reprise exacte est restaurée en solo et en coopération. Dans les deux variantes, la boucle `mumlani` de `gumak` conservait aussi son saut infini mais avait commenté sa seule parole temporisée 58990053 ; la ligne déjà utilisée et enregistrée est réactivée pour rendre au script son attente et son marmonnement.
+- Burgundy 2 : la fuite solo de `gumak` conserve `bmv1` commenté et `citron1` actif, mais le dernier tronçon commenté `bmv4` n'existe plus. `camery.scr` ne possède aucun acteur, n'emploie qu'une caméra sur huit et reste incomplet ; `ge_pruchod.scr` est un ancien fragment remplacé par l'acteur et le contrôleur complets `ge_pruchod2`. Ces trois cas restent au laboratoire.
+- Burgundy 3 : le premier prisonnier SAS omet sa phrase d'ouverture 59990052 en solo, alors que les quatre suivantes sont actives et que la variante coopérative conserve les cinq dans le même ordre. L'acteur, sa liaison, la voix et le lipsync 59990052 sont présents ; le paquet réactive uniquement cet appel enregistré.
+- Burgundy 3 : l'audit exhaustif couvre 87 liaisons directes et deux inclusions, soit les 89 scripts disponibles sans orphelin ni fichier manquant. Les neuf objectifs sont actifs. Les 101 déplacements emploient 78 checkpoints tous présents ; les 131 cibles de scène distinctes sont résolues, hors deux nœuds enfants de modèles. La ronde 01–02 du garde 32 et la phrase 59990052 sont les seules restaurations stables supplémentaires. L'ancienne fuite en Jeep de `bur3_24`, les gestes perdus de l'interrogatoire et le raccord sonore des deux modes d'explosion restent des reconstructions additives. Les mises à mort commentées dans la cinématique d'explosion ne sont pas réactivées isolément : elles sont actives dans l'autre branche et doivent être comparées aux dégâts déjà produits par les explosions.
+- Czech 4 Zone : `door35` possède le même script complet que les huit autres portes, ainsi que son acteur et sa géométrie ; sa liaison manquante est restaurée dans le registre multijoueur.
+- Alps 1 : `ci03alarmer1` forme une seconde zone d'approche distincte devant le civil 03 ; son script complet envoie le même signal 8 que le détecteur actif, et le civil conserve son gestionnaire de ce signal.
+- Alps 1 : quatre envois commentés dans les détecteurs de forge 16, 20 et 30 reconnectent les gardes `ge_10`, `ge_11` et `ge_43`. Leurs signaux 1 ou 2 réactivent des comportements complets, leurs trois acteurs et liaisons existent, et leurs quinze points de ronde sont présents. Les deux envois supplémentaires du détecteur 24 restent reconstructifs, car ce script ne déclare pas ses destinataires. La variante Carnage `ge_08_car.scr`, réellement affectée aux types 3 et 7, retrouve en revanche sa route alternative `ge08_02` et l'envoi 2 qui suspend déjà le chien ; la variante normale conserve sa route `ge08_01`.
+- Alps 1 : les réactions d'alarme des gardes `ge_16`, `ge_17` et `ge_23` contiennent encore leurs déplacements complets, mais leurs prises de poste finales étaient commentées. Le paquet réactive le point de précision `ge16_sniper` avec le mode tireur, et l'embarquement des deux autres soldats sur `w_mg42Crouch_` et `w_mg42Crouch_3`. Les trois acteurs, les deux MG42, leurs liaisons et leurs points sont présents ; aucune position n'est inventée. La patrouille du garde `ge_18` retrouve elle aussi son terminus `ge18_01` : ce point est encore présent et complète la boucle symétrique `01-02-03-04-05-04-03-02` dont seule la première étape était commentée. Le garde `ge_34` retrouve enfin son attaque de cinq secondes sur l'acteur `ge34attack` : la branche visuelle active le détecte déjà, alerte `ge_33`, arme le soldat et l'oriente ; seule la commande commerciale `HUMAN_Attack` était commentée. Le même détecteur réveille aussi l'informateur `ge_35` : les sept autres soldats du groupe quittent leur suspension au signal 1, mais cette unique instruction était commentée chez lui avant l'activation de son écoute. Sa conséquence d'alarme et ses cinématiques restent complètes ; seule la ligne `HUMAN_Suspend(0)` est rétablie.
+- Alps 1 : `ridiccasovac.scr` compte déjà deux événements parmi la mort du conducteur, la coupure du téléphone et l'alarme. Il libère ensuite `ge_38` et `ge_39` après 60 secondes, puis attend encore 30 secondes. L'envoi final du signal 18 était commenté, alors que `objectyves.scr` conserve son récepteur complet, le sous-titre 14992813 et l'échec de l'objectif 1. Le paquet réactive uniquement cet envoi ; ce délai scénarisé n'est pas une limite de carte.
+- Alps 2 : le détecteur `shotalarmdetector` et la chaîne `shotalarm` existent encore ; la liaison manquante rétablit le basculement officiel de la réaction aux tirs quand le joueur entre dans la zone prévue.
+- Alps 2 : l'audit exhaustif des actions commentées n'a révélé aucune autre restauration sûre. Le délai d'échec de 90 secondes est un ancien mode plus contraignant, l'accessoire `k_leo_` n'a plus de point d'attache actif, et le détecteur libre `AL2_13_A1` vise deux soldats dépourvus de scripts. Ces trois cas sont confiés à la reconstruction additive. Les envois d'objectifs 2, 5 et 8 commentés sont des doublons d'émetteurs ou d'initialisations encore actifs ; les rétablir ferait progresser les objectifs deux fois.
+- Africa 3 : l'acteur `AF3a_obj2`, placé sur l'Opel utilisable, et son script homonyme complet étaient présents mais non reliés. La liaison restaurée valide de nouveau la découverte du véhicule à huit mètres. Le script ne touche pas au compteur central, qui reste alimenté par la conversation officielle avec le mécanicien.
+- Africa 3, conversation 05 : les commentaires officiels donnent les voix `07991601` et `07991604`, mais les deux appels correspondants contiennent chacun un chiffre 5 supplémentaire (`079915601` et `079915604`). Le paquet corrige uniquement ces deux identifiants dans le script déjà relié à `dummy_rozhovor_05`. Aucun déclencheur n'est ajouté : les conversations 03, 04 et 05 restent des vestiges expérimentaux tant que leur activation d'origine n'est pas retrouvée.
+- Normandy 2 : le détecteur de la vague 7 envoie bien le signal 7 à Red 26, comme aux onze autres combattants de son groupe, mais son script attend par erreur le signal 6. Le correctif aligne ce seul numéro et conserve tout son comportement officiel.
+- Normandy 2 : les quinze soldats Blue réellement placés possèdent chacun cinq ripostes distinctes. Dans les quinze scripts, `OnSignal(5)` déclare correctement `loop_A5` et vise `Ally5`, mais son dernier saut retourne vers `loop_A1`. Le paquet corrige uniquement ces quinze destinations ; les scripts libres Blue 12 et 16, dont les acteurs ont été retirés, restent expérimentaux.
+- Norway : les deux détecteurs d’approche doivent se couper mutuellement. Le premier envoie bien le signal 2 attendu par `detect_player2`, mais sa variable pointe à tort sur lui-même ; le correctif remplace uniquement la cible par le second détecteur.
+- Norway : le Patch 1.12 retire l'unique liaison `m_tirpitz low.t_kotva41 → R_Nor_action_Sender.scr`, alors que le cadre du navire, les neuf gardes visés et leurs liaisons subsistent. Huit de ces gardes gèrent encore les quatre réactions chapeau, bouteille, froid et regard vers la mer ; la liaison historique est restaurée pour eux. `tirpic_guard_3` est bien ciblé mais ne possède plus les récepteurs correspondants : sa finition reste expérimentale.
+- Norway : lorsque le garde `Small3` est blessé, son script conserve l'ordre commenté destiné à arrêter `small3_timer`, mais emploie l'ancien nom `timer` au lieu de la variable déclarée `timer2`. Le minuteur possède toujours son récepteur vide `OnSignal(3)`, prévu pour interrompre l'attente. Le paquet rétablit uniquement `SendSignal(timer2,3)`.
+- Czech 4 : `CZ4_Detector_04` envoie le signal 4 aux trois soldats de la place. `Plazzars_01` le gère par un itinéraire distinct, mais `Plazzars_02` et `03` ne gèrent que le signal 3 utilisé par l’approche voisine. Le correctif conserve le signal 4 du premier et remplace uniquement les deux envois incompatibles par leur signal 3 officiel.
+- Czech 4 : le contrôleur de l'objectif principal déclarait `CZ4_Chatter_02`, mais recherchait par erreur une seconde fois le cadre `CZ4_Chatter_01`. Le second combattant n'était donc pas inclus dans le compteur « Tuez tous les ennemis ». Le correctif change uniquement cette chaîne de recherche ; les deux acteurs, leurs scripts et leurs liaisons sont présents.
+- Czech 2 : le script actif de la porte `dobytcak146` déclare `ger24` et `ger25`, mais adresse deux fois le signal 3 à `ger24`. Les deux soldats sont reliés à la mission et possèdent chacun leur réaction 3 complète. Le correctif remplace uniquement le second destinataire par `ger25`.
+- Arctic 3 : le chef `Wood_1` déclare ses deux équipiers `Wood_2` et `Wood_3`, mais sa mort envoyait deux fois le signal 5 à `Wood_2`. Les deux équipiers possèdent le même gestionnaire 5 vers leur route `Dealarm`. Le second envoi cible désormais `Wood_3`.
+- Czech 3 : `ovladacblockeru` déclare les deux détecteurs de patrouille et leur envoie deux ordres consécutifs, mais les deux visaient `detector_blockerz`. Les deux acteurs partagent le même script complet de signal 1 ; le second ordre cible désormais `detector_blockerz1`.
+- Czech 3 : le camion de transfert conserve quatre étapes de stationnement commentées (`BMW_16`, l'approche puis le recul par `couvej1`, et le recul par `couvej3`). Les quatre points existent et la branche Carnage officielle exécute déjà la même manœuvre complète sur la même carte. Ces étapes sont réactivées dans la mission normale sans remplacer son arrivée, son chargement des prisonniers ni son départ.
+- Czech 3 : la mort du mécanicien avertit de nouveau `mechanik_kecac` par son signal 2 afin d'arrêter le dialogue de proximité sur le cadavre ; l'acteur, la liaison et le récepteur `DisableWhenevers(1)` sont complets. Le radio-opérateur reprend aussi son unique `HUMAN_SetSniper(1, 1)` après avoir gagné `spojar1`, sorti son arme, pris sa position accroupie et regardé `spojarcum`. Cette même ligne est active au même endroit dans la variante CMP `co_czech3`.
+- Africa 3 → Africa 4 : l'opérateur radio initialise la valeur 20 à zéro puis la passe à un s'il termine sa transmission. Africa 4 relit cette valeur dans son organisateur, ses réserves et ses journaux, avec deux jeux complets de signaux et de délais, mais l'organisateur l'écrasait immédiatement par `odvysilali = 1`. Le correctif retire uniquement cette affectation de test afin de restaurer la conséquence de l'action du joueur.
+- Africa 2 : deux émetteurs utilisent chacun le numéro réservé à l'autre variante d'alerte. Le correctif envoie le signal 20 déjà géré par `AF2_02` et le signal 5 déjà géré par `AF2_05`. Il réactive aussi les trois déclarations et les quatre envois officiels commentés d'`AF2_03` : activation lointaine, détection rapprochée, alerte directe et alarme générale. Ses signaux 1, 5 et 20, sa ronde, son trajet d'alerte, son acteur et tous ses points sont complets. La scène rapprochée des gardes 14–15 est elle aussi entièrement présente mais désactivée : le détecteur à 130 mètres, son arrêt en cas d'alarme, le signal 10 déjà reçu par `AF2_14` et les trois points de déplacement d'`AF2_15` sont réactivés ensemble.
+- Africa 1 : les gardes 07, 08, 09 et 10 se préviennent dix fois avec le signal 10 lorsqu'un membre du groupe passe en alarme, mais les quatre destinataires concernés (`07`, `08`, `09`, `12`) possèdent tous leur réaction `ALERT` sous le signal 20. Le correctif change uniquement ces dix numéros et laisse intacte leur conversation au signal 1.
+- Lighthouse : le déclencheur d'origine montrant les deux accès souterrains est reconnecté.
+- Normandy3 Zone : variante officielle non déclarée ajoutée au menu expérimental.
+- Africa5 Prototype : sept fichiers propres sont complétés avec six ressources strictement identiques de sa variante officielle.
+- Africa 1 : le patch 1.12 force à zéro la condition des quatre morts ; la valeur d'origine est restaurée.
+- Africa 4 : le patch 1.12 détourne les trois clés vers la fin du script ; le saut vers la séquence de météores est restauré.
+- Sicily 1 : les neuf objectifs, les 90 scripts utilisés et les 118 checkpoints distincts sont complets. Les anciennes commandes d'ouverture immédiate des deux portes souterraines d'`IT_40` coexistent avec le déverrouillage actif et sont réservées à une variante additive ; l'ancienne affectation de l'objectif normal est déjà remplacée par sa liaison directe.
+- Sicily 2 : les neuf objectifs, les 117 scripts utilisés et les 68 checkpoints distincts sont complets, sans signal incompatible. Les commentaires de déclenchement immédiat sont des outils de test. En revanche, l'ancienne transition des six charges vers l'état 3 alimentait une branche encore présente de la deuxième vague ; elle a été abandonnée parce qu'elle contredit la validation actuelle des six charges à l'état 0. Une variante additive est transmise à la reconstruction afin de conserver les deux comportements.
+
+La comparaison exhaustive des catalogues solo et coopératifs, avec les renumérotations et les scénarios incompatibles, est conservée dans [AUDIT_OBJECTIFS_COOP.md](AUDIT_OBJECTIFS_COOP.md).
+
+## Données incomplètes
+
+Les dossiers ENGLAND, CASTLE1 et CASTLE2 ne possèdent pas ici une carte complète autonome. Ils prouvent des branches internes, pas des niveaux immédiatement jouables. ALPS3_OBJ et ARDENS1_OBJ sont des variantes de scripts recouvertes par Sabre Squadron, dont les versions complètes sont déjà actives.
+
+Les modèles M323, La-5, Aichi, Fa 223, Fw 200, Li-2 et DFS 230 sont présents dans l'archive commerciale. Le Ju 52 est aussi utilisé par une scène d'Africa 1. Aucun de ces constats ne prouve un véhicule pilotable fini.
+
+## Limites et prochains essais
+
+- test réel de la liste Internet et connexion ;
+- sauvegarde/chargement après chaque restauration ;
+- validation des easter eggs Africa 1 et Africa 4 en jeu ;
+- test des objectifs réparés sur plusieurs routes et difficultés ;
+- inspection humaine des deux cartes expérimentales.
+
+L'objectif 2 d'Africa 5 (« Forcer Hans Schumann à coopérer ») est un cas intermédiaire : son activation commentée et sa conversation subsistent, mais sa ligne de validation manque. Il est réservé à une reconstruction minimale expérimentale, séparée de la restauration stable.
+
+L'audit manuel complet de Czech 3 compte 70 liaisons, 67 scripts directement affectés, 9 inclusions et 84 scripts disponibles, sans script affecté manquant. Les huit fichiers libres n'ont aucun acteur homonyme. Les 92 références actives de déplacement ou téléportation et les quatre points de camion restaurés existent dans la carte. Les objectifs 1 à 3 possèdent leur chaîne complète ; l'objectif 4 est un doublon de catalogue sans contrôleur distinct.
+
+Les masquages de joueurs de la cinématique finale, la pause cigarette de 42 secondes remplacée par cinq secondes, l'ancien nettoyage global de formation et la radio libre de `CZECH3_OBJ` sont confiés à la reconstruction additive. Les anciens sous-titres de renfort et le signal 7 vers `e_ktable3` doubleraient la validation actuelle ; les postures couchées commentées sont déjà portées par leurs animations de sommeil. Ils ne sont pas activés aveuglément.
+
+L'audit manuel complet de Czech 4 compte 102 liaisons, 101 scripts directement affectés, 4 inclusions et 108 scripts disponibles, sans script affecté manquant. Les 465 références actives de déplacement, conduite ou téléportation visent 106 points tous présents dans `check2.bin`. Les quatre objectifs — élimination, destruction des trois réservoirs, découverte du trésor et survie de l'équipe — conservent leurs chaînes complètes. Seule la faute de cible de `CZ4_Chatter_02` rompait le décompte principal ; elle est corrigée sans ajouter d'ennemi.
+
+Les trois déplacements `HUMAN_Move("???")` des soldats de cave sont des emplacements explicitement laissés à compléter après une refonte des checkpoints. Le compteur libre visant les acteurs absents `Platoon_07..09`, le chien sans acteur et la réaction au signal 5 manquante du pianiste nécessitent une reconstruction additive. Le script d'horloge vide est classé comme simple résidu. Aucun de ces éléments incomplets n'est injecté dans le lot stable.
+
+L'audit manuel complet de Czech 5 compte 66 liaisons, 66 scripts directement affectés, une inclusion et 69 scripts disponibles, sans script affecté manquant. Les 166 appels actifs de déplacement ou conduite emploient 125 checkpoints distincts, tous présents dans la carte corrigée par le patch. Les trois objectifs déclarés sont tous actifs : élimination du convoi, interdiction de sa fuite et survie de l'équipe. La mise à jour remplace volontairement `_AllEnemiesDead()` par le compteur Carnage, plus adapté à cette mission, sans retirer d'action.
+
+Les deux fichiers libres sont classés : `Opel_1_OnDeath.scr` possède encore son acteur `La_OpelE_1` et son effet 79, déjà reconnectés par le paquet ; `dummy_script.scr` ne contient qu'un mode zombie générique et n'a aucun propriétaire. Les quatre `HUMAN_SETMODE_Stand()` commentés devant la sortie des passagers 16 à 19 sont redondants : l'ordre de débarquement fonctionne sans eux dans les groupes commerciaux analogues et chaque soldat fixe ensuite sa posture. Ils ne sont pas présentés comme contenu coupé.
+
+L'audit manuel complet de Czech 6 compte 94 liaisons, 93 scripts directement affectés, deux inclusions et 95 scripts disponibles. Tous sont atteignables et aucun fichier affecté ne manque. Les 183 appels actifs de chemin ou téléportation emploient 135 checkpoints distincts, tous présents ; les 101 cibles principales de scène sont elles aussi retrouvées. Les six objectifs du catalogue sont actifs : documents avec perte et récupération, élimination des vingt Russes, capture du Tiger, sabotage radio, survie de l'équipe et élimination Carnage.
+
+Le Patch a remplacé la route de l'ISU-152 `C5_isu01 → C5_tank11 → C5_isu02` par un trajet direct plus rapide vers `C5_isu02`. Les deux parcours ne sont pas cumulés dans le lot stable : une variante à deux routes est confiée à la reconstruction. La même règle s'applique à l'ancien verrou d'alarme du sabotage radio, retiré officiellement au profit de l'interaction immédiate. Deux signaux d'alerte envoyés par `C5_G40` à `C5_G11` et `C5_G43` n'ont plus leurs récepteurs ; leurs réactions minimales doivent être reconstruites avant essai. Les quatre états d'objectif 4 commentés sont des initialisations d'invisibilité qui masqueraient des objectifs sans transition de retour, pas des activations perdues.
+
+L'audit manuel complet de Normandy 1 compte 241 liaisons, 155 scripts directement affectés, deux inclusions et 166 scripts disponibles, sans script attaché manquant. Les 204 appels actifs de déplacement ou téléportation emploient 144 checkpoints distincts, tous présents ; les 204 cibles principales de scène sont elles aussi retrouvées. Les huit objectifs — deux groupes de canons, générateur, phare, cinq gardes de Flak, rassemblement, survie et élimination Carnage — possèdent chacun leur chaîne complète.
+
+Le vestige `X_N1_kamera-ya.scr` conserve ses cinq caméras, les deux pistes `Camera1` et `Camera2`, ses sous-titres et le lanceur `X_N1_player01.scr`. Le paquet reconnecte ce lanceur au point d'apparition solo `Spawnsingle01`, selon le même modèle que les scripts d'assignation actifs dans les autres missions. Les fichiers libres `N12_A5`, `N13_A2/A3`, `N24_A1` et `N25_A1` ont en revanche perdu leurs acteurs et leurs positions ; l'ancien `N17_A2` émet un signal que son destinataire ne gère plus. Ils sont donc confiés à la reconstruction additive, sans déplacer ni doubler les routes commerciales actives.
+
+L'audit manuel complet de Normandy 2 compte 159 liaisons, 135 scripts directement affectés, douze inclusions et 175 scripts disponibles, sans script attaché manquant. Les huit objectifs du catalogue sont actifs. Les 186 appels non commentés de mouvement ou conduite emploient 134 points distincts, tous présents ; les 233 cibles de scène distinctes sont également retrouvées. Le compteur final des cinq alliés, Red 26 et les quinze boucles de riposte Blue sont les trois défauts stables corrigés.
+
+Les 33 fichiers libres se répartissent exactement entre quinze soldats retirés, quatorze contrôleurs `Go`, les trois détecteurs de retour 9–11 et le coordinateur `fake_defence_sender`. Les zones `Dummy_Go_*` et `Detector_9..11` restent placées, mais leur amorçage a disparu ; les détecteurs 9 et 11 envoient en plus des signaux que les Blue ne traitent pas. Les cinq Wave1 demandent explicitement un trajet supplémentaire vers le bâtiment et les Wave2 conservent des déplacements vides après débarquement. Ce système de défense et d'escorte est confié à la reconstruction comme variante séparée, sans remplacer la phase release.
+
+Les lance-flammes et les missions alpha sans géométrie complète ne sont pas activés automatiquement. Ils nécessitent une création nouvelle qui devra être clairement séparée de la restauration fidèle.
+
+## Czech 1 — audit manuel complet
+
+Les 176 liaisons du registre couvrent 171 scripts directement affectés et sept inclusions. Aucun script attaché ne manque. Le seul fichier libre, `shifting retezu.scr`, est une ancienne version générique du contrôleur de chaîne : les deux barrières utilisent déjà leurs contrôleurs spécialisés `retez_zavora1.scr` et `retez_zavora2.scr`, et aucun acteur homonyme ne subsiste pour la version générique.
+
+Les cinq objectifs disposent de leurs chaînes actives. Les morts de `SS1` et `SS2` libèrent le sauvetage de Trebissky, la conversation avec `vechtr` valide l'objectif optionnel du cheminot, la sortie est activée ensuite et contrôle le rassemblement ainsi que la survie de l'équipe. Les quatre initialisations commentées dans `objectives.scr` et `objectives2.scr` sont remplacées par l'initialisation du sélecteur `objectives_scrass.scr` et par les transitions actives ; les rétablir ne rajouterait aucune action.
+
+Les deux signaux commentés de `speech4.scr` ne révèlent pas une conversation coupée : `suspend detektor2.scr` envoie déjà le même signal 1 à `Ge_12` et `Ge_13` lorsque le joueur approche. Les trois appels commentés qui masquaient `CUTsten1`, `CUTsten2` et `CUTdelisle1` après les cinématiques sont de simples essais de nettoyage d'accessoires. Ces objets ne portent aucun script de mission, n'ont aucune autre utilisation dans Czech 1 et leur masquage n'active ni scène, ni chemin, ni objectif. Aucun nouveau correctif stable n'est donc ajouté pour cette mission.
+
+## Czech 2 — audit manuel complet
+
+Le registre solo contient 91 liaisons, 81 scripts directement affectés et deux inclusions, sans script attaché manquant. Les variantes `CZECH2_MP_ZONE` et `CZECH2_OBJ` possèdent respectivement quatre et une liaisons, toutes résolues. Les 92 références actives de déplacement ou de téléportation relevées dans les scripts solo correspondent toutes à un point encore présent dans le `check2.bin` effectif.
+
+`setobjectives.scr` déclare encore l'acteur `boss` associé à Freiberg. Pour les modes Carnage 3 et 7, il remplace le contrôleur d'objectifs mais omet d'affecter le script libre `carn_Big_Boss.scr`, pourtant complet et nommé pour cet usage. Les autres missions qui adaptent des personnages en Carnage effectuent ces affectations dans leur même sélecteur. Le paquet ajoute donc uniquement `ScriptAssign(boss,"carn_Big_Boss.scr");` dans cette branche : Freiberg se réveille à quinze mètres, devient agressif, active ses alarmes et prend son arme selon le comportement commercial conservé. La mission normale garde `R_Cz2_Big_Boss.scr` et sa cinématique de capture.
+
+La cinématique d'ouverture `CUTgeneral_cz2.scr` crée une fumée de cigare indexée sur `CUTcigaro.particle`. Son unique instruction de destruction était commentée dans `OnCutsceneDone`, bien que l'acteur, l'ancre, la création et la liaison `Ge05b_` soient tous actifs. Cette ligne exacte est réactivée afin que l'effet ne survive pas à la scène.
+
+Parmi les treize autres scripts libres, `cut2_2.scr` est une ancienne révision de la cinématique active, `dwere dobytcak.scr` l'ancien contrôleur de porte déjà remplacé, et `vikobedna.scr` un relais sans propriétaire vers un objectif déjà relié deux fois. `bigboskecac.scr` rejouerait deux voix déjà utilisées par `cut2.scr`; il reste une variante exclusive dans le laboratoire. Les quatre anciens placements `startscriptengl1..4` conservent leurs points mais leurs relais n'ont plus de propriétaires ni de joueurs initialisés : ils sont confiés à la reconstruction additive. La posture mortuaire de `Ger_12` et le message 19993808 sans ressource textuelle sont eux aussi isolés pour essais ou création moderne, sans mélange avec le lot stable.
+
+## Burma 2 — scènes dormantes confirmées
+
+- `BU2_22` reçoit toujours le signal 2 de `BU2_22_A2` lorsque le joueur approche à deux mètres. Sa cible `BU2_22_shoot01` existe encore et les soldats alliés voisins utilisent la même commande de tir : le tir de mise en scène est réactivé.
+- `BU2_Allied11` possède une boucle de panique complète et un détecteur à quarante mètres qui le réveille et lance son animation. Les deux instructions initiales qui le suspendent puis l'envoient au point d'attente sont remises ensemble.
+- `BU2_xplo22` conserve ses deux déclencheurs, son cadre d'explosion et toutes ses commandes commentées. Son jumeau actif `BU2_xplo23` confirme les sons, particules, dégâts et souffle à restaurer. Le second son 6/8, également commenté dans le jumeau actif, reste volontairement désactivé.
+- `l_b2str_4` appelle `CUTSOUNDSHLIDKA.scr`, absent de toutes les archives installées : ce contrôleur est confié à la 
+
+## Arctic 3 — audit exhaustif terminé
+
+Le registre commercial contient 94 liaisons, 90 scripts directement affectés et trois inclusions. Aucun script affecté ne manque. Le seul fichier libre est `R_Ar3_CarHit.scr`, déjà reconnecté par le paquet au camion `Opel_01` afin de réveiller ses six occupants lorsqu'il est touché.
+
+Les autres commentaires inspectés ne forment pas de restauration stable supplémentaire : le délai de la remorque de munitions est remplacé par trois étapes de même durée totale, les déplacements aléatoires des six occupants portent la note qu'ils ne fonctionnaient pas dans cette branche, et le signal d'Albert a été remplacé pour éviter de bloquer les deux vagues. Les effets commentés des six citernes restent un essai à comparer en jeu, car ils reproduisent une famille d'effets également désactivée dans Arctic 1.
+
+Le contrôleur d'objectifs se termine en revanche par la note explicite « compléter l'échec lors de la destruction du bateau ». `ELKO` est bien lié à `R_Ar3_Amik_Boat.scr`, mais ce script ne possède aucun détecteur de dégâts ou de destruction, et aucune voix ni aucun sous-titre n'est conservé pour cette conséquence. Une reconstruction isolée propose deux détecteurs alternatifs, `OnDeath()` ou surveillance d'état, à valider sur une copie de test avant toute intégration.
+
+## Arctic 4 — audit exhaustif terminé
+
+Le registre possède 124 liaisons, 98 scripts directement affectés et deux inclusions ; les 100 scripts disponibles sont tous atteignables et aucun fichier affecté ne manque. Les chaînes des huit objectifs ont été suivies : exploration, radio, documents, occupation du sous-marin, prévention de sa plongée, transmission finale et deux objectifs optionnels. Les commentaires d'états d'objectif au début du contrôleur sont un banc de test ; les chasseurs reçoivent déjà leur signal 13 ; les anciennes jumelles d'inventaire ont été remplacées par l'activité dédiée ; la seconde montée au toit est explicitement rejetée par le script.
+
+La chute de glace `dummy_bouchni` est reliée, déclenchée à douze mètres et active déjà le fragment `ulomek_4`. Son unique explosion `MakeExplosion(FRM, 5000000, 3500)` était commentée au milieu de cette chaîne complète ; elle est restaurée sous l'option des séquences dormantes sans changer ses valeurs.
+
+Les autres lacunes restent expérimentales : destruction de la radio devenue indestructible, jappement du chien via une primitive non prouvée, animations de froid ou de stupeur sans asset exact, réactions supplémentaires non nommées autour des trois chutes de glace et poste fixe du garde 3 qui remplacerait son combat libre. Elles sont isolées dans `experimental/` et ne sont pas mélangées au correctif stable.

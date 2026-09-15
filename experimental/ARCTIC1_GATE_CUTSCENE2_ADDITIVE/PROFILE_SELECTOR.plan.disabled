@@ -1,0 +1,35 @@
+ARCTIC1_GATE_CUTSCENE2_ADDITIVE — CONTRAT NON EXECUTABLE
+
+DEFAULT_PROFILE = RELEASE_DIALOGUE
+
+PROFILE RELEASE_DIALOGUE
+  - conserver exactement la branche commerciale actuelle ;
+  - envoyer dummy_Dabing_GG:1 une seule fois ;
+  - exécuter accroupi / rotation joueur / attente / retour loop2 ;
+  - ne jamais envoyer K2:1.
+
+PROFILE K2_SELECTED_TEST
+  PRECONDITIONS
+    - K2 et K2a présents ;
+    - K2 lié à kamera 2.scr ;
+    - comportement réel de OnCutsceneDone(2) validé ;
+    - synchronisation des cinq voix mesurée.
+
+  ATOMIC_TRIGGER
+    - prendre un verrou gate_scene_started avant tout signal ;
+    - envoyer dummy_Dabing_GG:1 exactement une fois ;
+    - envoyer K2:1 exactement une fois ;
+    - NE PAS exécuter le bloc de mouvement RELEASE_DIALOGUE ;
+    - laisser OnCutscene(2) être l'unique autorité du corps du garde ;
+    - ne jamais envoyer de signal à K2a.
+
+  CLEANUP
+    - fin normale ou skip : caméra joueur, sous-titres OFF, événements garde ON ;
+    - alarme ou mort : dummy_Dabing_GG:2 et aucun redémarrage K2 ;
+    - rejoindre loop2 au plus une fois.
+
+REJECT
+  - SendSignal(K2,1) ajouté après la branche release ;
+  - deux émissions dummy_Dabing_GG:1 ;
+  - K2 et K2a considérés comme deux scènes indépendantes ;
+  - activation par défaut ou binding supplémentaire.

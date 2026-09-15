@@ -1,0 +1,37 @@
+// BANC EXPERIMENTAL DESACTIVE — DONNEE OFFICIELLE BORNEE.
+// Le wrapper est moderne; seul l'effet commercial numero 25 est reference.
+// Requiert une frame locale EXP_FlameEmitter. Aucun asset n'est inclus.
+
+Block
+{
+  Frame emitter; FRM_FindFrame(emitter, "EXP_FlameEmitter");
+  Integer flame_index;
+  Integer active; active = 0;
+}
+
+OnSignal(1)
+{
+  If (active == 0)
+  {
+    FRM_CreateIndexedParticle(25, emitter, flame_index);
+    active = 1;
+  }
+}
+
+OnSignal(2)
+{
+  If (active == 1)
+  {
+    FRM_FinishIndexedParticle(flame_index);
+    active = 0;
+  }
+}
+
+OnSignal(3)
+{
+  If (active == 1)
+  {
+    FRM_DestroyIndexedParticle(flame_index);
+    active = 0;
+  }
+}

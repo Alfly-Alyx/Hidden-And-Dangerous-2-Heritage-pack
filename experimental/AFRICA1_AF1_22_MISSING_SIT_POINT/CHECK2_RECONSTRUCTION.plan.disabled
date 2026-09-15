@@ -1,0 +1,31 @@
+CASE=AFRICA1_AF1_22_MISSING_SIT_POINT
+STATUS=EDITOR_TEST_REQUIRED
+
+SCENE_ANCHOR_NAME=dummy_22_sit
+SCENE_ANCHOR_POSITION=19.567675,0.765765,63.880829
+
+DONOR_CHECKPOINT=AF1_22_0
+DONOR_POSITION=19.546448,0.235948,63.284740
+DONOR_RADIUS=1
+ANCHOR_DISTANCE=0.797796
+
+EDITOR_ACTIONS:
+1. duplicate the complete AF1_22_0 human-point record
+2. rename only the duplicate to dummy_22_sit
+3. set its position from the scene anchor
+4. project/validate against terrain collision
+5. regenerate links and costs
+6. verify reachability from AF1_22_letadlo
+
+SCRIPT_DELTA_AFTER_POINT_VALIDATION_ONLY:
+  HUMAN_Move("AF1_22_letadlo");
+  HUMAN_SetAnim("%%turnleft", 500, 500, false);
+  Delay(2000);
+  HUMAN_SetAnim("%%turnright", 500, 500, false);
+  Delay(2000);
+  HUMAN_Move("dummy_22_sit");
+  goto START;
+
+DO_NOT_MOVE=dummy_22_sit scene frame,AF1_22_0
+ROLLBACK=restore commercial check2 and AF1_22.scr together
+

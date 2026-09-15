@@ -1,0 +1,14 @@
+CASE=ALPS1_GE24_LOCAL_REACTION
+STATUS=MODERN_POINT_NOT_PLACED
+DO_NOT_USE=ge16_sniper
+DO_NOT_ADD=HUMAN_SetSniper
+COMMERCIAL_GE24_SPAWN=282.850769,9.485687,39.547092
+
+EDITOR_GATE:
+- choose a collision-safe local destination with verified sight line
+- name it ge24_reaction_test, never ge16_sniper
+- regenerate navigation links and costs
+- package independently from the GE16 prototype
+
+NO_SCRIPT_DELTA_UNTIL_EDITOR_GATE_PASSES=true
+

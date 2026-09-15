@@ -1,0 +1,12 @@
+// Variante désactivée, valable seulement avec POINT_10_02.plan.disabled.
+
+Label ACTIVITY:
+  HUMAN_Move("10_01");
+  HUMAN_Move("10_02");
+  HUMAN_Move("10_03");
+  HUMAN_Move("10_04");
+  HUMAN_Move("10_05");
+goto END;
+
+// Retour arrière : restaurer simultanément le script et le check2 commerciaux.
+

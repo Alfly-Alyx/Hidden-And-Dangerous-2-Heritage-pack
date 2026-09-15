@@ -1,0 +1,47 @@
+// Alps2 [Prototype - gardes 13/14]
+// DEDUCTION : analogue AL2_16/17, sans leurs routes.
+// Ne pas lier avant creation de l'acteur, de l'item et du transform AL2_14.
+
+INTEGER activated = 0;
+
+HUMAN_SETMODE_Stand();
+HUMAN_SETMODE_Guard();
+HUMAN_WeaponOnArm(false);
+HUMAN_SETSIGHTRANGE(15);
+HUMAN_SETHEARRANGE(12);
+HUMAN_SetOptimized(2);
+HUMAN_SETAIMODE_Defensive();
+HUMAN_Suspend(true);
+HUMAN_SETEVENTS(0);
+
+SetAlarmType(140, false);
+
+OnSignal(1)
+{
+  if (activated == 0)
+  {
+    activated = 1;
+    DisableSignals(true);
+    HUMAN_Suspend(false);
+    HUMAN_SETEVENTS(1);
+    HUMAN_WeaponOnArm(true);
+    HUMAN_SETSIGHTRANGE(30);
+    HUMAN_SETMODE_Crouch();
+  }
+}
+
+OnAlarm()
+{
+  HUMAN_SetAnim("", 50, 50, false);
+  HUMAN_Stop();
+  HUMAN_WeaponOnArm(true);
+  HUMAN_SETAIMODE_Aggressive();
+  EndScript();
+}
+
+OnDeath()
+{
+  DisableSignals(true);
+  EndScript();
+}
+

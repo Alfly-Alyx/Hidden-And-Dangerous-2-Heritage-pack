@@ -1,0 +1,10 @@
+// PROTOTYPE DESACTIVE — reconstruction prudente, corps original absent.
+// Ne pas mettre suspend = 0 ici : le OnAlarm officiel utilise encore ce
+// drapeau pour rejoindre vybeh et lancer z2_agresor2.
+
+Whenever mesh24_open(_SignalReceived(1))
+{
+  HUMAN_Suspend(0);
+  GoTo end;
+}
+

@@ -1,0 +1,18 @@
+{
+  "$schema": "../../mission.schema.json",
+  "format": 1,
+  "id": "auteur.nom-de-la-mission",
+  "category": "original-creation",
+  "missionDirectory": "MaMission",
+  "loadingScreen": "ma_mission.bmp",
+  "title": {
+    "default": "MY CUSTOM MISSION",
+    "french": "MA MISSION PERSONNALISÉE"
+  },
+  "objectives": [
+    {
+      "default": "COMPLETE THE MISSION",
+      "french": "TERMINER LA MISSION"
+    }
+  ]
+}

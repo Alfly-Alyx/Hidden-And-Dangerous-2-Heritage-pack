@@ -1,0 +1,31 @@
+CASE=AFRICA1_AF1_04_MISSING_PATROL_POINTS
+STATUS=BLOCKED_NO_UNIQUE_COORDINATES
+RELEASE_SCRIPT=AF1_04.scr
+RELEASE_ROUTE=AF1_04_g01,g02,g03,g04,g05,loop
+MISSING_NAMES=AF1_04_g06,AF1_04_g07
+
+DO_NOT:
+- uncomment either HUMAN_Move line
+- rename an unnamed commercial point from proximity alone
+- hand-patch point indexes, section sizes, links, or costs
+- ship only the script or only check2
+
+UNBLOCK_WITH:
+- an attributed historical position for both names, or
+- an editor-authored modern route explicitly labelled non-historical
+
+EDITOR_PHASE:
+1. clone complete compatible human-point records
+2. assign unique names AF1_04_g06 and AF1_04_g07
+3. position them with terrain and obstacle collision visible
+4. regenerate graph links and costs
+5. verify g05 -> g06 -> g07 -> g01 in both navigation directions
+
+SCRIPT_PHASE_AFTER_EDITOR_TEST_ONLY:
+  HUMAN_Move("AF1_04_g05");
+  HUMAN_Move("AF1_04_g06");
+  HUMAN_Move("AF1_04_g07");
+  goto GUARD_LOOP;
+
+ROLLBACK=restore commercial check2 and AF1_04.scr as one atomic pair
+

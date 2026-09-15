@@ -1,0 +1,4 @@
+Remplacez ce fichier par les fichiers de la mission.
+
+Le fichier tree.klz est obligatoire pour que le paquet soit accepté.
+Le nom MaMission doit rester identique à missionDirectory dans mission.json.

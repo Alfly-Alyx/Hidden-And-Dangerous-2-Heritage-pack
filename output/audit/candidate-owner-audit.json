@@ -1,0 +1,485 @@
+{
+  "game": "D:\\Games\\Hidden and Dangerous 2",
+  "mission_count": 12,
+  "registry_count": 15,
+  "missions": [
+    {
+      "mission": "africa2",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/africa2/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 72
+        }
+      ],
+      "binding_count": 72,
+      "attached_script_count": 63,
+      "included_script_count": 4,
+      "available_script_count": 84,
+      "missing_attached_scripts": [
+        "af2_particle_junkers.scr"
+      ],
+      "missing_attached_bindings": [
+        {
+          "registry": "missions/africa2/scripts.dta",
+          "actor": "HoriciJunkers.engine_l00",
+          "script": "AF2_particle_junkers.scr",
+          "normalized_script": "af2_particle_junkers.scr"
+        }
+      ],
+      "unbound_scripts": [
+        "af1_exploze.scr",
+        "af2_03.scr",
+        "af2_aa_spit01.scr",
+        "af2_act_fly_mes.scr",
+        "af2_airfight.scr",
+        "af2_hide.scr",
+        "af2_hideunhide.scr",
+        "af2_machfight.scr",
+        "af2_mes05.scr",
+        "af2_spitfight.scr",
+        "af2_tank.scr",
+        "v_af2snd_sypeka1.scr",
+        "v_af2snd_sypeka2.scr",
+        "v_af2snd_sypekb1.scr",
+        "v_af2snd_sypekb2.scr",
+        "v_af2snd_sypekb3.scr",
+        "v_af2snd_sypekc1.scr",
+        "v_af2snd_sypekc2.scr"
+      ],
+      "unbound_scripts_with_matching_actor": [],
+      "unbound_scripts_with_free_matching_actor": [],
+      "unbound_scripts_with_conflicting_matching_actor": []
+    },
+    {
+      "mission": "africa3",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/africa3/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 84
+        }
+      ],
+      "binding_count": 84,
+      "attached_script_count": 82,
+      "included_script_count": 6,
+      "available_script_count": 101,
+      "missing_attached_scripts": [
+        "af3a_1415synchronizer.scr",
+        "af3a_2223synchronizer.scr"
+      ],
+      "missing_attached_bindings": [
+        {
+          "registry": "missions/africa3/scripts.dta",
+          "actor": "AF3a_14_lookAF15",
+          "script": "AF3a_1415synchronizer.scr",
+          "normalized_script": "af3a_1415synchronizer.scr"
+        },
+        {
+          "registry": "missions/africa3/scripts.dta",
+          "actor": "AF3a_22_look1_01",
+          "script": "AF3a_2223synchronizer.scr",
+          "normalized_script": "af3a_2223synchronizer.scr"
+        }
+      ],
+      "unbound_scripts": [
+        "af3a_all_dead.scr",
+        "af3a_deathsignals.scr",
+        "af3a_faceassigner.scr",
+        "af3a_human_universal.scr",
+        "af3a_obj2.scr",
+        "af3a_opel1motor.scr",
+        "af3a_player01.scr",
+        "af3a_player02.scr",
+        "af3a_player03.scr",
+        "af3a_player04.scr",
+        "af3a_rozhovor_01.scr",
+        "af3a_spawn01.scr",
+        "af3a_spawn02.scr",
+        "af3a_spawn03.scr",
+        "af3a_spawn04.scr"
+      ],
+      "unbound_scripts_with_matching_actor": [
+        "af3a_obj2.scr"
+      ],
+      "unbound_scripts_with_free_matching_actor": [
+        "af3a_obj2.scr"
+      ],
+      "unbound_scripts_with_conflicting_matching_actor": []
+    },
+    {
+      "mission": "alps1",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/alps1/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 148
+        }
+      ],
+      "binding_count": 148,
+      "attached_script_count": 125,
+      "included_script_count": 13,
+      "available_script_count": 144,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": [],
+      "unbound_scripts": [
+        "ci test.scr",
+        "ci03alarmer1.scr",
+        "ge_35_car.scr",
+        "ge_36_car.scr",
+        "ge_37_car.scr",
+        "obj_opel.scr"
+      ],
+      "unbound_scripts_with_matching_actor": [
+        "ci03alarmer1.scr"
+      ],
+      "unbound_scripts_with_free_matching_actor": [
+        "ci03alarmer1.scr"
+      ],
+      "unbound_scripts_with_conflicting_matching_actor": []
+    },
+    {
+      "mission": "alps2",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/alps2/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 115
+        }
+      ],
+      "binding_count": 115,
+      "attached_script_count": 103,
+      "included_script_count": 12,
+      "available_script_count": 129,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": [],
+      "unbound_scripts": [
+        "al2_01_car.scr",
+        "al2_03_car.scr",
+        "al2_13_a1.scr",
+        "al2_17_car.scr",
+        "al2_18_a1.scr",
+        "al2_18_car.scr",
+        "al2_19_car.scr",
+        "al2_20_a1.scr",
+        "al2_20_car.scr",
+        "al2_33_car.scr",
+        "player1assign.scr",
+        "shotalarmdetector.scr",
+        "startscriptengl1.scr",
+        "unif.scr"
+      ],
+      "unbound_scripts_with_matching_actor": [
+        "al2_13_a1.scr",
+        "shotalarmdetector.scr"
+      ],
+      "unbound_scripts_with_free_matching_actor": [
+        "al2_13_a1.scr",
+        "shotalarmdetector.scr"
+      ],
+      "unbound_scripts_with_conflicting_matching_actor": []
+    },
+    {
+      "mission": "brest",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/brest/scripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 204
+        }
+      ],
+      "binding_count": 204,
+      "attached_script_count": 186,
+      "included_script_count": 2,
+      "available_script_count": 190,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": [],
+      "unbound_scripts": [
+        "alarm.scr",
+        "detectorzone3aktiv2.scr"
+      ],
+      "unbound_scripts_with_matching_actor": [
+        "detectorzone3aktiv2.scr"
+      ],
+      "unbound_scripts_with_free_matching_actor": [],
+      "unbound_scripts_with_conflicting_matching_actor": [
+        {
+          "script": "detectorzone3aktiv2.scr",
+          "actor": "detectorzone3aktiv2",
+          "bound_scripts": [
+            "detectorzone3aktiv1.scr"
+          ]
+        }
+      ]
+    },
+    {
+      "mission": "burgundy2",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/burgundy2/scripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 96
+        }
+      ],
+      "binding_count": 96,
+      "attached_script_count": 88,
+      "included_script_count": 0,
+      "available_script_count": 90,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": [],
+      "unbound_scripts": [
+        "camery.scr",
+        "ge_pruchod.scr"
+      ],
+      "unbound_scripts_with_matching_actor": [],
+      "unbound_scripts_with_free_matching_actor": [],
+      "unbound_scripts_with_conflicting_matching_actor": []
+    },
+    {
+      "mission": "co_brest",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 2,
+      "registry_files": [
+        {
+          "path": "missions/co_brest/mpscripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 213
+        },
+        {
+          "path": "missions/co_brest/scripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 211
+        }
+      ],
+      "binding_count": 424,
+      "attached_script_count": 195,
+      "included_script_count": 0,
+      "available_script_count": 199,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": [],
+      "unbound_scripts": [
+        "alarm.scr",
+        "detectorzone3aktiv2.scr",
+        "hint.scr",
+        "obj_gener.scr"
+      ],
+      "unbound_scripts_with_matching_actor": [
+        "detectorzone3aktiv2.scr",
+        "hint.scr",
+        "obj_gener.scr"
+      ],
+      "unbound_scripts_with_free_matching_actor": [
+        "hint.scr",
+        "obj_gener.scr"
+      ],
+      "unbound_scripts_with_conflicting_matching_actor": [
+        {
+          "script": "detectorzone3aktiv2.scr",
+          "actor": "detectorzone3aktiv2",
+          "bound_scripts": [
+            "detectorzone3aktiv1.scr"
+          ]
+        }
+      ]
+    },
+    {
+      "mission": "co_libye3",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 2,
+      "registry_files": [
+        {
+          "path": "missions/co_libye3/mpscripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 148
+        },
+        {
+          "path": "missions/co_libye3/scripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 148
+        }
+      ],
+      "binding_count": 296,
+      "attached_script_count": 148,
+      "included_script_count": 0,
+      "available_script_count": 149,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": [],
+      "unbound_scripts": [
+        "opel.scr"
+      ],
+      "unbound_scripts_with_matching_actor": [],
+      "unbound_scripts_with_free_matching_actor": [],
+      "unbound_scripts_with_conflicting_matching_actor": []
+    },
+    {
+      "mission": "czech2",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/czech2/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 91
+        }
+      ],
+      "binding_count": 91,
+      "attached_script_count": 81,
+      "included_script_count": 2,
+      "available_script_count": 97,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": [],
+      "unbound_scripts": [
+        "bigboskecac.scr",
+        "carn_big_boss.scr",
+        "cut2_2.scr",
+        "dwere dobytcak.scr",
+        "ger_22_activator01.scr",
+        "player1assign.scr",
+        "player2assign.scr",
+        "player3assign.scr",
+        "player4assign.scr",
+        "startscriptengl1.scr",
+        "startscriptengl2.scr",
+        "startscriptengl3.scr",
+        "startscriptengl4.scr",
+        "vikobedna.scr"
+      ],
+      "unbound_scripts_with_matching_actor": [
+        "bigboskecac.scr"
+      ],
+      "unbound_scripts_with_free_matching_actor": [
+        "bigboskecac.scr"
+      ],
+      "unbound_scripts_with_conflicting_matching_actor": []
+    },
+    {
+      "mission": "czech4_mp_zone",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/czech4_mp_zone/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 14
+        }
+      ],
+      "binding_count": 14,
+      "attached_script_count": 14,
+      "included_script_count": 0,
+      "available_script_count": 15,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": [],
+      "unbound_scripts": [
+        "door35.scr"
+      ],
+      "unbound_scripts_with_matching_actor": [
+        "door35.scr"
+      ],
+      "unbound_scripts_with_free_matching_actor": [
+        "door35.scr"
+      ],
+      "unbound_scripts_with_conflicting_matching_actor": []
+    },
+    {
+      "mission": "norway",
+      "registry_archive": "Patch.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/norway/scripts.dta",
+          "archive": "Patch.dta",
+          "binding_count": 82
+        }
+      ],
+      "binding_count": 82,
+      "attached_script_count": 81,
+      "included_script_count": 6,
+      "available_script_count": 102,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": [],
+      "unbound_scripts": [
+        "r_nor_action_sender.scr",
+        "r_nor_com1.scr",
+        "r_nor_gary.scr",
+        "r_nor_obj_1.scr",
+        "r_nor_tirpic1.scr",
+        "r_nor_tirpic10.scr",
+        "r_nor_tirpic12.scr",
+        "r_nor_tirpic13.scr",
+        "r_nor_tirpic16.scr",
+        "r_nor_tirpic17.scr",
+        "r_nor_tirpic2.scr",
+        "r_nor_tirpic6.scr",
+        "r_nor_tirpic7.scr",
+        "s_open_door.scr",
+        "tirpicmined.scr"
+      ],
+      "unbound_scripts_with_matching_actor": [
+        "tirpicmined.scr"
+      ],
+      "unbound_scripts_with_free_matching_actor": [
+        "tirpicmined.scr"
+      ],
+      "unbound_scripts_with_conflicting_matching_actor": []
+    },
+    {
+      "mission": "tutorial",
+      "registry_archive": "missions.dta",
+      "registry_count": 2,
+      "registry_files": [
+        {
+          "path": "missions/tutorial/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 0
+        },
+        {
+          "path": "missions/tutorial/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 114
+        }
+      ],
+      "binding_count": 114,
+      "attached_script_count": 114,
+      "included_script_count": 17,
+      "available_script_count": 146,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": [],
+      "unbound_scripts": [
+        "t_dummy_gate_in.scr",
+        "t_dummy_speech.scr",
+        "t_ee_light.scr",
+        "t_ee_weather.scr",
+        "t_vrata_achr.scr",
+        "t_vrata_entrance.scr",
+        "tut_camera.scr",
+        "tut_driver.scr",
+        "tut_driver_vehicle.scr",
+        "tut_dummy_car_detector.scr",
+        "tut_dummy_range_lake.scr",
+        "tut_dummy_sw2.scr",
+        "tut_dummyrange1.scr",
+        "tut_soldier2.scr",
+        "tut_talker_02.scr"
+      ],
+      "unbound_scripts_with_matching_actor": [
+        "t_dummy_speech.scr"
+      ],
+      "unbound_scripts_with_free_matching_actor": [
+        "t_dummy_speech.scr"
+      ],
+      "unbound_scripts_with_conflicting_matching_actor": []
+    }
+  ]
+}

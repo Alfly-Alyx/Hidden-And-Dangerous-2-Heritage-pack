@@ -1,0 +1,9 @@
+// RECONSTRUCTION MODERNE DESACTIVEE.
+// Le handler 17 original n'a pas ete retrouve.
+// A tester seulement si la baseline prouve les repetitions du compteur BA.
+
+OnSignal(17)
+{
+  DisableSignals(true);
+  EndScript();
+}

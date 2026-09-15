@@ -1,0 +1,28 @@
+ARCTIC1_MOLE_AND_WALKER_IDLE_VARIANTS — VALIDATION AVANT PROTOTYPE
+
+GATE 1 — RESOLUTION MOTEUR
+  SpotRight(800)
+  SpotLeft(800)
+  !strazny01
+  !strazny02
+  !strazny03
+  Chaque symbole doit se résoudre sans fallback silencieux.
+
+GATE 2 — ACTEUR ISOLE
+  - une animation à la fois ;
+  - mesurer durée réelle et caractère loop/one-shot ;
+  - relever déplacement de racine et orientation ;
+  - tester arme en main / arme baissée ;
+  - vérifier arrêt par HUMAN_SetAnim("",...) et HUMAN_Stop().
+
+GATE 3 — ROUTE
+  - reprise de HUMAN_Move sans glissade ni blocage ;
+  - aucun cumul SpotRight + SpotLeft ;
+  - Walker 1 conserve les tours 2/6/8/10 et le reset 13 ;
+  - Walker 2 ne garde pas une animation pendant toute la ronde.
+
+GATE 4 — INTERRUPTION
+  alarme proche, tir, vue, blessure, mort, sauvegarde/reprise.
+
+THEN ONLY
+  Créer des profils indépendants, désactivés par défaut.

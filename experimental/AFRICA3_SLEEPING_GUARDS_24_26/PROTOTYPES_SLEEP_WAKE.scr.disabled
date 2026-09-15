@@ -1,0 +1,24 @@
+// FRAGMENTS DESACTIVES - ne pas compiler, tester un acteur a la fois.
+// HUMAN_ACTIVITY_Sleep ne possede aucun usage actif commercial.
+
+// PROFIL AF3a_24_SLEEP_MODERN : remplace l'assise uniquement dans une copie.
+// Block declaration :
+// FRAME bed; FRM_FindFrame(bed, "bed_af3a24_sleep_modern");
+// Initialisation apres modes, avant HUMAN_Suspend(true) :
+// HUMAN_ACTIVITY_Sleep(bed);
+// Label ACTIVATE, avant la logique commerciale :
+// HUMAN_Stop(); HUMAN_SETMODE_Stand(); HUMAN_Suspend(false);
+// OnAlarm reste commercial et ne relance pas Sleep dans OnAlarmDone.
+
+// PROFIL AF3a_26_SLEEP_COMMERCIAL_BED : copie distincte.
+// Block declaration :
+// FRAME bed; FRM_FindFrame(bed, "m_postel_a7");
+// Initialisation a l'emplacement du commentaire commercial :
+// HUMAN_ACTIVITY_Sleep(bed);
+// Label ACTIVATE, avant le test suspend :
+// HUMAN_Stop(); HUMAN_SETMODE_Stand(); HUMAN_Suspend(false);
+// OnSignal(20), avant le test suspend :
+// HUMAN_Stop(); HUMAN_SETMODE_Stand();
+// OnAlarm et OnAlarmDone restent commerciaux.
+
+// REJET si Stop + Stand + Suspend(false) ne detache pas immediatement l'acteur.

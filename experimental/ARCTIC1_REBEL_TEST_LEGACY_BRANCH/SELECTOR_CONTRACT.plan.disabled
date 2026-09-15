@@ -1,0 +1,23 @@
+ARCTIC1_REBEL_TEST_LEGACY_BRANCH — CONTRAT
+
+DEFAULT_AUTHORITY = R_Arc1A_rebel.scr / swampYesNo
+
+RELEASE INPUTS
+  initial silent state -> swampYesNo = 1
+  OnAlarm             -> swampYesNo = 0
+  received signal 17  -> swampYesNo = 0
+
+SINGLE DISPATCH POINT
+  swampYesNo == 1 -> Rebel:10
+  swampYesNo == 0 -> Rebel:11
+
+INVARIANTS
+  - conserver intégralement OnSignal(10) et OnSignal(11) ;
+  - un seul dispatch par partie ;
+  - aucun envoi 10/11 depuis Rebel_Test ou un proxy ;
+  - aucune sélection avant le dialogue d'accueil.
+
+LEGACY_INPUT_PROFILE = BLOCKED
+  Nécessite les émetteurs exacts des signaux 1 et 3 et une règle prouvée de
+  conversion vers l'unique variable interne. Ne jamais restaurer le dispatcher
+  externe même si ces preuves réapparaissent.

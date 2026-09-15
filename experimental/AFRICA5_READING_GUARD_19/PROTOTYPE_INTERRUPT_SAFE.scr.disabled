@@ -1,0 +1,66 @@
+// LABORATOIRE UNIQUEMENT : API Read non prouvee, fichier non compile/non lie.
+// Copie complete pour rendre visibles les trois chemins de nettoyage.
+
+block{
+  FRAME archive; FRM_FindFrame(archive, "m_AF5_slozky01b14");
+  FRAME book;    FRM_FindFrame(book, "m_AF5_slozky01a7");
+  INTEGER Atype = 0;
+  SetAlarmType(1023, true);
+}
+
+OnDeath(){
+  // AJOUT : arret puis depot avant la fin commerciale.
+  HUMAN_ACTIVITY_Read(0, book);
+  HUMAN_DropObject();
+  printf("19: dead");
+  EndScript();
+}
+
+OnSignal(1){ goto ACTIVATE; }
+
+OnAlarm(){
+  // AJOUT : Read doit etre interruptible. DropObject et le reste sont release.
+  HUMAN_ACTIVITY_Read(0, book);
+  HUMAN_DropObject();
+  block{
+    HUMAN_Suspend(false);
+    HUMAN_SetOptimized(0);
+    Atype = _GetAlarmType();
+    printfnumber("19: ", true);
+  }
+  EndScript();
+}
+
+OnAlarmDone(){
+  SetAlarmType(512, false);
+  HUMAN_SetAlarm(false);
+  HUMAN_SetOptimized(1);
+  goto ACTIVATE;
+}
+
+HUMAN_SETAIMODE_Defensive();
+HUMAN_SetOptimized(0);
+HUMAN_Suspend(true);
+goto END;
+
+Label ACTIVATE:
+  HUMAN_Suspend(0);
+  HUMAN_SetOptimized(1);
+  HUMAN_SETMODE_Walk();
+  HUMAN_SETMODE_Stand();
+  HUMAN_SETAIMODE_Zombie();
+  HUMAN_SETMODE_Crouch();
+
+Label ACTIVITY:
+  HUMAN_Investigate(archive);
+  HUMAN_PickObject(book, 1);
+  Delay(1000);
+  HUMAN_SETMODE_Stand();
+  HUMAN_ACTIVITY_Read(1, book);
+  Delay(2000);
+  HUMAN_ACTIVITY_Read(0, book);
+  HUMAN_SETMODE_Crouch();
+  HUMAN_DropObject();
+goto ACTIVITY;
+
+Label END:

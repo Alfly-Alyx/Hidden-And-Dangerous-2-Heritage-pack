@@ -1,0 +1,31 @@
+// Documentation de deux variantes exclusives pour OnAlarmDone().
+// Ce fichier n'est pas un script à compiler.
+// SELECTED_VARIANT = RELEASE
+
+// VARIANTE RELEASE — corps commercial actuel
+// HUMAN_SetAnim("%%turnleft", 500, 500, false);
+// Delay(2000);
+// HUMAN_SetAnim("%%turnright", 500, 500, false);
+// Delay(2000);
+
+// VARIANTE PATROL — INTERDITE tant que AF1_20_01 n'existe pas dans check2
+// Delay(1000);
+// Label LOOP:
+// HUMAN_Move("AF1_20_01");
+// gosub LOOKAROUND;
+// HUMAN_Move("AF1_20_02");
+// HUMAN_Move("AF1_20_03");
+// gosub LOOKAROUND;
+// HUMAN_Move("AF1_20_04");
+// HUMAN_Move("AF1_20_05");
+// gosub LOOKAROUND;
+// HUMAN_Move("AF1_20_06");
+// HUMAN_Move("AF1_20_07");
+// gosub LOOKAROUND;
+// HUMAN_Move("AF1_20_08");
+// goto LOOP;
+
+// Règle de construction :
+// copier un seul des deux corps dans une copie du script commercial ;
+// ne jamais conserver les deux corps exécutables dans la même variante.
+

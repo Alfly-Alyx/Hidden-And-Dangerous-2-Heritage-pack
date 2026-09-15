@@ -1,0 +1,2381 @@
+{
+  "game": "D:\\Games\\Hidden and Dangerous 2",
+  "scope": {
+    "missions": 68,
+    "used_scripts": 4894,
+    "resolved_signal_calls": 5711,
+    "mismatched_signal_calls": 152
+  },
+  "missions": [
+    {
+      "mission": "africa1",
+      "used_script_count": 110,
+      "resolved_signal_call_count": 93,
+      "mismatches": [
+        {
+          "source_script": "af1_08.scr",
+          "source_actors": [
+            "af1_08"
+          ],
+          "target_actor": "af1_07",
+          "signal": 10,
+          "target_scripts": [
+            "af1_07.scr"
+          ],
+          "handled_signals": [
+            1,
+            20
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af1_09.scr",
+          "source_actors": [
+            "af1_09"
+          ],
+          "target_actor": "af1_07",
+          "signal": 10,
+          "target_scripts": [
+            "af1_07.scr"
+          ],
+          "handled_signals": [
+            1,
+            20
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af1_10.scr",
+          "source_actors": [
+            "af1_10"
+          ],
+          "target_actor": "af1_07",
+          "signal": 10,
+          "target_scripts": [
+            "af1_07.scr"
+          ],
+          "handled_signals": [
+            1,
+            20
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af1_07.scr",
+          "source_actors": [
+            "af1_07"
+          ],
+          "target_actor": "af1_08",
+          "signal": 10,
+          "target_scripts": [
+            "af1_08.scr"
+          ],
+          "handled_signals": [
+            1,
+            20
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af1_09.scr",
+          "source_actors": [
+            "af1_09"
+          ],
+          "target_actor": "af1_08",
+          "signal": 10,
+          "target_scripts": [
+            "af1_08.scr"
+          ],
+          "handled_signals": [
+            1,
+            20
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af1_10.scr",
+          "source_actors": [
+            "af1_10"
+          ],
+          "target_actor": "af1_08",
+          "signal": 10,
+          "target_scripts": [
+            "af1_08.scr"
+          ],
+          "handled_signals": [
+            1,
+            20
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af1_07.scr",
+          "source_actors": [
+            "af1_07"
+          ],
+          "target_actor": "af1_09",
+          "signal": 10,
+          "target_scripts": [
+            "af1_09.scr"
+          ],
+          "handled_signals": [
+            1,
+            20
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af1_08.scr",
+          "source_actors": [
+            "af1_08"
+          ],
+          "target_actor": "af1_09",
+          "signal": 10,
+          "target_scripts": [
+            "af1_09.scr"
+          ],
+          "handled_signals": [
+            1,
+            20
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af1_10.scr",
+          "source_actors": [
+            "af1_10"
+          ],
+          "target_actor": "af1_09",
+          "signal": 10,
+          "target_scripts": [
+            "af1_09.scr"
+          ],
+          "handled_signals": [
+            1,
+            20
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af1_10.scr",
+          "source_actors": [
+            "af1_10"
+          ],
+          "target_actor": "af1_12",
+          "signal": 10,
+          "target_scripts": [
+            "af1_12.scr"
+          ],
+          "handled_signals": [
+            5,
+            20
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af1_inrange.scr",
+          "source_actors": [
+            "dummy_inrange"
+          ],
+          "target_actor": "af1_23",
+          "signal": 10,
+          "target_scripts": [
+            "af1_23.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af1_21.scr",
+          "source_actors": [
+            "af1_21"
+          ],
+          "target_actor": "dummy_dabing_01",
+          "signal": 1,
+          "target_scripts": [
+            "af1_dabing_01.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        }
+      ]
+    },
+    {
+      "mission": "africa2",
+      "used_script_count": 63,
+      "resolved_signal_call_count": 65,
+      "mismatches": [
+        {
+          "source_script": "af2_activator.scr",
+          "source_actors": [
+            "af2_activator"
+          ],
+          "target_actor": "af2_02",
+          "signal": 5,
+          "target_scripts": [
+            "af2_02.scr"
+          ],
+          "handled_signals": [
+            1,
+            20
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af2_01.scr",
+          "source_actors": [
+            "af2_01"
+          ],
+          "target_actor": "af2_05",
+          "signal": 2,
+          "target_scripts": [
+            "af2_05.scr"
+          ],
+          "handled_signals": [
+            1,
+            5
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af2_hidejunkers.scr",
+          "source_actors": [
+            "hidejunkers"
+          ],
+          "target_actor": "af2_05",
+          "signal": 2,
+          "target_scripts": [
+            "af2_05.scr"
+          ],
+          "handled_signals": [
+            1,
+            5
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af2_dummy_alert01.scr",
+          "source_actors": [
+            "dummy_alert01"
+          ],
+          "target_actor": "af2_05",
+          "signal": 20,
+          "target_scripts": [
+            "af2_05.scr"
+          ],
+          "handled_signals": [
+            1,
+            5
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af2_01.scr",
+          "source_actors": [
+            "af2_01"
+          ],
+          "target_actor": "af2_06",
+          "signal": 2,
+          "target_scripts": [
+            "af2_06.scr"
+          ],
+          "handled_signals": [
+            1,
+            5,
+            20
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af2_hidejunkers.scr",
+          "source_actors": [
+            "hidejunkers"
+          ],
+          "target_actor": "af2_06",
+          "signal": 2,
+          "target_scripts": [
+            "af2_06.scr"
+          ],
+          "handled_signals": [
+            1,
+            5,
+            20
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af2_13.scr",
+          "source_actors": [
+            "af2_13"
+          ],
+          "target_actor": "af2_activator",
+          "signal": 1,
+          "target_scripts": [
+            "af2_activator.scr"
+          ],
+          "handled_signals": [
+            5
+          ],
+          "reason": "sent_signal_not_handled"
+        }
+      ]
+    },
+    {
+      "mission": "africa3",
+      "used_script_count": 84,
+      "resolved_signal_call_count": 195,
+      "mismatches": [
+        {
+          "source_script": "af3a_rozhovor_05.scr",
+          "source_actors": [
+            "dummy_rozhovor_05"
+          ],
+          "target_actor": "af3a_02",
+          "signal": 10,
+          "target_scripts": [
+            "af3a_02.scr"
+          ],
+          "handled_signals": [
+            20
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af3a_rozhovor_05.scr",
+          "source_actors": [
+            "dummy_rozhovor_05"
+          ],
+          "target_actor": "af3a_02",
+          "signal": 11,
+          "target_scripts": [
+            "af3a_02.scr"
+          ],
+          "handled_signals": [
+            20
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af3a_rozhovor_05.scr",
+          "source_actors": [
+            "dummy_rozhovor_05"
+          ],
+          "target_actor": "af3a_03",
+          "signal": 11,
+          "target_scripts": [
+            "af3a_03.scr"
+          ],
+          "handled_signals": [
+            10,
+            20
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af3a_rozhovor_04.scr",
+          "source_actors": [
+            "dummy_rozhovor_04"
+          ],
+          "target_actor": "af3a_05",
+          "signal": 10,
+          "target_scripts": [
+            "af3a_05.scr"
+          ],
+          "handled_signals": [
+            1,
+            2,
+            20
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af3a_rozhovor_04.scr",
+          "source_actors": [
+            "dummy_rozhovor_04"
+          ],
+          "target_actor": "af3a_05",
+          "signal": 11,
+          "target_scripts": [
+            "af3a_05.scr"
+          ],
+          "handled_signals": [
+            1,
+            2,
+            20
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af3a_rozhovor_04.scr",
+          "source_actors": [
+            "dummy_rozhovor_04"
+          ],
+          "target_actor": "af3a_06",
+          "signal": 10,
+          "target_scripts": [
+            "af3a_06.scr"
+          ],
+          "handled_signals": [
+            1,
+            2,
+            20
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af3a_rozhovor_04.scr",
+          "source_actors": [
+            "dummy_rozhovor_04"
+          ],
+          "target_actor": "af3a_06",
+          "signal": 11,
+          "target_scripts": [
+            "af3a_06.scr"
+          ],
+          "handled_signals": [
+            1,
+            2,
+            20
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af3a_16_activator.scr",
+          "source_actors": [
+            "af3a_16_activator"
+          ],
+          "target_actor": "af3a_16",
+          "signal": 1,
+          "target_scripts": [
+            "af3a_16.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3a_doctor_activator.scr",
+          "source_actors": [
+            "dummy_doctor_activator"
+          ],
+          "target_actor": "af3a_19",
+          "signal": 16,
+          "target_scripts": [
+            "af3a_19.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3a_25_detector.scr",
+          "source_actors": [
+            "dummy_25_detector"
+          ],
+          "target_actor": "af3a_25",
+          "signal": 10,
+          "target_scripts": [
+            "af3a_25.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3a_rozhovor_03.scr",
+          "source_actors": [
+            "dummy_rozhovor_03"
+          ],
+          "target_actor": "af3a_28",
+          "signal": 10,
+          "target_scripts": [
+            "af3a_28.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3a_rozhovor_03.scr",
+          "source_actors": [
+            "dummy_rozhovor_03"
+          ],
+          "target_actor": "af3a_28",
+          "signal": 11,
+          "target_scripts": [
+            "af3a_28.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3a_rozhovor_03.scr",
+          "source_actors": [
+            "dummy_rozhovor_03"
+          ],
+          "target_actor": "af3a_29",
+          "signal": 10,
+          "target_scripts": [
+            "af3a_29.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3a_rozhovor_03.scr",
+          "source_actors": [
+            "dummy_rozhovor_03"
+          ],
+          "target_actor": "af3a_29",
+          "signal": 11,
+          "target_scripts": [
+            "af3a_29.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3a_doctor_activator.scr",
+          "source_actors": [
+            "dummy_doctor_activator"
+          ],
+          "target_actor": "af3a_doktor",
+          "signal": 16,
+          "target_scripts": [
+            "af3a_doktor.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3a_doktor_detector.scr",
+          "source_actors": [
+            "dummy_doctor_01",
+            "dummy_doctor_02"
+          ],
+          "target_actor": "af3a_doktor",
+          "signal": 16,
+          "target_scripts": [
+            "af3a_doktor.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3a_doktor_detector.scr",
+          "source_actors": [
+            "dummy_doctor_01",
+            "dummy_doctor_02"
+          ],
+          "target_actor": "af3a_pacient02",
+          "signal": 16,
+          "target_scripts": [
+            "af3a_pacient02.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        }
+      ]
+    },
+    {
+      "mission": "africa4",
+      "used_script_count": 67,
+      "resolved_signal_call_count": 101,
+      "mismatches": [
+        {
+          "source_script": "af3b_01.scr",
+          "source_actors": [
+            "af3b_01"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_02.scr",
+          "source_actors": [
+            "af3b_02"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_03.scr",
+          "source_actors": [
+            "af3b_03"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_04.scr",
+          "source_actors": [
+            "af3b_04"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_05.scr",
+          "source_actors": [
+            "af3b_05"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_06.scr",
+          "source_actors": [
+            "af3b_06"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_07.scr",
+          "source_actors": [
+            "af3b_07"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_08.scr",
+          "source_actors": [
+            "af3b_08"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_09.scr",
+          "source_actors": [
+            "af3b_09"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_10.scr",
+          "source_actors": [
+            "af3b_10"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_11.scr",
+          "source_actors": [
+            "af3b_11"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_12.scr",
+          "source_actors": [
+            "af3b_12"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_13.scr",
+          "source_actors": [
+            "af3b_13"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_14.scr",
+          "source_actors": [
+            "af3b_14"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_15.scr",
+          "source_actors": [
+            "af3b_15"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_16.scr",
+          "source_actors": [
+            "af3b_16"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_17.scr",
+          "source_actors": [
+            "af3b_17"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_18.scr",
+          "source_actors": [
+            "af3b_18"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_19.scr",
+          "source_actors": [
+            "af3b_19"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_20.scr",
+          "source_actors": [
+            "af3b_20"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_21.scr",
+          "source_actors": [
+            "af3b_21"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_22.scr",
+          "source_actors": [
+            "af3b_22"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_23.scr",
+          "source_actors": [
+            "af3b_23"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_24.scr",
+          "source_actors": [
+            "af3b_24"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_25.scr",
+          "source_actors": [
+            "af3b_25"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_26.scr",
+          "source_actors": [
+            "af3b_26"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_27.scr",
+          "source_actors": [
+            "af3b_27"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_28.scr",
+          "source_actors": [
+            "af3b_28"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_29.scr",
+          "source_actors": [
+            "af3b_29"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_30.scr",
+          "source_actors": [
+            "af3b_30"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_31.scr",
+          "source_actors": [
+            "af3b_31"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_32.scr",
+          "source_actors": [
+            "af3b_32"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_33.scr",
+          "source_actors": [
+            "af3b_33"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_tankista02.scr",
+          "source_actors": [
+            "af3b_tank01_02"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_tankista03.scr",
+          "source_actors": [
+            "af3b_tank01_03"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_tankista05.scr",
+          "source_actors": [
+            "af3b_tank02_02"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af3b_tankista06.scr",
+          "source_actors": [
+            "af3b_tank02_03"
+          ],
+          "target_actor": "dummy_organizer",
+          "signal": 1,
+          "target_scripts": [
+            "af3b_organizer.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        }
+      ]
+    },
+    {
+      "mission": "africa4_obj",
+      "used_script_count": 6,
+      "resolved_signal_call_count": 1,
+      "mismatches": [
+        {
+          "source_script": "af4_mp_barikada.scr",
+          "source_actors": [
+            "m_palma3"
+          ],
+          "target_actor": "m_palma3",
+          "signal": 1,
+          "target_scripts": [
+            "af4_mp_barikada.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        }
+      ]
+    },
+    {
+      "mission": "africa5",
+      "used_script_count": 164,
+      "resolved_signal_call_count": 154,
+      "mismatches": [
+        {
+          "source_script": "af4_44.scr",
+          "source_actors": [
+            "af4_44"
+          ],
+          "target_actor": "af4_43",
+          "signal": 5,
+          "target_scripts": [
+            "af4_43.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af4_49.scr",
+          "source_actors": [
+            "af4_49"
+          ],
+          "target_actor": "af4_43",
+          "signal": 5,
+          "target_scripts": [
+            "af4_43.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "af4_sklad_activator.scr",
+          "source_actors": [
+            "box03"
+          ],
+          "target_actor": "af4_sklad04",
+          "signal": 1,
+          "target_scripts": [
+            "af4_sklad04.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        }
+      ]
+    },
+    {
+      "mission": "alps1",
+      "used_script_count": 136,
+      "resolved_signal_call_count": 296,
+      "mismatches": [
+        {
+          "source_script": "ge_34.scr",
+          "source_actors": [
+            "ge_34"
+          ],
+          "target_actor": "ge_33",
+          "signal": 3,
+          "target_scripts": [
+            "ge_33.scr"
+          ],
+          "handled_signals": [
+            1
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "signal_k_ohni.scr",
+          "source_actors": [
+            "signal_k_ohni"
+          ],
+          "target_actor": "ge_33",
+          "signal": 3,
+          "target_scripts": [
+            "ge_33.scr"
+          ],
+          "handled_signals": [
+            1
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "signal_k_ohni.scr",
+          "source_actors": [
+            "signal_k_ohni"
+          ],
+          "target_actor": "ge_35",
+          "signal": 3,
+          "target_scripts": [
+            "ge_35.scr"
+          ],
+          "handled_signals": [
+            1
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "signal_ke_strelnici.scr",
+          "source_actors": [
+            "signal_ke_strelnici"
+          ],
+          "target_actor": "ge_35",
+          "signal": 3,
+          "target_scripts": [
+            "ge_35.scr"
+          ],
+          "handled_signals": [
+            1
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "ge_36.scr",
+          "source_actors": [
+            "ge_36"
+          ],
+          "target_actor": "ge_35",
+          "signal": 4,
+          "target_scripts": [
+            "ge_35.scr"
+          ],
+          "handled_signals": [
+            1
+          ],
+          "reason": "sent_signal_not_handled"
+        }
+      ]
+    },
+    {
+      "mission": "alps2",
+      "used_script_count": 113,
+      "resolved_signal_call_count": 312,
+      "mismatches": [
+        {
+          "source_script": "al2_01_a1.scr",
+          "source_actors": [
+            "al2_01_a1"
+          ],
+          "target_actor": "al2_01",
+          "signal": 1,
+          "target_scripts": [
+            "al2_01.scr"
+          ],
+          "handled_signals": [
+            4,
+            6,
+            8
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "al2_alarm_carn.scr",
+          "source_actors": [
+            "al2_alarm"
+          ],
+          "target_actor": "al2_35",
+          "signal": 2,
+          "target_scripts": [
+            "al2_35.scr"
+          ],
+          "handled_signals": [
+            1
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "al2_01.scr",
+          "source_actors": [
+            "al2_01"
+          ],
+          "target_actor": "al2_alarm",
+          "signal": 1,
+          "target_scripts": [
+            "al2_alarm.scr",
+            "al2_alarm_carn.scr"
+          ],
+          "handled_signals": [
+            5,
+            6
+          ],
+          "reason": "sent_signal_not_handled"
+        }
+      ]
+    },
+    {
+      "mission": "arctic2",
+      "used_script_count": 133,
+      "resolved_signal_call_count": 178,
+      "mismatches": [
+        {
+          "source_script": "r_arc1b_w1.scr",
+          "source_actors": [
+            "walker_1"
+          ],
+          "target_actor": "dummy_globalalarm",
+          "signal": 3,
+          "target_scripts": [
+            "r_arc1b_globalalarm.scr"
+          ],
+          "handled_signals": [
+            1,
+            2
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "r_arc1b_w2.scr",
+          "source_actors": [
+            "walker_2"
+          ],
+          "target_actor": "dummy_globalalarm",
+          "signal": 3,
+          "target_scripts": [
+            "r_arc1b_globalalarm.scr"
+          ],
+          "handled_signals": [
+            1,
+            2
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "r_arc1b_w3.scr",
+          "source_actors": [
+            "walker_3"
+          ],
+          "target_actor": "dummy_globalalarm",
+          "signal": 3,
+          "target_scripts": [
+            "r_arc1b_globalalarm.scr"
+          ],
+          "handled_signals": [
+            1,
+            2
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "r_arc1b_w4.scr",
+          "source_actors": [
+            "walker_4"
+          ],
+          "target_actor": "dummy_globalalarm",
+          "signal": 3,
+          "target_scripts": [
+            "r_arc1b_globalalarm.scr"
+          ],
+          "handled_signals": [
+            1,
+            2
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "r_arc1b_w5.scr",
+          "source_actors": [
+            "walker_5"
+          ],
+          "target_actor": "dummy_globalalarm",
+          "signal": 3,
+          "target_scripts": [
+            "r_arc1b_globalalarm.scr"
+          ],
+          "handled_signals": [
+            1,
+            2
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "r_arc1b_w6.scr",
+          "source_actors": [
+            "walker_6"
+          ],
+          "target_actor": "dummy_globalalarm",
+          "signal": 3,
+          "target_scripts": [
+            "r_arc1b_globalalarm.scr"
+          ],
+          "handled_signals": [
+            1,
+            2
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "r_arc1b_w7.scr",
+          "source_actors": [
+            "walker_7"
+          ],
+          "target_actor": "dummy_globalalarm",
+          "signal": 3,
+          "target_scripts": [
+            "r_arc1b_globalalarm.scr"
+          ],
+          "handled_signals": [
+            1,
+            2
+          ],
+          "reason": "sent_signal_not_handled"
+        }
+      ]
+    },
+    {
+      "mission": "brest",
+      "used_script_count": 188,
+      "resolved_signal_call_count": 171,
+      "mismatches": [
+        {
+          "source_script": "mesh24.scr",
+          "source_actors": [
+            "mesh24"
+          ],
+          "target_actor": "z2_agresor1",
+          "signal": 1,
+          "target_scripts": [
+            "z2_agresor1.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        }
+      ]
+    },
+    {
+      "mission": "burgundy1",
+      "used_script_count": 99,
+      "resolved_signal_call_count": 13,
+      "mismatches": [
+        {
+          "source_script": "bur1_04.scr",
+          "source_actors": [
+            "bu1_04"
+          ],
+          "target_actor": "bu1_driver01",
+          "signal": 1,
+          "target_scripts": [
+            "bur1_driver01.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "bur1_04.scr",
+          "source_actors": [
+            "bu1_04"
+          ],
+          "target_actor": "la_zavora_.zavora",
+          "signal": 0,
+          "target_scripts": [
+            "zavora.scr"
+          ],
+          "handled_signals": [
+            1,
+            2
+          ],
+          "reason": "sent_signal_not_handled"
+        }
+      ]
+    },
+    {
+      "mission": "burgundy2",
+      "used_script_count": 88,
+      "resolved_signal_call_count": 62,
+      "mismatches": [
+        {
+          "source_script": "ge_motorka.scr",
+          "source_actors": [
+            "ge_motorka"
+          ],
+          "target_actor": "ge_dilna",
+          "signal": 3,
+          "target_scripts": [
+            "ge_dilna.scr"
+          ],
+          "handled_signals": [
+            1,
+            2
+          ],
+          "reason": "sent_signal_not_handled"
+        }
+      ]
+    },
+    {
+      "mission": "burgundy3",
+      "used_script_count": 87,
+      "resolved_signal_call_count": 44,
+      "mismatches": [
+        {
+          "source_script": "bur3_rozhovor.scr",
+          "source_actors": [
+            "dummy_rozhovor01"
+          ],
+          "target_actor": "bur03_20",
+          "signal": 11,
+          "target_scripts": [
+            "bur3_20.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "bur3_rozhovor.scr",
+          "source_actors": [
+            "dummy_rozhovor01"
+          ],
+          "target_actor": "bur03_20",
+          "signal": 13,
+          "target_scripts": [
+            "bur3_20.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "bur3_rozhovor.scr",
+          "source_actors": [
+            "dummy_rozhovor01"
+          ],
+          "target_actor": "bur03_20",
+          "signal": 15,
+          "target_scripts": [
+            "bur3_20.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "bur3_rozhovor.scr",
+          "source_actors": [
+            "dummy_rozhovor01"
+          ],
+          "target_actor": "bur03_20",
+          "signal": 17,
+          "target_scripts": [
+            "bur3_20.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "bur3_rozhovor.scr",
+          "source_actors": [
+            "dummy_rozhovor01"
+          ],
+          "target_actor": "bur03_sas02",
+          "signal": 10,
+          "target_scripts": [
+            "bur3_sas02.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "bur3_rozhovor.scr",
+          "source_actors": [
+            "dummy_rozhovor01"
+          ],
+          "target_actor": "bur03_sas02",
+          "signal": 12,
+          "target_scripts": [
+            "bur3_sas02.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "bur3_rozhovor.scr",
+          "source_actors": [
+            "dummy_rozhovor01"
+          ],
+          "target_actor": "bur03_sas02",
+          "signal": 14,
+          "target_scripts": [
+            "bur3_sas02.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "bur3_rozhovor.scr",
+          "source_actors": [
+            "dummy_rozhovor01"
+          ],
+          "target_actor": "bur03_sas02",
+          "signal": 16,
+          "target_scripts": [
+            "bur3_sas02.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "bur3_maquis01.scr",
+          "source_actors": [
+            "maquis01"
+          ],
+          "target_actor": "e_treeb_160",
+          "signal": 10,
+          "target_scripts": [
+            "snd_vybuch_paliva.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "bur3_vybuch.scr",
+          "source_actors": [
+            "la_bu3_fuelstorage_01"
+          ],
+          "target_actor": "e_treeb_160",
+          "signal": 10,
+          "target_scripts": [
+            "snd_vybuch_paliva.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        }
+      ]
+    },
+    {
+      "mission": "co_brest",
+      "used_script_count": 195,
+      "resolved_signal_call_count": 173,
+      "mismatches": [
+        {
+          "source_script": "mesh24.scr",
+          "source_actors": [
+            "mesh24"
+          ],
+          "target_actor": "z2_agresor1",
+          "signal": 1,
+          "target_scripts": [
+            "z2_agresor1.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        }
+      ]
+    },
+    {
+      "mission": "co_burgundy1",
+      "used_script_count": 87,
+      "resolved_signal_call_count": 12,
+      "mismatches": [
+        {
+          "source_script": "bur1_04.scr",
+          "source_actors": [
+            "bu1_04"
+          ],
+          "target_actor": "bu1_driver01",
+          "signal": 1,
+          "target_scripts": [
+            "bur1_driver01.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "bur1_04.scr",
+          "source_actors": [
+            "bu1_04"
+          ],
+          "target_actor": "la_zavora_.zavora",
+          "signal": 0,
+          "target_scripts": [
+            "zavora.scr"
+          ],
+          "handled_signals": [
+            1,
+            2
+          ],
+          "reason": "sent_signal_not_handled"
+        }
+      ]
+    },
+    {
+      "mission": "co_burgundy2",
+      "used_script_count": 120,
+      "resolved_signal_call_count": 76,
+      "mismatches": [
+        {
+          "source_script": "detect_motopryc.scr",
+          "source_actors": [
+            "detect_motopryc"
+          ],
+          "target_actor": "objectyves",
+          "signal": 3,
+          "target_scripts": [
+            "objectyves.scr"
+          ],
+          "handled_signals": [
+            1,
+            2
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "detect_motopryc.scr",
+          "source_actors": [
+            "detect_motopryc"
+          ],
+          "target_actor": "objectyves",
+          "signal": 4,
+          "target_scripts": [
+            "objectyves.scr"
+          ],
+          "handled_signals": [
+            1,
+            2
+          ],
+          "reason": "sent_signal_not_handled"
+        }
+      ]
+    },
+    {
+      "mission": "co_burgundy3",
+      "used_script_count": 57,
+      "resolved_signal_call_count": 51,
+      "mismatches": [
+        {
+          "source_script": "bur3_rozhovor.scr",
+          "source_actors": [
+            "dummy_rozhovor_sas"
+          ],
+          "target_actor": "bur03_20",
+          "signal": 11,
+          "target_scripts": [
+            "bur3_20.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "bur3_rozhovor.scr",
+          "source_actors": [
+            "dummy_rozhovor_sas"
+          ],
+          "target_actor": "bur03_20",
+          "signal": 13,
+          "target_scripts": [
+            "bur3_20.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "bur3_rozhovor.scr",
+          "source_actors": [
+            "dummy_rozhovor_sas"
+          ],
+          "target_actor": "bur03_20",
+          "signal": 15,
+          "target_scripts": [
+            "bur3_20.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "bur3_rozhovor.scr",
+          "source_actors": [
+            "dummy_rozhovor_sas"
+          ],
+          "target_actor": "bur03_20",
+          "signal": 17,
+          "target_scripts": [
+            "bur3_20.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "bur3_rozhovor.scr",
+          "source_actors": [
+            "dummy_rozhovor_sas"
+          ],
+          "target_actor": "bur03_sas02",
+          "signal": 10,
+          "target_scripts": [
+            "bur3_sas02.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "bur3_rozhovor.scr",
+          "source_actors": [
+            "dummy_rozhovor_sas"
+          ],
+          "target_actor": "bur03_sas02",
+          "signal": 12,
+          "target_scripts": [
+            "bur3_sas02.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "bur3_rozhovor.scr",
+          "source_actors": [
+            "dummy_rozhovor_sas"
+          ],
+          "target_actor": "bur03_sas02",
+          "signal": 14,
+          "target_scripts": [
+            "bur3_sas02.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "bur3_rozhovor.scr",
+          "source_actors": [
+            "dummy_rozhovor_sas"
+          ],
+          "target_actor": "bur03_sas02",
+          "signal": 16,
+          "target_scripts": [
+            "bur3_sas02.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        }
+      ]
+    },
+    {
+      "mission": "co_libye1",
+      "used_script_count": 140,
+      "resolved_signal_call_count": 106,
+      "mismatches": [
+        {
+          "source_script": "af1_48_af1_49_speech.scr",
+          "source_actors": [
+            "af1_48_af1_49_speech"
+          ],
+          "target_actor": "af1_48",
+          "signal": 2,
+          "target_scripts": [
+            "af1_48.scr"
+          ],
+          "handled_signals": [
+            1
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af1_48_af1_49_speech.scr",
+          "source_actors": [
+            "af1_48_af1_49_speech"
+          ],
+          "target_actor": "af1_49",
+          "signal": 2,
+          "target_scripts": [
+            "af1_49.scr"
+          ],
+          "handled_signals": [
+            1
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af1_obj2_succ_sender.scr",
+          "source_actors": [
+            "af1_obj2_succ_sender"
+          ],
+          "target_actor": "objectives",
+          "signal": 3,
+          "target_scripts": [
+            "af1_objectives.scr"
+          ],
+          "handled_signals": [
+            1,
+            6
+          ],
+          "reason": "sent_signal_not_handled"
+        }
+      ]
+    },
+    {
+      "mission": "co_libye2",
+      "used_script_count": 132,
+      "resolved_signal_call_count": 153,
+      "mismatches": [
+        {
+          "source_script": "af2_obj3.scr",
+          "source_actors": [
+            "af2_obj3"
+          ],
+          "target_actor": "af2_obj",
+          "signal": 2,
+          "target_scripts": [
+            "af2_objective.scr"
+          ],
+          "handled_signals": [
+            1
+          ],
+          "reason": "sent_signal_not_handled"
+        }
+      ]
+    },
+    {
+      "mission": "czech2",
+      "used_script_count": 83,
+      "resolved_signal_call_count": 67,
+      "mismatches": [
+        {
+          "source_script": "r_cz2_ger21.scr",
+          "source_actors": [
+            "ger_21"
+          ],
+          "target_actor": "big_boss",
+          "signal": 1,
+          "target_scripts": [
+            "r_cz2_big_boss.scr"
+          ],
+          "handled_signals": [
+            19
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "freiberg_attack01.scr",
+          "source_actors": [
+            "c2_freiberg_attack01"
+          ],
+          "target_actor": "big_boss",
+          "signal": 3,
+          "target_scripts": [
+            "r_cz2_big_boss.scr"
+          ],
+          "handled_signals": [
+            19
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "freiberg_attack02.scr",
+          "source_actors": [
+            "c2_freiberg_attack02"
+          ],
+          "target_actor": "big_boss",
+          "signal": 4,
+          "target_scripts": [
+            "r_cz2_big_boss.scr"
+          ],
+          "handled_signals": [
+            19
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "r_cz2_ger16.scr",
+          "source_actors": [
+            "ger_16"
+          ],
+          "target_actor": "ger_20",
+          "signal": 1,
+          "target_scripts": [
+            "r_cz2_ger20.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "r_cz2_ger22.scr",
+          "source_actors": [
+            "ger_22"
+          ],
+          "target_actor": "ger_24",
+          "signal": 2,
+          "target_scripts": [
+            "r_cz2_ger24.scr"
+          ],
+          "handled_signals": [
+            3
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "r_cz2_ger23.scr",
+          "source_actors": [
+            "ger_23"
+          ],
+          "target_actor": "ger_24",
+          "signal": 2,
+          "target_scripts": [
+            "r_cz2_ger24.scr"
+          ],
+          "handled_signals": [
+            3
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "r_cz2_ger22.scr",
+          "source_actors": [
+            "ger_22"
+          ],
+          "target_actor": "ger_25",
+          "signal": 2,
+          "target_scripts": [
+            "r_cz2_ger25.scr"
+          ],
+          "handled_signals": [
+            3
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "r_cz2_ger23.scr",
+          "source_actors": [
+            "ger_23"
+          ],
+          "target_actor": "ger_25",
+          "signal": 2,
+          "target_scripts": [
+            "r_cz2_ger25.scr"
+          ],
+          "handled_signals": [
+            3
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "endgame.scr",
+          "source_actors": [
+            "endgame"
+          ],
+          "target_actor": "objectives",
+          "signal": 2,
+          "target_scripts": [
+            "objectives_carn.scr",
+            "r_cz2_objectives.scr"
+          ],
+          "handled_signals": [
+            1,
+            3,
+            4,
+            5,
+            6,
+            19
+          ],
+          "reason": "sent_signal_not_handled"
+        }
+      ]
+    },
+    {
+      "mission": "czech3",
+      "used_script_count": 72,
+      "resolved_signal_call_count": 166,
+      "mismatches": [
+        {
+          "source_script": "r_cz3_dummy_alarm.scr",
+          "source_actors": [
+            "dummy_alarm"
+          ],
+          "target_actor": "commander",
+          "signal": 2,
+          "target_scripts": [
+            "r_cz3_commander.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "ci1.scr",
+          "source_actors": [
+            "ci1"
+          ],
+          "target_actor": "e_ktable3",
+          "signal": 2,
+          "target_scripts": [
+            "setobjectives.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "ci2.scr",
+          "source_actors": [
+            "ci2"
+          ],
+          "target_actor": "e_ktable3",
+          "signal": 2,
+          "target_scripts": [
+            "setobjectives.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        }
+      ]
+    },
+    {
+      "mission": "czech4",
+      "used_script_count": 101,
+      "resolved_signal_call_count": 142,
+      "mismatches": [
+        {
+          "source_script": "cz4_apumperz_01.scr",
+          "source_actors": [
+            "cz4_apumperz_01"
+          ],
+          "target_actor": "cz4_platoon_04",
+          "signal": 5,
+          "target_scripts": [
+            "cz4_platoon_04.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "cz4_detector_04.scr",
+          "source_actors": [
+            "detector_04"
+          ],
+          "target_actor": "cz4_plazzars_02",
+          "signal": 4,
+          "target_scripts": [
+            "cz4_plazzars_02.scr"
+          ],
+          "handled_signals": [
+            3,
+            7,
+            16
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "cz4_detector_04.scr",
+          "source_actors": [
+            "detector_04"
+          ],
+          "target_actor": "cz4_plazzars_03",
+          "signal": 4,
+          "target_scripts": [
+            "cz4_plazzars_03.scr"
+          ],
+          "handled_signals": [
+            3,
+            7,
+            16
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "cz4_detector_01.scr",
+          "source_actors": [
+            "detector_01"
+          ],
+          "target_actor": "cz4_sniper_01",
+          "signal": 1,
+          "target_scripts": [
+            "cz4_sniper_01.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        }
+      ]
+    },
+    {
+      "mission": "czech6",
+      "used_script_count": 95,
+      "resolved_signal_call_count": 166,
+      "mismatches": [
+        {
+          "source_script": "c5_g40.scr",
+          "source_actors": [
+            "c5_g40"
+          ],
+          "target_actor": "c5_g11",
+          "signal": 1,
+          "target_scripts": [
+            "c5_g11.scr"
+          ],
+          "handled_signals": [
+            2
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "c5_g40.scr",
+          "source_actors": [
+            "c5_g40"
+          ],
+          "target_actor": "c5_g43",
+          "signal": 1,
+          "target_scripts": [
+            "c5_g43.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        }
+      ]
+    },
+    {
+      "mission": "libye1",
+      "used_script_count": 159,
+      "resolved_signal_call_count": 295,
+      "mismatches": [
+        {
+          "source_script": "af1_48_af1_49_speech.scr",
+          "source_actors": [
+            "af1_48_af1_49_speech"
+          ],
+          "target_actor": "af1_48",
+          "signal": 2,
+          "target_scripts": [
+            "af1_48.scr"
+          ],
+          "handled_signals": [
+            1
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "af1_48_af1_49_speech.scr",
+          "source_actors": [
+            "af1_48_af1_49_speech"
+          ],
+          "target_actor": "af1_49",
+          "signal": 2,
+          "target_scripts": [
+            "af1_49.scr"
+          ],
+          "handled_signals": [
+            1
+          ],
+          "reason": "sent_signal_not_handled"
+        }
+      ]
+    },
+    {
+      "mission": "libye2",
+      "used_script_count": 124,
+      "resolved_signal_call_count": 150,
+      "mismatches": [
+        {
+          "source_script": "af2_obj3.scr",
+          "source_actors": [
+            "af2_obj3"
+          ],
+          "target_actor": "af2_obj",
+          "signal": 2,
+          "target_scripts": [
+            "af2_objective.scr",
+            "af2_objective2.scr"
+          ],
+          "handled_signals": [
+            1
+          ],
+          "reason": "sent_signal_not_handled"
+        }
+      ]
+    },
+    {
+      "mission": "libye3",
+      "used_script_count": 73,
+      "resolved_signal_call_count": 50,
+      "mismatches": [
+        {
+          "source_script": "li3_cargo.scr",
+          "source_actors": [
+            "w_explosive_2"
+          ],
+          "target_actor": "li3_german_con_2",
+          "signal": 1,
+          "target_scripts": [
+            "li3_german_con_2.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        }
+      ]
+    },
+    {
+      "mission": "normandy2",
+      "used_script_count": 142,
+      "resolved_signal_call_count": 192,
+      "mismatches": [
+        {
+          "source_script": "r_n2_detector_7.scr",
+          "source_actors": [
+            "detector_7"
+          ],
+          "target_actor": "red_26",
+          "signal": 7,
+          "target_scripts": [
+            "r_n2_red_26.scr"
+          ],
+          "handled_signals": [
+            6
+          ],
+          "reason": "sent_signal_not_handled"
+        }
+      ]
+    },
+    {
+      "mission": "norway",
+      "used_script_count": 86,
+      "resolved_signal_call_count": 102,
+      "mismatches": [
+        {
+          "source_script": "detect_player1.scr",
+          "source_actors": [
+            "detect_player1"
+          ],
+          "target_actor": "detect_player1",
+          "signal": 2,
+          "target_scripts": [
+            "detect_player1.scr"
+          ],
+          "handled_signals": [
+            1
+          ],
+          "reason": "sent_signal_not_handled"
+        }
+      ]
+    },
+    {
+      "mission": "tutorial",
+      "used_script_count": 131,
+      "resolved_signal_call_count": 234,
+      "mismatches": [
+        {
+          "source_script": "tut_dummy_pike1in.scr",
+          "source_actors": [
+            "dummy_pike1in"
+          ],
+          "target_actor": "controlortwo",
+          "signal": 1,
+          "target_scripts": [
+            "tut_piker_1.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "tut_dummy_pike1in.scr",
+          "source_actors": [
+            "dummy_pike1in"
+          ],
+          "target_actor": "controlortwo",
+          "signal": 2,
+          "target_scripts": [
+            "tut_piker_1.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "tut_instructor1_aid.scr",
+          "source_actors": [
+            "tut_instructor1_aid"
+          ],
+          "target_actor": "dummy_ba_counter",
+          "signal": 17,
+          "target_scripts": [
+            "tut_dummy_ba_counter.scr"
+          ],
+          "handled_signals": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "reason": "sent_signal_not_handled"
+        },
+        {
+          "source_script": "tut_tmode_controller.scr",
+          "source_actors": [
+            "dummy_tmode_controller"
+          ],
+          "target_actor": "dummy_wi",
+          "signal": 1,
+          "target_scripts": [
+            "tut_dummy_wi.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        },
+        {
+          "source_script": "tut_instructor6.scr",
+          "source_actors": [
+            "tut_instructor6"
+          ],
+          "target_actor": "t_dummy_hr_check",
+          "signal": 1,
+          "target_scripts": [
+            "t_hr_check.scr"
+          ],
+          "handled_signals": [],
+          "reason": "target_has_no_literal_signal_handler"
+        }
+      ]
+    }
+  ]
+}

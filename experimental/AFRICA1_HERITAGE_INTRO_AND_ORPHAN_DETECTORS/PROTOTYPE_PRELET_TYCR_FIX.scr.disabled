@@ -1,0 +1,10 @@
+// DELTA PROTECTEUR MODERNE DESACTIVE — fragment non autonome
+// Requis avant tout essai de la cutscene 1.
+//
+// Dans AF1_prelet.scr, le commercial declare tycr mais ecrit la frame droite
+// dans tycl. Remplacer uniquement la seconde affectation:
+//
+//   AVANT: FRAME tycr; FRM_FindFrame(tycl, "la_macchi_cut.rtycpodvozek");
+//   APRES: FRAME tycr; FRM_FindFrame(tycr, "la_macchi_cut.rtycpodvozek");
+//
+// Ne modifier aucun autre handler de prelet dans ce lot.

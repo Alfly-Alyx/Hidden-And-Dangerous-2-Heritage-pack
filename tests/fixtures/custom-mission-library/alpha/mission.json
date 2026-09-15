@@ -1,0 +1,23 @@
+{
+  "format": 1,
+  "id": "tests.creator-alpha",
+  "category": "original-creation",
+  "missionDirectory": "CreatorAlpha",
+  "loadingScreen": "alpha.bmp",
+  "templateMission": "Brest",
+  "catalogueOnly": true,
+  "title": {
+    "default": "CREATOR ALPHA",
+    "french": "CRÉATION ALPHA"
+  },
+  "objectives": [
+    {
+      "default": "REACH THE EXIT",
+      "french": "REJOINDRE LA SORTIE"
+    },
+    {
+      "default": "AVOID LOSSES",
+      "french": "ÉVITER LES PERTES"
+    }
+  ]
+}

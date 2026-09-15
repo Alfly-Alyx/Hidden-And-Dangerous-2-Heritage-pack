@@ -1,0 +1,17 @@
+// COPIE DESACTIVEE de hakl2.scr - non compilee/non liee.
+// Seule correction : " h2" devient le checkpoint commercial exact "H2".
+
+frame me;	FRM_GetMyFrame(me);
+Car_SetFuel(me, 0);
+
+FRM_SetOn(me,0);
+
+goto end;
+
+OnSignal(11)
+{
+FRM_SetOn(me,1);
+FRM_TeleportNearCheckpoint(me,"h1","H2");
+}
+
+label end:

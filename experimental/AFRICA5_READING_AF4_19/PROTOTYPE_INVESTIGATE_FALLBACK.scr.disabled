@@ -1,0 +1,13 @@
+// REPLI DE LABORATOIRE - non compilé, non lié.
+// Cette boucle ne prétend pas montrer une vraie lecture : elle formalise le
+// comportement release sûr si l'API Read est indisponible.
+
+Label ACTIVITY:
+  HUMAN_Investigate(archive);
+  Delay(1000);
+  HUMAN_SETMODE_Stand();
+  Delay(2000);
+  HUMAN_SETMODE_Crouch();
+goto ACTIVITY;
+
+// Aucun PickObject, Read ou DropObject supplémentaire.

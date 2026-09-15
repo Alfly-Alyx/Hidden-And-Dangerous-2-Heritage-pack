@@ -1,0 +1,21 @@
+CASE=AF1_04_ROUTE_G06_G07
+SELECTED_PROFILE=RELEASE_G01_G05
+
+AF1_04_g06.position=TBD_SOURCE_OR_MODERN_EDITOR
+AF1_04_g06.quaternion=TBD
+AF1_04_g06.radius=TBD
+AF1_04_g06.links=TBD
+
+AF1_04_g07.position=TBD_SOURCE_OR_MODERN_EDITOR
+AF1_04_g07.quaternion=TBD
+AF1_04_g07.radius=TBD
+AF1_04_g07.links=TBD
+
+REQUIRED_ROUTE=AF1_04_g05 -> AF1_04_g06 -> AF1_04_g07 -> AF1_04_g01
+REQUIRED_LABEL=OFFICIAL_SOURCE or MODERN_EDITOR_PLACEMENT
+
+DO_NOT=uncomment script before both frames resolve
+DO_NOT=rename unnamed points from proximity alone
+DO_NOT=modify alarm, death, signal20, alert or existing g01-g05
+ROLLBACK=restore commercial script and check2 atomically
+NO_COMPILE=true

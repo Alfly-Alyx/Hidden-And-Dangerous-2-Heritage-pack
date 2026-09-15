@@ -1,0 +1,45 @@
+// PROTOTYPE/MODERNE DESACTIVE — HISTORIQUE, NON PROMOTABLE
+// OWNER_CREATION est bloqué par ARCTIC1_FIRE_OBJECT155_LMP/OWNER_GATE.
+//
+// Passeur distinct attendu dans une copie de test:
+//   dummy_exp_ar1_campfire_lmp -> ce fichier renomme en .scr
+// Le binding d'Object155 reste vide. Un selecteur externe envoie signal 1
+// pour demarrer et signal 2 pour arreter.
+
+block
+{
+  FRAME campfire; FRM_FindFrame(campfire, "Object155");
+  INTEGER what;  what = 0;
+  INTEGER wait;  wait = 150;
+  INTEGER running; running = 0;
+}
+
+FRM_SetLightMap(campfire, 0);
+goto END;
+
+OnSignal(1)
+{
+  // MODERNE: refuser un second lancement pendant que la boucle tourne.
+  if (running == 0)
+  {
+    running = 1;
+    goto LOOP;
+  }
+}
+
+OnSignal(2)
+{
+  running = 0;
+  FRM_SetLightMap(campfire, 0);
+  EndScript();
+}
+
+Label LOOP:
+  if (running == 0) { goto END; }
+  what = _RandomInt(3);
+  FRM_SetLightMap(campfire, what);
+  wait = _RandomInt(151) + 150;
+  Delay(wait);
+goto LOOP;
+
+Label END:

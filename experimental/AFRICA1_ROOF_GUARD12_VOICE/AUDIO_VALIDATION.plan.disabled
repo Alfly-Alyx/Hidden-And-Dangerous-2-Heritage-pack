@@ -1,0 +1,15 @@
+CASE=AFRICA1_ROOF_GUARD12_VOICE
+SELECTED_PROFILE=RELEASE_SILENT
+
+SOUND_9_53.mapping=TBD_ENGINE_TABLE_OR_RUNTIME_AUDITION
+SOUND_9_53.expected_context=signal20_alert_route
+SOUND_9_53.script_analogues_exact=0
+
+SOUND_9_50.mapping=TBD_ENGINE_TABLE_OR_RUNTIME_AUDITION
+SOUND_9_50.expected_context=after_MG42_boarding
+SOUND_9_50.script_analogues_exact=0
+
+REQUIRED=language,voice,content,duration,volume,spatial_owner,error_free
+TEST_ORDER=53_ONLY,ROLLBACK,50_ONLY,ROLLBACK,BOTH_IF_VALIDATED
+DO_NOT=ship silence or unidentified audio as restored voice
+NO_COMPILE=true

@@ -1,0 +1,17 @@
+// ALPS2_LOW_PRIORITY_VARIANTS — LIGNES EXACTES, PROFILS SEPARES
+// Ne pas appliquer ce fichier comme un bloc.
+//
+// PROFILE AL2_05_TELEPORT_TEST
+// FRM_TeleportNearCheckpoint(me,"AL2_05_03", "AL2_05_04");
+//
+// PROFILE AL2_07_WALK_TEST
+// HUMAN_SETMODE_Walk();
+//
+// PROFILE AL2_22_TURN_CUML_TEST (normal ou Carnage, séparément)
+// HUMAN_TurnAt(cuml);
+//
+// PROFILE AL2_22_TURN_STORE_TEST (normal ou Carnage, séparément)
+// HUMAN_TurnAt(cumpredsebeveskladu);
+//
+// PROFILE AL2_40_SEATED_ANIM_TEST
+// HUMAN_SetAnim("%%sedimtak", 300, 400, 1);

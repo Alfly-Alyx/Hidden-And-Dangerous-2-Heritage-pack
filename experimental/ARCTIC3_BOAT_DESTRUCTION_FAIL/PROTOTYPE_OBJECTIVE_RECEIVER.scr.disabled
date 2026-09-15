@@ -1,0 +1,25 @@
+// LABORATOIRE UNIQUEMENT - récepteur partagé, non compilé et non lié.
+// Appliquer ces fragments à une COPIE de R_Ar3_objectives.scr, puis choisir un
+// seul détecteur : ONDEATH ou STATE_MONITOR.
+
+// Déclaration globale.
+integer boat_fail_armed = 0;
+
+// Dans OnSignal(1), après l'activation de l'objectif 3 :
+boat_fail_armed = 1;
+
+// Tout au début de OnSignal(10), avant CSC_RunCutscene(1) et tout masquage :
+boat_fail_armed = 0;
+
+// Nouveau récepteur.
+OnSignal(20)
+{
+  if (boat_fail_armed)
+  {
+    boat_fail_armed = 0;
+    SetObjectiveStatus(3, 3);
+    Printf("LAB AR3: extraction boat destroyed; objective 3 failed");
+  }
+}
+
+// Aucun sous-titre, son, effet ou EndMission n'est ajouté.

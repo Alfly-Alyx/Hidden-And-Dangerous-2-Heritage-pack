@@ -1,0 +1,30 @@
+CASE=TUTORIAL_EASTER_EGG_ACCESS_112
+CLASSIFICATION=MODERN_ACCESSIBILITY_OBJECT
+STATUS=EDITOR_TRANSFORM_REQUIRED
+
+DONOR_FRAME=la_Tut_rebrik_
+DONOR_POSITION=45.935543,0.743713,14.415919
+NEW_FRAME=TUT_access_ladder_112
+TARGET_AREA=historic Bedford roof access
+TARGET_TRANSFORM=TBD_IN_EDITOR_WITH_COLLISION_VISIBLE
+
+MAX_NEW_OBJECTS=1
+NEW_SCRIPTS=0
+NEW_CHECKPOINTS=0
+NEW_TELEPORTERS=0
+
+PROTECTED:
+- la_Bedford_1
+- item_cihla
+- T_EE_Button owner
+- T_dummy_EE_Activator1
+- T_EE_Target1..4
+- all existing triggers
+
+ACCEPT_ONLY_IF:
+- a normal climb reaches the historical upper route
+- the Bedford remains usable and unmoved
+- no fall-through or collision trap exists
+- save/reload preserves the clone and secret state
+- uninstall removes only TUT_access_ladder_112
+

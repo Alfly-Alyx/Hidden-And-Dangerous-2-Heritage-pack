@@ -1,0 +1,17 @@
+STATUS=FALLBACK_MODERN_NOT_HISTORICAL
+PRECONDITION=EXACT_IMPORT_FAILED_AND_OWNER_TRANSFORM_PROVED_IRRELEVANT
+MODE=CREATE_ONE_INERT_PROXY_PER_SCRIPT
+
+CO_BURGUNDY1 lab_door_mon_b1_01 -> bur1_SND_door1.scr
+CO_BURGUNDY1 lab_door_mon_b1_02 -> bur1_SND_door2.scr
+CO_BURGUNDY1 lab_door_mon_b1_03 -> bur1_SND_door3.scr
+CO_BURGUNDY1 lab_door_mon_b1_04 -> bur1_SND_door4.scr
+CO_BURGUNDY1 lab_door_mon_b1_05 -> bur1_SND_door5.scr
+CO_BURGUNDY1 lab_door_mon_b1_06 -> bur1_SND_door6.scr
+CO_BURGUNDY1 lab_door_mon_b1_07 -> bur1_SND_door7.scr
+CO_BURGUNDY3 lab_door_mon_b3_01 -> bur3_snd_door1.scr
+CO_BURGUNDY3 lab_door_mon_b3_02 -> bur3_snd_door2.scr
+CO_BURGUNDY3 lab_door_mon_b3_03 -> bur3_snd_door3.scr
+
+# Un proxy porte un seul script, n'est ni une porte ni un émetteur et ne doit
+# jamais coexister avec le porteur exact de la même ligne.

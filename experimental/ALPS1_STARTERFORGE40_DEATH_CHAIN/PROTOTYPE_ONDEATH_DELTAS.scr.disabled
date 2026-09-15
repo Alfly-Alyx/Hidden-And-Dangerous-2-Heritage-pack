@@ -1,0 +1,30 @@
+// DELTAS DESACTIVES - trois copies de scripts distinctes, non compilables
+// comme un fichier unique. Ne remplacer que le OnDeath correspondant.
+
+// FILE: ge_01.scr
+// OFFICIEL : reactivation de la ligne commentee a son emplacement exact.
+OnDeath()
+{
+SendSignal (starterforge40,1);
+SendSignal (piskac,1);
+SaveGameValue(21, 0);
+EndScript();
+}
+
+// FILE: ge_02.scr
+// RECONSTRUCTION : emetteur 2-sur-3, handle deja declare commercialement.
+OnDeath()
+{
+SendSignal (starterforge40,1);
+SaveGameValue(22, 0);
+EndScript();
+}
+
+// FILE: ge_03.scr
+// RECONSTRUCTION : emetteur 2-sur-3, handle deja declare commercialement.
+OnDeath()
+{
+SendSignal (starterforge40,1);
+SaveGameValue(23, 0);
+EndScript();
+}

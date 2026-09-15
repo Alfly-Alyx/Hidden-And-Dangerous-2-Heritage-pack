@@ -1,0 +1,18 @@
+// FRAGMENT DESACTIVE a fusionner avec le cycle de vie joueur de la variante.
+// ALT_SCENE_B est un ID a reserver. Ce script ne termine jamais la cutscene.
+
+FRAME me; FRM_GetMyFrame(me);
+
+OnCutscene(ALT_SCENE_B){
+  HUMAN_Move("AF3b_pl04_01");
+  HUMAN_SetMODE_Crouch();
+  HUMAN_WeaponOnArm(true);
+}
+
+OnCutsceneDone(ALT_SCENE_B){
+  HUMAN_Stop();
+  FRM_TeleportNearCheckpoint(me, "AF3b_pl04_01", "");
+  HUMAN_SetMODE_Crouch();
+  HUMAN_WeaponOnArm(true);
+  HUMAN_SetMode_Guard();
+}

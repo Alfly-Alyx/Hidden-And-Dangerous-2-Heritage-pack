@@ -1,0 +1,19 @@
+// ALPS2_AGENT_WALK_RUN_OPTION — MOCK, NON INSTALLABLE
+// Exemple à tester UNIQUEMENT à une frontière de segment existante.
+// Le seuil 7 est une création de test.
+//
+// if (_PlayerInRange(7)>0)
+// {
+//     HUMAN_SETMODE_Run();
+// }
+// else
+// {
+//     HUMAN_SETMODE_Walk();
+// }
+// HUMAN_Move("<waypoint_existant>");
+//
+// Avant AL2_ag_07_1 / déverrouillage / AL2_ag_08 :
+// HUMAN_SETMODE_Walk();
+//
+// Ne pas réactiver simplement l'ancien Run() avant toute la route.
+// WALK_RELEASE ne contient aucun de ces ajouts.

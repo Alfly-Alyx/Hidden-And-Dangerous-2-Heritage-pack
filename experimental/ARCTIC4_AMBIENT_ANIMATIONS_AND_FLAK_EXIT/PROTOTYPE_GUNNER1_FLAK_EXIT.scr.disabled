@@ -1,0 +1,9 @@
+// LABORATOIRE UNIQUEMENT - non compilé, non lié.
+// Dans une COPIE de R_Arc3_sub_gunner_1.scr, insérer la première ligne au début
+// de OnAlarmDone(), avant le retour vers SG1_see.
+
+HUMAN_BoardVehicle("", False, 0);
+
+// Puis conserver intégralement : réglages d'alarme, SetAlarm(false), marche,
+// optimisation, mode debout, HUMAN_Move("SG1_see") et goto loop.
+// Ne rien ajouter à sub_gunner_2 : sa sortie est déjà active.

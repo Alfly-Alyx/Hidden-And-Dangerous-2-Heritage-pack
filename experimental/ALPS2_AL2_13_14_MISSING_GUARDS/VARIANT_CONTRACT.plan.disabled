@@ -1,0 +1,23 @@
+PROFILE=RELEASE
+  bind_AL2_13_A1=false
+  create_AL2_13=false
+  create_AL2_14=false
+
+PROFILE=LOCAL_GUARDS_NORMAL_TEST
+  create_AL2_13=true          # DEDUCTION from AL2_15
+  create_AL2_14=true          # DEDUCTION from AL2_16
+  routes=false                # no route is attested
+  objectives=false
+  bind_AL2_13_A1=after_manual_signal_test
+  carnage=false
+
+PROFILE=LOCAL_GUARDS_CARNAGE
+  status=BLOCKED
+  reason=no dedicated behavior or equivalent neighboring contract
+
+PROMOTION_GATES
+  exact_transforms_validated_in_world
+  signal1_is_monostable
+  no_route_lookup
+  no_blocked_door_or_corridor
+  normal_save_reload_passes

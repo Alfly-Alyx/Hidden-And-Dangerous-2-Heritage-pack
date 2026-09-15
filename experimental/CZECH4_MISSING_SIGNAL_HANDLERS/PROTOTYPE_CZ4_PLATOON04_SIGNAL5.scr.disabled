@@ -1,0 +1,31 @@
+// PROTOTYPE DESACTIVE — ne pas intégrer sans validation en jeu.
+// Corps à insérer dans une copie de CZ4_Platoon_04.scr.
+// Les SetWhenever sont des gardes modernes ; le reste réemploie des
+// transitions officielles des Platoon 01/02/03/05/06 et du OnAlarm du pianiste.
+
+OnSignal(5)
+{
+  DisableSignals(True);
+  SetWhenever(AKTIVACE, false);
+  SetWhenever(AKTIVACE2, false);
+
+  HUMAN_Suspend(false);
+  HUMAN_SetAnim("", 200, 200, 0);
+
+  Block
+  {
+    FRM_SetOn(zvuk, false);
+    FRM_SetOn(zvuk2, false);
+  }
+  Delay(200);
+  FRM_SetOn(zvuk, false);
+  FRM_SetOn(zvuk2, false);
+
+  HUMAN_SetOptimized(1);
+  HUMAN_SETMODE_Stand();
+  HUMAN_TurnAtNearestPlayer();
+  SetAlarmType(1023, true);
+  HUMAN_SETAIMODE_Aggressive();
+  HUMAN_Stop();
+  EndScript();
+}

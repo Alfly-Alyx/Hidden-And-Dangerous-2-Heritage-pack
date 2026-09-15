@@ -1,0 +1,30 @@
+// PROTOTYPE DESACTIVE — SPECIFICATION DE DELTA, NON AUTONOME.
+// A appliquer seulement a une copie laboratoire de R_Cz3_objectives_carn.scr.
+// Conserver tous les autres blocs, textes, delais et signaux du fichier officiel.
+
+Integer objective4_game_type = _SPGetGameType();
+
+If ((objective4_game_type == 3) OR (objective4_game_type == 7))
+{
+  // Remplace l'initialisation SetObjectiveStatus(1, 0).
+  // L'objectif release et l'objectif test ne doivent jamais etre visibles ensemble.
+  SetObjectiveStatus(1, 4);
+  SetObjectiveStatus(4, 0);
+}
+Else
+{
+  SetObjectiveStatus(4, 4);
+  GoTo OBJECTIVE4_END;
+}
+
+// Remplace uniquement le Whenever AED(_SignalReceived(2)) du controleur copie.
+// Le signal 2 continue de provenir du Mrtvoler_carn officiel.
+Whenever OBJECTIVE4_AED (_SignalReceived(2))
+{
+  // Conserver ici les sous-titres, delais et SendSignal(bigboss, 1) officiels.
+  SetObjectiveStatus(2, 0);
+  SetObjectiveStatus(4, 1); // remplace SetObjectiveStatus(1, 1)
+  GoTo OBJECTIVE4_END;
+}
+
+Label OBJECTIVE4_END:

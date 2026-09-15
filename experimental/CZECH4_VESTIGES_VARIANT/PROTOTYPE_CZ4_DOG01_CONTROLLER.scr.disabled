@@ -1,0 +1,42 @@
+// Czech4 [Prototype - vestiges]
+// OFFICIEL : owner Runner03 + mode agressif.
+// MODERNE : portees, reaction d'alarme et reaction a la mort du maitre.
+// Ne pas activer sans acteur CZ4_Dog01 place et teste dans la copie de mission.
+
+FRAME owner;
+FRM_FindFrame(owner, "CZ4_Runner_03");
+
+FRAME null_frame;
+FRM_FindFrame(null_frame, "");
+
+DOG_SetOwner(owner);
+DOG_SETAIMODE_Aggressive();
+DOG_SetRangeSight(40);
+DOG_SetRangeHear(25);
+
+OnAlarm()
+{
+  DOG_SetRangeSight(60);
+  DOG_SetRangeHear(75);
+  DOG_SETMODE_Run();
+  DOG_Attack(null_frame);
+}
+
+Whenever owner_dead (!_ACTOR_GetState(owner))
+{
+  SetWhenever(owner_dead, false);
+  DOG_SetOwner(null_frame);
+  DOG_SetRangeSight(75);
+  DOG_SetRangeHear(100);
+  DOG_SETMODE_Run();
+  DOG_Attack(null_frame);
+}
+
+OnDeath()
+{
+  DisableSignals(true);
+  EndScript();
+}
+
+DOG_ClearAlarm();
+

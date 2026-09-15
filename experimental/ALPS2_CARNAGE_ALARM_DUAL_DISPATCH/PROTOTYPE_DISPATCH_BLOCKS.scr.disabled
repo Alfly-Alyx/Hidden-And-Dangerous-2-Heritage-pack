@@ -1,0 +1,15 @@
+// ALPS2_CARNAGE_ALARM_DUAL_DISPATCH — FRAGMENTS EXCLUSIFS, NON INSTALLABLE
+//
+// PROFILE DIRECT_CARNAGE_RELEASE (bloc actuellement actif)
+// SendSignal(al2_04, 2);
+// SendSignal(al2_05, 3);
+// SendSignal(al2_31, 4);
+//
+// PROFILE DETECTOR_CARNAGE_LEGACY_TEST (bloc ancien)
+// SendSignal(detectoral204_3, 3);
+// SendSignal(detectoral204_2, 3);
+// SendSignal(detectoral204, 3);
+//
+// Choisir exactement un bloc. Ne jamais concaténer les deux.
+// La variante détecteur reste un test : elle ne reproduit pas les signaux
+// directs 3/4 de AL2_05 et AL2_31.

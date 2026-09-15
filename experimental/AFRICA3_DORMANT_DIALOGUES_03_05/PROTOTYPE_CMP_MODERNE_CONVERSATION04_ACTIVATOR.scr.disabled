@@ -1,0 +1,28 @@
+// PROTOTYPE CMP/MODERNE DESACTIVE — Africa3, conversation 04
+// Aucun binding n'est fourni. Ne pas intégrer tel quel à une mission stable.
+//
+// Atteste par CMP 2.6.5 : candidat _PlayerInRange(10), mais code entièrement
+// commente et activator absent du registre mpscripts.dta.
+// Ajouts MODERNES : garde 31, désarmement monostable et entree de test signal 2.
+
+Block {
+  FRAME dummy_rozhovor;
+  FRM_FindFrame(dummy_rozhovor, "dummy_rozhovor_04");
+}
+
+Whenever EXP_Start((_PlayerInRange(10)) AND (_LoadGameValue(31))) {
+  SetWhenever(EXP_Start, false);
+  SendSignal(dummy_rozhovor, 1);
+  goto EXP_WaitForAbort;
+}
+
+// Entree de laboratoire seulement : aucun emetteur d'alarme commercial ou CMP
+// n'est atteste vers cet activator. Une alarme reelle doit faire partie du test.
+OnSignal(2) {
+  SendSignal(dummy_rozhovor, 2);
+  EndScript();
+}
+
+Label EXP_WaitForAbort:
+  Delay(1000);
+goto EXP_WaitForAbort;

@@ -1,0 +1,19 @@
+CASE=AF1_20_LONG_POST_ALARM_PATROL
+SELECTED_PROFILE=SHORT_RELEASE
+
+AF1_20_01.position=TBD_SOURCE_OR_MODERN_EDITOR
+AF1_20_01.quaternion=TBD
+AF1_20_01.radius=TBD
+AF1_20_01.links=AF1_20_08,AF1_20_02 AFTER_EDITOR_VALIDATION
+
+EVIDENCE:
+  AF1_20_02..08=COMMERCIAL_PRESENT
+  AF1_20_01=ABSENT
+  Label_LOOKAROUND=ABSENT
+
+REQUIRED_LABEL=OFFICIAL_SOURCE or MODERN_EDITOR_PLACEMENT
+DO_NOT=modify ACTIVATE conversation loop
+DO_NOT=modify alarm handlers, signals or range whatevers
+DO_NOT=select LONG_PATROL with unresolved point/subroutine
+ROLLBACK=restore commercial script and check2 atomically
+NO_COMPILE=true

@@ -1,0 +1,11 @@
+// LABORATOIRE UNIQUEMENT - non compilé, non lié.
+// Dans une COPIE Patch de AF3a_07.scr, remplacer seulement la ligne HUMAN_Use
+// commentée dans OnAlarm par l'appel ci-dessous.
+
+HUMAN_SETMODE_Crouch();
+HUMAN_BoardVehicle("AF3a_MG42", true, 0);
+HUMAN_TurnAtNearestPlayer();
+EndScript();
+
+// AF3a_MG42 est attesté dans actors.bin/items.dat. Le siège 0 est une inférence
+// fondée sur AF3a_02 et les autres mitrailleuses statiques ; il faut le tester.

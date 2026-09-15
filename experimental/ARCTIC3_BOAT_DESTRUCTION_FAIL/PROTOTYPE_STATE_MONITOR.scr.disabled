@@ -1,0 +1,56 @@
+// LABORATOIRE UNIQUEMENT - variante B, non compilée et non liée.
+// Assigner ce script à un NOUVEAU dummy dans une copie de mission et utiliser
+// PROTOTYPE_OBJECTIVE_RECEIVER.scr.disabled.
+// Ne pas combiner avec PROTOTYPE_ONDEATH.scr.disabled.
+
+frame boat;       FRM_FindFrame(boat, "ELKO");
+frame objectives; FRM_FindFrame(objectives, "objectives");
+
+integer armed = 0;
+integer seen_alive = 0;
+
+goto END;
+
+// Signal 1 envoyé par la copie de R_Ar3_objectives.scr quand l'objectif 3
+// devient actif.
+OnSignal(1)
+{
+  armed = 1;
+  seen_alive = 0;
+  goto WAIT_FOR_ALIVE;
+}
+
+// Signal 2 envoyé au tout début du signal 10 des objectifs, avant la
+// cinématique qui masque ELKO.
+OnSignal(2)
+{
+  armed = 0;
+  goto END;
+}
+
+label WAIT_FOR_ALIVE:
+  if (!armed) { goto END; }
+  if (_ACTOR_GetState(boat) == 1)
+  {
+    seen_alive = 1;
+    goto WATCH_DEATH;
+  }
+  Delay(250);
+goto WAIT_FOR_ALIVE;
+
+label WATCH_DEATH:
+  if (!armed) { goto END; }
+  if (seen_alive AND (_ACTOR_GetState(boat) == 0))
+  {
+    armed = 0;
+    SendSignal(objectives, 20);
+    goto END;
+  }
+  Delay(250);
+goto WATCH_DEATH;
+
+label END:
+
+// Le récepteur OnSignal(20) et son verrou sont dans le fichier partagé.
+// Le verrou seen_alive évite seulement le faux positif initial ; il ne prouve
+// pas que l'état 0 signifie bien "détruit" pour ELKO.

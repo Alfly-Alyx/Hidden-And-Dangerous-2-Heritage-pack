@@ -1,0 +1,35 @@
+CASE=BENELLI_M4_ADDITIVE
+PRIORITY=HIGH
+DEFAULT_STAGE=B0_VISUAL_AUDIO
+STATUS=DISABLED
+
+RESERVED_AND_FORBIDDEN_SLOT=9
+SLOT_9_OWNER=COMPASS
+NEW_WEAPON_SLOT=FREE_SLOT_TO_AUDIT
+REDISTRIBUTE_COMMERCIAL_ASSETS=false
+
+STAGE B0_VISUAL_AUDIO:
+  item=false
+  weapon=false
+  projectile=false
+  damage=false
+  animations=manual_nine_pairs
+  sounds=manual_separate_playback
+
+STAGE B1_NEW_MODELS:
+  requires=world,ground,third_person,static_fpv
+  names_prefix=TEST_OR_PROTOTYPE
+
+STAGE B2_ADDITIVE_TABLE:
+  requires=free_slot_audit_all_layers,save_compatibility
+  ammo_candidate=179
+  never_modify=weapon_9,compass
+
+STAGE B3_MECHANICS:
+  all_values=MODERN_AND_MEASURED
+
+STAGE B4_AI_NETWORK:
+  requires=drop_pickup,third_person,ai,save,host_client
+
+NO_MAIN_INSTALLER=true
+NO_COMPILE=true

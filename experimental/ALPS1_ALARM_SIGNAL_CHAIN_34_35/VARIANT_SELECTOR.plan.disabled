@@ -1,0 +1,30 @@
+CASE=ALPS1_ALARM_SIGNAL_CHAIN_34_35
+DEFAULT_PROFILE=RELEASE
+ONE_PROFILE_ONLY=true
+
+PROFILE RELEASE:
+  ge34_emitter=commented
+  ge35_handlers=none
+
+PROFILE GE34_EMITTER_TRACE:
+  ge34_emitter=signal_ke_strelnici_signal1
+  ge35_handlers=none
+
+PROFILE GE35_SIGNAL3_TO_HOTOVO:
+  ge35_handler3=armed_then_hotovo
+  ge35_handler4=off
+  test_sources=signal_k_ohni,signal_ke_strelnici
+
+PROFILE GE35_SIGNAL4_TO_HOTOVO:
+  ge35_handler3=off
+  ge35_handler4=armed_then_hotovo
+  test_source=ge_36_OnAlarm
+
+PROFILE COMBINED:
+  STATUS=LOCKED_UNTIL_3_AND_4_PASS_SEPARATELY
+  deduplicate_hotovo=true
+
+PRESERVE_GE34_TO_GE33=true
+PRESERVE_HOTOVO_BODY=true
+NO_MAIN_INSTALLER=true
+NO_COMPILE=true

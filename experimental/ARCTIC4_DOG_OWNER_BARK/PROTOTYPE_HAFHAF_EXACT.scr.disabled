@@ -1,0 +1,9 @@
+// LABORATOIRE UNIQUEMENT - branche A, non compilée et non liée.
+// Dans une COPIE de R_Arc3_dog_1.scr, rétablir uniquement ces lignes au début
+// de OnSignal(1), avant le label loop existant.
+
+DOG_HafHaf(True);
+Delay(5000);
+DOG_HafHaf(False);
+
+// Conserver ensuite sans changement label loop et les routes dog_1..5.

@@ -1,0 +1,18 @@
+// FRAGMENT DESACTIVE : remplacer seulement les lignes commentees de rnd == 1.
+// Le reste de la branche et de la ronde demeure commercial.
+
+// Declaration a ajouter dans Block :
+// FRAME sit01; FRM_FindFrame(sit01, "dummy_13_sit_modern");
+
+// Debut de if(rnd == 1), avant l'animation assise/chaleur existante :
+HUMAN_Move("AF3a_13_sit_modern");
+Delay(200); // borne basse attestee chez AF3a_14, choix moderne pour ce prototype
+HUMAN_ACTIVITY_Sit(sit01);
+
+// Continuer ensuite sans changement :
+HUMAN_SetAnim("%%sedimL4", 300, 300, true);
+Delay(2000);
+HUMAN_ACTIVITY_Hot();
+Delay(15000);
+HUMAN_SetAnim("", 300, 300, false);
+HUMAN_SETMODE_Stand();

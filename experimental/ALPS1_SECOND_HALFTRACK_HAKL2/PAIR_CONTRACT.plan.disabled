@@ -1,0 +1,24 @@
+CASE=ALPS1_SECOND_HALFTRACK_HAKL2
+DEFAULT_PROFILE=COMMERCIAL
+ATOMIC_PAIR=true
+
+PROFILE COMMERCIAL:
+  ge_12.scr -> SendSignal(hakl2,1) commente
+  hakl2.scr  -> OnSignal(11), destination " h2"
+
+PROFILE HAKL2_SIGNAL11_H2_TEST:
+  ge_12.scr -> PROTOTYPE_GE12_END_ROUTE.scr.disabled
+  hakl2.scr  -> PROTOTYPE_HAKL2.scr.disabled
+  REQUIRED_SIGNAL=11
+  REQUIRED_POINTS=h1,H2
+
+FORBIDDEN:
+  - decommenter le signal 1 seul
+  - ajouter OnSignal(1)
+  - corriger un seul des deux scripts
+  - changer h1, h3 ou h4
+  - donner du carburant ou un conducteur au second vehicule
+
+ROLLBACK=COMMERCIAL
+NO_MAIN_INSTALLER=true
+NO_COMPILE=true

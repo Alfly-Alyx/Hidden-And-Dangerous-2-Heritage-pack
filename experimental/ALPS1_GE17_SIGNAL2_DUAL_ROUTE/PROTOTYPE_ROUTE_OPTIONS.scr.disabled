@@ -1,0 +1,20 @@
+// DELTAS DESACTIVES pour une copie de ge_17.scr - choisir un seul profil.
+// Tout ce qui precede ce bloc dans le handler signal 2 reste commercial.
+
+// PROFILE MOVE_GE17_03_THEN_GE17_04
+HUMAN_Move("ge17_03");
+
+// PROFILE TELEPORT_RANGE_THEN_GE17_04, mutuellement exclusif avec Move
+// FRM_TeleportNearCheckpoint(me, "ge17_03", "ge16_sniper");
+
+// TRONC COMMUN OBLIGATOIRE : ne jamais remplacer ni raccourcir.
+HUMAN_TurnAt(cum1);
+HUMAN_SetAnim("%%hledamkulomet",900,900,1);
+delay(15000);
+HUMAN_SetAnim("",900,900,0);
+delay(1000);
+HUMAN_Move("ge17_04");
+HUMAN_TurnAt(cum3);
+delay(2000);
+HUMAN_SetAnim("%%sedila1",500,500,1);
+goto end;

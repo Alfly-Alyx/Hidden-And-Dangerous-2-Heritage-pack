@@ -1,0 +1,10 @@
+// ALPS2_DOCUMENT_TIMER_DUAL_MODE — VESTIGE BRUT, NON INSTALLABLE
+// Applicable à UNE copie choisie de AL2_alarm.scr OU AL2_alarm_carn.scr.
+// Position officielle : immédiatement avant `Label end:`.
+//
+// Delay(90000);
+// SendSignal(obj, 1);
+//
+// EXPLORATION_FREE garde ces lignes commentées.
+// HISTORICAL_90S / HARDCORE_90S exigent un test de départ, annulation,
+// sauvegarde/rechargement et émission unique avant toute promotion.

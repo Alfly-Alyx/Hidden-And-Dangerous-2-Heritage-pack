@@ -1,0 +1,24 @@
+// Delta isolé pour la copie de ge_16.scr uniquement.
+// Remplacer les deux lignes commentées, sans appliquer ce bloc à ge_24.scr.
+
+if (((aievent==2) or (aievent==16)) or (aievent==256))
+{
+  SetAlarmType(274,0);
+  if (a==0)
+  {
+    a=1;
+    HUMAN_SETMODE_Crouch();
+    HUMAN_WeaponOnArm(1);
+    HUMAN_Move("ge16_sniper");
+    HUMAN_SetSniper(1,1);
+  }
+  HUMAN_TurnAtNearestPlayer();
+  HUMAN_SetAlarm(0);
+  delay(900);
+  SetAlarmType(274,1);
+  goto end;
+}
+
+// Préconditions : checkpoint commercial ge16_sniper inchangé.
+// Retour arrière : restaurer ge_16.scr commercial.
+

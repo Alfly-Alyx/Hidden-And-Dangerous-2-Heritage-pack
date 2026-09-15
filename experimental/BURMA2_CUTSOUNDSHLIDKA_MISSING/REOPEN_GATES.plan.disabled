@@ -1,0 +1,33 @@
+STATUS=BLOCKED
+DEFAULT=NO_SCRIPT
+
+ATTESTED
+  owner=l_b2str_4
+  binding=CUTSOUNDSHLIDKA.scr
+  cutscene_event_probable=1
+  owner_wav=l_b2str1.wav
+  owner_duration_ms=2955
+  phase_change_ms=37000
+  cleanup_event=OnCutsceneDone(1)
+
+MISSING
+  controlled_frame_set
+  cue_order
+  cue_delays
+  loop_or_one_shot_state
+  intermediate_stop_times
+  skip_interruption_contract
+  no_duplicate_mix_proof
+
+REOPEN_IF
+  original_script_or_contemporary_timecode_found
+  OR_equivalent_burma2_edition_found
+  OR_isolated_runtime_audio_capture_proves_full_sequence
+
+FUTURE_PROTOTYPE_RULES
+  extension=.scr.disabled
+  profile=explicit_opt_in
+  all_controlled_sounds_off_before_start
+  all_controlled_sounds_off_on_cutscene_done
+  all_controlled_sounds_off_on_skip
+  never_replace_release_mission

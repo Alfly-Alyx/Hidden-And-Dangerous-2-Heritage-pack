@@ -1,0 +1,21 @@
+// LABORATOIRE UNIQUEMENT - branche B, non compilée et non liée.
+// Ne tester qu'après validation de la primitive avec la branche A.
+
+// Ajouter avec les variables globales.
+integer barking = 0;
+
+// Au début de OnSignal(1), avant label loop.
+barking = 1;
+DOG_HafHaf(True);
+Delay(5000);
+DOG_HafHaf(False);
+barking = 0;
+
+// Ajouter au tout début de OnAlarm(), avant DOG_SETMODE_Run().
+if (barking)
+{
+  DOG_HafHaf(False);
+  barking = 0;
+}
+
+// Le reste de OnAlarm et la patrouille release restent inchangés.

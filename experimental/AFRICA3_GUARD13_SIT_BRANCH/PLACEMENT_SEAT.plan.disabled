@@ -1,0 +1,21 @@
+CASE=AFRICA3_GUARD13_SIT_BRANCH
+STATUS=MODERN_TRANSFORMS_REQUIRED
+
+AF3a_13_sit_modern.position=TBD_EDITOR
+AF3a_13_sit_modern.quaternion=TBD_EDITOR
+AF3a_13_sit_modern.radius=TBD_EDITOR
+AF3a_13_sit_modern.links=AF3a_13_01 AND RETURN_TO_ACTIVE_ROUTE
+
+dummy_13_sit_modern.position=TBD_EDITOR
+dummy_13_sit_modern.quaternion=TBD_EDITOR
+dummy_13_sit_modern.parent=TBD_EXISTING_SEAT_GEOMETRY
+
+REFERENCES_ONLY:
+  AF3a_14_sit + dummy_14_sit
+  AF3a_15_sit + dummy_15_sit
+
+DO_NOT=copy 14/15 transforms
+DO_NOT=modify AF3a_13_01,02,03 or rnd distribution
+DO_NOT=modify scripts/actors 14 and 15
+LABEL=CREATION_MODERNE
+NO_COMPILE=true

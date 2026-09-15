@@ -1,0 +1,27 @@
+// CATALOGUE DE DELTAS DESACTIVES - fragments de scripts distincts.
+// Ne jamais compiler ce fichier comme une unite ni activer deux cas a la fois.
+
+// GE04_CROUCH_SNIPER, apres HUMAN_Move("ge04_sniper")
+HUMAN_SETMODE_Crouch();
+
+// GE14_CROUCH_SIGNAL1, avant HUMAN_TurnAtNearestPlayer()
+HUMAN_SETMODE_Crouch();
+
+// GE19_CROUCH_ALARM, apres HUMAN_Move("ge19_02")
+HUMAN_SETMODE_Crouch();
+
+// GE19_TURN_NEAR, branche _PlayerInRange(4)==1
+HUMAN_TurnAtNearestPlayer();
+
+// GE31_RANGE_STANCE_PAIR, autour du delay(4500), paire indivisible
+HUMAN_SETMODE_Crouch();
+delay(4500);
+HUMAN_SETMODE_Stand();
+
+// GE07_INITIAL_WALK
+HUMAN_SETMODE_Walk();
+
+// GE08_INITIAL_RUN ou GE09_INITIAL_RUN, dans une seule copie a la fois
+HUMAN_SETMODE_Run();
+
+// Aucun FRM_MorphSpeech direct n'appartient a ce catalogue.

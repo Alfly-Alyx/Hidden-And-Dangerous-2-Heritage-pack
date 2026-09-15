@@ -1,0 +1,15 @@
+// PROTOTYPE DESACTIVE — FRAGMENT NON AUTONOME, NE PAS COMPILER.
+// A inserer seulement dans une copie laboratoire de dummy_objectives.scr,
+// au debut du OnSignal(3), avant le SetObjectiveStatus(3, 1) officiel.
+
+If (_SPGetGameType() <> 2)
+{
+  If (!_IsTeamMemberDead())
+  {
+    SetObjectiveStatus(4, 1);
+  }
+}
+
+// Le corps release du OnSignal(3) continue ensuite sans autre changement :
+// sous-titre 54999906, puis SetObjectiveStatus(3, 1).
+// Ne jamais initialiser ni valider l'objectif 6.

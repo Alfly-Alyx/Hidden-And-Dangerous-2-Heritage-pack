@@ -1,0 +1,19 @@
+// VARIANTE MODERNE DESACTIVEE : interaction explicite, non compilee/non liee.
+// Ne remplace AF4_vetrak.scr que dans une copie laboratoire.
+
+FRAME this; FRM_GetMyFrame(this);
+INTEGER physical_created = 0;
+
+Label LOOP:
+  FRM_RotateY(this, 108000, 360);
+  Delay(8000);
+goto LOOP;
+
+OnUse(){
+  if((_PlayerInRange(3)) AND (physical_created == 0)){
+    // Le verrou precede imperativement la conversion.
+    physical_created = 1;
+    FRM_CreatePhysicalObject(this, 5);
+    EndScript();
+  }
+}

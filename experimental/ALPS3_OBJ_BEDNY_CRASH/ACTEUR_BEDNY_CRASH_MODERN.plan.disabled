@@ -1,0 +1,55 @@
+ACTEUR VISUEL MODERNE — PLAN DE CREATION, PAS UN FICHIER DE JEU
+
+Nom obligatoire
+  bedny_crash_modern
+
+Statut
+  Ajout moderne conditionnel. Aucun frame commercial de ce nom n'a ete trouve.
+  Ne pas reutiliser le nom ambigu "bedny_crash".
+
+Porte d'entree
+  Creer cet acteur seulement si le test release demontre que
+  SetActorState(bedny, 1) ne laisse aucune epave de caisses credible.
+  Si une epave persiste deja, abandonner la creation.
+
+Type et comportement
+  - acteur/decor statique purement visuel ;
+  - invisible au chargement ;
+  - aucune collision et aucune obstruction de navigation ;
+  - aucun point de vie, degat, objectif, inventaire, son ou particule ;
+  - aucun binding dans mpscripts.dta ;
+  - aucune transition d'etat pilotee par le script experimental.
+
+Transformation
+  Copier exactement position, rotation et echelle du frame commercial "bedny".
+  Ne pas estimer les valeurs a partir d'une capture et ne pas deplacer bedny.
+
+Aspect attendu
+  Un petit ensemble de caisses brisees compatible avec le volume initial de
+  m_l3_bed02. Les references commerciales m_L3_bed01crash (Alps3_Obj) et
+  m_L3_bed02crash (Co_Libye3) peuvent guider silhouette, densite et echelle.
+  Elles ne prouvent pas l'apparence d'un ancien frame "bedny_crash".
+
+Asset
+  Prototype local : une reference a un asset de l'installation possedee peut
+  etre evaluee sans copier son binaire dans ce depot.
+  Distribution : fournir uniquement un asset original ou dont la redistribution
+  est autorisee, avec auteur, licence, source et empreinte documentes.
+  Ne jamais extraire puis republier un modele commercial sous un nouveau nom.
+
+Regles de validation
+  - l'asset est deja dans son apparence d'epave statique quand on l'affiche ;
+  - aucune valeur SetActorState speculative n'est necessaire ;
+  - pas de double geometrie avec l'etat 1 de bedny ;
+  - pas de scintillement Z, collision, decalage, LOD absent ou ombre incoherente ;
+  - meme apparition chez l'hote, les clients et apres rechargement d'une partie.
+
+Integration autorisee
+  Uniquement dans une copie experimentale de la mission, avec le fragment
+  PROTOTYPE_ADDITIF_VISUEL.scr.disabled explicitement selectionne et renomme.
+  La frame reste sans script propre. Alps3_delo.scr demeure lie a la_Pak_.
+
+Retour arriere
+  Retirer FRM_FindFrame/FRM_SetOn pour bedny_crash_modern, puis supprimer la
+  frame et son asset de la copie experimentale. Ne jamais modifier ou supprimer
+  l'appel commercial SetActorState(bedny, 1).

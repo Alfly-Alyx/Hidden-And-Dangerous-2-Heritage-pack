@@ -1,0 +1,11 @@
+// Variante exclusive RELEASE_NO_CAMERA.
+// Conserver ces deux déclarations dans la copie de R_Arc1A_rebel.scr.
+
+integer SKIP_CSC3;
+SKIP_CSC3 = 99;
+
+integer SKIP_CSC4;
+SKIP_CSC4 = 99;
+
+// Ne pas inclure les lectures _LoadGameValue de la variante Heritage.
+

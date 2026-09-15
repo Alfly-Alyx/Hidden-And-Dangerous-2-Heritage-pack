@@ -1,0 +1,35 @@
+CASE=AFRICA5_HANS_CUTSCENE20
+STATUS=BLOCKED_ENDSCRIPT_AND_NPC_LIFECYCLE_UNKNOWN
+
+ATTESTED_TRIGGER:
+AF4_schumann_detector -> CSC_RunCutscene(20)
+
+ATTESTED_SNIPER:
+AF4_31 OnCutscene(20) -> HUMAN_IllFire(AF4_23,500)
+AF4_31 OnCutsceneDone(20) -> HUMAN_Attack(AF4_23,10000), attack 60000, save88=1
+
+COMMENTED_HANS_REACTION_FOR_LAB_ONLY:
+OnCutscene(20){
+  HUMAN_Stop();
+  HUMAN_Move("AF4_blesz_end");
+  HUMAN_SetMODE_Crouch();
+  goto END;
+}
+OnCutsceneDone(20){
+  EndScript();
+}
+
+LIFECYCLE_GATES:
+- prove whether EndScript ends only the callback or the actor script instance
+- prove the radius-2 conversation remains reachable after cutscene 20
+- prove callbacks after SetNPCTeamStatus(this,true) plus EndScript
+- prove objective 3 death handling before/during/after the scene
+
+REJECTED_SHORTCUTS:
+- dynamic script reassignment without an attested primitive
+- secondary controller issuing context-bound HUMAN_Move for Hans
+- disabling AF4_Schummandead or changing objective 3
+
+NO_COMPILE=true
+NO_STABLE_PROMOTION=true
+

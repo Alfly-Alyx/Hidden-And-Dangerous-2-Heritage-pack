@@ -1,0 +1,13 @@
+{
+  "format": 1,
+  "id": "tests.exploration-bravo",
+  "category": "free-exploration",
+  "missionDirectory": "ExploreBravo",
+  "templateMission": "Sicily1",
+  "catalogueOnly": true,
+  "title": {
+    "default": "BRAVO FREE EXPLORATION",
+    "french": "EXPLORATION LIBRE BRAVO"
+  },
+  "objectives": []
+}

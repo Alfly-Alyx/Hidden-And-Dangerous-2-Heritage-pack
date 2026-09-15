@@ -1,0 +1,30 @@
+CASE=ARCTIC4_KRA_NEARBY_REACTIONS
+STATUS=SPECULATIVE_SPATIAL_DATA_MISSING
+
+ATTESTED:
+KRA1 -> Kra_1 signal 1
+KRA2 -> Kra_2 signal 1
+KRA2 -> Static_Guard_5 signal 1
+KRA3 -> Kra_3 signal 1
+
+UNASSIGNED_CANDIDATE_CLASSES:
+- Static_Guard_1..6
+- Walking_Guard_1..3
+- other human actors found spatially in editor
+
+FOR_EACH_CANDIDATE_CAPTURE:
+- actor position and distance to Kra/detector
+- current script binding
+- all existing OnSignal/Whenever signal contracts
+- compatible commercial reaction animation
+- interruption and resume path
+
+REJECT_IF:
+- chosen only by name
+- outside the physical event radius
+- signal collision exists
+- animation name is invented
+- no alarm/death/save recovery path exists
+
+NO_SCRIPT_DELTA_UNTIL_MATRIX_COMPLETE=true
+

@@ -1,0 +1,24 @@
+// FRAGMENT DESACTIVE a fusionner dans l'UNIQUE R_Nor_action_Sender de la copie.
+// Ne contient ni nouveau RandomInt ni seconde boucle temporelle.
+
+// Declarations a retablir dans le block commercial :
+// frame T1;  FRM_FindFrame(T1,  "tirpic_guard_1");
+// frame T2;  FRM_FindFrame(T2,  "tirpic_guard_2");
+// frame T6;  FRM_FindFrame(T6,  "tirpic_guard_6");
+// frame T7;  FRM_FindFrame(T7,  "tirpic_guard_7");
+// frame T12; FRM_FindFrame(T12, "tirpic_guard_12");
+// frame T13; FRM_FindFrame(T13, "tirpic_guard_13");
+// frame T16; FRM_FindFrame(T16, "tirpic_guard_16");
+
+// Branches a ajouter au tirage what_soldier commercial, sans toucher aux neuf
+// branches actives ni a _RandomInt(18)+1 :
+// If (what_soldier==1)  { SendSignal(T1,  what_signal); }
+// If (what_soldier==2)  { SendSignal(T2,  what_signal); }
+// If (what_soldier==6)  { SendSignal(T6,  what_signal); }
+// If (what_soldier==7)  { SendSignal(T7,  what_signal); }
+// If (what_soldier==12) { SendSignal(T12, what_signal); }
+// If (what_soldier==13) { SendSignal(T13, what_signal); }
+// If (what_soldier==16) { SendSignal(T16, what_signal); }
+
+// PRECONDITION : sept acteurs, bindings, routes et regards valides.
+// INTERDIT : lancer ce fragment dans un second sender.

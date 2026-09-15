@@ -1,0 +1,528 @@
+{
+  "game": "D:\\Games\\Hidden and Dangerous 2",
+  "pair_count": 9,
+  "solo_only_objective_count": 28,
+  "coop_only_objective_count": 9,
+  "pairs": [
+    {
+      "solo": "brest",
+      "coop": "co_brest",
+      "solo_objectives": 7,
+      "coop_objectives": 4,
+      "shared_objectives": [
+        {
+          "text_id": 15500,
+          "solo_index": 1,
+          "coop_index": 1,
+          "text": "Mine the submarines in the docks."
+        },
+        {
+          "text_id": 15506,
+          "solo_index": 2,
+          "coop_index": 2,
+          "text": "Place the homing transmitter in a suitable location."
+        },
+        {
+          "text_id": 15503,
+          "solo_index": 3,
+          "coop_index": 3,
+          "text": "Place explosives on the fuel tanks."
+        },
+        {
+          "text_id": 15501,
+          "solo_index": 4,
+          "coop_index": 4,
+          "text": "Assemble at the planned location."
+        }
+      ],
+      "solo_only_objectives": [
+        {
+          "index": 5,
+          "text_id": 15504,
+          "text": "Place explosives on the generators."
+        },
+        {
+          "index": 6,
+          "text_id": 15502,
+          "text": "Eliminate all enemies."
+        },
+        {
+          "index": 7,
+          "text_id": 15505,
+          "text": "All members of the unit must survive."
+        }
+      ],
+      "coop_only_objectives": []
+    },
+    {
+      "solo": "burgundy1",
+      "coop": "co_burgundy1",
+      "solo_objectives": 8,
+      "coop_objectives": 4,
+      "shared_objectives": [
+        {
+          "text_id": 15560,
+          "solo_index": 1,
+          "coop_index": 1,
+          "text": "Assemble at the planned location."
+        },
+        {
+          "text_id": 15561,
+          "solo_index": 2,
+          "coop_index": 2,
+          "text": "Destroy the ammunition store."
+        },
+        {
+          "text_id": 15562,
+          "solo_index": 3,
+          "coop_index": 3,
+          "text": "Destroy the fuel store."
+        },
+        {
+          "text_id": 15563,
+          "solo_index": 4,
+          "coop_index": 4,
+          "text": "Contact the resistance fighters at the previously agreed location."
+        }
+      ],
+      "solo_only_objectives": [
+        {
+          "index": 5,
+          "text_id": 15566,
+          "text": "Infiltrate the warehouse area undetected."
+        },
+        {
+          "index": 6,
+          "text_id": 15567,
+          "text": "Place the explosive charges in the warehouse area undetected."
+        },
+        {
+          "index": 7,
+          "text_id": 15565,
+          "text": "All members of the unit must survive."
+        },
+        {
+          "index": 8,
+          "text_id": 15564,
+          "text": "Eliminate all enemies."
+        }
+      ],
+      "coop_only_objectives": []
+    },
+    {
+      "solo": "burgundy2",
+      "coop": "co_burgundy2",
+      "solo_objectives": 7,
+      "coop_objectives": 5,
+      "shared_objectives": [
+        {
+          "text_id": 15570,
+          "solo_index": 1,
+          "coop_index": 1,
+          "text": "Kill the Gestapo officer."
+        },
+        {
+          "text_id": 15571,
+          "solo_index": 2,
+          "coop_index": 2,
+          "text": "Capture the French collaborator."
+        },
+        {
+          "text_id": 15572,
+          "solo_index": 4,
+          "coop_index": 3,
+          "text": "Eliminate all enemies and clear the area."
+        },
+        {
+          "text_id": 15575,
+          "solo_index": 5,
+          "coop_index": 4,
+          "text": "The team must assemble next to the captured collaborator."
+        },
+        {
+          "text_id": 15576,
+          "solo_index": 6,
+          "coop_index": 5,
+          "text": "Acquire the list of collaborators."
+        }
+      ],
+      "solo_only_objectives": [
+        {
+          "index": 3,
+          "text_id": 15573,
+          "text": "Don't let anybody escape."
+        },
+        {
+          "index": 7,
+          "text_id": 15577,
+          "text": "All members of the unit must survive."
+        }
+      ],
+      "coop_only_objectives": []
+    },
+    {
+      "solo": "burgundy3",
+      "coop": "co_burgundy3",
+      "solo_objectives": 9,
+      "coop_objectives": 7,
+      "shared_objectives": [
+        {
+          "text_id": 15580,
+          "solo_index": 1,
+          "coop_index": 2,
+          "text": "Rescue the SAS soldier and locate the others."
+        },
+        {
+          "text_id": 15581,
+          "solo_index": 2,
+          "coop_index": 3,
+          "text": "Rescue the SAS commander."
+        },
+        {
+          "text_id": 15582,
+          "solo_index": 3,
+          "coop_index": 4,
+          "text": "Rescue the rest of the SAS unit."
+        },
+        {
+          "text_id": 15584,
+          "solo_index": 4,
+          "coop_index": 5,
+          "text": "Damage the radio-station."
+        },
+        {
+          "text_id": 15585,
+          "solo_index": 5,
+          "coop_index": 6,
+          "text": "Acquire the code tables."
+        },
+        {
+          "text_id": 15586,
+          "solo_index": 6,
+          "coop_index": 7,
+          "text": "Rescue all prisoners."
+        },
+        {
+          "text_id": 15588,
+          "solo_index": 9,
+          "coop_index": 1,
+          "text": "Rescue as many prisoners as possible."
+        }
+      ],
+      "solo_only_objectives": [
+        {
+          "index": 7,
+          "text_id": 15587,
+          "text": "All members of the unit must survive."
+        },
+        {
+          "index": 8,
+          "text_id": 15583,
+          "text": "Eliminate all enemies."
+        }
+      ],
+      "coop_only_objectives": []
+    },
+    {
+      "solo": "libye1",
+      "coop": "co_libye1",
+      "solo_objectives": 7,
+      "coop_objectives": 6,
+      "shared_objectives": [
+        {
+          "text_id": 15510,
+          "solo_index": 1,
+          "coop_index": 1,
+          "text": "Free the prisoners."
+        },
+        {
+          "text_id": 15514,
+          "solo_index": 4,
+          "coop_index": 3,
+          "text": "Destroy the enemy radio station."
+        },
+        {
+          "text_id": 15515,
+          "solo_index": 5,
+          "coop_index": 4,
+          "text": "Damage the German supply vehicles."
+        }
+      ],
+      "solo_only_objectives": [
+        {
+          "index": 2,
+          "text_id": 15511,
+          "text": "Escort the prisoners safely to the LRDG unit."
+        },
+        {
+          "index": 3,
+          "text_id": 15512,
+          "text": "Retreat from the town by the time the sentries change."
+        },
+        {
+          "index": 6,
+          "text_id": 15516,
+          "text": "All members of the unit must survive."
+        },
+        {
+          "index": 7,
+          "text_id": 15513,
+          "text": "Eliminate all enemies."
+        }
+      ],
+      "coop_only_objectives": [
+        {
+          "index": 2,
+          "text_id": 15518,
+          "text": "Kill all enemy officers."
+        },
+        {
+          "index": 5,
+          "text_id": 15519,
+          "text": "Photograph plans of the deployment of enemy units."
+        },
+        {
+          "index": 6,
+          "text_id": 15509,
+          "text": "Eliminate a sniper"
+        }
+      ]
+    },
+    {
+      "solo": "libye2",
+      "coop": "co_libye2",
+      "solo_objectives": 5,
+      "coop_objectives": 2,
+      "shared_objectives": [
+        {
+          "text_id": 15520,
+          "solo_index": 1,
+          "coop_index": 1,
+          "text": "Make your way to the other end of the canyon."
+        },
+        {
+          "text_id": 15521,
+          "solo_index": 2,
+          "coop_index": 2,
+          "text": "Assemble at the planned location with a vehicle."
+        }
+      ],
+      "solo_only_objectives": [
+        {
+          "index": 3,
+          "text_id": 15523,
+          "text": "Cause as much damage as possible to enemy vehicles."
+        },
+        {
+          "index": 4,
+          "text_id": 15524,
+          "text": "All members of the unit must survive."
+        },
+        {
+          "index": 5,
+          "text_id": 15522,
+          "text": "Eliminate all enemies."
+        }
+      ],
+      "coop_only_objectives": []
+    },
+    {
+      "solo": "libye3",
+      "coop": "co_libye3",
+      "solo_objectives": 6,
+      "coop_objectives": 8,
+      "shared_objectives": [
+        {
+          "text_id": 15530,
+          "solo_index": 1,
+          "coop_index": 3,
+          "text": "Destroy the wreck of the Liberator."
+        },
+        {
+          "text_id": 15531,
+          "solo_index": 2,
+          "coop_index": 6,
+          "text": "Destroy the second section of the equipment."
+        }
+      ],
+      "solo_only_objectives": [
+        {
+          "index": 3,
+          "text_id": 15532,
+          "text": "Assemble at the planned location with a functional vehicle."
+        },
+        {
+          "index": 4,
+          "text_id": 15534,
+          "text": "All members of the unit must survive."
+        },
+        {
+          "index": 5,
+          "text_id": 15533,
+          "text": "Eliminate all enemies."
+        },
+        {
+          "index": 6,
+          "text_id": 15533,
+          "text": "Eliminate all enemies."
+        }
+      ],
+      "coop_only_objectives": [
+        {
+          "index": 1,
+          "text_id": 15535,
+          "text": "Capture the German control post."
+        },
+        {
+          "index": 2,
+          "text_id": 15536,
+          "text": "Hold the control post for a period of 3 minutes."
+        },
+        {
+          "index": 4,
+          "text_id": 15537,
+          "text": "Destroy the buried Tiger tank."
+        },
+        {
+          "index": 5,
+          "text_id": 15538,
+          "text": "Kill the commander of the German garrison."
+        },
+        {
+          "index": 7,
+          "text_id": 15545,
+          "text": "Destroy the ammunition store."
+        },
+        {
+          "index": 8,
+          "text_id": 15501,
+          "text": "Assemble at the planned location."
+        }
+      ]
+    },
+    {
+      "solo": "sicily1",
+      "coop": "co_sicily1",
+      "solo_objectives": 9,
+      "coop_objectives": 7,
+      "shared_objectives": [
+        {
+          "text_id": 15540,
+          "solo_index": 1,
+          "coop_index": 1,
+          "text": "Destroy cannon no. 1"
+        },
+        {
+          "text_id": 15541,
+          "solo_index": 2,
+          "coop_index": 2,
+          "text": "Destroy cannon no. 2"
+        },
+        {
+          "text_id": 15542,
+          "solo_index": 3,
+          "coop_index": 3,
+          "text": "Destroy cannon no. 3"
+        },
+        {
+          "text_id": 15545,
+          "solo_index": 5,
+          "coop_index": 4,
+          "text": "Destroy the ammunition store."
+        },
+        {
+          "text_id": 15546,
+          "solo_index": 6,
+          "coop_index": 5,
+          "text": "Destroy the anti-aircraft defenses (Flak 88)."
+        },
+        {
+          "text_id": 15547,
+          "solo_index": 7,
+          "coop_index": 6,
+          "text": "Destroy the PaK 40 cannons."
+        },
+        {
+          "text_id": 15548,
+          "solo_index": 8,
+          "coop_index": 7,
+          "text": "Destroy the fuel supplies."
+        }
+      ],
+      "solo_only_objectives": [
+        {
+          "index": 4,
+          "text_id": 15543,
+          "text": "Retreat from the area."
+        },
+        {
+          "index": 9,
+          "text_id": 15544,
+          "text": "Eliminate all enemies."
+        }
+      ],
+      "coop_only_objectives": []
+    },
+    {
+      "solo": "sicily2",
+      "coop": "co_sicily2",
+      "solo_objectives": 9,
+      "coop_objectives": 5,
+      "shared_objectives": [
+        {
+          "text_id": 15550,
+          "solo_index": 2,
+          "coop_index": 1,
+          "text": "Secure the bridge."
+        },
+        {
+          "text_id": 15553,
+          "solo_index": 3,
+          "coop_index": 2,
+          "text": "Remove explosives from the bridge."
+        },
+        {
+          "text_id": 15554,
+          "solo_index": 4,
+          "coop_index": 3,
+          "text": "Defend the bridge."
+        },
+        {
+          "text_id": 15556,
+          "solo_index": 7,
+          "coop_index": 4,
+          "text": "Destroy all enemy tanks."
+        },
+        {
+          "text_id": 15557,
+          "solo_index": 8,
+          "coop_index": 5,
+          "text": "The bridge must remain undamaged."
+        }
+      ],
+      "solo_only_objectives": [
+        {
+          "index": 1,
+          "text_id": 15558,
+          "text": "Join the other SAS soldiers."
+        },
+        {
+          "index": 5,
+          "text_id": 15552,
+          "text": "Eliminate all enemies."
+        },
+        {
+          "index": 6,
+          "text_id": 15555,
+          "text": "All members of the unit must survive."
+        },
+        {
+          "index": 9,
+          "text_id": 15551,
+          "text": "Destroy the bridge."
+        }
+      ],
+      "coop_only_objectives": []
+    }
+  ]
+}

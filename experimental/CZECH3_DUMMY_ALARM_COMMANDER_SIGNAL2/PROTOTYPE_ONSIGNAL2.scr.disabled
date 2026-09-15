@@ -1,0 +1,49 @@
+// PROTOTYPE DESACTIVE — corps exact non retrouvé.
+// À insérer uniquement dans une copie expérimentale de R_cz3_commander.scr.
+
+OnSignal(2)
+{
+  Block
+  {
+    DisableSignals(1);
+    SetAlarmType(1023, 1);
+    SetAlarmType(652, 0);
+    SetWhenever(aaa, 0);
+  }
+
+  If (sus == 0)
+  {
+    sus = 1;
+    HUMAN_Suspend(0);
+  }
+
+  HUMAN_SetAnim("", 10, 10, 0);
+  Delay(100);
+  HUMAN_WeaponOnArm(1);
+
+  If (_PlayerInRange(7) == 1)
+  {
+    HUMAN_SetSniper(0, 1);
+    EndScript();
+  }
+
+  SetAlarmType(274, 0);
+  If (a == 0)
+  {
+    HUMAN_Move("commander1");
+    HUMAN_Attack(s1, 1000);
+    HUMAN_Attack(s2, 1000);
+    HUMAN_Attack(s3, 1000);
+    HUMAN_Attack(s4, 1000);
+    HUMAN_Reload();
+    HUMAN_SetSniper(1, 1);
+    a = 1;
+  }
+
+  HUMAN_TurnAtNearestPlayer();
+  HUMAN_SetAlarm(0);
+  Delay(1500);
+  SetAlarmType(274, 1);
+  GoTo end;
+}
+

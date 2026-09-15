@@ -1,0 +1,14 @@
+// LABORATOIRE UNIQUEMENT - API sans précédent actif, non compilée et non liée.
+// Appliquer uniquement à une COPIE Patch de AF3a_26.scr.
+
+// Dans le Block des frames, rétablir la cible attestée :
+FRAME bed; FRM_FindFrame(bed, "m_postel_a7");
+
+// Dans le bloc initial, conserver l'ordre du vestige :
+HUMAN_SETAIMODE_Defensive();
+HUMAN_Suspend(true);
+HUMAN_ACTIVITY_Sleep(bed);
+goto END;
+
+// OnAlarm, OnAlarmDone, Whenever player et OnSignal(20) restent inchangés.
+// Rejet immédiat si Sleep ne compile pas ou empêche leur exécution.

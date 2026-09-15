@@ -1,0 +1,31 @@
+ARCTIC2_RADIO1_SECOND_SOUND — GATE DE CREATION
+
+DEFAULT_PROFILE = RELEASE_SINGLE_S_RADIO
+STATUS_SECOND_EMITTER = BLOCKED
+
+PROUVÉ
+  radio1 = m_radiog_1 @ (16.316,-7.565,56.466), sector p1s01
+  sound1 = S_radio @ (16.240,-7.306,56.508), sector p1s01
+  asset1 = l_ar2radio
+  serialized_frames_using_asset1 = 1
+  radio2 = m_radiog_ @ (33.308,-7.244,47.079), sector p1s84
+
+À DEFINIR AVANT CREATION
+  sound2_frame_name
+  sound2_world_transform
+  sound2_sector_membership
+  sound2_gain
+  sound2_spatial_tuple
+  indoor_outdoor_occlusion_test
+
+FUTURE ATOMIC CONTROL
+  OnUse OFF  -> S_radio OFF, sound2 OFF, hraje=0
+  OnUse ON   -> S_radio ON,  sound2 ON,  hraje=1
+  OnDeath    -> S_radio OFF, sound2 OFF, bouton signal1
+
+REJECT
+  - nom de frame vide ;
+  - réutilisation de m_radiog_ ou de son script ;
+  - copie arbitraire de l_haydn_2 ;
+  - duplication de S_radio avec les mêmes paramètres sans test ;
+  - second état indépendant du bouton.

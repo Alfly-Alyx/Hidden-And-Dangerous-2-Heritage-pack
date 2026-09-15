@@ -1,0 +1,23 @@
+CASE=ALPS1_GE29_MISSING_VEHICLE_POINT
+STATUS=BLOCKED_NO_UNIQUE_COORDINATES
+MISSING_VEHICLE_POINT=opel_1_2
+
+COMMERCIAL_GRAPH:
+opel_01 -> unnamed_index_45 -> hakl_09 -> opel_02
+
+DO_NOT:
+- rename unnamed_index_45 from proximity alone
+- rename or duplicate hakl_09 as opel_1_2
+- uncomment HUMAN_Drive("opel_1_2",30) before editor validation
+- add the point to the signal-3 alarm branch
+
+RELEASE_SIGNAL2_ROUTE=opel_01,opel_02,opel_03,opel_04,opel_05
+RELEASE_SIGNAL3_ROUTE=opel_01,opel_02,opel_03,opel_04,opel_05
+
+HISTORICAL_DELTA_AFTER_PROOF_ONLY:
+  HUMAN_Drive("opel_01",40);
+  HUMAN_Drive("opel_1_2",30);
+  HUMAN_Drive("opel_02",90);
+
+ROLLBACK=restore commercial check2 and ge_29.scr together
+

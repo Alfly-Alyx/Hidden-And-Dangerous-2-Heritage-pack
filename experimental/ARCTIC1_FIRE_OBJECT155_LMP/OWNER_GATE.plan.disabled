@@ -1,0 +1,25 @@
+ARCTIC1_FIRE_OBJECT155_LMP — OWNER GATE
+
+STATUS = BLOCKED
+DEFAULT = STATIC_RELEASE
+
+PROUVÉ
+  target_frame = Object155
+  lightmap_indices = 0,1,2
+  commercial_owner = NONE
+  active_delay = NONE
+  active_stop = NONE
+
+MANQUANT
+  Object155_world_transform
+  Object155_visual_identity
+  comparable_flicker_cadence
+  owner_transform_and_binding
+  lifecycle_start_stop
+
+INTERDIT AVANT VALIDATION
+  - lier R_Arc1A_ohen_LMP.scr ;
+  - créer dummy_exp_ar1_campfire_lmp ;
+  - réutiliser la cadence moderne 150–300 ms comme valeur historique ;
+  - déduire la position d'Object155 d'un record voisin ;
+  - attacher la logique directement au bloc LMAP.

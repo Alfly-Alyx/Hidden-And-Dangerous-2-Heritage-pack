@@ -1,0 +1,13 @@
+// PROTOTYPE DESACTIVE — liaison signal 2 -> PLANECRASH inférée.
+// Label, compteur et route existent dans AF2_06.scr Base/Patch.
+
+OnSignal(2)
+{
+  If (cnt == 0)
+  {
+    cnt = 1;
+    GoTo PLANECRASH;
+  }
+  GoTo END;
+}
+

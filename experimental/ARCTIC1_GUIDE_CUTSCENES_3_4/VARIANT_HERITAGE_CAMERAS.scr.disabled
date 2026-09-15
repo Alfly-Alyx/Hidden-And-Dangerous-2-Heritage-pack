@@ -1,0 +1,12 @@
+// Variante exclusive HERITAGE_CAMERAS.
+// Remplacer les deux constantes 99, sans changer les corps OnCutscene.
+
+integer SKIP_CSC3;
+SKIP_CSC3 = _LoadGameValue(29);
+
+integer SKIP_CSC4;
+SKIP_CSC4 = _LoadGameValue(30);
+
+// Les valeurs 99 écrites par les acteurs du monde restent prioritaires.
+// Ne pas inclure simultanément la variante RELEASE_NO_CAMERA.
+

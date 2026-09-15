@@ -1,0 +1,17 @@
+// INSERTIONS AUDIO DESACTIVEES - non compilees/non liees.
+// Tester SOUND53 puis SOUND50 separement avant une variante combinee.
+
+// PROFILE=SOUND53_ONLY
+// Dans OnSignal(20), immediatement apres LABEL ALERT :
+// PlaySound(9, 53);
+
+// PROFILE=SOUND50_ONLY
+// Dans OnAlarm(), dans if(!atpos), immediatement apres BoardVehicle :
+// PlaySound(9, 50);
+
+// PROFILE=BOTH_VALIDATED
+// Autorise seulement apres identification et validation independante des deux.
+
+// INVARIANTS : ne changer ni Delay, Move, BoardVehicle, EndScript, signal,
+// condition if(!atpos), alarmes, vue, arme ou destination.
+// SELECTED_PROFILE=RELEASE_SILENT

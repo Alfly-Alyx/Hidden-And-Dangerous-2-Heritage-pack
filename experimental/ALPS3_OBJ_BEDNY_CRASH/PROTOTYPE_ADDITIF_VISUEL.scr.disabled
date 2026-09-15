@@ -1,0 +1,38 @@
+// PROTOTYPE MODERNE, DESACTIVE ET NON COMPILABLE EN L'ETAT.
+// Il exige un acteur visuel statique "bedny_crash_modern" cree selon la fiche.
+// Ne l'activer que si la porte A prouve que l'etat 1 commercial de "bedny"
+// ne laisse aucune epave credible. Sinon, rejeter ce prototype.
+//
+// Ce fragment conserve la condition, les quatre changements d'etat et le
+// delai de la release. L'unique ajout executable est FRM_SetOn(crash_modern,
+// true), place apres la sequence commerciale.
+
+block
+{
+  FRAME expl;          FRM_FindFrame(expl, "w_explosive_02");
+  FRAME delo;          FRM_FindFrame(delo, "la_Pak_");
+  FRAME dummy1;        FRM_FindFrame(dummy1, "dummy_expl01");
+  FRAME dummy2;        FRM_FindFrame(dummy2, "dummy_expl_02");
+  FRAME bedny;         FRM_FindFrame(bedny, "bedny");
+
+  // AJOUT MODERNE : cette frame n'existe pas dans la mission commerciale.
+  FRAME crash_modern;  FRM_FindFrame(crash_modern, "bedny_crash_modern");
+  FRM_SetOn(crash_modern, false);
+}
+
+Whenever vybuch (_ACTOR_GetState(expl) == 2)
+{
+  block
+  {
+    SetActorState(dummy2, 1);
+    SetActorState(bedny, 1);       // comportement commercial conserve
+  }
+  Delay(200);
+  SetActorState(dummy1, 1);
+  SetActorState(delo, 2);
+
+  // AJOUT MODERNE, visuel seulement, apres toute la sequence release.
+  // L'acteur doit deja representer l'epave statique validee : ne pas inventer
+  // ici une valeur SetActorState dont la semantique n'est pas prouvee.
+  FRM_SetOn(crash_modern, true);
+}

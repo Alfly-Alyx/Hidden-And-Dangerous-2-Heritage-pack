@@ -1,0 +1,19 @@
+// FRAGMENT DESACTIVE : remplacer seulement Label GUARD_LOOP dans une copie.
+// PRECONDITION : AF1_04_g06 et g07 existent, sont relies et valides.
+
+Label GUARD_LOOP:
+  atpos = 0;
+  HUMAN_Move("AF1_04_g01");
+  HUMAN_SetAnim("%%turnleft", 500, 500, false); Delay(2500);
+  HUMAN_SetAnim("%%turnright", 500, 500, false); Delay(2500);
+  HUMAN_Move("AF1_04_g02");
+  HUMAN_Move("AF1_04_g03");
+  HUMAN_Move("AF1_04_g04");
+  HUMAN_SetAnim("%%turnleft", 500, 500, false); Delay(2500);
+  HUMAN_SetAnim("%%turnright", 500, 500, false); Delay(2500);
+  HUMAN_Move("AF1_04_g05");
+  HUMAN_SetAnim("%%turnleft", 500, 500, false); Delay(2500);
+  HUMAN_SetAnim("%%turnright", 500, 500, false); Delay(2500);
+  HUMAN_Move("AF1_04_g06");
+  HUMAN_Move("AF1_04_g07");
+goto GUARD_LOOP;

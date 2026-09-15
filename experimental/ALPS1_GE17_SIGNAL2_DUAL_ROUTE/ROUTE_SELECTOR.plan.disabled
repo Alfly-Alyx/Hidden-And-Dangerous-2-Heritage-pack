@@ -1,0 +1,21 @@
+CASE=ALPS1_GE17_SIGNAL2_DUAL_ROUTE
+DEFAULT_PROFILE=RELEASE_GE17_04
+ONE_PROFILE_ONLY=true
+
+PROFILE RELEASE_GE17_04:
+  reposition=none
+  preserve=hledamkulomet,ge17_04,sedila1
+
+PROFILE MOVE_GE17_03_THEN_GE17_04:
+  reposition=HUMAN_Move("ge17_03")
+  preserve=hledamkulomet,ge17_04,sedila1
+
+PROFILE TELEPORT_RANGE_THEN_GE17_04:
+  reposition=FRM_TeleportNearCheckpoint(me,"ge17_03","ge16_sniper")
+  preserve=hledamkulomet,ge17_04,sedila1
+  blocked_if=GE16_FAITHFUL_SNIPER_ACTIVE
+
+FORBIDDEN=move_and_teleport_together
+ROLLBACK=RELEASE_GE17_04
+NO_MAIN_INSTALLER=true
+NO_COMPILE=true

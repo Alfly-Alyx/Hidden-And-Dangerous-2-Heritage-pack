@@ -1,0 +1,18 @@
+// LABORATOIRE UNIQUEMENT - non compilé, non lié.
+// Remplacer seulement Label ACTIVITY dans une COPIE Patch de AF4_19.scr.
+// OnAlarm, OnAlarmDone, OnSignal(1) et OnDeath restent strictement release.
+
+Label ACTIVITY:
+  HUMAN_Investigate(archive);
+  HUMAN_PickObject(book, 1);
+  Delay(1000);
+  HUMAN_SETMODE_Stand();
+  HUMAN_ACTIVITY_Read(1, book);
+  Delay(2000);
+  HUMAN_ACTIVITY_Read(0, book);
+  HUMAN_SETMODE_Crouch();
+  HUMAN_DropObject();
+goto ACTIVITY;
+
+// Rejet immédiat si PickObject/Read ne compile pas, bloque OnAlarm ou laisse
+// book attaché. Ne pas remplacer Read par une animation au nom inventé.

@@ -1,0 +1,26 @@
+CASE=ALPS1_GE24_SHARED_SNIPER_POST
+DEFAULT_PROFILE=GE16_FAITHFUL
+NO_RUNTIME_SWITCH=true
+
+PROFILE GE16_FAITHFUL:
+  ge_16.scr -> restaurer la paire commerciale ge16_sniper + SetSniper
+  ge_24.scr -> conserver HUMAN_Move("ge16_sniper") commente
+  OWNER(ge16_sniper)=ge_16
+
+PROFILE GE16_PLUS_GE24_DISTINCT:
+  STATUS=LOCKED_UNTIL_COMMERCIAL_POINT_IS_ATTESTED
+  ge_16.scr -> identique a GE16_FAITHFUL
+  ge_24.scr -> mouvement seulement vers un checkpoint distinct prouve
+  REQUIRED=exact_name,transform,parent,navigation
+  FORBIDDEN_TARGET=ge16_sniper
+  FORBIDDEN_ADDITION=HUMAN_SetSniper
+
+REJECT_IF:
+  - deux acteurs visent ge16_sniper
+  - point ge24 place par estimation ou commodite
+  - suppression de la paire fidele de ge16
+  - collision ou croisement de navigation
+
+ROLLBACK=GE16_FAITHFUL
+NO_MAIN_INSTALLER=true
+NO_COMPILE=true

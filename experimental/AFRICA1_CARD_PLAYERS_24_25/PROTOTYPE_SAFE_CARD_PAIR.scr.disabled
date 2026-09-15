@@ -1,0 +1,33 @@
+// LABORATOIRE UNIQUEMENT - non compilé et non lié.
+// Appliquer le même delta à des COPIES Patch de AF1_24.scr et AF1_25.scr.
+
+// 1. Ajouter avec les variables globales de chaque script.
+INTEGER cards_active = 0;
+
+// 2. Ajouter ces trois lignes comme PREMIÈRES instructions de OnAlarm(), avant
+// HUMAN_SetAnim et avant toute mise debout.
+if (cards_active)
+{
+  HUMAN_ACTIVITY_Card(0);
+  cards_active = 0;
+}
+
+// 3. Ajouter le même bloc comme PREMIÈRES instructions de OnSignal(10).
+// 4. Ajouter le même bloc comme PREMIÈRES instructions de OnDeath().
+// Conserver ensuite intégralement le corps release de chaque gestionnaire.
+
+// 5. Remplacer seulement le bloc ACTIVATE commenté par la séquence historique.
+Label ACTIVATE:
+  HUMAN_Suspend(false);
+  HUMAN_SetOptimized(true);
+  cards_active = 1;
+  HUMAN_ACTIVITY_Card(1);
+
+Label CARD_LOOP:
+  HUMAN_ACTIVITY_Card(2);
+  Delay(1500);
+goto CARD_LOOP;
+
+// Aucun signal partenaire n'est ajouté. Card(0) sur alarme est attesté par
+// C2_11/C2_12 ; sur signal 10 et OnDeath, c'est un nettoyage de sécurité à
+// valider explicitement.

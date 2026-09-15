@@ -1,0 +1,37 @@
+CASE=AFRICA4_CUTSCENE2
+STATUS=INCOMPLETE_MISSING_CAMERA_AND_PLAYER_LIFECYCLE
+
+ATTESTED:
+- AF3b_cutscene.scr has OnCutscene(2)
+- call from OnCutsceneDone(1) exists but is commented
+- AF3b_player04.scr has fully commented cutscene-2 reactions
+- checkpoint AF3b_pl04_01 exists in mission inventory
+
+MISSING:
+- camera_cut04 scene frame
+- historical camera transform and field of view
+- complete duration/exit contract in the controller
+- live player-04 binding that survives cutscene 1
+
+MODERN_MOCKUP_ONLY:
+NEW_CAMERA= camera_legacy_cut04_modern
+NEW_CAMERA_TRANSFORM= TBD_IN_EDITOR
+CUTSCENE_ID= TBD_AFTER_GLOBAL_OWNER_AUDIT
+ENTRY= Africa4 Intro Oasis Legacy only
+
+PROTECTED:
+- release cutscene 1
+- camera_cut01
+- CUTcamera_Af3b.scr
+- script_mise_next.scr
+- Dakota/parachute introduction
+
+DO_NOT:
+- rename the new camera to camera_cut04 as historical restoration
+- uncomment CSC_RunCutscene(2) in the commercial controller
+- bind AF3b_player04.scr unchanged; it ends after cutscene 1
+- let release and legacy introductions run in one mission start
+
+NO_SCRIPT_PROTOTYPE_UNTIL_CAMERA_AND_LIFECYCLE_ARE_DEFINED=true
+NO_COMPILE=true
+

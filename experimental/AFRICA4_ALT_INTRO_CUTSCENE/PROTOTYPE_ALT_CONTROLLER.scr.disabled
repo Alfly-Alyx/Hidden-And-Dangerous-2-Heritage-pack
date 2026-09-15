@@ -1,0 +1,53 @@
+// PSEUDO-SCRIPT DESACTIVE, volontairement non compilable.
+// ALT_SCENE_A/B doivent etre remplaces par deux IDs libres apres audit global.
+// Les quatre cameras sont des creations modernes a placer dans l'editeur.
+
+block{
+  FRAME cam01; FRM_FindFrame(cam01, "camera_alt_af4_01");
+  FRAME cam02; FRM_FindFrame(cam02, "camera_alt_af4_02");
+  FRAME cam03; FRM_FindFrame(cam03, "camera_alt_af4_03");
+  FRAME cam04; FRM_FindFrame(cam04, "camera_alt_af4_04");
+  FRAME look1; FRM_FindFrame(look1, "dummy_rozhlizeni01");
+  FRAME look2; FRM_FindFrame(look2, "dummy_rozhlizeni02");
+  FRAME look3; FRM_FindFrame(look3, "Opel02");
+  FRAME null;  FRM_FindFrame(null, "");
+}
+
+// L'arbitre exclusif lance ALT_SCENE_A, jamais la cutscene 1 release.
+OnCutscene(ALT_SCENE_A){
+  SUBTITLES_SetOn(true);
+  CSC_FadeOut(100);
+  FRM_SetActiveCamera(cam01); CSC_FadeIn(100); Delay(2000);
+
+  CSC_FadeOut(100);
+  FRM_SetActiveCamera(cam02);
+  FRM_SetCameraFrame(look1); CSC_FadeIn(100);
+  FRM_SetCameraFrameSlide(look2, 30); Delay(3000);
+  FRM_SetCameraFrameSlide(look3, 50); Delay(1000);
+
+  CSC_FadeOut(100);
+  FRM_SetCameraFrame(null);
+  FRM_SetActiveCamera(cam03); CSC_FadeIn(100); Delay(2000);
+  CSC_EndCutscene();
+}
+
+OnCutsceneDone(ALT_SCENE_A){
+  FRM_SetCameraFrame(null);
+  SUBTITLES_SetOn(false);
+  CSC_FadeIn(100);
+  CSC_RunCutscene(ALT_SCENE_B);
+}
+
+OnCutscene(ALT_SCENE_B){
+  FRM_SetActiveCamera(cam04);
+  CSC_FadeIn(100);
+  Delay(2500); // creation moderne, timeout independant du joueur 04
+  CSC_EndCutscene();
+}
+
+OnCutsceneDone(ALT_SCENE_B){
+  FRM_SetCameraFrame(null);
+  SUBTITLES_SetOn(false);
+  CSC_FadeIn(100);
+  EndScript();
+}

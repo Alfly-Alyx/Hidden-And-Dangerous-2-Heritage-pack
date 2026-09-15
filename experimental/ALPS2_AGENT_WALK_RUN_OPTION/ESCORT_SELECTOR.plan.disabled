@@ -1,0 +1,21 @@
+DEFAULT_PROFILE=WALK_RELEASE
+
+WALK_RELEASE
+  patch_AL2_agent=false
+  effective_gait=release_implicit_walk
+
+DYNAMIC_CATCHUP_TEST
+  patch_AL2_agent=copy_only
+  run_only_when_player_near=true
+  walk_when_player_far=true
+  walk_before_door_and_final_approach=true
+  new_waypoints=false
+  status=mock_requires_runtime_tuning
+
+RUN_WHOLE_ROUTE
+  status=REJECTED
+  reason=blunt_replacement_changes_wait_loops_and_door_approaches
+
+CARNAGE_DYNAMIC_CATCHUP
+  status=BLOCKED
+  reason=separate_timing_validation_required

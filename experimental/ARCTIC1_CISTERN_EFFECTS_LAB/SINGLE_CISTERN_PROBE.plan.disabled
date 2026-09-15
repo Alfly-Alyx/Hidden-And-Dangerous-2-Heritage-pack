@@ -1,0 +1,31 @@
+ARCTIC1_CISTERN_EFFECTS_LAB — PLAN A/B NON EXECUTABLE
+
+TARGET = une seule copie de m_nadrz_
+DEFAULT = A_RELEASE
+
+A_RELEASE
+  MakeExplosion(BUUUM, 2000000, 10000)
+
+B_PARTICLE_ONLY
+  FRM_CreateParticle(53, MyFRM)
+  puis MakeExplosion release inchangé
+
+C_SOUND_ONLY
+  PlaySound(6, 2)
+  puis MakeExplosion release inchangé
+
+D_PARTICLE_AND_SOUND
+  autorisé seulement après B et C
+  FRM_CreateParticle(53, MyFRM)
+  PlaySound(6, 2)
+  puis MakeExplosion release inchangé
+
+INVARIANTS
+  - un seul OnDeath ;
+  - BUUUM, puissance et rayon inchangés ;
+  - SaveGameValue correspondant inchangé et exécuté une fois ;
+  - aucun portage Arctic 3/MP ;
+  - retour arrière = suppression du delta de la copie de test.
+
+STOP si double flash, double attaque audio, fumée persistante ou répétition au
+reload.

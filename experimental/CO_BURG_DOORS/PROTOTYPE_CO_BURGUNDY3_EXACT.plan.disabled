@@ -1,0 +1,11 @@
+STATUS=DISABLED_EXACT_RECORD_IMPORT
+SOURCE_MISSION=BURGUNDY3
+TARGET_MISSION=CO_BURGUNDY3_TEST_COPY_ONLY
+MODE=COPY_FULL_OWNER_RECORD_THEN_ADD_ONE_BINDING
+
+COPY snd_vrabec07 BIND bur3_snd_door1.scr TARGETS F_door_wood01 S_door02
+COPY snd_vrabec08 BIND bur3_snd_door2.scr TARGETS F_door_wood00 S_door03
+COPY snd_vrabec09 BIND bur3_snd_door3.scr TARGETS F_door_wood02 S_door04
+
+# Cette sous-variante est incompatible avec l'import ambiant complet qui copie
+# déjà snd_vrabec01..10. Ne copier ni script, porte, son ou sounds.bin.

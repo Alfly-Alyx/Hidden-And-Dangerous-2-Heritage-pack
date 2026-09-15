@@ -1,0 +1,27 @@
+DEFAULT_PROFILE=DIRECT_CARNAGE_RELEASE
+
+DIRECT_CARNAGE_RELEASE
+  detectoral204_1.signal3=false
+  detectoral204_2.signal3=false
+  detectoral204_3.signal3=false
+  AL2_04.signal2=true
+  AL2_05.signal3=true
+  AL2_31.signal4=true
+
+DETECTOR_CARNAGE_LEGACY_TEST
+  detectoral204_1.signal3=true
+  detectoral204_2.signal3=true
+  detectoral204_3.signal3=true
+  AL2_04.signal2=false
+  AL2_05.signal3=false
+  AL2_31.signal4=false
+  status=experimental_semantics_not_equivalent
+
+DUAL_DEDUP_CARNAGE
+  status=BLOCKED
+  reason=AL2_04_signal2_would_repeat_and_05_31_contract_is_unknown
+
+INVARIANTS
+  one_dispatch_profile_per_build
+  zero_duplicate_transition_signals
+  carnage_profile_explicit

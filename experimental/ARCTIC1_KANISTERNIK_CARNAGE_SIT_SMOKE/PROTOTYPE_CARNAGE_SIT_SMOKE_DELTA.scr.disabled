@@ -1,0 +1,22 @@
+// DELTA EXPERIMENTAL DESACTIVE — pas un script complet.
+// DEFAULT: RELEASE_SMOKE_STANDING
+// Ce fragment ne doit être appliqué que dans une copie de test du script de
+// Kanisternik et uniquement pour _SPGetGameType() 3 ou 7.
+
+// Variante exacte minimale, à l'emplacement des deux lignes dormantes :
+// if ((_SPGetGameType() == 3) OR (_SPGetGameType() == 7))
+// {
+//   HUMAN_ACTIVITY_Sit(Sit);
+// }
+
+// NE PAS ACTIVER tant que l'animation n'est pas validée dans le moteur :
+// HUMAN_SetAnim("%%kourimsed2", 450, 450, true);
+
+// Delta de nettoyage requis au début de OnAlarm(), OnDeath() et, si elle peut
+// survenir en Carnage, OnCutscene(4) :
+// HUMAN_ACTIVITY_Smoke(false);
+// HUMAN_SetAnim("", 250, 250, false);
+// HUMAN_SETMODE_Stand();
+
+// OnCutsceneDone(4) ne doit pas relancer l'assise ou la fumée.
+// OnSignal(5), les routes et le dépôt du bidon restent inchangés.

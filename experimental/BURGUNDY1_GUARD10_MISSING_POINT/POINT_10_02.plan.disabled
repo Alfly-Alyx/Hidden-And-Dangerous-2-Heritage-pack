@@ -1,0 +1,26 @@
+CASE=BURGUNDY1_GUARD10_MISSING_POINT
+STATUS=MODERN_GEOMETRIC_CANDIDATE_NOT_HISTORICALLY_IDENTIFIED
+
+EXISTING_NAMES=10_01,10_03,10_04,10_05
+MISSING_NAME=10_02
+
+SHORTEST_GRAPH_PATH:
+10_01 -> unnamed(41.139858,1.305692,-44.770451)
+      -> unnamed(40.218849,1.268423,-40.495117)
+      -> unnamed(41.177238,0.817047,-35.565758)
+      -> 10_03
+
+MODERN_CANDIDATE_POSITION=40.218849,1.268423,-40.495117
+MIDPOINT_DISTANCE=1.48
+
+EDITOR_ACTION:
+- select the existing point by position, not by serialized index
+- assign name 10_02 without moving it or changing links
+- save through the editor and validate the graph
+
+DO_NOT:
+- claim historical identity
+- hand-patch index, section size, or name table
+- create an overlapping duplicate point
+- enable the script line before the named point is installed
+

@@ -1,0 +1,31 @@
+CASE=BURGUNDY3_GUARD24_JEEP
+STATUS=BLOCKED_CONTRADICTORY_PARTIAL_BRANCHES
+
+ATTESTED_BINDINGS:
+BUR03_24 -> bur3_24.scr
+la_Jeepsas_01 -> bur3_jeepsas.scr
+
+ATTESTED_JEEP_STATE:
+- Object03 hood rotated 330 degrees
+- Car_SetFuel(jeep,0)
+
+MISSING_ROUTE:
+- Burgundy3 vehicle checkpoint count = 0
+- car05 absent
+
+H1_STATIC_OCCUPANT_LAB:
+- test HUMAN_BoardVehicle("la_Jeepsas_01",1,0)
+- on alarm, test HUMAN_Drive("",0) then unboard
+- never add car05
+- never add HUMAN_Kill
+
+H2_SACRIFICIAL_DRIVE_LAB:
+- requires a separately authored MODERN vehicle graph
+- requires a documented car05 destination and purpose
+- keep driver boarded while driving
+- HUMAN_Kill requires independent narrative/effect proof
+
+DO_NOT_COMBINE=H1,H2
+NO_SCRIPT_PROTOTYPE_UNTIL_SEAT_AND_ROUTE_PROOFS=true
+NO_STABLE_ACTIVATION=true
+

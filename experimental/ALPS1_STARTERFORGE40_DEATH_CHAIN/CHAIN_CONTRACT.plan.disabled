@@ -1,0 +1,29 @@
+CASE=ALPS1_STARTERFORGE40_DEATH_CHAIN
+DEFAULT_PROFILE=COMMERCIAL
+SELECTED_HYPOTHESIS=ANY_TWO_OF_THREE
+
+PROFILE COMMERCIAL:
+  ge_01 -> envoi starterforge40 commente
+  ge_02 -> aucun envoi
+  ge_03 -> aucun envoi
+
+PROFILE ANY_TWO_OF_THREE_TEST:
+  ge_01 -> reactivation attestee avant piskac/SaveGameValue/EndScript
+  ge_02 -> ajout reconstructif avant SaveGameValue/EndScript
+  ge_03 -> ajout reconstructif avant SaveGameValue/EndScript
+  starterforge40 -> script commercial intact, seuil a>1, fenetre 10000 ms
+  ge_40/ge_41/ge_40akce -> strictement commerciaux
+
+REQUIRED_PERMUTATIONS:
+  ge01,ge02
+  ge02,ge01
+  ge01,ge03
+  ge03,ge01
+  ge02,ge03
+  ge03,ge02
+
+TRACE_THIRD_DEATH_REOPEN=true
+REJECT_FIXED_PAIR_WITHOUT_NEW_EVIDENCE=true
+ROLLBACK=COMMERCIAL
+NO_MAIN_INSTALLER=true
+NO_COMPILE=true

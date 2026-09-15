@@ -1,0 +1,30 @@
+// Fragment de remplacement dans la séquence commerciale de ge_17.scr.
+// Une seule primitive de repositionnement : jamais le téléport concurrent.
+
+HUMAN_SetAnim("",900,900,0);
+delay(1000);
+HUMAN_SETMODE_Stand();
+delay(1000);
+HUMAN_TurnAt(cum2);
+delay(300);
+HUMAN_SetAnim("%%protahovani",900,900,0);
+delay(2357);
+HUMAN_SetAnim("",900,900,0);
+delay(1000);
+HUMAN_Move("ge17_03");
+HUMAN_TurnAt(cum1);
+delay(1000);
+HUMAN_TurnAt(cum1);
+HUMAN_SetAnim("%%hledamkulomet",900,900,1);
+delay(15000);
+HUMAN_SetAnim("",900,900,0);
+delay(1000);
+HUMAN_Move("ge17_04");
+HUMAN_TurnAt(cum3);
+delay(2000);
+HUMAN_SetAnim("%%sedila1",500,500,1);
+goto end;
+
+// Explicitement exclu :
+// FRM_TeleportNearCheckpoint(me, "ge17_03", "ge16_sniper");
+

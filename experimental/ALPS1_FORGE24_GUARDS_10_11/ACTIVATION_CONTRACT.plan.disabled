@@ -1,0 +1,35 @@
+CASE=ALPS1_FORGE24_GUARDS_10_11
+DEFAULT_PROFILE=EXISTING_ACTIVATIONS
+NO_RUNTIME_SWITCH=true
+
+PROFILE EXISTING_ACTIVATIONS:
+  detector_forge24 -> detector_forge24.scr commercial
+  forge16/forge20  -> activations fideles conservees par le profil du projet
+
+PROFILE FORGE24_ADDITIVE_TEST:
+  detector_forge24 -> PROTOTYPE_DETECTOR_FORGE24.scr.disabled
+  forge16/forge20  -> strictement inchanges
+  ge_10/ge_11      -> scripts, bindings, acteurs et routes inchanges
+
+COLLISION_MATRIX:
+  - detector_forge07, emetteur commercial actif vers ge10 et ge11
+  - detector_forge16, activation conservee de ge11 selon profil
+  - detector_forge20, activations conservees de ge10/ge11 selon profil
+  - detector_forge24, deux envois additifs une fois par chargement
+
+PROMOTION_REQUIRES:
+  - trace de toutes les sources et de tous les ordres
+  - signal 1 tardif sans redemarrage ni interruption de ronde
+  - sauvegarde/reprise sans rearmement nuisible
+  - ge23/ge24/ge25 strictement identiques a la baseline
+
+REJECT_IF:
+  - double activation observable
+  - reprise de flakejse ou mouvement interrompu
+  - correction necessaire dans ge_10.scr ou ge_11.scr
+  - suppression ou remplacement de forge16/forge20
+
+ROLLBACK=EXISTING_ACTIVATIONS
+END_OF_PROJECT_ONLY=true
+NO_MAIN_INSTALLER=true
+NO_COMPILE=true

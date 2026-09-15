@@ -1,0 +1,1000 @@
+{
+  "game": "D:\\Games\\Hidden and Dangerous 2",
+  "summary": {
+    "flamethrower": {
+      "matches": 5,
+      "model_entries": 1,
+      "script_entries": 0,
+      "table_entries": 4
+    },
+    "garrote": {
+      "matches": 0,
+      "model_entries": 0,
+      "script_entries": 0,
+      "table_entries": 0
+    },
+    "zk383": {
+      "matches": 0,
+      "model_entries": 0,
+      "script_entries": 0,
+      "table_entries": 0
+    },
+    "me323": {
+      "matches": 6,
+      "model_entries": 2,
+      "script_entries": 0,
+      "table_entries": 0
+    },
+    "aichi": {
+      "matches": 3,
+      "model_entries": 2,
+      "script_entries": 0,
+      "table_entries": 0
+    },
+    "fa223": {
+      "matches": 2,
+      "model_entries": 2,
+      "script_entries": 0,
+      "table_entries": 0
+    },
+    "la5": {
+      "matches": 24,
+      "model_entries": 2,
+      "script_entries": 5,
+      "table_entries": 0
+    },
+    "ju52": {
+      "matches": 24,
+      "model_entries": 12,
+      "script_entries": 4,
+      "table_entries": 0
+    },
+    "fw200": {
+      "matches": 2,
+      "model_entries": 2,
+      "script_entries": 0,
+      "table_entries": 0
+    },
+    "li2": {
+      "matches": 16,
+      "model_entries": 2,
+      "script_entries": 8,
+      "table_entries": 0
+    },
+    "dfs230": {
+      "matches": 2,
+      "model_entries": 2,
+      "script_entries": 0,
+      "table_entries": 0
+    }
+  },
+  "matches": [
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\flame1.4ds",
+      "size": 471,
+      "terms": [
+        "flamethrower"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\la_Li2.4ds",
+      "size": 323240,
+      "terms": [
+        "li2"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\LA_M323.4ds",
+      "size": 257929,
+      "terms": [
+        "me323"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\la_La-5.4ds",
+      "size": 162990,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\la_Ju52.4ds",
+      "size": 142338,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\la_aici.4ds",
+      "size": 150223,
+      "terms": [
+        "aichi"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\sla_Li2.4ds",
+      "size": 23680,
+      "terms": [
+        "li2"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\sla_m323.4ds",
+      "size": 30794,
+      "terms": [
+        "me323"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\sla_La-5.4ds",
+      "size": 20716,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\sla_Ju52.4ds",
+      "size": 24456,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\sla_aici.4ds",
+      "size": 22419,
+      "terms": [
+        "aichi"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\la_Fa 223.4ds",
+      "size": 175680,
+      "terms": [
+        "fa223"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\la_Fw 200.4ds",
+      "size": 60102,
+      "terms": [
+        "fw200"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\la_Ju52Af.4ds",
+      "size": 145323,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\sla_Fa 223.4ds",
+      "size": 26283,
+      "terms": [
+        "fa223"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\la_DSF 230.4ds",
+      "size": 143402,
+      "terms": [
+        "dfs230"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\sla_Fw 200.4ds",
+      "size": 58306,
+      "terms": [
+        "fw200"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\#la_Ju52Af.4ds",
+      "size": 145975,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\#la_Ju52Af.5DS",
+      "size": 21955,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\sla_Ju52Af.4ds",
+      "size": 24456,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\sla_DSF 230.4ds",
+      "size": 16704,
+      "terms": [
+        "dfs230"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\la_Ju52trup.4ds",
+      "size": 89238,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\la_Ju52konec.4ds",
+      "size": 22172,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\la_Ju52dvere.4ds",
+      "size": 2841,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\la_Ju52kridlo.4ds",
+      "size": 23651,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\la_Ju52kolecko.4ds",
+      "size": 1184,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "models.dta",
+      "entry": "MODELS\\la_Ju52podvozek.4ds",
+      "size": 10311,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "others.DTA",
+      "entry": "TABLES\\effects.def",
+      "size": 63181,
+      "terms": [
+        "flamethrower"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "others.DTA",
+      "entry": "TABLES\\IngameSounds.def",
+      "size": 106643,
+      "terms": [
+        "flamethrower"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "Scripts.dta",
+      "entry": "SCRIPTS\\CZECH1\\posila5.scr",
+      "size": 866,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "name",
+        "content"
+      ]
+    },
+    {
+      "archive": "Scripts.dta",
+      "entry": "SCRIPTS\\CZECH1\\posila5b.scr",
+      "size": 835,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "name",
+        "content"
+      ]
+    },
+    {
+      "archive": "Scripts.dta",
+      "entry": "SCRIPTS\\AFRICA1\\CUT_af1Ju52.scr",
+      "size": 1110,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "Scripts.dta",
+      "entry": "SCRIPTS\\AFRICA1\\CUT_af1velit.scr",
+      "size": 1232,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "Scripts.dta",
+      "entry": "SCRIPTS\\CZECH1\\suspend detektor4.scr",
+      "size": 556,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "missions.dta",
+      "entry": "MISSIONS\\ALPS2\\scene2.bin",
+      "size": 3364325,
+      "terms": [
+        "li2"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "missions.dta",
+      "entry": "MISSIONS\\CZECH1\\check2.bin",
+      "size": 139332,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "missions.dta",
+      "entry": "MISSIONS\\CZECH1\\actors.bin",
+      "size": 32288,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "missions.dta",
+      "entry": "MISSIONS\\CZECH3\\volumy.bin",
+      "size": 239860,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "missions.dta",
+      "entry": "MISSIONS\\AFRICA4\\scene2.bin",
+      "size": 3761990,
+      "terms": [
+        "aichi"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "missions.dta",
+      "entry": "MISSIONS\\AFRICA6\\scene2.bin",
+      "size": 3240723,
+      "terms": [
+        "me323"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "missions.dta",
+      "entry": "MISSIONS\\CZECH1\\scripts.dta",
+      "size": 6942,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "missions.dta",
+      "entry": "MISSIONS\\AFRICA1\\scripts.dta",
+      "size": 4622,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "missions.dta",
+      "entry": "MISSIONS\\CZECH3_MP\\volumy.bin",
+      "size": 228940,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "missions.dta",
+      "entry": "MISSIONS\\AFRICA1_MP\\scene2.bin",
+      "size": 2736142,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "missions.dta",
+      "entry": "MISSIONS\\CZECH2_OBJ\\SCENE2.BIN",
+      "size": 2346943,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "missions.dta",
+      "entry": "MISSIONS\\AFRICA1_MP\\volumy.bin",
+      "size": 151248,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "missions.dta",
+      "entry": "MISSIONS\\AFRICA5_MP\\volumy.bin",
+      "size": 696568,
+      "terms": [
+        "me323"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "missions.dta",
+      "entry": "MISSIONS\\AFRIKA5_MP\\volumy.bin",
+      "size": 695800,
+      "terms": [
+        "me323"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "missions.dta",
+      "entry": "MISSIONS\\AFRICA1_OBJ\\scene2.bin",
+      "size": 2725166,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "missions.dta",
+      "entry": "MISSIONS\\AFRICA1_OBJ\\volumy.bin",
+      "size": 145536,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "missions.dta",
+      "entry": "MISSIONS\\NORMANDY3_MP\\volumy.bin",
+      "size": 362848,
+      "terms": [
+        "li2"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "missions.dta",
+      "entry": "MISSIONS\\CZECH2_MP_ZONE\\scene2.bin",
+      "size": 4108454,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "missions.dta",
+      "entry": "MISSIONS\\AFRICA5_MP_ZONE\\volumy.bin",
+      "size": 517208,
+      "terms": [
+        "me323"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "Patch.dta",
+      "entry": "MODELS\\la_Ju52trup.4ds",
+      "size": 89462,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "Patch.dta",
+      "entry": "TABLES\\IngameSounds.def",
+      "size": 104700,
+      "terms": [
+        "flamethrower"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "Patch.dta",
+      "entry": "MISSIONS\\Czech1\\actors.bin",
+      "size": 32429,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "Patch.dta",
+      "entry": "MISSIONS\\CZECH2_OBJ\\scene2.bin",
+      "size": 2346943,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "Patch.dta",
+      "entry": "MISSIONS\\CZECH3_OBJ\\VOLUMY.BIN",
+      "size": 227804,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "Patch.dta",
+      "entry": "SCRIPTS\\AFRICA1\\CUT_af1Ju52.scr",
+      "size": 1135,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "Patch.dta",
+      "entry": "MISSIONS\\AFRICA1_OBJ\\scene2.bin",
+      "size": 2729123,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "Patch.dta",
+      "entry": "MISSIONS\\AFRICA1_OBJ\\volumy.bin",
+      "size": 145680,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "Patch.dta",
+      "entry": "SCRIPTS\\AFRICA1\\CUT_af1velit.scr",
+      "size": 1300,
+      "terms": [
+        "ju52"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "Patch.dta",
+      "entry": "MISSIONS\\NORMANDY3_MP\\volumy.bin",
+      "size": 365184,
+      "terms": [
+        "li2"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "Patch.dta",
+      "entry": "MISSIONS\\CZECH2_MP_ZONE\\scene2.bin",
+      "size": 4108436,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "SabreSquadron.dta",
+      "entry": "Tables\\effects.def",
+      "size": 66895,
+      "terms": [
+        "flamethrower"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "SabreSquadron.dta",
+      "entry": "Missions\\Sicily1\\check2.bin",
+      "size": 250274,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "SabreSquadron.dta",
+      "entry": "Missions\\Libye2\\Scripts.dta",
+      "size": 4138,
+      "terms": [
+        "li2"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "SabreSquadron.dta",
+      "entry": "Missions\\London_mp\\volumy.bin",
+      "size": 276440,
+      "terms": [
+        "li2"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "SabreSquadron.dta",
+      "entry": "Missions\\Co_Sicily1\\check2.bin",
+      "size": 254926,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "SabreSquadron.dta",
+      "entry": "Scripts\\Libye2\\Li2_SND_bum.scr",
+      "size": 420,
+      "terms": [
+        "li2"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "SabreSquadron.dta",
+      "entry": "Scripts\\Libye2\\Li2_SND_sup.scr",
+      "size": 420,
+      "terms": [
+        "li2"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "SabreSquadron.dta",
+      "entry": "Missions\\Co_Burgundy2\\check2.bin",
+      "size": 330938,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "SabreSquadron.dta",
+      "entry": "Scripts\\co_burgundy2\\posila5.scr",
+      "size": 1341,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "name",
+        "content"
+      ]
+    },
+    {
+      "archive": "SabreSquadron.dta",
+      "entry": "Scripts\\Libye2\\Li2_SND_sutr1.scr",
+      "size": 333,
+      "terms": [
+        "li2"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "SabreSquadron.dta",
+      "entry": "Scripts\\Libye2\\Li2_SND_sutr2.scr",
+      "size": 422,
+      "terms": [
+        "li2"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "SabreSquadron.dta",
+      "entry": "Missions\\Co_Libye2\\mpscripts.dta",
+      "size": 4454,
+      "terms": [
+        "li2"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "SabreSquadron.dta",
+      "entry": "Missions\\Co_Burgundy2\\actors.bin",
+      "size": 41758,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "SabreSquadron.dta",
+      "entry": "Scripts\\Co_Libye2\\Li2_SND_bum.scr",
+      "size": 420,
+      "terms": [
+        "li2"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "SabreSquadron.dta",
+      "entry": "Missions\\Co_Burgundy2\\Scripts.dta",
+      "size": 5265,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "SabreSquadron.dta",
+      "entry": "Scripts\\Co_Libye2\\Li2_SND_sup.scr",
+      "size": 420,
+      "terms": [
+        "li2"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "SabreSquadron.dta",
+      "entry": "Scripts\\Co_Libye2\\Li2_SND_sutr1.scr",
+      "size": 333,
+      "terms": [
+        "li2"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "SabreSquadron.dta",
+      "entry": "Scripts\\Co_Libye2\\Li2_SND_sutr2.scr",
+      "size": 422,
+      "terms": [
+        "li2"
+      ],
+      "match_kinds": [
+        "name"
+      ]
+    },
+    {
+      "archive": "SabreSquadron.dta",
+      "entry": "Missions\\Co_Burgundy2\\mpscripts.dta",
+      "size": 5265,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    },
+    {
+      "archive": "SabreSquadron.dta",
+      "entry": "Scripts\\co_burgundy2\\pocitadlo_picusu.scr",
+      "size": 7524,
+      "terms": [
+        "la5"
+      ],
+      "match_kinds": [
+        "content"
+      ]
+    }
+  ]
+}

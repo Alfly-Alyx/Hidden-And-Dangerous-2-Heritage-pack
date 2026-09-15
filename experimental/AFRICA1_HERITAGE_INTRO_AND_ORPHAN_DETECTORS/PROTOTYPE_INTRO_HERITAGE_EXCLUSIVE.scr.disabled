@@ -1,0 +1,89 @@
+// PROTOTYPE HERITAGE/MODERNE DESACTIVE — Africa 1, introduction 1 seulement
+//
+// Choix exclusif de binding dans une copie de test:
+//   RELEASE  : m_palma68 -> CUT_af1start.scr
+//   HERITAGE : m_palma68 -> ce prototype renomme en .scr
+// Ne jamais lier les deux controleurs de demarrage simultanement.
+// Le bloc commercial de cutscene 10 est volontairement absent.
+
+block {
+  FRAME camera01_01; FRM_FindFrame(camera01_01, "camera_cut01_01");
+  FRAME camera01_02; FRM_FindFrame(camera01_02, "camera_cut01_02");
+  FRAME camera01_03; FRM_FindFrame(camera01_03, "camera_cut01_03");
+  FRAME camera02_01; FRM_FindFrame(camera02_01, "camera_cut02_01");
+  FRAME camera02_02; FRM_FindFrame(camera02_02, "camera_cut02_02");
+  FRAME camera03;    FRM_FindFrame(camera03, "camera_cut03");
+  FRAME camera_let01; FRM_FindFrame(camera_let01, "camera_let01");
+  FRAME macchi;      FRM_FindFrame(macchi, "la_macchi_cut");
+  FRAME null;        FRM_FindFrame(null, "");
+  FRAME af11;        FRM_FindFrame(af11, "AF1_11");
+}
+
+// MODERNE: meme delai de stabilisation que l'introduction release.
+Delay(500);
+CSC_RunCutscene(1);
+
+OnCutscene(1) {
+  SUBTITLES_SetOn(true);
+  Delay(1000);
+
+  CSC_FadeOut(200);
+  Delay(300);
+  FRM_SetActiveCamera(camera01_01);
+  CSC_FadeIn(200);
+  SUBTITLES_SetText(05011001);
+  Delay(2000);
+
+  CSC_FadeOut(200);
+  Delay(300);
+  FRM_SetActiveCamera(camera01_02);
+  CSC_FadeIn(200);
+  Delay(2000);
+
+  CSC_FadeOut(200);
+  Delay(300);
+  FRM_SetActiveCamera(camera01_03);
+  CSC_FadeIn(200);
+  Delay(2000);
+
+  // HERITAGE: signal conserve pour observation; AF1_11 n'a pas de handler 12.
+  SendSignal(af11, 12);
+  FRM_SetCameraFrame(null);
+  Delay(200);
+  FRM_SetActiveCamera(camera02_01);
+  CSC_FadeIn(300);
+  Delay(1000);
+  SUBTITLES_SetText(05011002);
+  Delay(4500);
+  CSC_FadeOut(200);
+  Delay(200);
+  FRM_SetActiveCamera(camera02_02);
+  CSC_FadeIn(200);
+  Delay(15500);
+  FRM_SetCameraFrame(null);
+  Delay(200);
+
+  FRM_SetOn(macchi, true);
+  CSC_FadeOut(200);
+  FRM_WatchTrack(macchi, "pristani");
+  Delay(500);
+  FRM_SetActiveCamera(camera_let01);
+  CSC_FadeIn(200);
+  Delay(4000);
+  FRM_SetCameraFrame(macchi);
+  FRM_SetActiveCamera(camera03);
+  SUBTITLES_SetText(05011003);
+  Delay(7000);
+
+  CSC_EndCutscene();
+}
+
+OnCutsceneDone(1) {
+  FRM_SetOn(macchi, false);
+  FRM_SetCameraFrame(null);
+  SUBTITLES_SetOn(false);
+  CSC_FadeIn(200);
+  goto END;
+}
+
+Label END:

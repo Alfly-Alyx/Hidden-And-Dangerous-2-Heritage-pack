@@ -1,0 +1,26 @@
+// DOCUMENTATION DES BRANCHES EXCLUSIVES - non compilable/non liee.
+// SELECTED_PROFILE = SHORT_RELEASE
+
+// SHORT_RELEASE : corps actuel de OnAlarmDone apres HUMAN_SETMODE_Walk().
+// HUMAN_SetAnim("%%turnleft", 500, 500, false); Delay(2000);
+// HUMAN_SetAnim("%%turnright", 500, 500, false); Delay(2000);
+
+// LONG_PATROL : interdit tant que AF1_20_01 et LOOKAROUND_MODERN ne sont pas
+// valides. Remplace SHORT_RELEASE ; ne pas executer les deux.
+// Delay(1000);
+// Label LONG_LOOP:
+//   HUMAN_Move("AF1_20_01"); gosub LOOKAROUND_MODERN;
+//   HUMAN_Move("AF1_20_02");
+//   HUMAN_Move("AF1_20_03"); gosub LOOKAROUND_MODERN;
+//   HUMAN_Move("AF1_20_04");
+//   HUMAN_Move("AF1_20_05"); gosub LOOKAROUND_MODERN;
+//   HUMAN_Move("AF1_20_06");
+//   HUMAN_Move("AF1_20_07"); gosub LOOKAROUND_MODERN;
+//   HUMAN_Move("AF1_20_08");
+// goto LONG_LOOP;
+
+// CREATION MODERNE, derivee des seules rotations release :
+// Label LOOKAROUND_MODERN:
+//   HUMAN_SetAnim("%%turnleft", 500, 500, false); Delay(2000);
+//   HUMAN_SetAnim("%%turnright", 500, 500, false); Delay(2000);
+// return;

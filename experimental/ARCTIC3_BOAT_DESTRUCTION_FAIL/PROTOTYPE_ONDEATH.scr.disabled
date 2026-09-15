@@ -1,0 +1,15 @@
+// LABORATOIRE UNIQUEMENT - détecteur A, non compilé et non lié.
+// Appliquer à une COPIE de R_Ar3_Amik_Boat.scr, avec le récepteur partagé.
+// Ne pas combiner avec PROTOTYPE_STATE_MONITOR.scr.disabled.
+
+// Déclaration avec les autres frames.
+frame objectives; FRM_FindFrame(objectives, "objectives");
+
+// Nouveau gestionnaire sur le propriétaire ELKO.
+OnDeath()
+{
+  SendSignal(objectives, 20);
+  EndScript();
+}
+
+// Aucun sous-titre, son, effet ou EndMission n'est ajouté.

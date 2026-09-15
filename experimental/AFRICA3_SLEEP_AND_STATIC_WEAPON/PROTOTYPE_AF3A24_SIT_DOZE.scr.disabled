@@ -1,0 +1,12 @@
+// LABORATOIRE UNIQUEMENT - non compilé, non lié.
+// Dans une COPIE Patch de AF3a_24.scr, remplacer uniquement le bloc initial
+// situé après HUMAN_Move("AF3a_24_01").
+
+HUMAN_Move("AF3a_24_01");
+HUMAN_ACTIVITY_Sit(sit);
+HUMAN_Suspend(true);
+HUMAN_SetEvents(true);
+goto END2;
+
+// OnAlarm et OnAlarmDone restent inchangés. Cette pose est un repli assis,
+// jamais une preuve de sommeil ni une autorisation d'inventer some_bed.

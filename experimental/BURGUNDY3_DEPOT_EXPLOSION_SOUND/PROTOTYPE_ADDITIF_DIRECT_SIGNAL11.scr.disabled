@@ -1,0 +1,35 @@
+// MAQUETTE DE DELTA EXPERIMENTALE/MODERNE — NON AUTONOME, NON ACTIVEE
+// Burgundy 3: couche sonore composite sur la seule destruction directe.
+//
+// Partie A — dans bur3_vybuch.scr, Label DESTROY_DMG seulement:
+// conserver la ligne commerciale SendSignal(snd_strom, 10); puis ajouter:
+//
+//   SendSignal(snd_strom, 11);
+//
+// Ne jamais ajouter ce signal 11 dans bur3_maquis01.scr ni OnCutscene(4).
+// Ne jamais creer OnSignal(10) dans le recepteur.
+//
+// Partie B — ajouter le handler ci-dessous a snd_vybuch_paliva.scr.
+// Les frames snd1..snd9 sont deja declarees par le script commercial.
+
+OnSignal(11)
+{
+  EnableSignal(11, false);
+  block
+  {
+    FRM_SetOn(snd7, true);
+    FRM_SetOn(snd8, true);
+    FRM_SetOn(snd9, true);
+  }
+  FRM_SetOn(snd1, true);
+  Delay(150);
+  FRM_SetOn(snd2, true);
+  Delay(150);
+  FRM_SetOn(snd3, true);
+  Delay(100);
+  FRM_SetOn(snd4, true);
+  Delay(100);
+  FRM_SetOn(snd5, true);
+  Delay(100);
+  FRM_SetOn(snd6, true);
+}

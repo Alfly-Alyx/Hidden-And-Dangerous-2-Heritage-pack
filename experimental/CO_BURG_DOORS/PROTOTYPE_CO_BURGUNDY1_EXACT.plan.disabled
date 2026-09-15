@@ -1,0 +1,15 @@
+STATUS=DISABLED_EXACT_RECORD_IMPORT
+SOURCE_MISSION=BURGUNDY1
+TARGET_MISSION=CO_BURGUNDY1_TEST_COPY_ONLY
+MODE=COPY_FULL_OWNER_RECORD_THEN_ADD_ONE_BINDING
+
+COPY dummy_snd6  BIND bur1_SND_door1.scr  TARGETS F_dr_door26 S_dorcon1
+COPY dummy_snd7  BIND bur1_SND_door2.scr  TARGETS F_dr_door00 S_dorcon5
+COPY dummy_snd8  BIND bur1_SND_door3.scr  TARGETS F_dr_door20 S_dorcon2
+COPY dummy_snd9  BIND bur1_SND_door4.scr  TARGETS F_dr_door19 S_dorcon3
+COPY dummy_snd10 BIND bur1_SND_door5.scr  TARGETS F_dr_door18 S_dorcon4
+COPY dummy_snd11 BIND bur1_SND_door6.scr  TARGETS F_bunk_door_34 S_dorcon10
+COPY dummy_snd12 BIND bur1_SND_door7.scr  TARGETS F_dr_door17 S_dorcon11
+
+# Copier parent, transform, identifiant, flags et tous les champs binaires.
+# Ne copier ni script, porte, émetteur sonore ou sounds.bin.

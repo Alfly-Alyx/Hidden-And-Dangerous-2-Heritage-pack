@@ -1,0 +1,20 @@
+// VARIANTE COMPARATIVE DESACTIVEE : rayon du vestige, non compilee/non liee.
+// Ne jamais charger avec ON_USE_ONESHOT. Le second ventilateur reste release.
+
+FRAME this; FRM_GetMyFrame(this);
+INTEGER physical_created = 0;
+
+Label LOOP:
+  FRM_RotateY(this, 108000, 360);
+  Delay(8000);
+goto LOOP;
+
+Whenever pir (_PlayerInRange(3)){
+  if(physical_created == 0){
+    // Desarmement et verrou avant l'appel potentiellement destructeur.
+    SetWhenever(pir, false);
+    physical_created = 1;
+    FRM_CreatePhysicalObject(this, 5);
+    EndScript();
+  }
+}

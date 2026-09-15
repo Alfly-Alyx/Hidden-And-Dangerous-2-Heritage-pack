@@ -1,0 +1,25 @@
+CASE=AFRICA3_SLEEPING_GUARDS_24_26
+SELECTED_PROFILE=STABLE_AF3A24_SIT
+
+STABLE_AF3A24_SIT:
+  dummy_24_sit=COMMERCIAL_PRESENT
+  AF3a_24_sit=COMMERCIAL_PRESENT
+  DO_NOT_MODIFY_INSTALLER=true
+
+AF3A24_SLEEP_MODERN:
+  frame=bed_af3a24_sleep_modern
+  position=TBD_EDITOR
+  orientation=TBD_EDITOR
+  asset_provenance=TBD_REDISTRIBUTABLE_OR_LOCAL_COMMERCIAL_REFERENCE
+  label=CREATION_MODERNE
+
+AF3A26_SLEEP_COMMERCIAL_BED:
+  frame=m_postel_a7
+  scene_presence=VERIFIED
+  activity_anchor_compatibility=TBD_EDITOR_AND_RUNTIME
+
+GLOBAL:
+  HUMAN_ACTIVITY_Sleep.active_commercial_examples=0
+  profiles_mutually_exclusive=true
+  alarm_handlers_preserved=true
+  NO_COMPILE=true

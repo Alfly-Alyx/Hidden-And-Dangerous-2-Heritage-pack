@@ -1,0 +1,52 @@
+// LABORATOIRE UNIQUEMENT - non compilé et non lié.
+// Appliquer à une COPIE Patch 1.12 de C5_R17.scr.
+// 0 = route Patch directe, 1 = route Base exacte, 2 = hybride diagnostic.
+
+integer route_mode = 0;
+
+// Signaux réservés au sender de laboratoire, avant le signal 2 effectif.
+OnSignal(3) { route_mode = 1; }
+OnSignal(4) { route_mode = 2; }
+
+// Remplacer uniquement le Whenever run de la copie Patch.
+Whenever run(_SignalReceived(2))
+{
+  SendSignal(r18, 2);
+  Delay(3000);
+
+  if (route_mode == 1) { goto ROUTE_BASE; }
+  if (route_mode == 2) { goto ROUTE_HYBRID; }
+
+label ROUTE_PATCH:
+  printf("R17 LAB: Patch route, C5_isu02 @30");
+  HUMAN_Drive("C5_isu02", 30);
+  goto ARRIVAL;
+
+label ROUTE_BASE:
+  printf("R17 LAB: Base route @12");
+  HUMAN_Drive("C5_isu01", 12);
+  HUMAN_Drive("C5_tank11", 12);
+  HUMAN_Drive("C5_isu02", 12);
+  goto ARRIVAL;
+
+label ROUTE_HYBRID:
+  printf("R17 LAB: hybrid route via C5_isu01 @30");
+  HUMAN_Drive("C5_isu01", 30);
+  HUMAN_Drive("C5_isu02", 30);
+
+label ARRIVAL:
+  printf("R17 LAB: route complete, crew disembarks");
+  HUMAN_BoardVehicle("Isu152", false, 0);
+  Block
+  {
+    SendSignal(r18, 31);
+    SendSignal(r19, 31);
+    SendSignal(r20, 31);
+  }
+  HUMAN_SETEVENTS(true);
+  goto end;
+}
+
+// La branche 0 et la séquence ARRIVAL conservent le Patch. La branche 1 est
+// la Base exacte. La branche 2 est une combinaison expérimentale, jamais une
+// restauration historique revendiquée.

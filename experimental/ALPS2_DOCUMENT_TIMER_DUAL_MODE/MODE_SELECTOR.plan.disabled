@@ -1,0 +1,28 @@
+DEFAULT_PROFILE=EXPLORATION_FREE
+
+EXPLORATION_FREE
+  AL2_alarm.timer90s=false
+  AL2_alarm_carn.timer90s=false
+
+HISTORICAL_90S_NORMAL
+  script=AL2_alarm
+  timer90s=true
+  semantics=official_raw_vestige
+
+HISTORICAL_90S_CARNAGE
+  script=AL2_alarm_carn
+  timer90s=true
+  semantics=official_raw_vestige
+
+HARDCORE_90S_NORMAL
+  alias_of=HISTORICAL_90S_NORMAL
+  label=hardcore
+
+HARDCORE_90S_CARNAGE
+  alias_of=HISTORICAL_90S_CARNAGE
+  label=hardcore
+
+RULES
+  never_enable_timer_from_carnage_implicitly
+  never_patch_both_alarm_scripts_into_one_mission_variant
+  never_replace_EXPLORATION_FREE

@@ -1,0 +1,64 @@
+CASE=BENELLI_M4_PARTIAL_WEAPON
+CLASSIFICATION=PARTIAL_COMMERCIAL_REMAINS
+PROTOTYPE_MODE=VISUAL_ONLY
+STATUS=DISABLED
+
+ASSET_SOURCE=local owned installation only
+REDISTRIBUTE_COMMERCIAL_ASSETS=false
+CREATE_WEAPON_ENTRY=false
+CREATE_ITEM=false
+USE_AMMO_ID_179=false
+PLAY_SOUND=false
+SPAWN_PROJECTILE=false
+APPLY_DAMAGE=false
+
+ATTESTED_SOUNDS_NOT_PLAYED_BY_VISUAL_BENCH:
+- f_bene_a.wav, 70236 bytes, I Benelli M4
+- bene_r.wav, 265818 bytes, I Benelli M4 Reload
+
+MANUAL_STATES:
+- #FPVBeneliAim.4ds + #FPVBeneliAim.5ds
+- #FPVBeneliAimShot.4ds + #FPVBeneliAimShot.5ds
+- #FPVBeneliArm.4ds + #FPVBeneliArm.5ds
+- #FPVBeneliDaim.4ds + #FPVBeneliDaim.5ds
+- #FPVBeneliDisarm.4ds + #FPVBeneliDisarm.5ds
+- #FPVBeneliIdle1.4ds + #FPVBeneliIdle1.5ds
+- #FPVBeneliJammed.4ds + #FPVBeneliJammed.5ds
+- #FPVBeneliRel.4ds + #FPVBeneliRel.5ds
+- #FPVBeneliShot.4ds + #FPVBeneliShot.5ds
+
+TEXTURE_REFERENCES:
+- wi_it-benelli.bmp
+- d_benellim4.bmp
+- d_benellim4paz.bmp
+
+INSPECT_NODES:
+- arms and hands
+- fpv_weapon
+- blsdum
+- cardum
+- cock
+- gunlock
+- shdum
+- shell01
+- magazine
+
+MISSING_FUNCTIONAL_CHAIN:
+- Weapon table entry
+- w_benelli world/ground/third-person model
+- separate static FPV model expected by Weapon entry
+- ammo 179 binding
+- ballistics, recoil, spread, cadence, damage
+- magazine capacity and reload contract
+- event timing/binding for the two attested audio files
+- inventory drop/pickup, AI, save, network
+
+ACCEPT_VISUAL_DEMO_IF:
+- all nine 4DS/5DS pairs load without substitution
+- commercial textures resolve from the local installation
+- state selection is manual and makes no gameplay claims
+- no archive or table is modified
+- shutdown leaves no extracted asset or changed file
+
+FUNCTIONAL_WEAPON_REQUIRES_SEPARATE_MODERN_PROJECT=true
+NO_COMPILE=true

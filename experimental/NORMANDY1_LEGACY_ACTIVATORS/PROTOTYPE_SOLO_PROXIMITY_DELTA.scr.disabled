@@ -1,0 +1,23 @@
+// PROTOTYPE/MODERNE DESACTIVE — fragment non autonome Normandy 1
+//
+// But: dans une copie de test de X_N1_N24.scr ET X_N1_N25.scr, conserver
+// tous les handlers, chemins et bindings commerciaux, mais activer aussi en
+// solo le Whenever nomme "player" deja defini a _PlayerInRange(30).
+//
+// OPTION COUPEE:
+//   conserver exactement le bloc commercial _SPGetGameType() qui active
+//   "player" seulement pour les types 3/7.
+//
+// OPTION LEGACY_SOLO_PROXIMITY ACTIVE:
+//   remplacer uniquement ce bloc de selection de mode par la ligne suivante.
+
+SetWhenever(player, true);
+
+// Ne pas modifier:
+//   - Whenever activate(_SignalReceived(1));
+//   - les labels alarmed/end;
+//   - les mouvements N24_1, N25_1 et N25_2;
+//   - les bindings N24 -> X_N1_N24.scr et N25 -> X_N1_N25.scr.
+//
+// Ce fragment n'est pas un script installable. Il ne definit volontairement
+// ni nouvelle frame, ni nouvelle valeur sauvegardee, ni porteur N24_A1/N25_A1.

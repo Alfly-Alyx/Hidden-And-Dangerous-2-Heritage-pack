@@ -1,0 +1,36 @@
+CASE=NORWAY_MISSING_TIRPITZ_GUARDS_1_2_6_7_12_13_16
+STATUS=BLOCKED_NO_HISTORICAL_TRANSFORMS_OR_PATHS
+
+ACTOR tirpic_guard_1  = TBD_SOURCE_OR_MODERN_EDITOR
+ACTOR tirpic_guard_2  = TBD_SOURCE_OR_MODERN_EDITOR
+ACTOR tirpic_guard_6  = TBD_SOURCE_OR_MODERN_EDITOR
+ACTOR tirpic_guard_7  = TBD_SOURCE_OR_MODERN_EDITOR
+ACTOR tirpic_guard_12 = TBD_SOURCE_OR_MODERN_EDITOR
+ACTOR tirpic_guard_13 = TBD_SOURCE_OR_MODERN_EDITOR
+ACTOR tirpic_guard_16 = TBD_SOURCE_OR_MODERN_EDITOR
+
+PATHS:
+  1  = T1_1,T1_2,T1_3
+  2  = T2_1,T2_2
+  6  = T6_1,T6_2
+  7  = T7_1,T7_2
+  12 = T12_1,T12_2,T12_3
+  13 = T13_1,T13_2
+  16 = T16_1,T16_2
+
+LOOK_TARGET:
+  dummy_see2 = COMMERCIAL_PRESENT
+  dummy_see1 = MISSING_CREATE_MODERN_OR_FIND_SOURCE
+
+REQUIRED_PER_ACTOR:
+  position, quaternion, equipment, model, team, inventory, initial posture,
+  bidirectional nav links, collision clearance, sightline to look target,
+  source label OFFICIAL or MODERN.
+
+DO_NOT:
+  infer transforms from numbering alone
+  clone a neighbouring actor and call it historical
+  add bindings before all referenced checkpoints resolve
+  modify guards 3,4,5,8,9,11,14,15,18
+
+NO_COMPILE=true

@@ -1,0 +1,17 @@
+// Deux variantes SOLO exclusives pour la fin de OnSignal(1).
+// SELECTED_VARIANT = RELEASE_IMMEDIATE_HANDOFF
+
+// RELEASE_IMMEDIATE_HANDOFF — corps commercial
+// SendSignal(zavora, 0);
+// SaveGameValue(61, 1);
+// goto END;
+
+// HERITAGE_RETURN_BEFORE_HANDOFF — vestige exact, délai assumé
+// SendSignal(zavora, 0);
+// HUMAN_Move("04_01");
+// SaveGameValue(61, 1);
+// goto END;
+
+// Ne copier qu'un seul corps dans une copie du script solo.
+// Ne pas appliquer à Co_Burgundy1 : cette variante écrit 61=2.
+

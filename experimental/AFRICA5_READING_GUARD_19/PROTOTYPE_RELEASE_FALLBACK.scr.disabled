@@ -1,0 +1,10 @@
+// REPLI RELEASE : boucle seule, non compilee et non liee.
+// Aucun objet n'est pris ; OnAlarm conserve son DropObject commercial.
+
+Label ACTIVITY:
+  HUMAN_Investigate(archive);
+  Delay(1000);
+  HUMAN_SETMODE_Stand();
+  Delay(2000);
+  HUMAN_SETMODE_Crouch();
+goto ACTIVITY;

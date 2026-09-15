@@ -1,0 +1,32 @@
+// PROPRIETAIRE PROXIMITE DESACTIVE - non compile/non lie.
+// Valide uniquement avec l'organisateur PROFILE_PROXIMITY_FILTERED.
+
+block{
+  FRAME af16; FRM_FindFrame(af16, "AF3b_16");
+  FRAME af17; FRM_FindFrame(af17, "AF3b_17");
+  FRAME af18; FRM_FindFrame(af18, "AF3b_18");
+  FRAME af19; FRM_FindFrame(af19, "AF3b_19");
+  FRAME af20; FRM_FindFrame(af20, "AF3b_20");
+  FRAME af21; FRM_FindFrame(af21, "AF3b_21");
+  FRAME af22; FRM_FindFrame(af22, "AF3b_22");
+  FRAME af23; FRM_FindFrame(af23, "AF3b_23");
+  FRAME af24; FRM_FindFrame(af24, "AF3b_24");
+  FRAME af25; FRM_FindFrame(af25, "AF3b_25");
+  INTEGER fired = 0;
+}
+
+Whenever inrange (_PlayerInRange(60)){
+  if(fired == 0){
+    // Verrou et desarmement avant le premier signal.
+    fired = 1;
+    SetWhenever(inrange, false);
+    block{
+      SendSignal(af16, 1); SendSignal(af17, 1);
+      SendSignal(af18, 1); SendSignal(af19, 1);
+      SendSignal(af20, 1); SendSignal(af21, 1);
+      SendSignal(af22, 1); SendSignal(af23, 1);
+      SendSignal(af24, 1); SendSignal(af25, 1);
+    }
+    EndScript();
+  }
+}

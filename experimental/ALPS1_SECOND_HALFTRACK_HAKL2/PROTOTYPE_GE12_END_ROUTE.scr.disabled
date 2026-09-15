@@ -1,0 +1,11 @@
+// DELTA DESACTIVE pour une copie de ge_12.scr - non compile/non lie.
+// Remplace uniquement la ligne commentee, apres HUMAN_Drive("",0).
+// INFERENCE : le signal 11 est choisi parce que le recepteur survivant l'attend.
+
+HUMAN_Drive("",0);
+SendSignal (hakl2,11);
+delay (2000);
+FRM_TeleportNearCheckpoint(haklx,"h3", "h4");
+FRM_SetOn(hakl,0);
+
+// Le reste de ge_12.scr demeure strictement commercial.

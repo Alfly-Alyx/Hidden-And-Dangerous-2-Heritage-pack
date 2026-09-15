@@ -1,0 +1,36 @@
+// DELTAS DESACTIVES pour ge_35.scr - fragments, non compilables seuls.
+
+// AJOUT dans le block initial : verrou moderne, sans pretention historique.
+integer alarm_chain_armed;	alarm_chain_armed=0;
+
+// REMPLACEMENT borne du handler signal 1 ; corps commercial conserve.
+Whenever bez(_SignalReceived(1))
+{
+alarm_chain_armed=1;
+printf ("bonzak slysi");
+HUMAN_SETEVENTS(1);
+SetAlarmType(749,0);
+goto end;
+}
+
+// RECONSTRUCTION MODERNE candidate A : tester seule.
+Whenever chain3(_SignalReceived(3))
+{
+if (alarm_chain_armed==1)
+{
+goto hotovo;
+}
+goto end;
+}
+
+// RECONSTRUCTION MODERNE candidate B : tester seule.
+Whenever chain4(_SignalReceived(4))
+{
+if (alarm_chain_armed==1)
+{
+goto hotovo;
+}
+goto end;
+}
+
+// Le label hotovo et tout son corps restent strictement commerciaux.

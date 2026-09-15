@@ -1,0 +1,33 @@
+CASE=AFRICA4_PROXIMITY_ASSAULT_VARIANT
+SELECTED_PROFILE=WAVES_RELEASE
+NO_RUNTIME_SWITCH=true
+
+PROFILE WAVES_RELEASE:
+  dummy_organizer -> AF3b_organizer.scr Patch complet
+  dummy_inrange   -> AF3b_activator.scr commercial, Whenever commente
+
+PROFILE PROXIMITY_EXCLUSIVE:
+  dummy_inrange   -> copie du PROTOTYPE_PROXIMITY_OWNER
+  dummy_organizer -> copie Patch filtree
+
+PROFILE_PROXIMITY_FILTERED retire uniquement les SendSignal de l'organisateur
+dont la cible est l'un de ces dix acteurs :
+  AF3b_16 AF3b_17 AF3b_18 AF3b_19 AF3b_20
+  AF3b_21 AF3b_22 AF3b_23 AF3b_24 AF3b_25
+
+CONSERVER DANS L'ORGANISATEUR FILTRE :
+  - chargement puis forçage commercial de odvysilali ;
+  - signal1, signal2 et zpozdeni ;
+  - S_invaze, Opel, tankistes ;
+  - AF3b_11..15, AF3b_26..33 ;
+  - ordre et tous les Delay.
+
+INTERDIT :
+  - second sender indépendant ;
+  - activation simultanée des profils ;
+  - changement de profil après chargement ;
+  - suppression complète de l'organisateur ;
+  - modification des scripts propres de AF3b_16..25.
+
+ROLLBACK=WAVES_RELEASE
+NO_COMPILE=true

@@ -1,0 +1,27 @@
+// PROTOTYPE DESACTIVE — ne pas intégrer ni compiler.
+// Corps de victoire/objectif issu du fragment commenté Africa3.
+// La garde game_type 3/7 et la branche else sont reconstruites par analogie.
+
+INTEGER game_type = _SPGetGameType();
+
+DisableSignals(true);
+
+Whenever alldead (_AllEnemiesDead())
+{
+  SUBTITLES_SetOn(true);
+  SUBTITLES_SetText(20994001);
+  Delay(2000);
+  SetObjectiveStatus(6, 1);
+  GoTo END;
+}
+
+If ((game_type == 3) OR (game_type == 7))
+{
+  SetObjectiveStatus(6, 0);
+}
+Else
+{
+  SetWhenever(alldead, false);
+}
+
+Label END:

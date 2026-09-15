@@ -1,0 +1,1354 @@
+{
+  "game": "D:\\Games\\Hidden and Dangerous 2",
+  "mission_count": 68,
+  "registry_count": 79,
+  "missions": [
+    {
+      "mission": "africa1",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/africa1/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 112
+        }
+      ],
+      "binding_count": 112,
+      "attached_script_count": 109,
+      "included_script_count": 5,
+      "available_script_count": 140,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "africa1_mp",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/africa1_mp/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 6
+        }
+      ],
+      "binding_count": 6,
+      "attached_script_count": 6,
+      "included_script_count": 0,
+      "available_script_count": 6,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "africa1_obj",
+      "registry_archive": "missions.dta",
+      "registry_count": 2,
+      "registry_files": [
+        {
+          "path": "missions/africa1_obj/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 8
+        },
+        {
+          "path": "missions/africa1_obj/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 0
+        }
+      ],
+      "binding_count": 8,
+      "attached_script_count": 8,
+      "included_script_count": 0,
+      "available_script_count": 10,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "africa2",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/africa2/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 72
+        }
+      ],
+      "binding_count": 72,
+      "attached_script_count": 63,
+      "included_script_count": 4,
+      "available_script_count": 84,
+      "missing_attached_scripts": [
+        "af2_particle_junkers.scr"
+      ],
+      "missing_attached_bindings": [
+        {
+          "registry": "missions/africa2/scripts.dta",
+          "actor": "HoriciJunkers.engine_l00",
+          "script": "AF2_particle_junkers.scr",
+          "normalized_script": "af2_particle_junkers.scr"
+        }
+      ]
+    },
+    {
+      "mission": "africa2_mp_zone",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/africa2_mp_zone/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 14
+        }
+      ],
+      "binding_count": 14,
+      "attached_script_count": 14,
+      "included_script_count": 0,
+      "available_script_count": 14,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "africa3",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/africa3/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 84
+        }
+      ],
+      "binding_count": 84,
+      "attached_script_count": 82,
+      "included_script_count": 6,
+      "available_script_count": 101,
+      "missing_attached_scripts": [
+        "af3a_1415synchronizer.scr",
+        "af3a_2223synchronizer.scr"
+      ],
+      "missing_attached_bindings": [
+        {
+          "registry": "missions/africa3/scripts.dta",
+          "actor": "AF3a_14_lookAF15",
+          "script": "AF3a_1415synchronizer.scr",
+          "normalized_script": "af3a_1415synchronizer.scr"
+        },
+        {
+          "registry": "missions/africa3/scripts.dta",
+          "actor": "AF3a_22_look1_01",
+          "script": "AF3a_2223synchronizer.scr",
+          "normalized_script": "af3a_2223synchronizer.scr"
+        }
+      ]
+    },
+    {
+      "mission": "africa3_obj",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/africa3_obj/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 6
+        }
+      ],
+      "binding_count": 6,
+      "attached_script_count": 6,
+      "included_script_count": 0,
+      "available_script_count": 7,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "africa4",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/africa4/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 68
+        }
+      ],
+      "binding_count": 68,
+      "attached_script_count": 67,
+      "included_script_count": 0,
+      "available_script_count": 79,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "africa4_obj",
+      "registry_archive": "missions.dta",
+      "registry_count": 2,
+      "registry_files": [
+        {
+          "path": "missions/africa4_obj/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 6
+        },
+        {
+          "path": "missions/africa4_obj/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 0
+        }
+      ],
+      "binding_count": 6,
+      "attached_script_count": 6,
+      "included_script_count": 0,
+      "available_script_count": 7,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "africa5",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/africa5/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 168
+        }
+      ],
+      "binding_count": 168,
+      "attached_script_count": 164,
+      "included_script_count": 4,
+      "available_script_count": 178,
+      "missing_attached_scripts": [
+        "af4_runway01_detector.scr"
+      ],
+      "missing_attached_bindings": [
+        {
+          "registry": "missions/africa5/scripts.dta",
+          "actor": "dummy_runway01",
+          "script": "AF4_runway01_detector.scr",
+          "normalized_script": "af4_runway01_detector.scr"
+        }
+      ]
+    },
+    {
+      "mission": "africa5_mp",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/africa5_mp/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 7
+        }
+      ],
+      "binding_count": 7,
+      "attached_script_count": 7,
+      "included_script_count": 0,
+      "available_script_count": 7,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "africa5_mp_zone",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/africa5_mp_zone/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 8
+        }
+      ],
+      "binding_count": 8,
+      "attached_script_count": 8,
+      "included_script_count": 0,
+      "available_script_count": 8,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "africa6",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/africa6/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 13
+        }
+      ],
+      "binding_count": 13,
+      "attached_script_count": 13,
+      "included_script_count": 4,
+      "available_script_count": 18,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "alps1",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/alps1/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 148
+        }
+      ],
+      "binding_count": 148,
+      "attached_script_count": 125,
+      "included_script_count": 13,
+      "available_script_count": 144,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "alps1_mp_zone",
+      "registry_archive": "missions.dta",
+      "registry_count": 2,
+      "registry_files": [
+        {
+          "path": "missions/alps1_mp_zone/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 0
+        },
+        {
+          "path": "missions/alps1_mp_zone/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 1
+        }
+      ],
+      "binding_count": 1,
+      "attached_script_count": 1,
+      "included_script_count": 0,
+      "available_script_count": 0,
+      "missing_attached_scripts": [
+        "v_a1_vitr_stromy.scr"
+      ],
+      "missing_attached_bindings": [
+        {
+          "registry": "missions/alps1_mp_zone/scripts.dta",
+          "actor": "zvuk1",
+          "script": "V_a1_vitr_stromy.scr",
+          "normalized_script": "v_a1_vitr_stromy.scr"
+        }
+      ]
+    },
+    {
+      "mission": "alps2",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/alps2/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 115
+        }
+      ],
+      "binding_count": 115,
+      "attached_script_count": 103,
+      "included_script_count": 12,
+      "available_script_count": 129,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "alps3_obj",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/alps3_obj/mpscripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 4
+        }
+      ],
+      "binding_count": 4,
+      "attached_script_count": 4,
+      "included_script_count": 0,
+      "available_script_count": 7,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "arctic1",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/arctic1/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 105
+        }
+      ],
+      "binding_count": 105,
+      "attached_script_count": 77,
+      "included_script_count": 6,
+      "available_script_count": 88,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "arctic1_mp",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/arctic1_mp/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 4
+        }
+      ],
+      "binding_count": 4,
+      "attached_script_count": 4,
+      "included_script_count": 0,
+      "available_script_count": 4,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "arctic1_obj",
+      "registry_archive": "missions.dta",
+      "registry_count": 2,
+      "registry_files": [
+        {
+          "path": "missions/arctic1_obj/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 6
+        },
+        {
+          "path": "missions/arctic1_obj/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 1
+        }
+      ],
+      "binding_count": 7,
+      "attached_script_count": 7,
+      "included_script_count": 0,
+      "available_script_count": 8,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "arctic2",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/arctic2/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 172
+        }
+      ],
+      "binding_count": 172,
+      "attached_script_count": 131,
+      "included_script_count": 3,
+      "available_script_count": 143,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "arctic3",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/arctic3/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 94
+        }
+      ],
+      "binding_count": 94,
+      "attached_script_count": 90,
+      "included_script_count": 3,
+      "available_script_count": 94,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "arctic3_obj",
+      "registry_archive": "missions.dta",
+      "registry_count": 2,
+      "registry_files": [
+        {
+          "path": "missions/arctic3_obj/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 8
+        },
+        {
+          "path": "missions/arctic3_obj/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 1
+        }
+      ],
+      "binding_count": 9,
+      "attached_script_count": 6,
+      "included_script_count": 0,
+      "available_script_count": 6,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "arctic4",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/arctic4/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 124
+        }
+      ],
+      "binding_count": 124,
+      "attached_script_count": 98,
+      "included_script_count": 2,
+      "available_script_count": 100,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "ardens1_obj",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/ardens1_obj/mpscripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 4
+        }
+      ],
+      "binding_count": 4,
+      "attached_script_count": 4,
+      "included_script_count": 0,
+      "available_script_count": 4,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "brest",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/brest/scripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 204
+        }
+      ],
+      "binding_count": 204,
+      "attached_script_count": 186,
+      "included_script_count": 2,
+      "available_script_count": 190,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "burgundy1",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/burgundy1/scripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 105
+        }
+      ],
+      "binding_count": 105,
+      "attached_script_count": 98,
+      "included_script_count": 1,
+      "available_script_count": 100,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "burgundy2",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/burgundy2/scripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 96
+        }
+      ],
+      "binding_count": 96,
+      "attached_script_count": 88,
+      "included_script_count": 0,
+      "available_script_count": 90,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "burgundy3",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/burgundy3/scripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 87
+        }
+      ],
+      "binding_count": 87,
+      "attached_script_count": 87,
+      "included_script_count": 2,
+      "available_script_count": 89,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "burgundy3_mp",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/burgundy3_mp/mpscripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 1
+        }
+      ],
+      "binding_count": 1,
+      "attached_script_count": 1,
+      "included_script_count": 0,
+      "available_script_count": 1,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "burma1",
+      "registry_archive": "Patch.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/burma1/scripts.dta",
+          "archive": "Patch.dta",
+          "binding_count": 123
+        }
+      ],
+      "binding_count": 123,
+      "attached_script_count": 115,
+      "included_script_count": 2,
+      "available_script_count": 118,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "burma1_mp",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/burma1_mp/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 18
+        }
+      ],
+      "binding_count": 18,
+      "attached_script_count": 18,
+      "included_script_count": 0,
+      "available_script_count": 18,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "burma1_mp_zone",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/burma1_mp_zone/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 18
+        }
+      ],
+      "binding_count": 18,
+      "attached_script_count": 18,
+      "included_script_count": 0,
+      "available_script_count": 18,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "burma1_obj",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/burma1_obj/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 3
+        }
+      ],
+      "binding_count": 3,
+      "attached_script_count": 3,
+      "included_script_count": 0,
+      "available_script_count": 3,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "burma2",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/burma2/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 227
+        }
+      ],
+      "binding_count": 227,
+      "attached_script_count": 227,
+      "included_script_count": 6,
+      "available_script_count": 232,
+      "missing_attached_scripts": [
+        "cutsoundshlidka.scr"
+      ],
+      "missing_attached_bindings": [
+        {
+          "registry": "missions/burma2/scripts.dta",
+          "actor": "l_b2str_4",
+          "script": "CUTSOUNDSHLIDKA.scr",
+          "normalized_script": "cutsoundshlidka.scr"
+        }
+      ]
+    },
+    {
+      "mission": "burma2_obj",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/burma2_obj/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 2
+        }
+      ],
+      "binding_count": 2,
+      "attached_script_count": 2,
+      "included_script_count": 0,
+      "available_script_count": 4,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "co_brest",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 2,
+      "registry_files": [
+        {
+          "path": "missions/co_brest/mpscripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 213
+        },
+        {
+          "path": "missions/co_brest/scripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 211
+        }
+      ],
+      "binding_count": 424,
+      "attached_script_count": 195,
+      "included_script_count": 0,
+      "available_script_count": 199,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "co_burgundy1",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/co_burgundy1/mpscripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 91
+        }
+      ],
+      "binding_count": 91,
+      "attached_script_count": 86,
+      "included_script_count": 1,
+      "available_script_count": 100,
+      "missing_attached_scripts": [
+        "bu1_diary.scr",
+        "bur1_obj_carnage.scr"
+      ],
+      "missing_attached_bindings": [
+        {
+          "registry": "missions/co_burgundy1/mpscripts.dta",
+          "actor": "dummy_diary",
+          "script": "bu1_diary.scr",
+          "normalized_script": "bu1_diary.scr"
+        },
+        {
+          "registry": "missions/co_burgundy1/mpscripts.dta",
+          "actor": "F_sloup03",
+          "script": "bur1_obj_carnage.scr",
+          "normalized_script": "bur1_obj_carnage.scr"
+        }
+      ]
+    },
+    {
+      "mission": "co_burgundy2",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 2,
+      "registry_files": [
+        {
+          "path": "missions/co_burgundy2/mpscripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 127
+        },
+        {
+          "path": "missions/co_burgundy2/scripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 127
+        }
+      ],
+      "binding_count": 254,
+      "attached_script_count": 120,
+      "included_script_count": 0,
+      "available_script_count": 122,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "co_burgundy3",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/co_burgundy3/mpscripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 57
+        }
+      ],
+      "binding_count": 57,
+      "attached_script_count": 57,
+      "included_script_count": 0,
+      "available_script_count": 67,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "co_libye1",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 2,
+      "registry_files": [
+        {
+          "path": "missions/co_libye1/mpscripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 196
+        },
+        {
+          "path": "missions/co_libye1/scripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 189
+        }
+      ],
+      "binding_count": 385,
+      "attached_script_count": 140,
+      "included_script_count": 0,
+      "available_script_count": 140,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "co_libye2",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/co_libye2/mpscripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 136
+        }
+      ],
+      "binding_count": 136,
+      "attached_script_count": 132,
+      "included_script_count": 0,
+      "available_script_count": 135,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "co_libye3",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 2,
+      "registry_files": [
+        {
+          "path": "missions/co_libye3/mpscripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 148
+        },
+        {
+          "path": "missions/co_libye3/scripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 148
+        }
+      ],
+      "binding_count": 296,
+      "attached_script_count": 148,
+      "included_script_count": 0,
+      "available_script_count": 149,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "co_sicily1",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/co_sicily1/mpscripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 107
+        }
+      ],
+      "binding_count": 107,
+      "attached_script_count": 107,
+      "included_script_count": 0,
+      "available_script_count": 107,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "co_sicily2",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/co_sicily2/mpscripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 104
+        }
+      ],
+      "binding_count": 104,
+      "attached_script_count": 104,
+      "included_script_count": 0,
+      "available_script_count": 104,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "czech1",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/czech1/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 176
+        }
+      ],
+      "binding_count": 176,
+      "attached_script_count": 171,
+      "included_script_count": 7,
+      "available_script_count": 179,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "czech1_obj",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/czech1_obj/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 2
+        }
+      ],
+      "binding_count": 2,
+      "attached_script_count": 2,
+      "included_script_count": 0,
+      "available_script_count": 2,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "czech2",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/czech2/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 91
+        }
+      ],
+      "binding_count": 91,
+      "attached_script_count": 81,
+      "included_script_count": 2,
+      "available_script_count": 97,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "czech2_mp_zone",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/czech2_mp_zone/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 4
+        }
+      ],
+      "binding_count": 4,
+      "attached_script_count": 4,
+      "included_script_count": 0,
+      "available_script_count": 4,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "czech2_obj",
+      "registry_archive": "missions.dta",
+      "registry_count": 2,
+      "registry_files": [
+        {
+          "path": "missions/czech2_obj/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 1
+        },
+        {
+          "path": "missions/czech2_obj/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 0
+        }
+      ],
+      "binding_count": 1,
+      "attached_script_count": 1,
+      "included_script_count": 0,
+      "available_script_count": 1,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "czech3",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/czech3/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 70
+        }
+      ],
+      "binding_count": 70,
+      "attached_script_count": 67,
+      "included_script_count": 9,
+      "available_script_count": 84,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "czech3_obj",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/czech3_obj/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 1
+        }
+      ],
+      "binding_count": 1,
+      "attached_script_count": 1,
+      "included_script_count": 0,
+      "available_script_count": 2,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "czech4",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/czech4/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 102
+        }
+      ],
+      "binding_count": 102,
+      "attached_script_count": 101,
+      "included_script_count": 4,
+      "available_script_count": 108,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "czech4_mp_zone",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/czech4_mp_zone/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 14
+        }
+      ],
+      "binding_count": 14,
+      "attached_script_count": 14,
+      "included_script_count": 0,
+      "available_script_count": 15,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "czech5",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/czech5/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 66
+        }
+      ],
+      "binding_count": 66,
+      "attached_script_count": 66,
+      "included_script_count": 1,
+      "available_script_count": 69,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "czech5_mp_zone",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/czech5_mp_zone/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 23
+        }
+      ],
+      "binding_count": 23,
+      "attached_script_count": 23,
+      "included_script_count": 0,
+      "available_script_count": 23,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "czech6",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/czech6/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 94
+        }
+      ],
+      "binding_count": 94,
+      "attached_script_count": 93,
+      "included_script_count": 2,
+      "available_script_count": 95,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "libye1",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/libye1/scripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 221
+        }
+      ],
+      "binding_count": 221,
+      "attached_script_count": 157,
+      "included_script_count": 2,
+      "available_script_count": 159,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "libye2",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/libye2/scripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 126
+        }
+      ],
+      "binding_count": 126,
+      "attached_script_count": 122,
+      "included_script_count": 2,
+      "available_script_count": 125,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "libye3",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/libye3/scripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 73
+        }
+      ],
+      "binding_count": 73,
+      "attached_script_count": 73,
+      "included_script_count": 0,
+      "available_script_count": 73,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "normandy",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/normandy/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 241
+        }
+      ],
+      "binding_count": 241,
+      "attached_script_count": 155,
+      "included_script_count": 2,
+      "available_script_count": 166,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "normandy2",
+      "registry_archive": "Patch.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/normandy2/scripts.dta",
+          "archive": "Patch.dta",
+          "binding_count": 159
+        }
+      ],
+      "binding_count": 159,
+      "attached_script_count": 135,
+      "included_script_count": 12,
+      "available_script_count": 175,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "normandy2b_mp_zone",
+      "registry_archive": "Patch.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/normandy2b_mp_zone/scripts.dta",
+          "archive": "Patch.dta",
+          "binding_count": 0
+        }
+      ],
+      "binding_count": 0,
+      "attached_script_count": 0,
+      "included_script_count": 0,
+      "available_script_count": 0,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "normandy_mp",
+      "registry_archive": "missions.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/normandy_mp/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 32
+        }
+      ],
+      "binding_count": 32,
+      "attached_script_count": 4,
+      "included_script_count": 0,
+      "available_script_count": 4,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "norway",
+      "registry_archive": "Patch.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/norway/scripts.dta",
+          "archive": "Patch.dta",
+          "binding_count": 82
+        }
+      ],
+      "binding_count": 82,
+      "attached_script_count": 81,
+      "included_script_count": 6,
+      "available_script_count": 102,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "sicily1",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/sicily1/scripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 89
+        }
+      ],
+      "binding_count": 89,
+      "attached_script_count": 89,
+      "included_script_count": 1,
+      "available_script_count": 90,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "sicily2",
+      "registry_archive": "SabreSquadron.dta",
+      "registry_count": 1,
+      "registry_files": [
+        {
+          "path": "missions/sicily2/scripts.dta",
+          "archive": "SabreSquadron.dta",
+          "binding_count": 116
+        }
+      ],
+      "binding_count": 116,
+      "attached_script_count": 116,
+      "included_script_count": 1,
+      "available_script_count": 117,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    },
+    {
+      "mission": "tutorial",
+      "registry_archive": "missions.dta",
+      "registry_count": 2,
+      "registry_files": [
+        {
+          "path": "missions/tutorial/mpscripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 0
+        },
+        {
+          "path": "missions/tutorial/scripts.dta",
+          "archive": "missions.dta",
+          "binding_count": 114
+        }
+      ],
+      "binding_count": 114,
+      "attached_script_count": 114,
+      "included_script_count": 17,
+      "available_script_count": 146,
+      "missing_attached_scripts": [],
+      "missing_attached_bindings": []
+    }
+  ]
+}

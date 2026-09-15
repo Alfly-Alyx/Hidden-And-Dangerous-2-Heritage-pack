@@ -1,0 +1,7 @@
+.analysis/
+.research/
+output/research/
+build/
+dist/
+*.log
+__pycache__/

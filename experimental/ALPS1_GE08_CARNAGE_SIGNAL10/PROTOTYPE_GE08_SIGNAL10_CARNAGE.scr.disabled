@@ -1,0 +1,16 @@
+// Remplacement isolé du handler signal 10 dans la variante Carnage.
+// Les trois premières actions sont attestées dans le vestige.
+// SaveGameValue/HUMAN_Suspend sont des fermetures de cycle inférées à tester.
+
+Whenever sus(_SignalReceived(10))
+{
+  FORMATION_DelMember(me);
+  HUMAN_Move("ge08_02");
+  SendSignal(pes,2);
+  SaveGameValue(7,0);
+  HUMAN_Suspend(1);
+  goto end;
+}
+
+// Ne pas copier dans la branche release.
+

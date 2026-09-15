@@ -1,0 +1,15 @@
+STATUS=BLOCKED_UNTIL_SOUND_RECORD_IMPORT_IS_VERIFIED
+SOURCE_ARCHIVE=missions.dta
+SOURCE_MISSION=ALPS1
+SOURCE_CONTAINER=sounds.bin
+SOURCE_FRAME=S_poryv
+SOURCE_SAMPLE=SOUNDS/a_a1wind.wav
+TARGET_MISSION=ALPS1_MP_ZONE_TEST_COPY_ONLY
+TARGET_FRAME=S_poryv
+SCRIPT_OWNER=zvuk1
+SCRIPT=V_a1_vitr_stromy.scr
+
+# Copier le record binaire complet : ne ressaisir ni volume, portée, mode,
+# parent, flags, échantillon ou transform. Vérifier ensuite si le transform solo
+# est valable dans Zone. Une colocalisation avec zvuk1 serait une branche moderne
+# distincte, jamais présentée comme position historique.

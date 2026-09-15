@@ -1,0 +1,18 @@
+// LABORATOIRE UNIQUEMENT - fragments indépendants, non compilés et non liés.
+
+// -----------------------------------------------------------------------------
+// Copie de R_Arc3_static_guard_2.scr : remplacer seulement la branche RND_co 3.
+If (RND_co == 3)
+{
+  HUMAN_ACTIVITY_Cold();
+  Delay(3000);
+}
+
+// -----------------------------------------------------------------------------
+// Copie de R_Arc3_static_guard_6.scr : remplacer le commentaire "pokopavani"
+// après HUMAN_ACTIVITY_DrinkBottle et son délai.
+HUMAN_ACTIVITY_Cold();
+Delay(3000);
+
+// Conserver ensuite le Delay(60000) et tout OnAlarm release.
+// Cold est un repli générique attesté, pas la preuve du geste de pied exact.

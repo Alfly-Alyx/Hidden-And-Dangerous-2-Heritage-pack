@@ -1,0 +1,18 @@
+// DELTA DESACTIVE pour OnAlarm() de ge_34.scr - non compile/non lie.
+// Inserer apres HUMAN_SetAnim("",50,50,0), avant la branche aievent==32.
+
+if (aievent<>64)
+{
+Printf ("34 posila signal");
+SendSignal (signal,1);
+}
+
+// SUITE COMMERCIALE OBLIGATOIRE, conservee sans remplacement :
+if (aievent==32)
+{
+HUMAN_SETMODE_StandFast();
+SendSignal (ge33,3);
+HUMAN_WeaponOnArm(1);
+HUMAN_TurnAtNearestPlayer();
+EndScript();
+}

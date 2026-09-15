@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://had2-community.invalid/custom-mission-v1.schema.json",
+  "title": "Paquet de mission personnalisée Hidden & Dangerous 2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "id", "category", "missionDirectory", "title"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "format": { "const": 1 },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{2,63}$"
+    },
+    "category": {
+      "enum": [
+        "multiplayer-adaptation",
+        "original-creation",
+        "free-exploration"
+      ]
+    },
+    "missionDirectory": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9 _.-]{0,63}$"
+    },
+    "loadingScreen": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9 _.-]{0,95}$"
+    },
+    "templateMission": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9 _.-]{0,63}$"
+    },
+    "catalogueOnly": { "type": "boolean" },
+    "title": { "$ref": "#/$defs/translation" },
+    "objectives": {
+      "type": "array",
+      "maxItems": 31,
+      "items": { "$ref": "#/$defs/translation" }
+    }
+  },
+  "$defs": {
+    "translation": {
+      "oneOf": [
+        { "type": "string", "minLength": 1, "maxLength": 180 },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "minProperties": 1,
+          "properties": {
+            "default": { "type": "string", "minLength": 1, "maxLength": 180 },
+            "czech": { "type": "string", "minLength": 1, "maxLength": 180 },
+            "english": { "type": "string", "minLength": 1, "maxLength": 180 },
+            "englishUS": { "type": "string", "minLength": 1, "maxLength": 180 },
+            "french": { "type": "string", "minLength": 1, "maxLength": 180 },
+            "german": { "type": "string", "minLength": 1, "maxLength": 180 },
+            "italian": { "type": "string", "minLength": 1, "maxLength": 180 },
+            "japan": { "type": "string", "minLength": 1, "maxLength": 180 },
+            "spanish": { "type": "string", "minLength": 1, "maxLength": 180 }
+          },
+          "anyOf": [
+            { "required": ["default"] },
+            { "required": ["english"] },
+            { "required": ["englishUS"] }
+          ]
+        }
+      ]
+    }
+  }
+}

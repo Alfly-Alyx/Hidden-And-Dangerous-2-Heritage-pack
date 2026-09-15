@@ -1,0 +1,14 @@
+STATUS=BLOCKED_UNTIL_EXACT_SOUND_RECORD_AND_PLACEMENT_ARE_KNOWN
+SOURCE_MISSION=ALPS1
+SOURCE_SOUND_FRAME=S_haf
+SOURCE_OWNER=stekani
+SOURCE_SCRIPT=V_a1_pes.scr
+TARGET_MISSION=ARCTIC4_TEST_COPY_ONLY
+TARGET_DOG=pes_1
+TRIGGER=Walking_Guard_3_OnDeath_signal_1
+DURATION_MS=5000
+
+# À conserver depuis la source : échantillon, volume, portée, mode de boucle,
+# paramètres 3D et champs binaires complets. Ne pas reconstruire ces valeurs.
+# À résoudre avant activation : parent/transform mobile ou repositionnement sûr,
+# autorité réseau, arrêt sur alarme/mort et retrait complet de la variante.

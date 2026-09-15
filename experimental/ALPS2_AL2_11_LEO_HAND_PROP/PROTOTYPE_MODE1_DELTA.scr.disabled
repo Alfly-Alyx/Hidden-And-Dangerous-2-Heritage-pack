@@ -1,0 +1,14 @@
+// ALPS2_AL2_11_LEO_HAND_PROP — FRAGMENT DE TEST, NON INSTALLABLE
+// Insertion proposée immédiatement APRES la ligne active :
+// HUMAN_SetAnim("%%ctuneco", 500, 500, 1);
+//
+// Block
+// {
+//     FRM_FindFrame(ruka, "al2_11.hw1");
+//     FRM_TeleportNearFrame(leo, ruka, 1);
+//     FRM_FindFrame(ruka, "");
+// }
+//
+// Ne pas décommenter avant validation runtime du socket.
+// Ne pas supprimer, déplacer ou remplacer %%ctuneco.
+// Aucun comportement de retour du livre n'est inventé ici.

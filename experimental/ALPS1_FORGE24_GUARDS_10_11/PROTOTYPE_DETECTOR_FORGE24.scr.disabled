@@ -1,0 +1,30 @@
+// PROTOTYPE DESACTIVE - non compile/non lie.
+// Copie additive de detector_forge24.scr ; ge23..25 restent commerciaux.
+
+Frame ge23;		Frm_FindFrame (ge23,"ge_23");
+Frame ge24;		Frm_FindFrame (ge24,"ge_24");
+Frame ge25;		Frm_FindFrame (ge25,"ge_25");
+
+// RECONSTRUCTION : declarations absentes de detector_forge24.scr.
+// Lignes exactes reprises de detector_forge20.scr ; destinataires attestes.
+Frame ge10;		Frm_FindFrame (ge10,"ge_10");
+Frame ge11;		Frm_FindFrame (ge11,"ge_11");
+
+// CREATION MODERNE : verrou local aux deux seuls envois ajoutes.
+INTEGER forge24_guards_10_11_sent = 0;
+
+Whenever ted(_PlayerInRange(12))
+{
+Printf("detector for ge 24 posila signaly");
+
+SendSignal (ge23,1);
+SendSignal (ge24,1);
+SendSignal (ge25,1);
+
+if (forge24_guards_10_11_sent == 0)
+{
+forge24_guards_10_11_sent = 1;
+SendSignal (ge10,1);
+SendSignal (ge11,1);
+}
+}
