@@ -19,6 +19,7 @@ import easter_egg_position_audit
 import embedded_dependency_audit
 import flamethrower_evidence_audit
 import full_game_audit
+import full_game_documentation_audit
 import installer_composition_audit
 import installer_wiring_audit
 import item_id_collision_audit
@@ -195,6 +196,7 @@ def commercial_evidence_state(root: Path, game: Path) -> dict[str, object]:
         stable_coverage = stable_candidate_coverage_audit.audit(
             root, game, full_game_report=full_game
         )
+        documentation = full_game_documentation_audit.audit(root, full_game)
         signal_graph = signal_graph_audit.build(game)
         prototypes = {
             "archive_plan": prototype_deployment_audit.archive_plan(game),
@@ -224,6 +226,7 @@ def commercial_evidence_state(root: Path, game: Path) -> dict[str, object]:
             "prototype_archive_plan": prototypes["archive_plan"]["ok"],
             "asset_inventory": assets["evidence_ok"],
             "stable_candidate_coverage": stable_coverage["ok"],
+            "full_game_documentation": documentation["ok"],
         }
         checks.update(
             (name, report.get("ok") is True)
@@ -244,6 +247,7 @@ def commercial_evidence_state(root: Path, game: Path) -> dict[str, object]:
                 },
                 "full_game": full_game["scope"],
                 "stable_candidate_coverage": stable_coverage,
+                "full_game_documentation": documentation,
                 "signal_graph": signal_graph["scope"],
                 "prototype_archive_plan": prototypes["archive_plan"],
                 "prototype_installed": prototypes["installed"],
