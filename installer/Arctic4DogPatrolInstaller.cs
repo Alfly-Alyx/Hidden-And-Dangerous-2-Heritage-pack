@@ -121,10 +121,11 @@ namespace HD2CommunityInstaller
         private static bool IsPatched(string text)
         {
             return Regex.IsMatch(text,
-                @"Label\s+DeAlarm\s*:[\s\S]{0,100}"
-                + @"HUMAN_SETMODE_Guard\s*\(\s*\)\s*;[\s\S]{0,100}"
-                + @"HUMAN_SETMODE_Walk\s*\(\s*\)\s*;[\s\S]{0,100}"
-                + @"Label\s+loop\s*:",
+                @"^[ \t]*Label\s+DeAlarm\s*:[ \t]*(?=\r?$)"
+                + @"[\s\S]{0,100}^[ \t]*HUMAN_SETMODE_Guard\s*"
+                + @"\(\s*\)\s*;[\s\S]{0,100}"
+                + @"^[ \t]*HUMAN_SETMODE_Walk\s*\(\s*\)\s*;"
+                + @"[\s\S]{0,100}^[ \t]*Label\s+loop\s*:",
                 RegexOptions.IgnoreCase | RegexOptions.Multiline);
         }
 
@@ -132,10 +133,11 @@ namespace HD2CommunityInstaller
         {
             string text = Encoding.GetEncoding(1252).GetString(data);
             Require(text,
-                @"Label\s+DeAlarm\s*:[\s\S]{0,100}"
-                + @"HUMAN_SETMODE_Guard\s*\(\s*\)\s*;[\s\S]{0,100}"
-                + @"HUMAN_SETMODE_Walk\s*\(\s*\)\s*;[\s\S]{0,100}"
-                + @"Label\s+loop\s*:",
+                @"^[ \t]*Label\s+DeAlarm\s*:[ \t]*(?=\r?$)"
+                + @"[\s\S]{0,100}^[ \t]*HUMAN_SETMODE_Guard\s*"
+                + @"\(\s*\)\s*;[\s\S]{0,100}"
+                + @"^[ \t]*HUMAN_SETMODE_Walk\s*\(\s*\)\s*;"
+                + @"[\s\S]{0,100}^[ \t]*Label\s+loop\s*:",
                 "La reprise en marche de Walking_Guard_3 est incomplete.");
             Require(text,
                 @"OnAlarmDone\s*\(\s*\)\s*\{[\s\S]{0,260}"

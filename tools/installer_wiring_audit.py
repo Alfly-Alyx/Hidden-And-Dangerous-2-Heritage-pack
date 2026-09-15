@@ -69,6 +69,7 @@ def audit(root: Path) -> dict[str, object]:
     burgundy3_guard32_path = installer / "Burgundy3Guard32PatrolInstaller.cs"
     africa3_mechanic_path = installer / "Africa3MechanicCoverInstaller.cs"
     africa1_cards_path = installer / "Africa1CardPlayersInstaller.cs"
+    arctic4_dog_patrol_path = installer / "Arctic4DogPatrolInstaller.cs"
     assembly_path = installer / "AssemblyInfo.cs"
     build_path = root / "build.ps1"
     icon_path = installer / "assets" / "hd2-heritage-icon.ico"
@@ -99,6 +100,7 @@ def audit(root: Path) -> dict[str, object]:
     burgundy3_guard32 = burgundy3_guard32_path.read_text(encoding="utf-8-sig")
     africa3_mechanic = africa3_mechanic_path.read_text(encoding="utf-8-sig")
     africa1_cards = africa1_cards_path.read_text(encoding="utf-8-sig")
+    arctic4_dog_patrol = arctic4_dog_patrol_path.read_text(encoding="utf-8-sig")
     assembly = assembly_path.read_text(encoding="utf-8-sig")
     build = build_path.read_text(encoding="utf-8-sig")
     readme = readme_path.read_text(encoding="utf-8-sig")
@@ -425,6 +427,22 @@ def audit(root: Path) -> dict[str, object]:
             "Africa 1 card-player detection can mistake its commented loop for code"
         )
 
+    arctic4_dog_patrol_requires_active_walk = all((
+        arctic4_dog_patrol.count(
+            '@"^[ \\t]*Label\\s+DeAlarm'
+        ) == 2,
+        arctic4_dog_patrol.count(
+            '@"^[ \\t]*HUMAN_SETMODE_Walk'
+        ) == 2,
+        arctic4_dog_patrol.count(
+            '@"[\\s\\S]{0,100}^[ \\t]*Label\\s+loop'
+        ) == 2,
+    ))
+    if not arctic4_dog_patrol_requires_active_walk:
+        errors.append(
+            "Arctic 4 dog-patrol detection can mistake the test comment for walking"
+        )
+
     historical_icon = (
         icon_path.is_file()
         and hashlib.sha256(icon_path.read_bytes()).hexdigest().upper()
@@ -553,6 +571,9 @@ def audit(root: Path) -> dict[str, object]:
         ),
         "africa1_cards_require_complete_active_loop": (
             africa1_cards_require_complete_active_loop
+        ),
+        "arctic4_dog_patrol_requires_active_walk": (
+            arctic4_dog_patrol_requires_active_walk
         ),
         "historical_icon": historical_icon,
         "artifact_identity": artifact_identity,
