@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -30,6 +31,9 @@ OPTION_MAP = {
     "UnlockAllMissions": "unlockMissions",
     "AutoConfigureGraphics": "graphics",
 }
+HISTORICAL_ICON_SHA256 = (
+    "9CB711B564CFD425C9D720EA2B39272C56283DD177D5AA9902B5FAD0414E7185"
+)
 
 
 def between(text: str, start: str, end: str, source: Path) -> str:
@@ -55,6 +59,8 @@ def audit(root: Path) -> dict[str, object]:
     easter_egg_path = installer / "Africa4EasterEggInstaller.cs"
     tree_patcher_path = installer / "TreeKlzPatcher.cs"
     assembly_path = installer / "AssemblyInfo.cs"
+    build_path = root / "build.ps1"
+    icon_path = installer / "assets" / "hd2-heritage-icon.ico"
     readme_path = root / "README.md"
     runtime_validation_path = root / "validation" / "runtime-validation.json"
     report_builder_path = root / "tools" / "pdf" / "build_report.py"
@@ -68,6 +74,7 @@ def audit(root: Path) -> dict[str, object]:
     easter_eggs = easter_egg_path.read_text(encoding="utf-8-sig")
     tree_patcher = tree_patcher_path.read_text(encoding="utf-8-sig")
     assembly = assembly_path.read_text(encoding="utf-8-sig")
+    build = build_path.read_text(encoding="utf-8-sig")
     readme = readme_path.read_text(encoding="utf-8-sig")
     runtime_validation = json.loads(
         runtime_validation_path.read_text(encoding="utf-8-sig")
@@ -265,6 +272,25 @@ def audit(root: Path) -> dict[str, object]:
             "Free exploration no longer clears area flags and border objects"
         )
 
+    historical_icon = (
+        icon_path.is_file()
+        and hashlib.sha256(icon_path.read_bytes()).hexdigest().upper()
+        == HISTORICAL_ICON_SHA256
+    )
+    artifact_identity = all((
+        historical_icon,
+        "installer\\assets\\hd2-heritage-icon.ico" in build,
+        '"/win32icon:$icon"' in build,
+        "H-D2-Heritage-Pack-Setup.exe" in build,
+        'AssemblyTitle("H&D2 Heritage Pack Installer")' in assembly,
+        'AssemblyProduct("H&D2 Heritage Pack")' in assembly,
+        'Text = "Hidden & Dangerous 2 - Heritage Pack"' in main_form,
+    ))
+    if not artifact_identity:
+        errors.append(
+            "Final setup name, historical icon or Windows identity is not wired"
+        )
+
     version_match = re.search(
         r'public const string Version\s*=\s*"([^"]+)"', config
     )
@@ -348,6 +374,8 @@ def audit(root: Path) -> dict[str, object]:
         "widescreen_before_resolution": widescreen_before_resolution,
         "africa4_exact_bindings": africa4_exact_bindings,
         "boundary_object_policy": boundary_object_policy,
+        "historical_icon": historical_icon,
+        "artifact_identity": artifact_identity,
         "version": version,
         "version_consistency": version_consistency,
         "errors": errors,
