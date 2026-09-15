@@ -71,6 +71,7 @@ def audit(root: Path) -> dict[str, object]:
     africa1_cards_path = installer / "Africa1CardPlayersInstaller.cs"
     arctic4_dog_patrol_path = installer / "Arctic4DogPatrolInstaller.cs"
     arctic4_ice_fall_path = installer / "Arctic4IceFallInstaller.cs"
+    czech5_weather_path = installer / "Czech5WeatherInstaller.cs"
     assembly_path = installer / "AssemblyInfo.cs"
     build_path = root / "build.ps1"
     icon_path = installer / "assets" / "hd2-heritage-icon.ico"
@@ -103,6 +104,7 @@ def audit(root: Path) -> dict[str, object]:
     africa1_cards = africa1_cards_path.read_text(encoding="utf-8-sig")
     arctic4_dog_patrol = arctic4_dog_patrol_path.read_text(encoding="utf-8-sig")
     arctic4_ice_fall = arctic4_ice_fall_path.read_text(encoding="utf-8-sig")
+    czech5_weather = czech5_weather_path.read_text(encoding="utf-8-sig")
     assembly = assembly_path.read_text(encoding="utf-8-sig")
     build = build_path.read_text(encoding="utf-8-sig")
     readme = readme_path.read_text(encoding="utf-8-sig")
@@ -456,6 +458,29 @@ def audit(root: Path) -> dict[str, object]:
             "Arctic 4 ice-fall detection can mistake its commented explosion for code"
         )
 
+    czech5_weather_accepts_mixed_active_state = all((
+        "int pending = 0;" in czech5_weather,
+        "BytesEqual(weatherOriginal, weatherPatched)) pending++;"
+        in czech5_weather,
+        "BytesEqual(lightningOriginal, lightningPatched)) pending++;"
+        in czech5_weather,
+        "|| BytesEqual(lightningOriginal, lightningPatched)" not in czech5_weather,
+    ))
+    czech5_lightning_requires_active_loop = all((
+        '@"(?m)^[ \\t]*integer\\s+time' in czech5_weather,
+        '@"^[ \\t]*frame\\s+lightning' in czech5_weather,
+        '@"[\\s\\S]{0,120}^[ \\t]*THUNDERSTORM_SetOn\\s*"'
+        in czech5_weather,
+        '@"[\\s\\S]{0,100}^[ \\t]*goto\\s+loop\\s*;"'
+        in czech5_weather,
+    ))
+    if not czech5_weather_accepts_mixed_active_state:
+        errors.append("Czech 5 weather validation rejects a mixed active state")
+    if not czech5_lightning_requires_active_loop:
+        errors.append(
+            "Czech 5 lightning detection can mistake the commented loop for code"
+        )
+
     historical_icon = (
         icon_path.is_file()
         and hashlib.sha256(icon_path.read_bytes()).hexdigest().upper()
@@ -590,6 +615,12 @@ def audit(root: Path) -> dict[str, object]:
         ),
         "arctic4_ice_fall_requires_active_explosion": (
             arctic4_ice_fall_requires_active_explosion
+        ),
+        "czech5_weather_accepts_mixed_active_state": (
+            czech5_weather_accepts_mixed_active_state
+        ),
+        "czech5_lightning_requires_active_loop": (
+            czech5_lightning_requires_active_loop
         ),
         "historical_icon": historical_icon,
         "artifact_identity": artifact_identity,

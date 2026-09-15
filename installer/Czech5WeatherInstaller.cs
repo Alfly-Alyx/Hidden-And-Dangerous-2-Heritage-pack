@@ -28,10 +28,6 @@ namespace HD2CommunityInstaller
                 gamePath, LightningPath, ScriptArchives));
             byte[] weatherPatched = PatchWeather(weatherOriginal);
             byte[] lightningPatched = PatchLightning(lightningOriginal);
-            if (BytesEqual(weatherOriginal, weatherPatched)
-                || BytesEqual(lightningOriginal, lightningPatched))
-                throw new InvalidDataException(
-                    "La meteo ou les eclairs Czech 5 semblent deja restaures.");
             ValidateWeather(weatherPatched);
             ValidateLightning(lightningPatched);
             if (!BytesEqual(weatherPatched, PatchWeather(weatherPatched))
@@ -39,8 +35,12 @@ namespace HD2CommunityInstaller
                 throw new InvalidDataException(
                     "La restauration de la meteo Czech 5 n'est pas idempotente.");
             ValidateAssets(gamePath);
+            int pending = 0;
+            if (!BytesEqual(weatherOriginal, weatherPatched)) pending++;
+            if (!BytesEqual(lightningOriginal, lightningPatched)) pending++;
             return "Czech 5 verifie : la meteo et les eclairs officiels "
-                + "entierement commentes sont restaurables.";
+                + "sont restaurables (" + pending + " element(s) a activer, "
+                + (2 - pending) + " deja actif(s)).";
         }
 
         public static bool IsActive(string gamePath)
@@ -184,10 +184,22 @@ namespace HD2CommunityInstaller
         private static bool IsLightningPatched(string text)
         {
             return Regex.IsMatch(text,
-                @"Label\s+loop\s*:[\s\S]{0,180}"
-                + @"THUNDERSTORM_SetOn\s*\(\s*true\s*,\s*lightning\s*\)\s*;"
-                + @"[\s\S]{0,180}THUNDERSTORM_SetOn\s*\(\s*false\s*,\s*lightning\s*\)\s*;"
-                + @"[\s\S]{0,220}goto\s+loop\s*;",
+                @"(?m)^[ \t]*integer\s+time\s*;[\s\S]{0,80}"
+                + @"^[ \t]*integer\s+wait\s*;[\s\S]{0,80}"
+                + @"^[ \t]*frame\s+lightning\s*;[ \t]*"
+                + @"FRM_GetMyFrame\s*\(\s*lightning\s*\)\s*;"
+                + @"[\s\S]{0,100}^[ \t]*Label\s+loop\s*:"
+                + @"[\s\S]{0,100}^[ \t]*time\s*=\s*_RandomInt\s*"
+                + @"\(\s*50\s*\)\s*\+\s*1\s*;"
+                + @"[\s\S]{0,120}^[ \t]*THUNDERSTORM_SetOn\s*"
+                + @"\(\s*true\s*,\s*lightning\s*\)\s*;"
+                + @"[\s\S]{0,100}^[ \t]*Delay\s*\(\s*time\s*\)\s*;"
+                + @"[\s\S]{0,120}^[ \t]*THUNDERSTORM_SetOn\s*"
+                + @"\(\s*false\s*,\s*lightning\s*\)\s*;"
+                + @"[\s\S]{0,120}^[ \t]*wait\s*=\s*_RandomInt\s*"
+                + @"\(\s*20000\s*\)\s*\+\s*5000\s*;"
+                + @"[\s\S]{0,100}^[ \t]*Delay\s*\(\s*wait\s*\)\s*;"
+                + @"[\s\S]{0,100}^[ \t]*goto\s+loop\s*;",
                 RegexOptions.IgnoreCase | RegexOptions.Multiline);
         }
 
@@ -212,14 +224,9 @@ namespace HD2CommunityInstaller
         private static void ValidateLightning(byte[] data)
         {
             string text = Encoding.GetEncoding(1252).GetString(data);
-            Require(text,
-                @"frame\s+lightning\s*;[\s\S]{0,100}"
-                + @"FRM_GetMyFrame\s*\(\s*lightning\s*\)\s*;[\s\S]{0,120}"
-                + @"Label\s+loop\s*:[\s\S]{0,180}"
-                + @"THUNDERSTORM_SetOn\s*\(\s*true\s*,\s*lightning\s*\)\s*;"
-                + @"[\s\S]{0,180}THUNDERSTORM_SetOn\s*\(\s*false\s*,\s*lightning\s*\)\s*;"
-                + @"[\s\S]{0,220}goto\s+loop\s*;",
-                "La boucle d'eclairs Czech 5 est incomplete.");
+            if (!IsLightningPatched(text))
+                throw new InvalidDataException(
+                    "La boucle d'eclairs Czech 5 est incomplete.");
         }
 
         private static void ValidateAssets(string gamePath)
