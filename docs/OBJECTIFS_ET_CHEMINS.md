@@ -378,6 +378,14 @@ Le distributeur `AF3a_dummy_alarm.scr` avertit déjà douze gardes par le signal
 
 Les deux acteurs sont toujours placés et reliés à leurs scripts. Chacun possède exactement un gestionnaire `OnSignal(20)` complet qui abandonne son activité, augmente sa portée de vue et le replace en défense. Aucun autre script ne leur envoie déjà ce signal. Le paquet réactive donc ces quatre lignes sans toucher aux réactions locales d'alarme ni aux itinéraires des deux soldats.
 
+### Postes de combat des sentinelles dans Africa 3
+
+Le garde 06 forme un binôme avec le garde 05. Après l'envoi de la même alarme globale, le garde 05 s'accroupit et passe activement en poste de tir défensif ; ces deux ordres identiques étaient les seules lignes commentées dans la réaction du garde 06. Le garde 16 rejoint quant à lui `AF3a_16_05`, s'accroupit et passe en défense, mais son ordre de maintien à ce poste était commenté. Ce checkpoint existe et les gardes comparables 07, 10, 11 et 14 emploient le même mode de tir.
+
+Les gardes 25, 28, 29, 31 et 32 sont suspendus jusqu'à une proximité du joueur ou une alarme. Leur voisin 27 conserve `HUMAN_SetEvents(true)` exactement après sa suspension ; les cinq scripts parallèles avaient commenté cette seule instruction. Enfin, les soldats cachés 33 à 37 sont tournés vers cinq cadres de scène encore présents, accroupis et suspendus jusqu'à leur déclencheur de proximité, mais leur maintien au poste avait été désactivé dans les cinq scripts.
+
+Le paquet réactive ces douze comportements à leur emplacement d'origine. Il ne modifie ni les rayons d'activation, ni les modes agressif ou défensif, ni les déplacements après alarme. Le poste du garde 24 n'est pas mélangé à ce lot : sa direction `m_AF3_bedna103` a disparu, donc seuls son repos assis et ses points encore complets restent dans la restauration stable.
+
 ### Vapeur de la cinématique Jeep dans Africa 3
 
 `CUTPARTICLES.scr` pilote déjà deux particules de fumée pour la variante Opel et deux autres pour la variante Jeep. Dans la branche Jeep, seule l’activation puis l’arrêt du cadre sonore `cut_para` étaient commentés ; les particules, les délais et la cinématique 3 sont toujours actifs.

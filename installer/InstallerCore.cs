@@ -345,6 +345,9 @@ namespace HD2CommunityInstaller
                     Africa3AlarmPatrolInstaller.Install(
                         options.GamePath, journal, prepared, progress);
                 if (options.RestoreDormantSequences)
+                    Africa3DormantSentryInstaller.Install(
+                        options.GamePath, journal, prepared, progress);
+                if (options.RestoreDormantSequences)
                     Africa3JeepSteamInstaller.Install(
                         options.GamePath, journal, prepared, progress);
                 if (options.RestoreDormantSequences)

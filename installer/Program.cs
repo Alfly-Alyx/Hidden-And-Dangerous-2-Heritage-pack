@@ -67,6 +67,7 @@ namespace HD2CommunityInstaller
                         Console.WriteLine(Africa3Guard24SittingInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa3Guard03HeatInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa3AlarmPatrolInstaller.ValidateOnly(game));
+                        Console.WriteLine(Africa3DormantSentryInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa3JeepSteamInstaller.ValidateOnly(game));
                         Console.WriteLine(CoLibye1SmokingInstaller.ValidateOnly(game));
                         Console.WriteLine(Arctic4DogPatrolInstaller.ValidateOnly(game));
@@ -147,6 +148,7 @@ namespace HD2CommunityInstaller
                         Console.WriteLine(Africa3Guard24SittingInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa3Guard03HeatInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa3AlarmPatrolInstaller.ValidateOnly(game));
+                        Console.WriteLine(Africa3DormantSentryInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa3JeepSteamInstaller.ValidateOnly(game));
                         Console.WriteLine(CoLibye1SmokingInstaller.ValidateOnly(game));
                         Console.WriteLine(Arctic4DogPatrolInstaller.ValidateOnly(game));
