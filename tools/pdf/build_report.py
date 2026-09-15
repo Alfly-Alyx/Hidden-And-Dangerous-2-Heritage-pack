@@ -18,7 +18,7 @@ def build_report():
     s.append(P("Les découvertes les plus solides","h2"))
     s.append(bullet([
         "33 missions solo déclarées et retrouvées : aucune campagne finale complète n'est simplement oubliée.",
-        "82 arbres officiels lisibles ; 104 405 surfaces de zone neutralisables dans 70 arbres.",
+        "82 arbres officiels lisibles ; 104 405 surfaces de zone et 561 objets border neutralisables.",
         "CMP 2.6.5 figée : 23 600 entrées, 23 277 fichiers et 156 entrées de cartes.",
         "Les 47 dossiers multijoueurs commerciaux et les deux prototypes sont tous déclarés après installation.",
         "Les 25 variantes multijoueurs scriptées totalisent 203 liaisons et 183 scripts disponibles ; leurs douze scripts libres ont été classés.",
@@ -63,16 +63,17 @@ def build_report():
     s.append(PageBreak())
 
     section(s,"02","Exploration sans échec de frontière")
-    s.append(P("Les limites de mission sont portées par deux indicateurs de surface : avertissement 0x40 et échec 0x20. Le paquet efface seulement le masque 0x60. Les murs, sols, obstacles et autres propriétés restent intacts."))
+    s.append(P("Les limites de mission sont portées par deux indicateurs de surface : avertissement 0x40 et échec 0x20. Le paquet efface seulement le masque 0x60. Les objets physiques explicitement nommés border sont traités séparément : leur étiquette est remplacée à longueur constante, méthode dont l'effet non solide est attesté par les essais de rétro-ingénierie de tree.klz. Les murs, sols, clôtures et autres propriétés restent intacts."))
     s.append(table([
-        ["Corpus","Arbres","Avec limites","Surfaces modifiables","Collisions"],
-        ["Officiel final","82","70","104 405","2 446 014"],
-        ["CMP - test intégré","Échantillon","-","1 202","-"]
-    ],[38*mm,27*mm,31*mm,38*mm,34*mm]))
+        ["Corpus","Arbres","Avec limites","Surfaces 0x60","Objets border","Collisions"],
+        ["Officiel final","82","75","104 405","561","2 446 014"],
+        ["CMP - test intégré","Échantillon","-","1 202","contrôlés","-"]
+    ],[31*mm,21*mm,26*mm,30*mm,29*mm,31*mm]))
+    s.append(P('<link href="https://hidden-and-dangerous.net/board/viewtopic.php?t=2173">Recherche communautaire du format tree.klz et essai de renommage</link>',"source"))
     s.append(Spacer(1,5*mm))
     s.append(info_box("Ce que la correction ne fait pas",
-        "Elle empêche l'avertissement et l'échec de zone. Elle n'ajoute pas de terrain, de collision, de navigation IA ou de secteurs absents. "
-        "Une exploration peut donc révéler un décor praticable, un mur invisible, ou simplement le vide."))
+        "Elle empêche l'avertissement et l'échec de zone et neutralise les objets explicitement nommés border. Elle n'ajoute pas de terrain, de collision, de navigation IA ou de secteurs absents. "
+        "Une exploration peut donc révéler un décor praticable, un obstacle réel non identifié comme bord, ou simplement le vide."))
     s.append(P("Conséquence pour la recherche","h2"))
     s.append(P("Le mode libre sert d'outil d'archéologie : il permet d'examiner les bords de chaque carte sans sanction immédiate. Un passage devient une route restaurable seulement si sa géométrie, ses collisions et sa progression restent cohérentes."))
     s.append(P("Sécurité","h2"))

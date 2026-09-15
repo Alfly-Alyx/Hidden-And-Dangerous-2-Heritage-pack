@@ -32,7 +32,9 @@ Le projet doit produire un ensemble installable pour Hidden & Dangerous 2: Sabre
 
 - 82 arbres officiels audités ;
 - avertissement 0x40 et échec 0x20 neutralisés sans toucher aux collisions physiques ;
-- 104 405 surfaces officielles prises en charge ;
+- 104 405 surfaces officielles prises en charge dans 70 arbres ;
+- 561 objets physiques dont le nom contient `border` neutralisés dans 44 arbres ; 75 cartes contiennent au moins une des deux familles de limites ;
+- les 207 objets nommés `wall`, les 1 128 clôtures `zabr*` ou `barier*` et les zones sans `border` restent inchangés ;
 - même traitement appliqué aux cartes CMP ;
 - dans Arctic 1, les deux retours d'Albert ne réactivent plus le détecteur qui affichait trois reproches avant de faire échouer la mission ; le choix marais/route et les cinématiques restaurées restent inchangés.
 

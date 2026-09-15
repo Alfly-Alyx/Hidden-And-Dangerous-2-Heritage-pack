@@ -53,6 +53,7 @@ def audit(root: Path) -> dict[str, object]:
     main_form_path = installer / "MainForm.cs"
     graphics_path = installer / "GraphicsConfigurator.cs"
     easter_egg_path = installer / "Africa4EasterEggInstaller.cs"
+    tree_patcher_path = installer / "TreeKlzPatcher.cs"
     program = program_path.read_text(encoding="utf-8-sig")
     core = core_path.read_text(encoding="utf-8-sig")
     status = status_path.read_text(encoding="utf-8-sig")
@@ -60,6 +61,7 @@ def audit(root: Path) -> dict[str, object]:
     main_form = main_form_path.read_text(encoding="utf-8-sig")
     graphics = graphics_path.read_text(encoding="utf-8-sig")
     easter_eggs = easter_egg_path.read_text(encoding="utf-8-sig")
+    tree_patcher = tree_patcher_path.read_text(encoding="utf-8-sig")
     mutation_sources = []
     unhashed_mutation_sources = []
     for source in sorted(installer.glob("*.cs")):
@@ -224,6 +226,18 @@ def audit(root: Path) -> dict[str, object]:
             "Africa 4 validation does not require both commercial trigger owners"
         )
 
+    boundary_object_policy = all((
+        "private const byte MissionAreaMask = 0x60;" in tree_patcher,
+        "RenameBoundaryLabels(data, stats);" in tree_patcher,
+        "(byte)'H', (byte)'2', (byte)'B', (byte)'O', (byte)'R', (byte)'D'"
+        in tree_patcher,
+        "data[offset + 1] & ~MissionAreaMask" in tree_patcher,
+    ))
+    if not boundary_object_policy:
+        errors.append(
+            "Free exploration no longer clears area flags and border objects"
+        )
+
     declared_options = set(re.findall(r"public bool ([A-Za-z0-9_]+)\s*=", config))
     expected_options = set(OPTION_MAP)
     if declared_options != expected_options:
@@ -280,6 +294,7 @@ def audit(root: Path) -> dict[str, object]:
         "adaptive_quality_policy": adaptive_quality_policy,
         "widescreen_before_resolution": widescreen_before_resolution,
         "africa4_exact_bindings": africa4_exact_bindings,
+        "boundary_object_policy": boundary_object_policy,
         "errors": errors,
     }
 

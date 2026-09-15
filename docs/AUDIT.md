@@ -34,7 +34,11 @@ La sortie de zone est portée par deux bits de surface :
 - 0x40 : avertissement ;
 - 0x20 : échec.
 
-Le paquet efface seulement le masque 0x60. Il ne retire ni murs, ni sols, ni obstacles. Les arbres gardent exactement leur taille. Sur le corpus officiel, 104 405 surfaces de zone sont neutralisables dans 70 arbres sur 82, parmi 2 446 014 collisions. Le test intégré de la CMP trouve en plus 1 202 limites neutralisables dans son échantillon de validation.
+Le paquet efface seulement le masque 0x60. Il ne retire ni murs, ni sols, ni obstacles ordinaires. Les arbres gardent exactement leur taille. Sur le corpus officiel, 104 405 surfaces de zone sont neutralisables dans 70 arbres sur 82, parmi 2 446 014 collisions. Le test intégré de la CMP trouve en plus 1 202 limites neutralisables dans son échantillon de validation.
+
+Les murs invisibles de bord forment une seconde famille. L'expérience de rétro-ingénierie publiée sur le forum H&D2 montre que renommer une étiquette de la première table de `tree.klz` rend l'objet correspondant non solide. Le paquet remplace donc uniquement les six octets `border` par `H2BORD`, sans déplacer la table ni changer la taille du fichier. `tools/boundary_label_audit.py` vérifie cette opération sur les 82 arbres effectifs : 561 objets `border` dans 44 arbres, 75 arbres possédant au total des drapeaux ou de tels objets, puis zéro limite restante dans les copies corrigées.
+
+Les noms ressemblants ne sont pas supprimés à l'aveugle : 207 objets `wall`, 1 128 clôtures `zabr*` ou `barier*`, 46 `leaving_zone` et 117 `live_zone` ou `LIV_ZONE` restent inchangés. Ils peuvent décrire des murs de décor, des garde-corps ou des volumes de mission légitimes. Source de la méthode : https://hidden-and-dangerous.net/board/viewtopic.php?t=2173
 
 La détection de l'option ne se limite plus aux 70 arbres officiels modifiés :
 elle inspecte aussi chaque `tree.klz` libre qui n'appartient pas à cet ensemble,
