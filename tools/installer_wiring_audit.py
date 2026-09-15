@@ -186,13 +186,13 @@ def audit(root: Path) -> dict[str, object]:
     loose_tree_pass = core.find("OfficialContentInstaller.PatchLooseMissionTrees(")
     exploration_postpass = (
         min(prototype_install, cmp_install, loose_tree_pass) >= 0
-        and prototype_install < cmp_install < loose_tree_pass
+        and cmp_install < prototype_install < loose_tree_pass
     )
     if min(prototype_install, cmp_install, loose_tree_pass) < 0:
         errors.append("Exploration post-pass wiring is incomplete")
     elif not exploration_postpass:
         errors.append(
-            "Loose-tree exploration pass must run after prototypes and CMP"
+            "Prototypes must run after CMP and before the loose-tree exploration pass"
         )
 
     native_resolution_policy = all((

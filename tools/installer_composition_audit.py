@@ -71,8 +71,8 @@ CURRENT_SOURCE_MARKERS = {
 }
 
 EXPECTED_ORDER = [
-    "ExperimentalContentInstaller",
     "CmpInstaller",
+    "ExperimentalContentInstaller",
     "CoLibye2ObjectiveInstaller",
     "CoBrestGeneratorObjectiveInstaller",
     "CoBurgundy1StealthObjectiveInstaller",

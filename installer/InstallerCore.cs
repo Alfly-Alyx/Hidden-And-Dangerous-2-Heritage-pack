@@ -192,8 +192,6 @@ namespace HD2CommunityInstaller
                         options.GamePath, journal, prepared, progress);
                     GraphicsConfigurator.Apply(journal, progress);
                 }
-                ExperimentalContentInstaller.Install(
-                    options.GamePath, journal, prepared, progress);
                 if (options.FreeExploration)
                     OfficialContentInstaller.Install(
                         options.GamePath, journal, prepared, progress, percent);
@@ -202,6 +200,8 @@ namespace HD2CommunityInstaller
                         options.GamePath, journal, prepared, progress);
                 if (options.InstallCmp)
                     CmpInstaller.Install(options, journal, prepared, progress, percent);
+                ExperimentalContentInstaller.Install(
+                    options.GamePath, journal, prepared, progress);
                 if (options.FreeExploration)
                     OfficialContentInstaller.PatchLooseMissionTrees(
                         options.GamePath, journal, prepared, progress);

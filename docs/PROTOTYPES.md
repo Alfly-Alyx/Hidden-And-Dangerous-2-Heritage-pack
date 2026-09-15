@@ -15,6 +15,12 @@ Variante officielle absente de la liste finale. Treize fichiers lui sont propres
 
 Le pack reprend donc exactement huit bases correspondantes de `NORMANDY3_MP` : les cinq fichiers absents ou factices et ces trois conteneurs incomplets. Il conserve les six données propres encore structurellement valides de la zone. Les quatorze fichiers obtenus sont tous déployés dans un dossier autonome ; le jeu ne dépend ainsi d'aucun mélange implicite entre ce dossier et `missions.dta`. Elle est ajoutée sous le nom `PROTOTYPE - Normandy3 Zone (exploration libre)` dans le mode **Occupation**.
 
+La préparation des deux prototypes s'exécute après l'éventuelle installation
+de la CMP, puis avant le dernier nettoyage des collisions. Un fichier
+communautaire de même nom ne peut donc plus remplacer silencieusement la
+version officielle complétée, et leurs `tree.klz` reçoivent toujours le
+traitement final d'exploration libre.
+
 ### Africa5 Prototype
 
 `AFRIKA5_MP` conserve sept fichiers propres. Six ressources manquantes peuvent être reprises d'`AFRICA5_MP`. Le pack déploie les treize fichiers de la carte complétée dans un dossier autonome. Ses sept scripts de citernes subsistent sous `Scripts/AFRICA5_MP` ; le pack les rend aussi disponibles sous l'orthographe attendue par le prototype, `Scripts/AFRIKA5_MP`, et leurs sept propriétaires sont présents dans la scène propre du vestige. La carte est déclarée sous le nom `PROTOTYPE - Africa5 (exploration libre)` dans le mode **Deathmatch**.
