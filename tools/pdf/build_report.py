@@ -116,7 +116,7 @@ def build_report():
     s.append(PageBreak())
 
     section(s,"05","Londres : deux histoires, pas une")
-    s.append(P("La presse de 2001 cite Londres et l'Allemagne parmi sept campagnes ou théâtres. La preview de 2003 décrit ensuite une refonte après le départ du concepteur principal et une Angleterre retirée ou remplacée."))
+    s.append(P("La presse de 2001 cite Londres et l'Allemagne parmi les lieux de 24 missions et sept campagnes, sans nommer les sept campagnes. En juin 2003, Games.cz annonce encore un Londres en ruines mais distingue explicitement la campagne anglaise déjà remplacée d'un possible reliquat multijoueur britannique. En septembre, GameSpot ne compte plus que six campagnes et 23 missions. Ces nombres variables prouvent une refonte, pas un nombre calculable de campagnes cachées."))
     s.append(table([
         ["Élément","Preuve","Conclusion"],
         ["Campagne Angleterre/Londres","Annonces d'époque + dossier ENGLAND de 14 scripts","Projet coupé ; carte solo complète non retrouvée"],
@@ -125,10 +125,12 @@ def build_report():
     ],[43*mm,65*mm,60*mm]))
     s.append(Spacer(1,5*mm))
     s.append(info_box("Correction d'interprétation",
-        "Poland est bien l'achèvement du dossier London_mp. Cela ne prouve pas que cette arène soit la totalité de la campagne anglaise annoncée, ni qu'elle conserve le scénario de Londres."))
+        "Poland est bien l'achèvement du dossier London_mp. La chronologie rend plausible qu'il corresponde au reliquat multijoueur britannique évoqué en juin 2003. Cela ne prouve pas que cette arène soit la totalité de la campagne anglaise annoncée, ni qu'elle conserve une mission solo ou le scénario de Gary Bristol."))
     s.append(P("Sources d'époque","h2"))
     s.append(P('<link href="https://www.gameswelt.de/hidden-dangerous-2/news/interview-mit-dem-chef-designer-61828">Gameswelt, entretien du 9 mars 2001</link>',"source"))
     s.append(P('<link href="https://games.tiscali.cz/preview/hidden-dangerous-2-preview-51655">Games.cz, preview du 7 juin 2003</link>',"source"))
+    s.append(P('<link href="https://www.gamespot.com/articles/hidden-and-dangerous-2-preview/1100-6030857/">GameSpot, preview du 25 septembre 2003</link>',"source"))
+    s.append(P('<link href="https://www.gamespot.com/articles/qanda-hidden-and-dangerous-2-sabre-squadron/1100-6109875/">GameSpot, entretien Sabre Squadron du 7 octobre 2004</link>',"source"))
     s.append(P('<link href="https://www.cgwmuseum.org/galleries/issues/cgw_207.pdf">Computer Gaming World 207</link>',"source"))
     s.append(PageBreak())
 

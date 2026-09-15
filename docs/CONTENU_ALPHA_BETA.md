@@ -24,7 +24,19 @@ https://hidden-and-dangerous.net/articles/interview-with-illusion-softworks-2004
 
 ## Ambition de jeu
 
-Les annonces de 2001 parlent de 24 missions, sept campagnes, Londres et Allemagne. D'autres documents évoquent des missions à plus de deux ou trois objectifs, plusieurs solutions, coopération, avions et hélicoptères.
+Les annonces de 2001 parlent de 24 missions, sept campagnes, Londres et
+Allemagne parmi les lieux. GameSpot conserve le témoignage du premier
+concepteur sur des niveaux dépassant deux ou trois objectifs. En juin 2003,
+Games.cz parle encore de neuf campagnes et de plusieurs routes possibles, tout
+en déclarant déjà la campagne anglaise remplacée. En septembre 2003, GameSpot
+annonce six campagnes et 23 missions. Ces comptes incompatibles sont une trace
+de la refonte, pas un inventaire permettant de déduire automatiquement trois
+campagnes cachées.
+
+Le même article de juin 2003 distingue le Londres en ruines encore montré de la
+campagne anglaise retirée, et prévoit au moins un reliquat britannique en
+multijoueur. Ce point rend le passage de `London_mp` à Poland historiquement
+plausible, sans transformer l'arène en preuve d'une mission solo complète.
 
 Le projet a subi un changement de moteur et une refonte de conception. Il faut donc distinguer trois catégories :
 
