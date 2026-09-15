@@ -104,6 +104,12 @@ additif provisoire 359 proposé pour le prototype Benelli n'entre en collision
 avec aucun ItemID installé ; cette vérification devra être répétée au moment de
 chaque installation expérimentale.
 
+Le contrôle `tools/network_master_audit.py` vérifie sans lancer le jeu que les
+trois anciens noms GameSpy aboutissent à l’adresse RpR attendue, que le serveur
+maître répond sur le port 28910 et que l’installateur conserve le même
+câblage. L’affichage de la liste Internet et l’entrée effective sur un serveur
+restent volontairement des essais en jeu.
+
 Un prototype de menu solo distinct est maintenant préparé dans une copie de
 test séparée. La scène `.4ds` seule ne suffisait pas ; la copie de l'exécutable
 a donc été décompactée et reconstruite hors ligne avec la prise en charge de
