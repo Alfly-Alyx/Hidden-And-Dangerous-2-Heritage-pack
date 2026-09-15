@@ -321,6 +321,15 @@ namespace HD2CommunityInstaller
                     Burgundy3SasDialogueInstaller.Install(
                         options.GamePath, journal, prepared, progress);
                 if (options.RestoreDormantSequences)
+                    Libye2CutDialogueInstaller.Install(
+                        options.GamePath, journal, prepared, progress);
+                if (options.RestoreDormantSequences)
+                    Libye3DetailedRouteInstaller.Install(
+                        options.GamePath, journal, prepared, progress);
+                if (options.RestoreDormantSequences)
+                    BrestDormantGuardActionsInstaller.Install(
+                        options.GamePath, journal, prepared, progress);
+                if (options.RestoreDormantSequences)
                     Africa3WeaponInspectionInstaller.Install(
                         options.GamePath, journal, prepared, progress);
                 if (options.RestoreDormantSequences)
@@ -370,6 +379,9 @@ namespace HD2CommunityInstaller
                         options.GamePath, journal, prepared, progress);
                 if (options.RestoreDormantSequences)
                     Africa1CommandAlarmInstaller.Install(
+                        options.GamePath, journal, prepared, progress);
+                if (options.RestoreDormantSequences)
+                    Africa1DormantInteractionsInstaller.Install(
                         options.GamePath, journal, prepared, progress);
                 if (options.RestoreDormantSequences)
                     Arctic1RadioButtonInstaller.Install(

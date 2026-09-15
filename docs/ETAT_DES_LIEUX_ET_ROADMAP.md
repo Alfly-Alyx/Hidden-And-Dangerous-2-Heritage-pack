@@ -89,6 +89,9 @@ Le projet doit produire un ensemble installable pour Hidden & Dangerous 2: Sabre
 - dans Africa 3, le distributeur d'alarme global avertit de nouveau `AF3a_22` et `AF3a_23` par le signal 20 ; les deux acteurs, leurs liaisons et leurs gestionnaires complets sont présents, et aucun autre émetteur ne leur envoie déjà ce signal ;
 - dans la cinématique d’arrivée en Jeep d’Africa 3, les deux fumées sont déjà créées et détruites ; le paquet réactive le son `cut_para` aux mêmes instants, comme le fait la variante Opel, après vérification de son ancre sonore et des quatre cadres de particules ;
 - dans Libye 1 coopératif, `AF1_33`, `AF1_50`, `AF1_52` et `AF1_53` relancent leur animation de cigarette dans les branches déjà prévues et l'arrêtent à l'alarme ; les mêmes appels sont actifs dans la version solo et dans Libye 3 ;
+- dans Libye 2, la conversation des soldats 16–17 retrouve ses deux réponses finales enregistrées 53990012 et 53990013 en solo et en coopération ; les acteurs atteignent déjà le lieu du combat, et les sons ainsi que les animations labiales sont présents ;
+- dans Libye 3, le soldat `Li3_German_3` emprunte de nouveau les cinq points G3_02 à G3_06 de sa route détaillée avant de remplacer le servant de la mitrailleuse ; tous les checkpoints, le signal de relève et la MG sont présents ;
+- dans Brest, 33 scripts reliés retrouvent 49 animations d'observation de sentinelles et 10 réactions à la découverte d'un cadavre en solo et en coopération ; les cibles, activités et déclencheurs commerciaux sont tous présents ;
 - dans Arctic 4, `Walking_Guard_3` retrouve l'ordre `HUMAN_SETMODE_Walk()` explicitement retiré pour un test avec son chien ; le propriétaire, le signal de mort et les deux liaisons du registre sont conservés ;
 - dans Arctic 4, le repère `k_vykricnik_` des documents redevient visible lorsque le joueur entre dans son rayon de 10 mètres et se masque après la collecte ; sa liaison, son cadre de scène, le signal 24 et le contrôleur d’objectif sont conservés ; le marqueur distinct de l’officier reste désactivé conformément à la note explicite des développeurs ;
 - dans Arctic 4, le danger de chute de glace `dummy_bouchni` retrouve son explosion exacte avant l'activation du fragment `ulomek_4` ; son déclencheur à douze mètres et toutes ses valeurs commerciales sont conservés ;
@@ -112,6 +115,7 @@ Le projet doit produire un ensemble installable pour Hidden & Dangerous 2: Sabre
 - dans Czech 3, le contrôleur des deux zones `detector_blockerz` et `detector_blockerz1` active désormais chaque détecteur une fois, au lieu d’activer deux fois le premier ; le camion normal retrouve les quatre points de sa manœuvre complète déjà active en Carnage, la mort du mécanicien coupe de nouveau son dialogue de proximité et le radio-opérateur reprend son poste de précision attesté par `co_czech3` ;
 - Africa 4 respecte de nouveau le résultat sauvegardé de l'opérateur radio d'Africa 3 : les conducteurs, fantassins, chars, réserves, délais et textes de journal possèdent encore leurs variantes avertie et non avertie, mais une affectation de test forçait toujours la première ;
 - les dix alertes croisées des gardes 07, 08, 09, 10 et 12 d'Africa 1 emploient de nouveau le signal 20 déjà géré par leurs quatre destinataires, au lieu du signal 10 ignoré ;
+- dans Africa 1, la porte `HL_dvh_x01` retrouve son contrôleur commercial de lightmap au clic, et le garde 06 monte de nouveau sur la MG42 après avoir rejoint son point `AF1_06_kulomet` ;
 - trois gardes d'Africa 2 rejoignent de nouveau la réaction coordonnée de leur groupe : `AF2_02` reçoit son signal d'alerte 20, `AF2_05` son signal d'alerte 5 et `AF2_03` retrouve ses quatre envois officiels — activation lointaine, détection rapprochée, alerte directe et alarme générale — ainsi que les trois déclarations correspondantes ; ses signaux 1, 5 et 20, sa ronde et ses points sont déjà complets ; le détecteur rapproché coupé des gardes 14–15 est également rétabli avec son arrêt en cas d'alarme, le signal 10 d'`AF2_14` et les trois déplacements d'`AF2_15` ;
 - CASTLE2 objectif 5 identifié comme action complète commentée.
 
@@ -152,7 +156,7 @@ Le premier inventaire automatisé couvre désormais les trois couches commercial
 - inventaire séparé des dossiers de cartes non déclarés dans le multijoueur ;
 - comparaison des catalogues de neuf couples solo/coopératif présentant 28 omissions, 9 ajouts ou plusieurs renumérotations, avec trois chaînes déjà restaurées de façon stable ;
 - inventaire des modèles, scripts et tables liés aux armes et véhicules retirés.
-- audit manuel complet d'Arctic 1 à Arctic 4, de Czech 1 à Czech 6 et de Normandy 1 à Normandy 2 : aucun script affecté manquant ; les restaurations démontrables sont intégrées aux sources, tandis que l'échec du bateau d'Arctic 3, les finitions incomplètes d'Arctic 4, les trois routes `???` de Czech 4 et les branches remplacées restent isolés ;
+- audit manuel complet d'Arctic 1 à Arctic 4, de Czech 1 à Czech 6, de Normandy 1 à Normandy 2, de Norway, Sicily 1–2, Burgundy 1–3 et Libye 1 : aucun script affecté manquant ; les restaurations démontrables sont intégrées aux sources, tandis que les branches incomplètes ou remplacées restent isolées ;
 
 L'ordre de traitement est désormais : restaurer tout ce qui possède encore ses données suffisantes, y compris les véhicules utilisables comme décors ou objets scriptés ; tester ; puis réserver pour la fin les créations qui exigent géométrie, modèles, animations, physique ou scripts nouveaux.
 
@@ -192,6 +196,7 @@ Objectif : trouver les actions encore présentes mais non reliées.
 
 - maintenir le graphe déjà construit de tous les objectifs, signaux et compteurs, puis fermer les candidats un par un ;
 - vérifier les chaînes multi-actions déjà cartographiées dans Norway, Normandy 2, Sicily 1 et 2, Africa 3, Burgundy 1 et 2, Burma 1 et 2, Brest coopératif, Libye 1 à 3 coopératifs et Burgundy 1 à 3 coopératifs ;
+- tester en jeu les deux libérations, la remise conjointe à la LRDG et la destruction des deux véhicules de ravitaillement de Libye 1 ; comparer séparément les deux variantes expérimentales de synchronisation du dialogue 48–49 ;
 - rechercher les objectifs à deux ou trois actions réduits à une ;
 - éprouver dans le module expérimental la reconstruction minimale de l'objectif de coopération d'Africa 5 ;
 - reconstruire additivement dans Sicily 2 le déclenchement de la deuxième vague après trois charges retirées, sans rétablir la transition 0→3 qui bloquerait la validation des six charges désamorcées ;

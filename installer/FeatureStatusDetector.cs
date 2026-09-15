@@ -138,6 +138,9 @@ namespace HD2CommunityInstaller
             if (Burgundy2DormantBehaviorInstaller.IsActive(gamePath)) ready++;
             if (Burgundy3Guard32PatrolInstaller.IsActive(gamePath)) ready++;
             if (Burgundy3SasDialogueInstaller.IsActive(gamePath)) ready++;
+            if (Libye2CutDialogueInstaller.IsActive(gamePath)) ready++;
+            if (Libye3DetailedRouteInstaller.IsActive(gamePath)) ready++;
+            if (BrestDormantGuardActionsInstaller.IsActive(gamePath)) ready++;
             if (Africa3WeaponInspectionInstaller.IsActive(gamePath)) ready++;
             if (Africa3MechanicCoverInstaller.IsActive(gamePath)) ready++;
             if (Africa3Guard24SittingInstaller.IsActive(gamePath)) ready++;
@@ -155,6 +158,7 @@ namespace HD2CommunityInstaller
             if (Africa1CardPlayersInstaller.IsActive(gamePath)) ready++;
             if (Africa2GuardSignalInstaller.IsActive(gamePath)) ready++;
             if (Africa1CommandAlarmInstaller.IsActive(gamePath)) ready++;
+            if (Africa1DormantInteractionsInstaller.IsActive(gamePath)) ready++;
             if (Alps1CivilAlarmInstaller.IsActive(gamePath)) ready++;
             if (Alps1CombatPostsInstaller.IsActive(gamePath)) ready++;
             if (Alps2ShotAlarmInstaller.IsActive(gamePath)) ready++;
@@ -187,7 +191,7 @@ namespace HD2CommunityInstaller
                 && africa3Dialogue.IndexOf(
                     "079915604", StringComparison.Ordinal) < 0)
                 ready++;
-            return CountStatus(ready, 60);
+            return CountStatus(ready, 64);
         }
 
         private static string DetectEasterEggs(string gamePath)

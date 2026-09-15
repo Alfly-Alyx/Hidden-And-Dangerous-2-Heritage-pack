@@ -59,6 +59,9 @@ namespace HD2CommunityInstaller
                         Console.WriteLine(Burgundy2DormantBehaviorInstaller.ValidateOnly(game));
                         Console.WriteLine(Burgundy3Guard32PatrolInstaller.ValidateOnly(game));
                         Console.WriteLine(Burgundy3SasDialogueInstaller.ValidateOnly(game));
+                        Console.WriteLine(Libye2CutDialogueInstaller.ValidateOnly(game));
+                        Console.WriteLine(Libye3DetailedRouteInstaller.ValidateOnly(game));
+                        Console.WriteLine(BrestDormantGuardActionsInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa3WeaponInspectionInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa3MechanicCoverInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa3Guard24SittingInstaller.ValidateOnly(game));
@@ -76,6 +79,7 @@ namespace HD2CommunityInstaller
                         Console.WriteLine(Africa1CardPlayersInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa2GuardSignalInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa1CommandAlarmInstaller.ValidateOnly(game));
+                        Console.WriteLine(Africa1DormantInteractionsInstaller.ValidateOnly(game));
                         Console.WriteLine(Alps1CivilAlarmInstaller.ValidateOnly(game));
                         Console.WriteLine(Alps1CombatPostsInstaller.ValidateOnly(game));
                         Console.WriteLine(Alps2ShotAlarmInstaller.ValidateOnly(game));
@@ -135,6 +139,9 @@ namespace HD2CommunityInstaller
                         Console.WriteLine(Burgundy2DormantBehaviorInstaller.ValidateOnly(game));
                         Console.WriteLine(Burgundy3Guard32PatrolInstaller.ValidateOnly(game));
                         Console.WriteLine(Burgundy3SasDialogueInstaller.ValidateOnly(game));
+                        Console.WriteLine(Libye2CutDialogueInstaller.ValidateOnly(game));
+                        Console.WriteLine(Libye3DetailedRouteInstaller.ValidateOnly(game));
+                        Console.WriteLine(BrestDormantGuardActionsInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa3WeaponInspectionInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa3MechanicCoverInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa3Guard24SittingInstaller.ValidateOnly(game));
@@ -152,6 +159,7 @@ namespace HD2CommunityInstaller
                         Console.WriteLine(Africa1CardPlayersInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa2GuardSignalInstaller.ValidateOnly(game));
                         Console.WriteLine(Africa1CommandAlarmInstaller.ValidateOnly(game));
+                        Console.WriteLine(Africa1DormantInteractionsInstaller.ValidateOnly(game));
                         Console.WriteLine(Alps1CivilAlarmInstaller.ValidateOnly(game));
                         Console.WriteLine(Alps1CombatPostsInstaller.ValidateOnly(game));
                         Console.WriteLine(Alps2ShotAlarmInstaller.ValidateOnly(game));

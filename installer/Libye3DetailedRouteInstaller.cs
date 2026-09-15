@@ -6,11 +6,14 @@ using System.Text.RegularExpressions;
 
 namespace HD2CommunityInstaller
 {
-    internal static class Burgundy3SasDialogueInstaller
+    internal static class Libye3DetailedRouteInstaller
     {
-        private const string ScriptPath = "Scripts/BURGUNDY3/bur3_sas01.scr";
-        private const string CoopScriptPath = "Scripts/Co_Burgundy3/bur3_sas01.scr";
-        private const string RegistryPath = "Missions/Burgundy3/Scripts.dta";
+        private const string ScriptPath =
+            "Scripts/Libye3/Li3_German_3.scr";
+        private const string RegistryPath =
+            "Missions/Libye3/Scripts.dta";
+        private const string CheckpointsPath =
+            "Missions/Libye3/check2.bin";
 
         private static readonly string[] ScriptArchives = {
             "Scripts.dta", "Patch.dta", "SabreSquadron.dta"
@@ -27,14 +30,14 @@ namespace HD2CommunityInstaller
             byte[] patched = PatchScript(original);
             if (BytesEqual(original, patched))
                 throw new InvalidDataException(
-                    "La premiere replique SAS Burgundy 3 semble deja active dans l'archive source.");
+                    "Le trajet detaille G3 de Libye 3 semble deja actif.");
             ValidatePatched(patched);
             if (!BytesEqual(patched, PatchScript(patched)))
                 throw new InvalidDataException(
-                    "La restauration du dialogue SAS Burgundy 3 n'est pas idempotente.");
+                    "La restauration du trajet G3 de Libye 3 n'est pas idempotente.");
             ValidateAssets(gamePath);
-            return "Burgundy 3 verifiee : le premier SAS retrouve la replique "
-                + "59990052, conservee active dans la variante cooperative.";
+            return "Libye 3 verifiee : le remplacant du mitrailleur peut "
+                + "reprendre les cinq etapes G3_02 a G3_06 de sa route officielle.";
         }
 
         public static bool IsActive(string gamePath)
@@ -57,7 +60,7 @@ namespace HD2CommunityInstaller
             Action<string> progress)
         {
             InstallerCore.Report(progress,
-                "Restauration de la premiere replique SAS de Burgundy 3...");
+                "Restauration du trajet detaille du mitrailleur de Libye 3...");
             DormantSource source = ResolveSource(
                 gamePath, ScriptPath, ScriptArchives);
             string target = InstallerCore.SafeGameTarget(gamePath, ScriptPath);
@@ -69,7 +72,7 @@ namespace HD2CommunityInstaller
             if (BytesEqual(original, patched))
             {
                 InstallerCore.Report(progress,
-                    "La premiere replique SAS de Burgundy 3 est deja active.");
+                    "Le trajet detaille G3 de Libye 3 est deja actif.");
                 return;
             }
 
@@ -88,84 +91,104 @@ namespace HD2CommunityInstaller
             {
                 if (File.Exists(temporary)) File.Delete(temporary);
             }
-
             InstallerCore.Log(
-                "Burgundy 3 : premiere replique SAS 59990052 restauree.");
+                "Libye 3 : etapes G3_02 a G3_06 restaurees pour Li3_German_3.");
             InstallerCore.Report(progress,
-                "Le dialogue du premier SAS de Burgundy 3 retrouve sa phrase d'ouverture.");
+                "Le remplacant du mitrailleur de Libye 3 emprunte de nouveau sa route complete.");
         }
 
         private static byte[] PatchScript(byte[] data)
         {
             Encoding ansi = Encoding.GetEncoding(1252);
             string text = ansi.GetString(data);
-            if (IsPatched(text)) return data;
+            if (ActiveRouteRegex().Matches(text).Count == 1)
+            {
+                ValidatePatched(data);
+                return data;
+            }
 
             Regex dormant = new Regex(
-                @"(?m)^([ \t]*)//[ \t]*(FRM_MorphSpeechDelayed\s*\(\s*this\s*,\s*59990052\s*,\s*8\s*,\s*20\s*\)\s*;)[ \t]*\r?$",
+                @"(?m)^(?<indent>[ \t]*)//[ \t]*HUMAN_Move\s*\(\s*""G3_02""\s*\)\s*;[ \t]*\r?\n"
+                + @"\k<indent>//[ \t]*HUMAN_Move\s*\(\s*""G3_03""\s*\)\s*;[ \t]*\r?\n"
+                + @"\k<indent>//[ \t]*HUMAN_Move\s*\(\s*""G3_04""\s*\)\s*;[ \t]*\r?\n"
+                + @"\k<indent>//[ \t]*HUMAN_Move\s*\(\s*""G3_05""\s*\)\s*;[ \t]*\r?\n"
+                + @"\k<indent>//[ \t]*HUMAN_Move\s*\(\s*""G3_06""\s*\)\s*;[ \t]*\r?$",
                 RegexOptions.IgnoreCase);
-            if (dormant.Matches(text).Count != 1)
+            Match match = dormant.Match(text);
+            if (!match.Success || dormant.Matches(text).Count != 1)
                 throw new InvalidDataException(
-                    "Replique dormante 59990052 de Burgundy 3 introuvable.");
-            return ansi.GetBytes(dormant.Replace(text, "${1}${2}", 1));
+                    "Les cinq etapes commentees de la route G3 sont introuvables.");
+
+            string uncommented = Regex.Replace(match.Value,
+                @"(?m)^(?<indent>[ \t]*)//[ \t]?", "${indent}");
+            text = text.Substring(0, match.Index) + uncommented
+                + text.Substring(match.Index + match.Length);
+            return ansi.GetBytes(text);
         }
 
-        private static bool IsPatched(string text)
+        private static Regex ActiveRouteRegex()
         {
-            return Regex.IsMatch(text,
-                @"(?m)^[ \t]*FRM_MorphSpeechDelayed\s*\(\s*this\s*,\s*59990052\s*,\s*8\s*,\s*20\s*\)\s*;[ \t]*\r?$",
-                RegexOptions.IgnoreCase);
+            return new Regex(
+                @"^\s*OnSignal\s*\(\s*1\s*\)[\s\S]{0,300}"
+                + @"^[ \t]*HUMAN_Move\s*\(\s*""G3_01""\s*\)[\s\S]{0,100}"
+                + @"^[ \t]*HUMAN_Move\s*\(\s*""G3_02""\s*\)[\s\S]{0,100}"
+                + @"^[ \t]*HUMAN_Move\s*\(\s*""G3_03""\s*\)[\s\S]{0,100}"
+                + @"^[ \t]*HUMAN_Move\s*\(\s*""G3_04""\s*\)[\s\S]{0,100}"
+                + @"^[ \t]*HUMAN_Move\s*\(\s*""G3_05""\s*\)[\s\S]{0,100}"
+                + @"^[ \t]*HUMAN_Move\s*\(\s*""G3_06""\s*\)[\s\S]{0,100}"
+                + @"^[ \t]*HUMAN_Move\s*\(\s*""G3_07""\s*\)[\s\S]{0,100}"
+                + @"^[ \t]*HUMAN_Move\s*\(\s*""MG_1""\s*\)[\s\S]{0,100}"
+                + @"^[ \t]*HUMAN_BoardVehicle\s*\(\s*""w_mg42Lie_1""\s*,\s*1\s*,\s*0\s*\)",
+                RegexOptions.IgnoreCase | RegexOptions.Multiline);
         }
 
         private static void ValidatePatched(byte[] data)
         {
             string text = Encoding.GetEncoding(1252).GetString(data);
-            if (!Regex.IsMatch(text,
-                @"^[ \t]*FRM_MorphSpeechDelayed\s*\(\s*this\s*,\s*59990052\s*,\s*8\s*,\s*20\s*\)\s*;"
-                + @"[\s\S]{0,120}^[ \t]*FRM_MorphSpeechDelayed\s*\(\s*this\s*,\s*59990053\s*,\s*8\s*,\s*20\s*\)\s*;"
-                + @"[\s\S]{0,120}^[ \t]*FRM_MorphSpeechDelayed\s*\(\s*this\s*,\s*59990054\s*,\s*8\s*,\s*20\s*\)\s*;",
-                RegexOptions.IgnoreCase | RegexOptions.Multiline))
+            if (ActiveRouteRegex().Matches(text).Count != 1)
                 throw new InvalidDataException(
-                    "La replique 59990052 n'est pas replacee au debut du dialogue SAS Burgundy 3.");
+                    "La route G3 restauree de Libye 3 est incomplete.");
         }
 
         private static void ValidateAssets(string gamePath)
         {
             byte[] registry = ReadSource(ResolveSource(
                 gamePath, RegistryPath, MissionArchives));
-            if (!HasBinding(registry, "BUR03_SAS01", "bur3_sas01.scr"))
+            if (!HasBinding(registry,
+                    "Li3_German_3", "Li3_German_3.scr"))
                 throw new InvalidDataException(
-                    "La liaison du premier SAS Burgundy 3 est absente.");
+                    "La liaison officielle de Li3_German_3 est absente.");
 
-            string coop = Encoding.GetEncoding(1252).GetString(ReadSource(
-                ResolveSource(gamePath, CoopScriptPath, ScriptArchives)));
-            if (!Regex.IsMatch(coop,
-                @"^[ \t]*FRM_MorphSpeechDelayed\s*\(\s*this\s*,\s*59990052\s*,\s*8\s*,\s*20\s*\)\s*;"
-                + @"[\s\S]{0,120}^[ \t]*FRM_MorphSpeechDelayed\s*\(\s*this\s*,\s*59990053\s*,",
-                RegexOptions.IgnoreCase | RegexOptions.Multiline))
-                throw new InvalidDataException(
-                    "La preuve cooperative du dialogue 59990052 est absente.");
+            byte[] checkpoints = ReadSource(ResolveSource(
+                gamePath, CheckpointsPath, MissionArchives));
+            foreach (string checkpoint in new[] {
+                "G3_01", "G3_02", "G3_03", "G3_04", "G3_05",
+                "G3_06", "G3_07", "MG_1"
+            })
+                if (CountAscii(checkpoints, checkpoint) != 1)
+                    throw new InvalidDataException(
+                        "Point Libye 3 absent ou ambigu : " + checkpoint + ".");
+        }
 
-            string[] languageArchives = Directory.GetFiles(gamePath, "Lang*.dta");
-            bool soundFound = false;
-            bool lipsyncFound = false;
-            foreach (string archivePath in languageArchives)
+        private static int CountAscii(byte[] data, string value)
+        {
+            byte[] needle = Encoding.ASCII.GetBytes(value);
+            int count = 0;
+            for (int start = 0; start <= data.Length - needle.Length; start++)
             {
-                using (DtaArchive archive = new DtaArchive(archivePath))
-                    foreach (DtaEntry entry in archive.Entries)
-                    {
-                        string name = entry.Name.Replace((char)92, '/');
-                        if (String.Equals(name, "Sounds/59990052.wav",
-                            StringComparison.OrdinalIgnoreCase))
-                            soundFound = true;
-                        if (String.Equals(name, "Tables/Dabing/59990052.dat",
-                            StringComparison.OrdinalIgnoreCase))
-                            lipsyncFound = true;
-                    }
+                int index = 0;
+                while (index < needle.Length
+                    && ToLowerAscii(data[start + index]) == ToLowerAscii(needle[index]))
+                    index++;
+                if (index == needle.Length) count++;
             }
-            if (!soundFound || !lipsyncFound)
-                throw new InvalidDataException(
-                    "La voix ou le lipsync 59990052 de Burgundy 3 est absent de la langue installee.");
+            return count;
+        }
+
+        private static byte ToLowerAscii(byte value)
+        {
+            return value >= (byte)'A' && value <= (byte)'Z'
+                ? (byte)(value + 32) : value;
         }
 
         private static bool HasBinding(
@@ -173,7 +196,7 @@ namespace HD2CommunityInstaller
         {
             if (data == null || data.Length < 6)
                 throw new InvalidDataException(
-                    "Registre de scripts Burgundy 3 trop court.");
+                    "Registre de scripts Libye 3 trop court.");
             int offset = 6;
             while (offset < data.Length)
             {
@@ -192,13 +215,13 @@ namespace HD2CommunityInstaller
         {
             if (offset + 6 > data.Length)
                 throw new InvalidDataException(
-                    "Registre de scripts Burgundy 3 tronque.");
+                    "Registre de scripts Libye 3 tronque.");
             ushort marker = BitConverter.ToUInt16(data, offset);
             int total = checked((int)BitConverter.ToUInt32(data, offset + 2));
             if (marker != 1 || total < 7 || offset + total > data.Length
                 || data[offset + total - 1] != 0)
                 throw new InvalidDataException(
-                    "Champ invalide dans le registre Burgundy 3.");
+                    "Champ invalide dans le registre Libye 3.");
             string value = Encoding.GetEncoding(1252).GetString(
                 data, offset + 6, total - 7);
             offset += total;

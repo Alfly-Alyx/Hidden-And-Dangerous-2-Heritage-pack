@@ -131,9 +131,21 @@ Dans Africa 1, le détecteur de portée de `AF1_23` double une activation autono
 
 Dans Libye 1 coopératif, `AF1_obj2_succ_sender.scr` et l'ancien gestionnaire du signal 3 appartiennent à une première version de l'objectif 2 où les deux prisonniers devaient survivre. Le fichier se désactive explicitement et le contrôleur indique que cette condition a été remplacée par l'élimination des trois officiers, dont la validation est complète et active. Réactiver le signal 3 écraserait donc le sens de l'objectif livré au lieu d'ajouter une action secondaire. La conversation voisine des gardes reste, elle, une reconstruction expérimentale distincte : ses douze répliques sont commentées et son compteur de synchronisation n'a plus qu'un seul émetteur.
 
+En solo, la chaîne à plusieurs actions n'a pas été simplifiée. `NPC1` et `NPC2` envoient chacun leur propre signal après libération ; le contrôleur n'active l'objectif de remise qu'après les deux. La zone LRDG vérifie ensuite simultanément les deux prisonniers à moins de treize unités avant la validation. L'objectif optionnel du ravitaillement exige de son côté que `Opel1` et `Opel2` soient tous deux détruits. Les sept objectifs normal/Carnage possèdent leurs émetteurs et leurs résultats actifs.
+
+Le dialogue des gardes 48–49 reste toutefois inaccessible : contrairement aux couples 08–12 et 33–34, son coordinateur à deux signaux ne reçoit qu'un départ ; contrairement au couple 23–24, il ne démarre pas au premier signal. Ses deux signaux 2 de sortie n'ont pas non plus de récepteur. Comme ces deux modèles commerciaux conduisent à des réparations différentes, le laboratoire conserve deux variantes désactivées au lieu d'en imposer une dans l'installation stable.
+
+Dans Libye 2, aucune chaîne d'objectif n'a été réduite. L'objectif optionnel du parc attend simultanément la destruction des cinq Opel, des deux Opel Flak et du Kübelwagen. L'extraction exige ensuite tous les joueurs à portée et au moins un des neuf véhicules encore fonctionnel ; la survie de l'équipe et l'élimination Carnage conservent leurs contrôles séparés. Les cinq objectifs déclarés disposent donc de leurs transitions actives.
+
+La conversation des soldats `AF2_16` et `AF2_17` démarre lorsque le médecin atteint le site du combat. Ses voix 53990009 à 53990011 étaient actives, puis les deux réponses finales 53990012 et 53990013 restaient commentées. Les deux scripts de mission, les acteurs, l'ordre exact, les sons et les animations labiales existent en solo comme en coopération ; le paquet réactive uniquement ces deux appels. La conversation `AF2_24_25_speech` conserve aussi la voix 53990023, mais sa note l'associe au parc automobile détruit alors que le dialogue peut commencer dès l'approche du joueur. Elle est confiée au laboratoire pour être jouée seulement après la validation réelle du parc, sans remplacer la conversation actuelle.
+
 Dans Libye 2, `AF2_obj3.scr` envoie aussi un signal 2 lorsque tous les véhicules, y compris les moyens d'extraction, sont détruits. Le contrôleur ne le reçoit pas, mais il surveille déjà directement la même condition et fait échouer l'extraction : ajouter un second gestionnaire doublerait cette conséquence. Dans Burgundy 2 coopératif, les signaux 3 et 4 de `detect_motopryc.scr` proviennent au contraire des anciennes fuites solo ; les scripts coopératifs des deux fugitifs ne conservent plus leurs trajets en voiture ou à moto. Ces signaux sont donc inatteignables sans recréer d'abord les routes supprimées.
 
-Ces cas restent documentés, mais ne sont pas modifiés dans la restauration stable.
+Dans Libye 3, les trois actions principales restent séquentielles et distinctes : détruire le Liberator active la destruction de la seconde partie de l'équipement, laquelle active le rassemblement final avec un véhicule fonctionnel. La sortie contrôle séparément chaque véhicule admissible avant d'envoyer le signal final. Le paquet y valide également l'objectif optionnel de survie si aucun membre n'est mort. L'objectif 5 surveille tous les ennemis uniquement en Carnage ; le sixième emplacement du catalogue reprend le même texte 15533 sans autre script ni condition et reste donc un doublon non activé.
+
+Le chemin commenté de `Li3_German_3` ne remplace pas une route alternative : il rétablit cinq étapes consécutives, `G3_02` à `G3_06`, entre `G3_01` et `G3_07`, avant `MG_1` et l'embarquement sur la mitrailleuse couchée. Les huit points sont uniques et présents dans la carte. Le paquet restaure cette route détaillée sans changer le signal de relève, le dialogue, la MG ou la réaction de combat.
+
+Le signal 2 redondant de Libye 2 et les anciennes fuites coopératives de Burgundy 2 restent documentés, mais ne sont pas modifiés dans la restauration stable.
 
 L'audit continue sur les autres compteurs, en exigeant la même chaîne de preuve avant toute activation stable.
 
@@ -152,6 +164,8 @@ La mission Brest conserve deux détecteurs d'approche, `detectorzone3aktiv1` et 
 La même erreur de liaison subsiste dans les deux registres de la variante coopérative `Co_brest`. Le paquet corrige donc le second détecteur en solo et dans les deux registres coopératifs. Il ne déplace aucun acteur et ne crée aucune logique : il restaure l'embranchement déjà présent dans les données commerciales.
 
 La variante coopérative conserve aussi l'acteur `hint` exactement à la position solo et le même script `hint.scr`, mais sans la liaison solo `hint → hint.scr`. Le paquet la rétablit afin que le conseil contextuel officiel 15600 apparaisse de nouveau à cet emplacement.
+
+L'audit complet relève aussi 59 actions de garde neutralisées par commentaire dans les mêmes branches solo et coopératives : 49 animations d'observation `%%koukadrep` ou `%%kouka`, et 10 réactions de trois secondes dirigées vers le cadavre `venek1puf`. Les 33 scripts concernés sont reliés dans leurs registres, la cible subsiste dans les deux scènes et les mêmes commandes sont déjà actives ailleurs dans Brest ou dans Burgundy 2/3. Le paquet les réactive sans toucher aux routes ni aux conditions d'alarme.
 
 ## Seconde approche du civil 03 dans Alps 1
 
@@ -479,6 +493,12 @@ Les gardes `AF1_07`, `08`, `09` et `10` se préviennent mutuellement lorsqu'un m
 
 Le paquet remplace ces dix signaux 10 par 20 dans les quatre émetteurs. La conversation d'ambiance entre `07`, `08` et `09`, qui utilise le signal 1, reste intacte. Tous les acteurs, scripts et chemins sont présents dans la mission commerciale.
 
+### Porte lumineuse et MG42 du garde 06 dans Africa 1
+
+Le cadre de porte unique `HL_dvh_x01` subsiste dans la scène sans liaison, avec le script complet `1s_HL_dvh_x01.scr`. Son `OnUse` alterne la lightmap 0/1 exactement comme le contrôleur de porte encore relié dans Normandy. Le paquet ajoute uniquement cette liaison ; l'autre fichier libre `1s_m_dvr_h01.scr` reste expérimental, car il vise le groupe `1s_m_dvr_h01` absent de la scène.
+
+Le garde `AF1_06` rejoint déjà le checkpoint `AF1_06_kulomet` dans sa réaction d'alarme. La ligne immédiatement suivante, qui l'embarque comme servant de `w_mg42Crouch_2`, était commentée alors que cette MG42 est encore un acteur unique de la mission. Le paquet réactive cet embarquement sans modifier sa patrouille ou son seuil d'alerte.
+
 ### Czech 2 : branche Freiberg propre au Carnage
 
 Le sélecteur commercial différencie déjà les types Carnage 3 et 7, et déclare l'acteur `boss`, mais il n'affectait plus le script `carn_Big_Boss.scr`. Ce script libre est une variante complète de Freiberg : comportement agressif, réveil à quinze mètres, arme en main et alarmes actives. Le paquet rétablit son unique affectation dans la branche Carnage. La mission normale conserve le prisonnier, les cinq répliques, le ligotage, la capture puis l'objectif de sortie déjà réparé.
@@ -501,6 +521,8 @@ Un écart du graphe ne doit pas être réactivé :
 - Czech 3 : à leur mort, les deux civils envoient un signal 2 à `e_ktable3`, acteur utilisé uniquement pour lancer `setobjectives.scr`. Ce script d'initialisation n'a aucun récepteur et le vrai contrôleur d'objectifs emploie déjà son signal 2 pour la sécurisation de la zone. La conversion coopérative publique retire ces deux envois tout en conservant la mort, l'arrêt des voix et la séquence d'évacuation ; ils sont donc classés résidus d'un ancien protocole, sans correctif à ajouter.
 
 - Libye 3 : le cargo envoie uniformément le signal 1 à plusieurs membres du groupe Panzer, dont le servant `Li3_German_Con_2`. Celui-ci est pourtant déjà actif et embarqué au siège 1, exactement comme le servant du siège 2 qui ne reçoit aucun signal ; seuls le conducteur et les fantassins suspendus ont besoin d'un réveil. La variante coopérative officielle conserve la même répartition des rôles. Ajouter un récepteur au servant serait donc une invention sans effet démontré.
+- Brest : l'ouverture de `Mesh24` envoie le signal 1 à tous les gardes voisins, mais `z2_agresor1` n'a jamais de récepteur. Il est déjà suspendu et réveillé par sa propre combinaison de présence en zone 2 et d'alarme, puis déclenche lui-même `z2_agresor2`. Ajouter un `OnSignal(1)` créerait un second mode d'éveil non attesté.
+- Brest : la radio conserve deux écritures commentées de la valeur 11. Cette valeur est déjà initialisée, activée et remise à zéro par l'objectif des deux réservoirs, tandis que la radio fait progresser son objectif directement par signaux 3 et 4. Décommenter ces lignes mélangerait deux objectifs indépendants.
 
 ## Vestiges de signaux confiés à la reconstruction
 
