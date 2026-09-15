@@ -123,6 +123,13 @@ serveurs publics. Un rapport vert signifie seulement que la machine est prête
 pour l'essai visuel ; il laisse explicitement la liste en jeu et la connexion
 marquées non validées.
 
+Le contrôle `tools/release_readiness_audit.py` empêche enfin de confondre un
+ancien exécutable présent dans `dist` avec la version finale. Il exige le
+câblage et la composition statiques, l'intégration du menu custom, les preuves
+d'exécution, un dépôt propre, un setup présent et plus récent que toutes ses
+sources. L'ancien setup 0.7.5 reste donc un artefact de développement tant que
+ces barrières ne sont pas franchies.
+
 Le contrôle `tools/flamethrower_evidence_audit.py` fige séparément les traces
 des deux lance-flammes : record allemand, emplacement britannique réemployé,
 munitions, icônes et effet présents, mais modèles d'arme, animations, table de
