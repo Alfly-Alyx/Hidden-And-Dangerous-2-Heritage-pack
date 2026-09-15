@@ -62,6 +62,7 @@ def audit(root: Path) -> dict[str, object]:
     czech2_carnage_path = installer / "Czech2CarnageFreibergInstaller.cs"
     czech2_smoke_path = installer / "Czech2CutsceneSmokeInstaller.cs"
     czech3_sequences_path = installer / "Czech3DormantSequencesInstaller.cs"
+    africa5_storage_alarm_path = installer / "Africa5StorageAlarmInstaller.cs"
     assembly_path = installer / "AssemblyInfo.cs"
     build_path = root / "build.ps1"
     icon_path = installer / "assets" / "hd2-heritage-icon.ico"
@@ -81,6 +82,9 @@ def audit(root: Path) -> dict[str, object]:
     czech2_carnage = czech2_carnage_path.read_text(encoding="utf-8-sig")
     czech2_smoke = czech2_smoke_path.read_text(encoding="utf-8-sig")
     czech3_sequences = czech3_sequences_path.read_text(encoding="utf-8-sig")
+    africa5_storage_alarm = africa5_storage_alarm_path.read_text(
+        encoding="utf-8-sig"
+    )
     assembly = assembly_path.read_text(encoding="utf-8-sig")
     build = build_path.read_text(encoding="utf-8-sig")
     readme = readme_path.read_text(encoding="utf-8-sig")
@@ -327,6 +331,20 @@ def audit(root: Path) -> dict[str, object]:
             "Czech 3 dormant-sequence detection can mistake comments for active code"
         )
 
+    africa5_storage_alarm_requires_active_lines = all((
+        '@"\\k<indent>//[ \\t]*HUMAN_MoveToAlarm' in africa5_storage_alarm,
+        '@"^[ \\t]*if\\s*\\(\\s*Atype' in africa5_storage_alarm,
+        africa5_storage_alarm.count(
+            '@"[\\s\\S]{0,180}^[ \\t]*HUMAN_'
+        ) == 2,
+        '@"[\\s\\S]{0,100}^[ \\t]*\\}[ \\t]*(?=\\r?$)"'
+        in africa5_storage_alarm,
+    ))
+    if not africa5_storage_alarm_requires_active_lines:
+        errors.append(
+            "Africa 5 storage-alarm detection can mistake comments for active code"
+        )
+
     historical_icon = (
         icon_path.is_file()
         and hashlib.sha256(icon_path.read_bytes()).hexdigest().upper()
@@ -438,6 +456,9 @@ def audit(root: Path) -> dict[str, object]:
         ),
         "czech3_sequences_require_active_lines": (
             czech3_sequences_require_active_lines
+        ),
+        "africa5_storage_alarm_requires_active_lines": (
+            africa5_storage_alarm_requires_active_lines
         ),
         "historical_icon": historical_icon,
         "artifact_identity": artifact_identity,

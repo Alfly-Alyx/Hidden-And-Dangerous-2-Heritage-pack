@@ -108,7 +108,8 @@ namespace HD2CommunityInstaller
 
             Regex dormant = new Regex(
                 @"(?ms)^(?<indent>[ \t]*)//[ \t]*if[ \t]*\([ \t]*Atype[ \t]*==[ \t]*256[ \t]*\)[ \t]*\{[ \t]*\r?\n"
-                + @"(?<body>(?:\k<indent>//[^\r\n]*\r?\n)+?)"
+                + @"(?<body>(?:\k<indent>//[^\r\n]*\r?\n)*?"
+                + @"\k<indent>//[ \t]*HUMAN_MoveToAlarm\s*\(\s*\)\s*;[ \t]*\r?\n)"
                 + @"\k<indent>//[ \t]*\}[ \t]*\r?$",
                 RegexOptions.IgnoreCase);
             Match match = dormant.Match(text);
@@ -126,10 +127,14 @@ namespace HD2CommunityInstaller
         private static Regex ActiveBranchRegex()
         {
             return new Regex(
-                @"if\s*\(\s*Atype\s*==\s*256\s*\)\s*\{[\s\S]{0,300}"
-                + @"HUMAN_SetAlarm\s*\(\s*false\s*\)\s*;[\s\S]{0,180}"
-                + @"HUMAN_SetMODE_Run\s*\(\s*\)\s*;[\s\S]{0,180}"
-                + @"HUMAN_MoveToAlarm\s*\(\s*\)\s*;[\s\S]{0,100}\}",
+                @"^[ \t]*if\s*\(\s*Atype\s*==\s*256\s*\)\s*\{[ \t]*(?=\r?$)"
+                + @"[\s\S]{0,300}^[ \t]*HUMAN_SetAlarm\s*"
+                + @"\(\s*false\s*\)\s*;[ \t]*(?=\r?$)"
+                + @"[\s\S]{0,180}^[ \t]*HUMAN_SetMODE_Run\s*"
+                + @"\(\s*\)\s*;[ \t]*(?=\r?$)"
+                + @"[\s\S]{0,180}^[ \t]*HUMAN_MoveToAlarm\s*"
+                + @"\(\s*\)\s*;[ \t]*(?=\r?$)"
+                + @"[\s\S]{0,100}^[ \t]*\}[ \t]*(?=\r?$)",
                 RegexOptions.IgnoreCase | RegexOptions.Multiline);
         }
 
