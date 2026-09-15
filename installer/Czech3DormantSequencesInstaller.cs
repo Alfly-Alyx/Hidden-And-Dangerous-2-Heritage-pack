@@ -13,7 +13,8 @@ namespace HD2CommunityInstaller
             "Scripts/CZECH3/R_cz3_pila_kladivo.scr";
         private const string RadioOperatorPath = "Scripts/CZECH3/Radista.scr";
         private const string RegistryPath = "Missions/CZECH3/Scripts.dta";
-        private const string CheckpointPath = \
+        private const string CheckpointPath = "Missions/CZECH3/check2.bin";
+        private const string ScenePath = "Missions/CZECH3/scene2.bin";
 
         private static readonly string[] ScriptArchives = {
             "Scripts.dta", "Patch.dta", "SabreSquadron.dta"
