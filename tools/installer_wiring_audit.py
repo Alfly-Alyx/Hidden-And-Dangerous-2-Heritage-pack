@@ -410,6 +410,21 @@ def audit(root: Path) -> dict[str, object]:
             "The installer cannot verify preserved dialogue in LangEnglish.dta"
         )
 
+    remaining_commercial_archive_keys = all((
+        "identifier == 0xB038DD00U" in dta_archive,
+        "key = 0xF26520FAB038D1A1UL;" in dta_archive,
+        "identifier == 0x5D804E00U" in dta_archive,
+        "key = 0x10ACB2525D805259UL;" in dta_archive,
+        "identifier == 0xEA859B00U" in dta_archive,
+        "key = 0x65F7AB23EA85902AUL;" in dta_archive,
+        "identifier == 0x4FE84300U" in dta_archive,
+        "key = 0x8D2965CA4FE85106UL;" in dta_archive,
+        "identifier == 0xA0A0A000U" in dta_archive,
+        "key = 0xA0A0A0A0A0A0A0A2UL;" in dta_archive,
+    ))
+    if not remaining_commercial_archive_keys:
+        errors.append("One or more installed commercial archive keys are missing")
+
     burgundy3_guard32_requires_active_patrol = all((
         '@"^[ \\t]*Label\\s+ACTIVITY_LOOP' in burgundy3_guard32,
         burgundy3_guard32.count(
@@ -678,6 +693,7 @@ def audit(root: Path) -> dict[str, object]:
         ),
         "maps_archive_key": maps_archive_key,
         "language_archive_key": language_archive_key,
+        "remaining_commercial_archive_keys": remaining_commercial_archive_keys,
         "burgundy3_guard32_requires_active_patrol": (
             burgundy3_guard32_requires_active_patrol
         ),

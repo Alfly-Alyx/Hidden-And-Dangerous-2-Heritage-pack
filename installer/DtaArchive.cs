@@ -42,6 +42,14 @@ namespace HD2CommunityInstaller
                 key = 0x22BCDA987654A3F0UL;
             else if (identifier == 0xB438AB00U)
                 key = 0xF26527FAB438D0A5UL;
+            else if (identifier == 0xB038DD00U)
+                key = 0xF26520FAB038D1A1UL;
+            else if (identifier == 0x5D804E00U)
+                key = 0x10ACB2525D805259UL;
+            else if (identifier == 0xEA859B00U)
+                key = 0x65F7AB23EA85902AUL;
+            else if (identifier == 0x4FE84300U)
+                key = 0x8D2965CA4FE85106UL;
             else if (identifier == 0x5D805600U)
                 key = 0x10ACB2525D805270UL;
             else if (identifier == 0x0AB4EB00U)
@@ -50,6 +58,8 @@ namespace HD2CommunityInstaller
                 key = 0xA0A0A0A0A0A0A0A1UL;
             else if (identifier == 0xA0A0B100U)
                 key = 0xA0A0A0A0A0A0A0A0UL;
+            else if (identifier == 0xA0A0A000U)
+                key = 0xA0A0A0A0A0A0A0A2UL;
             else
                 throw new InvalidDataException(
                     "Archive DTA non reconnue (identifiant "
