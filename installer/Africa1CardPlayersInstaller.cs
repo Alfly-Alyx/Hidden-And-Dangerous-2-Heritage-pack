@@ -138,13 +138,14 @@ namespace HD2CommunityInstaller
         private static Regex ActiveSequenceRegex()
         {
             return new Regex(
-                @"HUMAN_ACTIVITY_Card\s*\(\s*1\s*\)\s*;"
-                + @"[\s\S]{0,80}?Label[ \t]+LOOP[ \t]*:"
-                + @"[\s\S]{0,100}?HUMAN_ACTIVITY_Card\s*"
+                @"^[ \t]*HUMAN_ACTIVITY_Card\s*\(\s*1\s*\)\s*;"
+                + @"[\s\S]{0,80}?^[ \t]*Label[ \t]+LOOP[ \t]*:"
+                + @"[\s\S]{0,100}?^[ \t]*HUMAN_ACTIVITY_Card\s*"
                 + @"\(\s*2\s*\)\s*;[\s\S]{0,80}?"
-                + @"Delay\s*\(\s*1500\s*\)\s*;[\s\S]{0,80}?"
-                + @"goto[ \t]+LOOP\s*;",
-                RegexOptions.IgnoreCase);
+                + @"^[ \t]*Delay\s*\(\s*1500\s*\)\s*;[\s\S]{0,80}?"
+                + @"^[ \t]*goto[ \t]+LOOP\s*;[\s\S]{0,80}?"
+                + @"^[ \t]*goto[ \t]+END\s*;",
+                RegexOptions.IgnoreCase | RegexOptions.Multiline);
         }
 
         private static void ValidatePatched(byte[] data, string relative)
@@ -154,8 +155,9 @@ namespace HD2CommunityInstaller
                 throw new InvalidDataException(
                     "Boucle de cartes incomplete : " + relative);
             RequireCount(text,
-                @"(?m)^[ \t]*//[ \t]*(?:HUMAN_ACTIVITY_Card|"
-                + @"Label[ \t]+LOOP|goto[ \t]+LOOP)",
+                @"(?m)^[ \t]*//[ \t]*(?:HUMAN_ACTIVITY_Card\s*\(\s*[12]\s*\)\s*;|"
+                + @"Label[ \t]+LOOP[ \t]*:|Delay\s*\(\s*1500\s*\)\s*;|"
+                + @"goto[ \t]+(?:LOOP|END)\s*;)",
                 0, "Une commande de cartes reste desactivee : " + relative);
             RequireCount(text,
                 @"OnAlarm\s*\([^\)]*\)\s*\{[\s\S]{0,180}?"

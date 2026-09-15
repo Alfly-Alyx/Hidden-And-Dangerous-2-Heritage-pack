@@ -125,12 +125,13 @@ namespace HD2CommunityInstaller
         private static Regex ActiveBranchRegex()
         {
             return new Regex(
-                @"if\s*\(\s*Atype\s*==\s*64\s*\)\s*\{[\s\S]{0,500}"
-                + @"below_car\s*=\s*1\s*;[\s\S]{0,300}"
-                + @"HUMAN_Move\s*\([^\r\n]*AF3a_21_01[\s\S]{0,300}"
-                + @"HUMAN_SETMODE_Lie\s*\(\s*\)\s*;[\s\S]{0,150}"
-                + @"HUMAN_Move\s*\([^\r\n]*AF3a_21_bcar[\s\S]{0,100}"
-                + @"goto\s+END\s*;[\s\S]{0,50}\}",
+                @"^[ \t]*if\s*\(\s*Atype\s*==\s*64\s*\)\s*\{[ \t]*(?=\r?$)"
+                + @"[\s\S]{0,500}^[ \t]*below_car\s*=\s*1\s*;"
+                + @"[\s\S]{0,300}^[ \t]*HUMAN_Move\s*\([^\r\n]*AF3a_21_01"
+                + @"[\s\S]{0,300}^[ \t]*HUMAN_SETMODE_Lie\s*\(\s*\)\s*;"
+                + @"[\s\S]{0,150}^[ \t]*HUMAN_Move\s*\([^\r\n]*AF3a_21_bcar"
+                + @"[\s\S]{0,100}^[ \t]*goto\s+END\s*;"
+                + @"[\s\S]{0,50}^[ \t]*\}[ \t]*(?=\r?$)",
                 RegexOptions.IgnoreCase | RegexOptions.Multiline);
         }
 

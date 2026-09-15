@@ -67,6 +67,8 @@ def audit(root: Path) -> dict[str, object]:
     africa5_dormant_actors_path = installer / "Africa5DormantActorsInstaller.cs"
     dta_archive_path = installer / "DtaArchive.cs"
     burgundy3_guard32_path = installer / "Burgundy3Guard32PatrolInstaller.cs"
+    africa3_mechanic_path = installer / "Africa3MechanicCoverInstaller.cs"
+    africa1_cards_path = installer / "Africa1CardPlayersInstaller.cs"
     assembly_path = installer / "AssemblyInfo.cs"
     build_path = root / "build.ps1"
     icon_path = installer / "assets" / "hd2-heritage-icon.ico"
@@ -95,6 +97,8 @@ def audit(root: Path) -> dict[str, object]:
     )
     dta_archive = dta_archive_path.read_text(encoding="utf-8-sig")
     burgundy3_guard32 = burgundy3_guard32_path.read_text(encoding="utf-8-sig")
+    africa3_mechanic = africa3_mechanic_path.read_text(encoding="utf-8-sig")
+    africa1_cards = africa1_cards_path.read_text(encoding="utf-8-sig")
     assembly = assembly_path.read_text(encoding="utf-8-sig")
     build = build_path.read_text(encoding="utf-8-sig")
     readme = readme_path.read_text(encoding="utf-8-sig")
@@ -390,6 +394,28 @@ def audit(root: Path) -> dict[str, object]:
             "Burgundy 3 guard-32 detection can mistake commented moves for a patrol"
         )
 
+    africa3_mechanic_requires_active_cover = all((
+        '@"^[ \\t]*if\\s*\\(\\s*Atype\\s*==\\s*64' in africa3_mechanic,
+        '@"[\\s\\S]{0,500}^[ \\t]*below_car' in africa3_mechanic,
+        '@"[\\s\\S]{0,50}^[ \\t]*\\}[ \\t]*(?=\\r?$)"'
+        in africa3_mechanic,
+    ))
+    if not africa3_mechanic_requires_active_cover:
+        errors.append(
+            "Africa 3 mechanic detection can mistake its commented cover branch for code"
+        )
+
+    africa1_cards_require_complete_active_loop = all((
+        '@"^[ \\t]*HUMAN_ACTIVITY_Card' in africa1_cards,
+        '@"^[ \\t]*goto[ \\t]+END\\s*;"' in africa1_cards,
+        'Label[ \\t]+LOOP[ \\t]*:|Delay' in africa1_cards,
+        "RegexOptions.IgnoreCase | RegexOptions.Multiline" in africa1_cards,
+    ))
+    if not africa1_cards_require_complete_active_loop:
+        errors.append(
+            "Africa 1 card-player detection can mistake its commented loop for code"
+        )
+
     historical_icon = (
         icon_path.is_file()
         and hashlib.sha256(icon_path.read_bytes()).hexdigest().upper()
@@ -511,6 +537,12 @@ def audit(root: Path) -> dict[str, object]:
         "maps_archive_key": maps_archive_key,
         "burgundy3_guard32_requires_active_patrol": (
             burgundy3_guard32_requires_active_patrol
+        ),
+        "africa3_mechanic_requires_active_cover": (
+            africa3_mechanic_requires_active_cover
+        ),
+        "africa1_cards_require_complete_active_loop": (
+            africa1_cards_require_complete_active_loop
         ),
         "historical_icon": historical_icon,
         "artifact_identity": artifact_identity,
