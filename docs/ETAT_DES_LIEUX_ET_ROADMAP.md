@@ -142,6 +142,8 @@ Le projet doit produire un ensemble installable pour Hidden & Dangerous 2: Sabre
 - neutralisations explicites d'Africa 1 et Africa 4 par le patch 1.12 inversées ;
 - positions des trois clés Africa 4 relevées ;
 - positions exactes des trois crânes Burma 1 décodées dans la scène Patch 1.12 et protégées par un audit de leurs quatre liaisons et de leur compteur ;
+- 36 ancres spatiales de six autres secrets décodées en coordonnées mondiales, avec distinction des transformations locales et mondiales ;
+- double liaison officielle du déclencheur Africa 4 identifiée sur la MG42 couchée et sur le volume `dummy_ee_activator` ; les deux zones doivent être départagées en jeu avant de figer le guide ;
 - carte schématique originale préparée pour le guide joueur ;
 - route Tutorial identifiée, mais l'escalade du camion reste bloquée en 1.12.
 
@@ -181,7 +183,7 @@ Objectif : prouver dans le jeu ce qui est déjà automatisé.
 
 - installer le paquet sur une copie de test ;
 - afficher la liste Internet et rejoindre un serveur ;
-- déclencher les easter eggs Africa 1 et Africa 4, puis valider l'objectif 8 d'Africa 1 en mode Carnage ;
+- déclencher les easter eggs Africa 1 et Africa 4, essayer séparément les deux propriétaires du déclencheur des trois clés, puis valider l'objectif 8 d'Africa 1 en mode Carnage ;
 - valider Arctic 3 par les deux routes connues ;
 - valider Africa 2, la sortie de Czech 2 avec Freiberg, son comportement hostile en Carnage et la fin de la fumée de sa cinématique, Normandy 2, sa vague Red 26 et les quinze ripostes Blue vers Ally 5, la paire de zones Norway, le changement d'éclairage des trois éléments de l'Enigma, les animations aléatoires des huit gardes du Tirpitz et l'arrêt du minuteur de `Small3`, la mise en place du mécanicien 16 et la ronde après alerte du garde 19 d'Africa 1, la partie de cartes des soldats 24 et 25, Libye 3, la survie d'Africa 6, les cinq charges et l'interrupteur lumineux d'Arctic 2, le repos assis du garde 24 d'Africa 3 et le geste de chaleur du garde 03, la réaction des gardes 22 et 23 à l'alarme globale, les réactions défensives des gardes 06 et 16, les événements des gardes 25, 28, 29, 31 et 32 et les embuscades 33 à 37 d'Africa 3, le sifflement de vapeur de l'arrivée en Jeep, les cinq passagers d'Opel et les postures des réservistes 27 à 30 d'Africa 4, la mise en place de Schumann pendant l'embuscade, les événements d'AF4_43, le visage d'AF4_10, l'alerte vocale d'AF4_sklad01 et les cinq avions d'Africa 5, le marqueur de proximité des documents et l'impact de la chute de glace d'Arctic 4, les deux sabotages, la fermeture de la barrière, le retour du garde et la réplique 57990065 de Burgundy 1, l'objectif des huit véhicules de Libye 2 coopératif, les deux générateurs de Brest coopératif, les deux objectifs sans alarme de Burgundy 1 coopératif, puis les trois ordres possibles de sauvetage et les pertes partielles de Burgundy 3 coopératif dans plusieurs difficultés ;
 - charger Normandy3 Zone et Africa5 Prototype ;

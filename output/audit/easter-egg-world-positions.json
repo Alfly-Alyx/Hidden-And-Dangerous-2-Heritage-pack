@@ -1,0 +1,547 @@
+{
+  "game": "D:\\Games\\Hidden and Dangerous 2",
+  "ok": true,
+  "coordinate_field": "0x2C world transform",
+  "local_coordinate_field": "0x20 local transform",
+  "mission_count": 6,
+  "frame_count": 36,
+  "errors": [],
+  "missions": [
+    {
+      "id": "tutorial",
+      "mission": "tutorial",
+      "title": "Tutorial",
+      "frames": [
+        {
+          "name": "M_ALAR_1",
+          "role": "parent model of the bound button M_ALAR_1.Cylinder01",
+          "world_position": [
+            -52.354725,
+            1.906093,
+            -2.890001
+          ],
+          "position_space": "world",
+          "blob": "missions/tutorial/scene2.bin",
+          "archive": "missions.dta"
+        },
+        {
+          "name": "la_Bedford_1",
+          "role": "vehicle used by the historical access route",
+          "world_position": [
+            -17.804197,
+            -1.512808,
+            80.766449
+          ],
+          "position_space": "world",
+          "blob": "missions/tutorial/actors.bin",
+          "archive": "missions.dta"
+        },
+        {
+          "name": "T_dummy_EE_Activator1",
+          "role": "gold-bar activation zone",
+          "world_position": [
+            57.962864,
+            1.353687,
+            41.821579
+          ],
+          "position_space": "world",
+          "blob": "missions/tutorial/scene2.bin",
+          "archive": "missions.dta"
+        },
+        {
+          "name": "T_EE_Target1",
+          "role": "first hidden target",
+          "world_position": [
+            32.569256,
+            0.0,
+            55.643627
+          ],
+          "position_space": "world",
+          "blob": "missions/tutorial/actors.bin",
+          "archive": "missions.dta"
+        },
+        {
+          "name": "T_EE_Target2",
+          "role": "second hidden target",
+          "world_position": [
+            31.551186,
+            -0.003687,
+            55.47348
+          ],
+          "position_space": "world",
+          "blob": "missions/tutorial/actors.bin",
+          "archive": "missions.dta"
+        },
+        {
+          "name": "T_EE_Target3",
+          "role": "third hidden target",
+          "world_position": [
+            44.362541,
+            0.0677,
+            55.362545
+          ],
+          "position_space": "world",
+          "blob": "missions/tutorial/actors.bin",
+          "archive": "missions.dta"
+        },
+        {
+          "name": "T_EE_Target4",
+          "role": "fourth hidden target",
+          "world_position": [
+            39.389381,
+            -0.036469,
+            55.443027
+          ],
+          "position_space": "world",
+          "blob": "missions/tutorial/actors.bin",
+          "archive": "missions.dta"
+        }
+      ],
+      "note": "The button is a model subframe and inherits the position of M_ALAR_1; the gold-bar item is revealed dynamically."
+    },
+    {
+      "id": "alps1",
+      "mission": "alps1",
+      "title": "Alps 1 - Babes in the Wood",
+      "frames": [
+        {
+          "name": "kwdet",
+          "role": "hidden two-metre gathering point for the four crewmen",
+          "world_position": [
+            156.910172,
+            1.257552,
+            15.105836
+          ],
+          "position_space": "world",
+          "blob": "missions/alps1/scene2.bin",
+          "archive": "Patch.dta"
+        }
+      ]
+    },
+    {
+      "id": "alps2",
+      "mission": "alps2",
+      "title": "Alps 2 - Estate Agent",
+      "frames": [
+        {
+          "name": "eggdetect1",
+          "role": "first gold-bar zone",
+          "world_position": [
+            -13.254289,
+            3.046833,
+            20.740532
+          ],
+          "position_space": "world",
+          "blob": "missions/alps2/scene2.bin",
+          "archive": "Patch.dta",
+          "local_position": [
+            -0.570395,
+            -0.837033,
+            -1.899998
+          ]
+        },
+        {
+          "name": "eggdetect2",
+          "role": "second gold-bar zone",
+          "world_position": [
+            5.695766,
+            6.0166,
+            -7.736698
+          ],
+          "position_space": "world",
+          "blob": "missions/alps2/scene2.bin",
+          "archive": "Patch.dta",
+          "local_position": [
+            -0.050805,
+            -1.9,
+            0.862184
+          ]
+        },
+        {
+          "name": "eggdetect3",
+          "role": "third gold-bar zone",
+          "world_position": [
+            19.067347,
+            6.579298,
+            27.229118
+          ],
+          "position_space": "world",
+          "blob": "missions/alps2/scene2.bin",
+          "archive": "Patch.dta",
+          "local_position": [
+            0.264488,
+            0.295489,
+            -1.892183
+          ]
+        },
+        {
+          "name": "egg",
+          "role": "effect controller",
+          "world_position": [
+            3.004607,
+            -0.134921,
+            4.28667
+          ],
+          "position_space": "world",
+          "blob": "missions/alps2/scene2.bin",
+          "archive": "Patch.dta"
+        },
+        {
+          "name": "kostej_",
+          "role": "first revealed skeleton",
+          "world_position": [
+            5.673249,
+            0.086929,
+            2.272857
+          ],
+          "position_space": "world",
+          "blob": "missions/alps2/scene2.bin",
+          "archive": "Patch.dta"
+        },
+        {
+          "name": "kostej_2",
+          "role": "second revealed skeleton",
+          "world_position": [
+            6.946949,
+            0.112616,
+            4.286633
+          ],
+          "position_space": "world",
+          "blob": "missions/alps2/scene2.bin",
+          "archive": "Patch.dta"
+        }
+      ]
+    },
+    {
+      "id": "normandy1",
+      "mission": "normandy",
+      "title": "Normandy 1 - Lighthouse",
+      "frames": [
+        {
+          "name": "N1_EE",
+          "role": "ten-bottle counter",
+          "world_position": [
+            -4.628133,
+            4.339499,
+            95.092239
+          ],
+          "position_space": "world",
+          "blob": "missions/normandy/scene2.bin",
+          "archive": "missions.dta"
+        },
+        {
+          "name": "N48",
+          "role": "guard signalled after the tenth bottle",
+          "world_position": [
+            -5.672054,
+            4.121909,
+            95.740288
+          ],
+          "position_space": "world",
+          "blob": "missions/normandy/actors.bin",
+          "archive": "Patch.dta"
+        },
+        {
+          "name": "bottle",
+          "role": "first bottle",
+          "world_position": [
+            -5.417812,
+            3.665698,
+            95.444359
+          ],
+          "position_space": "world",
+          "blob": "missions/normandy/scene2.bin",
+          "archive": "missions.dta"
+        },
+        {
+          "name": "bottle2",
+          "role": "second bottle",
+          "world_position": [
+            2.530323,
+            4.526854,
+            86.612473
+          ],
+          "position_space": "world",
+          "blob": "missions/normandy/scene2.bin",
+          "archive": "missions.dta",
+          "local_position": [
+            -0.696751,
+            0.926857,
+            -1.080723
+          ]
+        },
+        {
+          "name": "bottle3",
+          "role": "third bottle",
+          "world_position": [
+            16.911974,
+            5.123803,
+            75.043686
+          ],
+          "position_space": "world",
+          "blob": "missions/normandy/scene2.bin",
+          "archive": "missions.dta",
+          "local_position": [
+            0.739862,
+            1.523754,
+            3.986443
+          ]
+        },
+        {
+          "name": "bottle4",
+          "role": "fourth bottle",
+          "world_position": [
+            18.080017,
+            4.478304,
+            54.560055
+          ],
+          "position_space": "world",
+          "blob": "missions/normandy/scene2.bin",
+          "archive": "missions.dta",
+          "local_position": [
+            1.907906,
+            0.878255,
+            0.131901
+          ]
+        },
+        {
+          "name": "bottle5",
+          "role": "fifth bottle",
+          "world_position": [
+            14.906191,
+            5.66161,
+            38.712833
+          ],
+          "position_space": "world",
+          "blob": "missions/normandy/scene2.bin",
+          "archive": "missions.dta",
+          "local_position": [
+            -2.579212,
+            2.061561,
+            -1.506455
+          ]
+        },
+        {
+          "name": "bottle6",
+          "role": "sixth bottle",
+          "world_position": [
+            -0.291585,
+            4.92629,
+            48.978054
+          ],
+          "position_space": "world",
+          "blob": "missions/normandy/scene2.bin",
+          "archive": "missions.dta",
+          "local_position": [
+            2.146305,
+            1.326241,
+            -0.694132
+          ]
+        },
+        {
+          "name": "bottle7",
+          "role": "seventh bottle",
+          "world_position": [
+            -9.968625,
+            3.66,
+            37.328491
+          ],
+          "position_space": "world",
+          "blob": "missions/normandy/scene2.bin",
+          "archive": "missions.dta",
+          "local_position": [
+            -1.955849,
+            0.059951,
+            1.702743
+          ]
+        },
+        {
+          "name": "bottle8",
+          "role": "eighth bottle",
+          "world_position": [
+            -12.10137,
+            5.66161,
+            37.737965
+          ],
+          "position_space": "world",
+          "blob": "missions/normandy/scene2.bin",
+          "archive": "missions.dta",
+          "local_position": [
+            -2.000991,
+            2.061561,
+            1.538891
+          ]
+        },
+        {
+          "name": "bottle9",
+          "role": "ninth bottle",
+          "world_position": [
+            -19.799259,
+            3.817951,
+            49.910294
+          ],
+          "position_space": "world",
+          "blob": "missions/normandy/scene2.bin",
+          "archive": "missions.dta",
+          "local_position": [
+            -1.083736,
+            0.217901,
+            -0.816368
+          ]
+        },
+        {
+          "name": "bottle10",
+          "role": "tenth bottle",
+          "world_position": [
+            16.67556,
+            -0.301945,
+            74.891029
+          ],
+          "position_space": "world",
+          "blob": "missions/normandy/scene2.bin",
+          "archive": "missions.dta",
+          "local_position": [
+            -1.94849,
+            -1.384892,
+            -0.519051
+          ]
+        }
+      ]
+    },
+    {
+      "id": "africa1",
+      "mission": "africa1",
+      "title": "Africa 1 - Spaghetti Airport",
+      "frames": [
+        {
+          "name": "dummy_ee",
+          "role": "owner of AF1_ee.scr",
+          "world_position": [
+            183.75238,
+            0.113866,
+            87.638565
+          ],
+          "position_space": "world",
+          "blob": "missions/africa1/scene2.bin",
+          "archive": "missions.dta"
+        },
+        {
+          "name": "AF1_21",
+          "role": "officer required by the secret",
+          "world_position": [
+            6.329951,
+            0.543395,
+            71.905884
+          ],
+          "position_space": "world",
+          "blob": "missions/africa1/actors.bin",
+          "archive": "Patch.dta"
+        },
+        {
+          "name": "la_Jeepsas_01",
+          "role": "jeep required by the secret",
+          "world_position": [
+            -48.694279,
+            0.261597,
+            -205.161865
+          ],
+          "position_space": "world",
+          "blob": "missions/africa1/actors.bin",
+          "archive": "Patch.dta"
+        },
+        {
+          "name": "dummy_fire_portal",
+          "role": "hidden effect portal",
+          "world_position": [
+            253.824097,
+            0.77125,
+            49.385597
+          ],
+          "position_space": "world",
+          "blob": "missions/africa1/scene2.bin",
+          "archive": "missions.dta"
+        },
+        {
+          "name": "camera_ee",
+          "role": "hidden sequence camera",
+          "world_position": [
+            235.466324,
+            0.363372,
+            54.551178
+          ],
+          "position_space": "world",
+          "blob": "missions/africa1/scene2.bin",
+          "archive": "missions.dta"
+        }
+      ]
+    },
+    {
+      "id": "africa4",
+      "mission": "africa4",
+      "title": "Africa 4 - seventh easter egg",
+      "frames": [
+        {
+          "name": "w_mg42Lie_00",
+          "role": "first owner bound to AF3b_ee_activator.scr",
+          "world_position": [
+            49.037258,
+            6.798772,
+            -22.116121
+          ],
+          "position_space": "world",
+          "blob": "missions/africa4/actors.bin",
+          "archive": "Patch.dta"
+        },
+        {
+          "name": "dummy_ee_activator",
+          "role": "second owner bound to AF3b_ee_activator.scr",
+          "world_position": [
+            0.37798,
+            -4.089648,
+            2.210202
+          ],
+          "position_space": "world",
+          "blob": "missions/africa4/scene2.bin",
+          "archive": "missions.dta"
+        },
+        {
+          "name": "dummy_ee",
+          "role": "meteor-sequence controller",
+          "world_position": [
+            173.728714,
+            0.270838,
+            -111.550781
+          ],
+          "position_space": "world",
+          "blob": "missions/africa4/scene2.bin",
+          "archive": "missions.dta"
+        },
+        {
+          "name": "meteor01",
+          "role": "meteor track object",
+          "world_position": [
+            92.889908,
+            -0.624997,
+            56.094013
+          ],
+          "position_space": "world",
+          "blob": "missions/africa4/scene2.bin",
+          "archive": "missions.dta"
+        },
+        {
+          "name": "dummy_meteor_01",
+          "role": "meteor effect anchor",
+          "world_position": [
+            173.768875,
+            0.255554,
+            -111.954857
+          ],
+          "position_space": "world",
+          "blob": "missions/africa4/scene2.bin",
+          "archive": "missions.dta"
+        }
+      ],
+      "note": "The commercial registry binds the same three-key proximity script to two owners. Runtime validation must identify whether both activation zones are live after the 1.12 override."
+    }
+  ]
+}
