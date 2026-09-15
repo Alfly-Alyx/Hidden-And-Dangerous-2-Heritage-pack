@@ -75,12 +75,19 @@ namespace HD2CommunityInstaller
                 }
                 bool warningsDisabled =
                     Arctic1FreeExplorationInstaller.IsActive(gamePath);
-                if (ready == sources.Count && warningsDisabled)
+                int looseTotal;
+                int looseReady;
+                CountAdditionalLooseTrees(
+                    gamePath, sources, out looseTotal, out looseReady);
+                if (ready == sources.Count && looseReady == looseTotal
+                    && warningsDisabled)
                     return "deja active (" + ready
-                        + " cartes et avertissements Arctic 1 verifies)";
-                if (ready > 0 || warningsDisabled)
+                        + " cartes officielles, " + looseReady
+                        + " autres arbres libres et avertissements Arctic 1 verifies)";
+                if (ready > 0 || looseReady > 0 || warningsDisabled)
                     return "partielle (" + ready + "/" + sources.Count
-                        + " cartes; avertissements Arctic 1 : "
+                        + " cartes officielles; " + looseReady + "/" + looseTotal
+                        + " autres arbres libres; avertissements Arctic 1 : "
                         + (warningsDisabled ? "neutralises" : "a neutraliser") + ")";
                 return "a activer";
             }
@@ -235,6 +242,38 @@ namespace HD2CommunityInstaller
                 throw new InvalidDataException(
                     "Inventaire officiel incomplet : " + result.Count + " arbres tree.klz.");
             return result;
+        }
+
+        private static void CountAdditionalLooseTrees(
+            string gamePath, IList<OfficialTreeSource> officialSources,
+            out int total, out int ready)
+        {
+            total = 0;
+            ready = 0;
+            HashSet<string> official = new HashSet<string>(
+                StringComparer.OrdinalIgnoreCase);
+            foreach (OfficialTreeSource source in officialSources)
+                official.Add(source.RelativePath.Replace((char)92, '/'));
+
+            string gameRoot = Path.GetFullPath(gamePath)
+                .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                + Path.DirectorySeparatorChar;
+            string missionsRoot = Path.Combine(gameRoot, "Missions");
+            if (!Directory.Exists(missionsRoot)) return;
+            foreach (string tree in Directory.GetFiles(
+                missionsRoot, "tree.klz", SearchOption.AllDirectories))
+            {
+                string target = Path.GetFullPath(tree);
+                if (!target.StartsWith(gameRoot, StringComparison.OrdinalIgnoreCase))
+                    throw new InvalidDataException(
+                        "Arbre libre hors du dossier du jeu.");
+                string relative = target.Substring(gameRoot.Length)
+                    .Replace((char)92, '/');
+                if (official.Contains(relative)) continue;
+                total++;
+                if (TreeKlzPatcher.Audit(File.ReadAllBytes(target)).ChangedItems == 0)
+                    ready++;
+            }
         }
 
         private static bool TryNormalizeTreePath(string raw, out string relative)

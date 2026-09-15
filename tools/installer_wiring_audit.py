@@ -151,6 +151,19 @@ def audit(root: Path) -> dict[str, object]:
         )
     if "journal.SealMissingHashes(options.GamePath)" not in core:
         errors.append("InstallerCore does not seal legacy missing hashes")
+    prototype_install = core.find("ExperimentalContentInstaller.Install(")
+    cmp_install = core.find("CmpInstaller.Install(")
+    loose_tree_pass = core.find("OfficialContentInstaller.PatchLooseMissionTrees(")
+    exploration_postpass = (
+        min(prototype_install, cmp_install, loose_tree_pass) >= 0
+        and prototype_install < cmp_install < loose_tree_pass
+    )
+    if min(prototype_install, cmp_install, loose_tree_pass) < 0:
+        errors.append("Exploration post-pass wiring is incomplete")
+    elif not exploration_postpass:
+        errors.append(
+            "Loose-tree exploration pass must run after prototypes and CMP"
+        )
 
     declared_options = set(re.findall(r"public bool ([A-Za-z0-9_]+)\s*=", config))
     expected_options = set(OPTION_MAP)
@@ -202,6 +215,7 @@ def audit(root: Path) -> dict[str, object]:
         "mutation_sources": len(mutation_sources),
         "unhashed_mutation_sources": unhashed_mutation_sources,
         "interface_options": len(OPTION_MAP),
+        "exploration_postpass": exploration_postpass,
         "errors": errors,
     }
 

@@ -36,6 +36,17 @@ La sortie de zone est portée par deux bits de surface :
 
 Le paquet efface seulement le masque 0x60. Il ne retire ni murs, ni sols, ni obstacles. Les arbres gardent exactement leur taille. Sur le corpus officiel, 104 405 surfaces de zone sont neutralisables dans 70 arbres sur 82, parmi 2 446 014 collisions. Le test intégré de la CMP trouve en plus 1 202 limites neutralisables dans son échantillon de validation.
 
+La détection de l'option ne se limite plus aux 70 arbres officiels modifiés :
+elle inspecte aussi chaque `tree.klz` libre qui n'appartient pas à cet ensemble,
+donc les cartes CMP, les deux prototypes et toute mission ajoutée ensuite. La
+case ne se décoche automatiquement que si toutes ces limites sont déjà
+neutralisées. L'installation locale contrôlée contient actuellement 225 arbres
+libres et aucun drapeau de zone restant, mais quatre objets `border` subsistent
+dans `NORMANDY3_MP_ZONE` : ils ont été réintroduits quand le prototype a été
+complété après le dernier passage de l'ancienne détection. Le nouvel état est
+donc volontairement « partiel » et le prochain passage de l'option les
+neutralisera après la copie du prototype.
+
 Cette liberté n'invente pas du terrain au-delà de la géométrie existante. Des bords vides, collisions ou secteurs non chargés peuvent toujours limiter l'exploration.
 
 Arctic 1 ajoutait un second verrou dans le script vocal d'Albert : lorsque le joueur le suivait sur sa route de retour, trois avertissements précédaient le signal 14 d'échec. Les deux routes commerciales activaient cette surveillance par les signaux 30 et 31. L'option d'exploration maintient désormais le détecteur désactivé dans les deux cas ; les voix, la branche historique et les deux routes restent dans le fichier mais deviennent inaccessibles pendant l'exploration libre.
