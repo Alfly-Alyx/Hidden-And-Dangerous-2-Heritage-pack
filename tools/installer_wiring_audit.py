@@ -60,6 +60,7 @@ def audit(root: Path) -> dict[str, object]:
     tree_patcher_path = installer / "TreeKlzPatcher.cs"
     objectives_path = installer / "ObjectiveFixInstaller.cs"
     czech2_carnage_path = installer / "Czech2CarnageFreibergInstaller.cs"
+    czech2_smoke_path = installer / "Czech2CutsceneSmokeInstaller.cs"
     assembly_path = installer / "AssemblyInfo.cs"
     build_path = root / "build.ps1"
     icon_path = installer / "assets" / "hd2-heritage-icon.ico"
@@ -77,6 +78,7 @@ def audit(root: Path) -> dict[str, object]:
     tree_patcher = tree_patcher_path.read_text(encoding="utf-8-sig")
     objectives = objectives_path.read_text(encoding="utf-8-sig")
     czech2_carnage = czech2_carnage_path.read_text(encoding="utf-8-sig")
+    czech2_smoke = czech2_smoke_path.read_text(encoding="utf-8-sig")
     assembly = assembly_path.read_text(encoding="utf-8-sig")
     build = build_path.read_text(encoding="utf-8-sig")
     readme = readme_path.read_text(encoding="utf-8-sig")
@@ -301,6 +303,16 @@ def audit(root: Path) -> dict[str, object]:
             "Czech 2 validation no longer follows the commercial hostility sequence"
         )
 
+    czech2_smoke_requires_active_cleanup = all((
+        '@"[\\s\\S]{0,160}^[ \\t]*FRM_DestroyIndexedParticle\\s*"'
+        in czech2_smoke,
+        'RegexOptions.IgnoreCase | RegexOptions.Multiline' in czech2_smoke,
+    ))
+    if not czech2_smoke_requires_active_cleanup:
+        errors.append(
+            "Czech 2 smoke detection can mistake the dormant comment for active code"
+        )
+
     historical_icon = (
         icon_path.is_file()
         and hashlib.sha256(icon_path.read_bytes()).hexdigest().upper()
@@ -406,6 +418,9 @@ def audit(root: Path) -> dict[str, object]:
         "objective_validation_accepts_active": objective_validation_accepts_active,
         "czech2_uses_commercial_hostility_sequence": (
             czech2_uses_commercial_hostility_sequence
+        ),
+        "czech2_smoke_requires_active_cleanup": (
+            czech2_smoke_requires_active_cleanup
         ),
         "historical_icon": historical_icon,
         "artifact_identity": artifact_identity,

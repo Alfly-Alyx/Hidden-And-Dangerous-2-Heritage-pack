@@ -123,7 +123,7 @@ namespace HD2CommunityInstaller
             return Regex.IsMatch(text,
                 @"OnCutsceneDone\s*\(\s*1\s*\)\s*\{[\s\S]{0,420}"
                 + @"FRM_SetOn\s*\(\s*MyFrame\s*,\s*false\s*\)\s*;"
-                + @"[\s\S]{0,160}FRM_DestroyIndexedParticle\s*"
+                + @"[\s\S]{0,160}^[ \t]*FRM_DestroyIndexedParticle\s*"
                 + @"\(\s*cigdym\s*\)\s*;",
                 RegexOptions.IgnoreCase | RegexOptions.Multiline);
         }
