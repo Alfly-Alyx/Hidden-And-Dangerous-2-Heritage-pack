@@ -17,7 +17,7 @@ Heritage Pack brings online play back, repairs forgotten objectives and sequence
 | Online play | Restores the community server list and enables DirectPlay when needed. |
 | Unlocked missions | An optional setting immediately unlocks all 24 H&D2 missions and all 9 Sabre Squadron missions for the active profile. |
 | Free exploration | Removes boundary warnings, mission failure, and invisible border walls without removing normal scenery collisions. |
-| Repaired missions | Fixes cases where the game failed to recognise a completed action: an objective that would not complete, destroyed targets counted incorrectly, a character that stopped reacting, missing directions, or an alternate route that could no longer be used. |
+| Restored game content | Restores parts of the original game that the final release no longer used: mission sections, optional objectives, dialogue, character animations, and alternate routes. |
 | Easter eggs | Restores the Africa 1 and Africa 4 sequences disabled by update 1.12. |
 | Community content | Installs CMP 2.6.5 with 156 cooperative maps and missions. |
 | Official remnants | Adds Africa5 Prototype and Normandy3 Zone to multiplayer with names that clearly show their experimental status. |
@@ -27,15 +27,7 @@ Heritage Pack brings online play back, repairs forgotten objectives and sequence
 
 The installer detects features that are already active. After installation or verification, completed options are automatically unticked.
 
-### What exactly is repaired?
-
-- An **objective** is a task shown during a mission. If the requested action was completed but remained marked as unfinished, the pack restores the condition that validates it.
-- A **counter** records things such as planted charges or destroyed aircraft. The pack fixes missions where the total started at the wrong value or failed to record an action.
-- A **mission reaction** happens when an action should move the mission forward: a character intervenes, a new instruction appears, or the next stage becomes available. The pack reconnects some reactions that no longer occurred.
-- **Guidance** means the messages and directions used to find the intended entrance or route. Missing directions are restored when the original data still exists.
-- A **restored route** is a second passage already built into the map but no longer usable or recognised by the mission. The pack makes it usable again when enough original data remains.
-
-Examples include the five charges in Arctic 2, aircraft counting in Africa 5, the Normandy 2 counter, both underground entrances in Lighthouse, and Brest’s second route.
+Heritage Pack restores content designed for H&D2 but removed, disabled, or incorrectly connected in the final release. These are not new missions invented for the pack: the elements were already present in the original game files.
 
 ## Installation
 
@@ -79,7 +71,7 @@ The report tells the story of the findings: cut content, mission variants, Londo
 Version **0.7.6** consolidates:
 
 - exact detection of features that are already installed;
-- missions where a completed action was no longer recognised and alternate routes that were no longer indicated;
+- original game content that no longer worked in the final release;
 - free exploration applied to both prototypes as well;
 - all four PDF guides embedded in the installer;
 - reversible installation and protection of player progress.

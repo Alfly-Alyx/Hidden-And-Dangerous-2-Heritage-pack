@@ -17,7 +17,7 @@ Heritage Pack remet en service le jeu en ligne, corrige des objectifs et des sé
 | Jeu en ligne | Rétablit la liste des serveurs communautaires et active DirectPlay si nécessaire. |
 | Missions débloquées | Une option permet d’ouvrir immédiatement les 24 missions de H&D2 et les 9 missions de Sabre Squadron pour le profil actif. |
 | Exploration libre | Supprime les avertissements, les échecs et les murs invisibles liés aux limites de zone, sans retirer les collisions normales du décor. |
-| Missions réparées | Corrige les cas où le jeu oubliait une action accomplie : objectif qui ne se valide pas, éléments détruits mal comptés, personnage qui ne réagit plus, indication manquante ou second itinéraire devenu inutilisable. |
+| Contenu du jeu restauré | Remet en fonctionnement des parties du jeu original que la version finale n’utilisait plus : morceaux de missions, objectifs optionnels, dialogues, animations de personnages et passages alternatifs. |
 | Easter eggs | Réactive les séquences d’Africa 1 et d’Africa 4 neutralisées par la mise à jour 1.12. |
 | Contenu communautaire | Installe CMP 2.6.5 et ses 156 cartes et missions coopératives. |
 | Vestiges officiels | Ajoute Africa5 Prototype et Normandy3 Zone au menu multijoueur avec un nom qui indique clairement leur état expérimental. |
@@ -27,15 +27,7 @@ Heritage Pack remet en service le jeu en ligne, corrige des objectifs et des sé
 
 L’installateur reconnaît ce qui est déjà actif. Après une installation ou une vérification, les options déjà appliquées sont automatiquement décochées.
 
-### Concrètement, qu’est-ce qui est réparé ?
-
-- Un **objectif** est une tâche affichée pendant la mission. Si l’action demandée est accomplie mais reste marquée comme inachevée, le pack rétablit la condition qui permet de la valider.
-- Un **compteur** mémorise par exemple le nombre de charges posées ou d’avions détruits. Le pack corrige les missions où ce total démarrait avec une mauvaise valeur ou oubliait une action.
-- Une **réaction de mission** se produit lorsqu’une action doit faire avancer la partie : un personnage intervient, une nouvelle consigne apparaît ou l’étape suivante devient disponible. Le pack reconnecte certaines réactions qui ne se produisaient plus.
-- Le **guidage** correspond aux messages et indications qui permettent de trouver l’entrée ou l’itinéraire prévu. Les indications manquantes sont rétablies lorsqu’elles existent encore dans le jeu.
-- Un **chemin restauré** est un second passage déjà construit dans la carte, mais devenu inutilisable ou ignoré par la mission. Le pack le rend de nouveau exploitable lorsqu’il reste suffisamment de données d’origine.
-
-Cela concerne notamment les cinq charges d’Arctic 2, le comptage des avions d’Africa 5, le compteur de Normandy 2, les deux entrées souterraines de Lighthouse et le second itinéraire de Brest.
+Heritage Pack remet en service du contenu conçu pour H&D2 mais supprimé, désactivé ou mal relié dans la version finale. Ce ne sont pas de nouvelles missions inventées pour le pack : ces éléments étaient déjà présents dans les fichiers originaux du jeu.
 
 ## Installation
 
@@ -79,7 +71,7 @@ Le rapport raconte les découvertes : contenu coupé, variantes de missions, Lon
 La version **0.7.6** consolide notamment :
 
 - la détection exacte des options déjà installées ;
-- les missions où une action accomplie n’était plus reconnue et les seconds itinéraires qui n’étaient plus indiqués ;
+- la remise en service de contenu original qui ne fonctionnait plus dans la version finale ;
 - l’exploration libre appliquée aussi aux deux prototypes ;
 - les quatre guides PDF intégrés à l’installateur ;
 - l’installation réversible et la protection des sauvegardes du joueur.
