@@ -412,6 +412,12 @@ namespace HD2CommunityInstaller
                 return BytesToHex(sha.ComputeHash(stream));
         }
 
+        internal static string ComputeSha256(byte[] data)
+        {
+            using (SHA256 sha = SHA256.Create())
+                return BytesToHex(sha.ComputeHash(data));
+        }
+
         private static string BytesToHex(byte[] bytes)
         {
             StringBuilder value = new StringBuilder(bytes.Length * 2);

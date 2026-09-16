@@ -598,15 +598,45 @@ namespace HD2CommunityInstaller
                     conflicts.Add(change.RelativePath + " (sauvegarde absente)");
                     continue;
                 }
-                if (File.Exists(target) && !String.IsNullOrWhiteSpace(change.InstalledSha256)
-                    && !String.Equals(
-                        CmpInstaller.ComputeSha256(target), change.InstalledSha256,
-                        StringComparison.OrdinalIgnoreCase))
-                    conflicts.Add(change.RelativePath + " (modifie)");
+                if (File.Exists(target)
+                    && !String.IsNullOrWhiteSpace(change.InstalledSha256))
+                {
+                    string actual = CmpInstaller.ComputeSha256(target);
+                    if (!String.Equals(actual, change.InstalledSha256,
+                            StringComparison.OrdinalIgnoreCase)
+                        && !MatchesLegacyPrototypeRewrite(change, target))
+                        conflicts.Add(change.RelativePath + " (modifie)");
+                }
             }
             if (GraphicsConfigurator.HasRestoreConflict(state))
                 conflicts.Add("Registre LS3D_setup (modifie)");
             return conflicts;
+        }
+
+        private static bool MatchesLegacyPrototypeRewrite(
+            FileChange change, string target)
+        {
+            string relative = change.RelativePath.Replace('/', '\\');
+            if (!String.Equals(relative, "MISSIONS\\AFRIKA5_MP\\tree.klz",
+                    StringComparison.OrdinalIgnoreCase)
+                && !String.Equals(relative,
+                    "Missions\\NORMANDY3_MP_ZONE\\tree.klz",
+                    StringComparison.OrdinalIgnoreCase))
+                return false;
+            try
+            {
+                byte[] data = File.ReadAllBytes(target);
+                if (TreeKlzPatcher.Audit(data).ChangedItems == 0) return false;
+                TreeKlzPatcher.Patch(data);
+                return TreeKlzPatcher.Audit(data).ChangedItems == 0
+                    && String.Equals(CmpInstaller.ComputeSha256(data),
+                        change.InstalledSha256,
+                        StringComparison.OrdinalIgnoreCase);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private static void EnsureSafeUpdate(string gamePath)
