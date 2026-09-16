@@ -17,7 +17,7 @@ Heritage Pack remet en service le jeu en ligne, corrige des objectifs et des sé
 | Jeu en ligne | Rétablit la liste des serveurs communautaires et active DirectPlay si nécessaire. |
 | Missions débloquées | Une option permet d’ouvrir immédiatement les 24 missions de H&D2 et les 9 missions de Sabre Squadron pour le profil actif. |
 | Exploration libre | Supprime les avertissements, les échecs et les murs invisibles liés aux limites de zone, sans retirer les collisions normales du décor. |
-| Missions restaurées | Répare des objectifs secondaires, des compteurs, des déclencheurs, des guidages et plusieurs chemins alternatifs encore présents dans les fichiers du jeu. |
+| Missions réparées | Corrige les cas où le jeu oubliait une action accomplie : objectif qui ne se valide pas, éléments détruits mal comptés, personnage qui ne réagit plus, indication manquante ou second itinéraire devenu inutilisable. |
 | Easter eggs | Réactive les séquences d’Africa 1 et d’Africa 4 neutralisées par la mise à jour 1.12. |
 | Contenu communautaire | Installe CMP 2.6.5 et ses 156 cartes et missions coopératives. |
 | Vestiges officiels | Ajoute Africa5 Prototype et Normandy3 Zone au menu multijoueur avec un nom qui indique clairement leur état expérimental. |
@@ -26,6 +26,16 @@ Heritage Pack remet en service le jeu en ligne, corrige des objectifs et des sé
 | Restauration | Sauvegarde les fichiers remplacés et permet de revenir à l’état précédent. |
 
 L’installateur reconnaît ce qui est déjà actif. Après une installation ou une vérification, les options déjà appliquées sont automatiquement décochées.
+
+### Concrètement, qu’est-ce qui est réparé ?
+
+- Un **objectif** est une tâche affichée pendant la mission. Si l’action demandée est accomplie mais reste marquée comme inachevée, le pack rétablit la condition qui permet de la valider.
+- Un **compteur** mémorise par exemple le nombre de charges posées ou d’avions détruits. Le pack corrige les missions où ce total démarrait avec une mauvaise valeur ou oubliait une action.
+- Une **réaction de mission** se produit lorsqu’une action doit faire avancer la partie : un personnage intervient, une nouvelle consigne apparaît ou l’étape suivante devient disponible. Le pack reconnecte certaines réactions qui ne se produisaient plus.
+- Le **guidage** correspond aux messages et indications qui permettent de trouver l’entrée ou l’itinéraire prévu. Les indications manquantes sont rétablies lorsqu’elles existent encore dans le jeu.
+- Un **chemin restauré** est un second passage déjà construit dans la carte, mais devenu inutilisable ou ignoré par la mission. Le pack le rend de nouveau exploitable lorsqu’il reste suffisamment de données d’origine.
+
+Cela concerne notamment les cinq charges d’Arctic 2, le comptage des avions d’Africa 5, le compteur de Normandy 2, les deux entrées souterraines de Lighthouse et le second itinéraire de Brest.
 
 ## Installation
 
@@ -69,14 +79,22 @@ Le rapport raconte les découvertes : contenu coupé, variantes de missions, Lon
 La version **0.7.6** consolide notamment :
 
 - la détection exacte des options déjà installées ;
-- les corrections d’objectifs et de chemins restaurés ;
+- les missions où une action accomplie n’était plus reconnue et les seconds itinéraires qui n’étaient plus indiqués ;
 - l’exploration libre appliquée aussi aux deux prototypes ;
 - les quatre guides PDF intégrés à l’installateur ;
 - l’installation réversible et la protection des sauvegardes du joueur.
 
-Certaines découvertes demandent encore une véritable reconstruction avant de pouvoir être proposées proprement : le secret du Tutorial sous 1.12, ENGLAND et CASTLE, la campagne Londres/Angleterre, les missions annoncées en Allemagne et à Dunkerque, les lance-flammes, la garrote, le ZK-383 et la transformation des aéronefs retrouvés en véhicules pilotables.
+## Ce qui n’est pas encore jouable
 
-Ces éléments restent étudiés, mais ne sont pas présentés comme terminés tant qu’ils ne sont pas réellement jouables.
+Les archives du jeu conservent des morceaux de contenus supprimés, mais pas toujours assez pour les réactiver tels quels. Cela concerne :
+
+- le secret du Tutorial, toujours neutralisé par la version 1.12 ;
+- les fragments de missions `ENGLAND`, `CASTLE1` et `CASTLE2`, dont l’objectif 5 de CASTLE ;
+- l’ancienne intrigue autour de Gary Bristol et les missions ou campagnes annoncées à Londres/Angleterre, en Allemagne et à Dunkerque ;
+- les armes incomplètes : les deux lance-flammes, la garrote et le ZK-383 ;
+- les avions et le Fa 223 retrouvés comme modèles ou décors, mais sans système complet permettant de les piloter.
+
+Il faudra recréer les éléments manquants — portions de carte, objectifs, réactions de mission, animations ou comportement des armes et véhicules — puis les tester avant de présenter ces contenus comme jouables.
 
 ## Revenir en arrière
 
@@ -86,8 +104,17 @@ Relancez l’installateur et choisissez **Restaurer**. Heritage Pack remet les f
 
 Pour un blocage, une mission qui ne démarre pas ou une option mal détectée, ouvrez une [issue GitHub](https://github.com/Alfly-Alyx/Hidden-And-Dangerous-2-Heritage-pack/issues) en indiquant la mission, le mode de jeu et ce qui se passe à l’écran.
 
-## Remerciements
+## Crédits
 
-Merci à la communauté **Hidden & Dangerous 2**, à **RpR** pour l’infrastructure multijoueur et à l’équipe de **CMP** pour la conservation et la création de missions communautaires.
+- **H&D2 Heritage Pack** : projet initié par **Alfly-Alyx**.
+- **Jeu original** : créé par **Illusion Softworks**.
+- **Jeu en ligne** : **JarnoKai (Mökki Medium)** et **Ondra** sont crédités pour la solution de liste maître ; le clan **=RpR=** l’héberge et la maintient. **DnA (Hawk)** a également créé l’outil historique de mise à jour du fichier hosts présenté par RpR.
+- **Community Map Package 2.6.5** : collection compilée et conservée par **=RpR=**, avec le dépôt `had2-cmp` publié par **ehylla93**.
+- **Missions et cartes du CMP** : **BetterYouThanMe, Black Akres, culticaxe, Dr_NO, GS Hawk, GUB, HippoBlindEye, Joe66, Joel, Lars, Matro, miamidos, Polanski, ProSabre, Rs_sabre, Sasha, Sqdn. Ldr. Ted Striker, Stern** et **Zdenda** sont les auteurs ou convertisseurs nommés dans les crédits de la version intégrée.
+- **Affichage écran large** : **ThirteenAG**, auteur de `HiddenandDangerous2.WidescreenFix`, distribué sous licence MIT.
+
+Le détail carte par carte est conservé dans `cmp_info/README.md`, installé avec le CMP. Certaines entrées y sont indiquées sans auteur ou avec un auteur inconnu ; Heritage Pack conserve honnêtement cette mention au lieu d’inventer une attribution.
+
+Sources : [jouer en ligne avec RpR](https://www.rprclan.com/hd2/play-online), [dépôt du CMP](https://github.com/ehylla93/had2-cmp) et [Widescreen Fixes Pack](https://github.com/ThirteenAG/WidescreenFixesPack).
 
 Heritage Pack est un projet communautaire indépendant, conçu pour préserver et redécouvrir le jeu.

@@ -17,7 +17,7 @@ Heritage Pack brings online play back, repairs forgotten objectives and sequence
 | Online play | Restores the community server list and enables DirectPlay when needed. |
 | Unlocked missions | An optional setting immediately unlocks all 24 H&D2 missions and all 9 Sabre Squadron missions for the active profile. |
 | Free exploration | Removes boundary warnings, mission failure, and invisible border walls without removing normal scenery collisions. |
-| Restored missions | Repairs optional objectives, counters, triggers, guidance, and several alternate routes still present in the game files. |
+| Repaired missions | Fixes cases where the game failed to recognise a completed action: an objective that would not complete, destroyed targets counted incorrectly, a character that stopped reacting, missing directions, or an alternate route that could no longer be used. |
 | Easter eggs | Restores the Africa 1 and Africa 4 sequences disabled by update 1.12. |
 | Community content | Installs CMP 2.6.5 with 156 cooperative maps and missions. |
 | Official remnants | Adds Africa5 Prototype and Normandy3 Zone to multiplayer with names that clearly show their experimental status. |
@@ -26,6 +26,16 @@ Heritage Pack brings online play back, repairs forgotten objectives and sequence
 | Restore option | Backs up replaced files and can return the game to its previous state. |
 
 The installer detects features that are already active. After installation or verification, completed options are automatically unticked.
+
+### What exactly is repaired?
+
+- An **objective** is a task shown during a mission. If the requested action was completed but remained marked as unfinished, the pack restores the condition that validates it.
+- A **counter** records things such as planted charges or destroyed aircraft. The pack fixes missions where the total started at the wrong value or failed to record an action.
+- A **mission reaction** happens when an action should move the mission forward: a character intervenes, a new instruction appears, or the next stage becomes available. The pack reconnects some reactions that no longer occurred.
+- **Guidance** means the messages and directions used to find the intended entrance or route. Missing directions are restored when the original data still exists.
+- A **restored route** is a second passage already built into the map but no longer usable or recognised by the mission. The pack makes it usable again when enough original data remains.
+
+Examples include the five charges in Arctic 2, aircraft counting in Africa 5, the Normandy 2 counter, both underground entrances in Lighthouse, and Brest’s second route.
 
 ## Installation
 
@@ -69,14 +79,22 @@ The report tells the story of the findings: cut content, mission variants, Londo
 Version **0.7.6** consolidates:
 
 - exact detection of features that are already installed;
-- restored objective and alternate-route fixes;
+- missions where a completed action was no longer recognised and alternate routes that were no longer indicated;
 - free exploration applied to both prototypes as well;
 - all four PDF guides embedded in the installer;
 - reversible installation and protection of player progress.
 
-Some discoveries still require real reconstruction before they can be offered properly: the Tutorial secret under 1.12, ENGLAND and CASTLE, the London/England campaign, the announced Germany and Dunkirk missions, the flamethrowers, garrote, ZK-383, and flyable implementations of the surviving aircraft.
+## What is not playable yet
 
-They remain under study and are not presented as finished until they are genuinely playable.
+The game archives retain fragments of removed content, but not always enough to simply switch it back on. This includes:
+
+- the Tutorial secret, still disabled by version 1.12;
+- the `ENGLAND`, `CASTLE1`, and `CASTLE2` mission fragments, including CASTLE objective 5;
+- the former Gary Bristol storyline and the announced missions or campaigns in London/England, Germany, and Dunkirk;
+- incomplete weapons: both flamethrowers, the garrote, and the ZK-383;
+- aircraft and the Fa 223 found as models or scenery, but without a complete system for piloting them.
+
+The missing parts — map sections, objectives, mission reactions, animations, or weapon and vehicle behaviour — must be recreated and tested before these contents can be presented as playable.
 
 ## Restoring the previous game
 
@@ -88,6 +106,15 @@ If a mission will not start, the game hangs, or an installed feature is detected
 
 ## Credits
 
-Thank you to the **Hidden & Dangerous 2** community, **RpR** for the multiplayer infrastructure, and the **CMP** team for preserving and creating community missions.
+- **H&D2 Heritage Pack**: a project initiated by **Alfly-Alyx**.
+- **Original game**: created by **Illusion Softworks**.
+- **Online play**: **JarnoKai (Mökki Medium)** and **Ondra** are credited for the master-list solution; the **=RpR=** clan hosts and maintains it. **DnA (Hawk)** also created the historical hosts-file updater presented by RpR.
+- **Community Map Package 2.6.5**: compiled and preserved by **=RpR=**, with the `had2-cmp` repository published by **ehylla93**.
+- **CMP missions and maps**: **BetterYouThanMe, Black Akres, culticaxe, Dr_NO, GS Hawk, GUB, HippoBlindEye, Joe66, Joel, Lars, Matro, miamidos, Polanski, ProSabre, Rs_sabre, Sasha, Sqdn. Ldr. Ted Striker, Stern**, and **Zdenda** are the authors or converters named in the credits of the integrated version.
+- **Widescreen support**: **ThirteenAG**, author of `HiddenandDangerous2.WidescreenFix`, distributed under the MIT licence.
+
+The map-by-map details remain available in `cmp_info/README.md`, installed with CMP. Some source entries have no named author or are marked unknown; Heritage Pack preserves that wording instead of inventing an attribution.
+
+Sources: [RpR online-play page](https://www.rprclan.com/hd2/play-online), [CMP repository](https://github.com/ehylla93/had2-cmp), and [Widescreen Fixes Pack](https://github.com/ThirteenAG/WidescreenFixesPack).
 
 Heritage Pack is an independent community project made to preserve and rediscover the game.
