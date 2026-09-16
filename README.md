@@ -1,6 +1,6 @@
 # Hidden & Dangerous 2 Heritage Pack
 
-[Français](README.md) · [English](README_EN.md)
+[**English**](README.md) · [Français](README_FR.md)
 
 A restoration and expansion pack for **Hidden & Dangerous 2: Sabre Squadron 1.12**.
 
