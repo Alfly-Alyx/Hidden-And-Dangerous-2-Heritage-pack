@@ -38,9 +38,10 @@ namespace HD2CommunityInstaller
             string list = File.ReadAllText(Path.Combine(gamePath, MapListPath),
                 Encoding.GetEncoding(1252));
             string updated = AddObjective(list);
-            if (String.Equals(list, updated, StringComparison.Ordinal))
+            if (!String.Equals(updated, AddObjective(updated),
+                StringComparison.Ordinal))
                 throw new InvalidDataException(
-                    "L'objectif des generateurs Brest coop semble deja declare.");
+                    "L'ajout de l'objectif Brest cooperatif n'est pas idempotent.");
             return "Brest cooperatif verifie : objectif 15504, acteur, deux explosifs, "
                 + "script identique au solo et deux registres disponibles.";
         }

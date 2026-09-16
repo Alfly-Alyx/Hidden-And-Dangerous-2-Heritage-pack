@@ -28,9 +28,11 @@ namespace HD2CommunityInstaller
                     "Le correctif Burgundy 1 coop ne rejoint pas le script solo officiel.");
             string list = File.ReadAllText(Path.Combine(gamePath, MapListPath),
                 Encoding.GetEncoding(1252));
-            if (String.Equals(list, AddObjectives(list), StringComparison.Ordinal))
+            string updated = AddObjectives(list);
+            if (!String.Equals(updated, AddObjectives(updated),
+                StringComparison.Ordinal))
                 throw new InvalidDataException(
-                    "Les objectifs de discretion Burgundy 1 coop semblent deja declares.");
+                    "L'ajout des objectifs Burgundy 1 coop n'est pas idempotent.");
             return "Burgundy 1 cooperatif verifie : les objectifs 15566 et 15567 "
                 + "et leur controleur solo de reference sont complets.";
         }

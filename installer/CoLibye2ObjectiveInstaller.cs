@@ -16,9 +16,10 @@ namespace HD2CommunityInstaller
             string path = Path.Combine(gamePath, RelativeMapList);
             string original = File.ReadAllText(path, Encoding.GetEncoding(1252));
             string patched = AddVehicleObjective(original);
-            if (String.Equals(original, patched, StringComparison.Ordinal))
+            if (!String.Equals(patched, AddVehicleObjective(patched),
+                StringComparison.Ordinal))
                 throw new InvalidDataException(
-                    "L'objectif de degats aux vehicules Libye 2 cooperatif semble deja declare.");
+                    "L'ajout de l'objectif Libye 2 cooperatif n'est pas idempotent.");
             return "Libye 2 cooperatif verifie : l'objectif optionnel 15523 possede son texte, "
                 + "son detecteur et sa validation complete.";
         }
