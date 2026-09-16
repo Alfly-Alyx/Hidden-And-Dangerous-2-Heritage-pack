@@ -177,6 +177,7 @@ namespace HD2CommunityInstaller
                     if (!HasFile(folder, file, 0)) return false;
                 return HasFile(folder, "map.4ds", 1000)
                     && HasFile(folder, "tree.klz", 1000000)
+                    && IsExplorationTree(Path.Combine(folder, "tree.klz"))
                     && HasFile(folder, "scene.4ds", 1000000)
                     && HasFile(folder, "loader.4ds", 1000)
                     && HasFile(folder, "volumy.bin", 100000)
@@ -195,6 +196,7 @@ namespace HD2CommunityInstaller
             return HasCompleteContainer(missionFolder, "actors.bin")
                 && HasCompleteContainer(missionFolder, "scene2.bin")
                 && HasCompleteContainer(missionFolder, "sounds.bin")
+                && IsExplorationTree(Path.Combine(missionFolder, "tree.klz"))
                 && HasAfricaRuntimeLinks(missionFolder);
         }
 
@@ -225,6 +227,14 @@ namespace HD2CommunityInstaller
                 string relative = targetPrefix + FileName(source.Name);
                 string target = InstallerCore.SafeGameTarget(gamePath, relative);
                 byte[] data = archive.Read(source);
+                if (String.Equals(FileName(relative), "tree.klz",
+                    StringComparison.OrdinalIgnoreCase))
+                {
+                    TreeKlzPatcher.Patch(data);
+                    if (TreeKlzPatcher.Audit(data).ChangedItems != 0)
+                        throw new InvalidDataException(
+                            "Limites restantes dans le prototype : " + relative + ".");
+                }
                 string sourceHash = ComputeSha256(data);
                 if (File.Exists(target)
                     && String.Equals(CmpInstaller.ComputeSha256(target), sourceHash,
@@ -606,6 +616,19 @@ namespace HD2CommunityInstaller
             }
         }
 
+
+        private static bool IsExplorationTree(string path)
+        {
+            try
+            {
+                return File.Exists(path)
+                    && TreeKlzPatcher.Audit(File.ReadAllBytes(path)).ChangedItems == 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         private static bool HasAfricaRuntimeLinks(string missionFolder)
         {
             try

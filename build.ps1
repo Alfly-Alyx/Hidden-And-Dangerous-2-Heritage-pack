@@ -17,17 +17,25 @@ $build = Join-Path $projectRoot 'build'
 $dist = Join-Path $projectRoot 'dist'
 $guide = Join-Path $projectRoot 'output\pdf\HD2-Guide-Joueur-Secrets-et-Easter-Eggs.pdf'
 $report = Join-Path $projectRoot 'output\pdf\HD2-Rapport-des-Decouvertes.pdf'
+$guideEn = Join-Path $projectRoot 'output\pdf\HD2-Player-Guide-Secrets-and-Easter-Eggs-EN.pdf'
+$reportEn = Join-Path $projectRoot 'output\pdf\HD2-Discovery-Report-EN.pdf'
 $icon = Join-Path $projectRoot 'installer\assets\hd2-heritage-icon.ico'
 $widescreen = Join-Path $projectRoot 'installer\assets\HiddenandDangerous2.WidescreenFix.zip'
-if (-not (Test-Path -LiteralPath $guide) -or -not (Test-Path -LiteralPath $report)) {
-    throw 'The two final PDF guides must be generated before building the installer.'
+foreach ($pdf in @($guide, $report, $guideEn, $reportEn)) {
+    if (-not (Test-Path -LiteralPath $pdf)) {
+        throw "The final PDF must be generated before building the installer: $pdf"
+    }
 }
 $pdfCommon = Join-Path $projectRoot 'tools\pdf\pdf_common.py'
 $playerSource = Join-Path $projectRoot 'tools\pdf\build_player_guide.py'
 $reportSource = Join-Path $projectRoot 'tools\pdf\build_report.py'
+$playerSourceEn = Join-Path $projectRoot 'tools\pdf\build_player_guide_en.py'
+$reportSourceEn = Join-Path $projectRoot 'tools\pdf\build_report_en.py'
 foreach ($pair in @(
     @($guide, $pdfCommon, $playerSource),
-    @($report, $pdfCommon, $reportSource)
+    @($report, $pdfCommon, $reportSource),
+    @($guideEn, $pdfCommon, $playerSourceEn),
+    @($reportEn, $pdfCommon, $reportSourceEn)
 )) {
     $outputInfo = Get-Item -LiteralPath $pair[0]
     $latestSource = Get-Item -LiteralPath $pair[1], $pair[2] |
@@ -59,6 +67,8 @@ $common = @('/nologo', '/utf8output', '/checked+', '/warn:4', '/platform:anycpu'
     $references + @(
         "/resource:$guide,HD2CommunityInstaller.GuideJoueur.pdf",
         "/resource:$report,HD2CommunityInstaller.RapportDecouvertes.pdf",
+        "/resource:$guideEn,HD2CommunityInstaller.PlayerGuideEN.pdf",
+        "/resource:$reportEn,HD2CommunityInstaller.DiscoveryReportEN.pdf",
         "/resource:$widescreen,HD2CommunityInstaller.WidescreenFix.zip"
     ) + $sources
 

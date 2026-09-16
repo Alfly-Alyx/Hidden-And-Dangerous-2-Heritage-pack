@@ -39,70 +39,7 @@ namespace HD2CommunityInstaller
 
         private static string DetectObjectives(string gamePath)
         {
-            int ready = 0;
-            string africa1Carnage = ReadOptional(gamePath,
-                "Scripts/AFRICA1/AF1_obj_carnage.scr");
-            if (Regex.IsMatch(africa1Carnage,
-                @"INTEGER\s+game_type\s*=\s*_SPGetGameType\s*\(\s*\)\s*;[\s\S]{0,900}Whenever\s+alldead[\s\S]{0,900}SetObjectiveStatus\s*\(\s*8\s*,\s*1\s*\)[\s\S]{0,600}SetObjectiveStatus\s*\(\s*8\s*,\s*0\s*\)",
-                RegexOptions.IgnoreCase)) ready++;
-            string africa2 = ReadOptional(gamePath, "Scripts/AFRICA2/AF2_tank1_01.scr");
-            if (Regex.IsMatch(africa2,
-                @"OnDeath\s*\(\s*\)\s*\{[^}]*SetObjectiveStatus\s*\(\s*2\s*,\s*1\s*\)",
-                RegexOptions.IgnoreCase)) ready++;
-            string arctic3 = ReadOptional(gamePath, "Scripts/ARCTIC3/R_Ar3_objectives.scr");
-            if (arctic3.IndexOf("FRM_FindFrame(US2, \"Amik_1\")",
-                StringComparison.OrdinalIgnoreCase) >= 0) ready++;
-            string arctic2Charges = ReadOptional(gamePath,
-                "Scripts/ARCTIC2/R_Arc1B_objective5.scr");
-            if (Regex.IsMatch(arctic2Charges,
-                @"If\s*\(\s*counter\s*==\s*5\s*\)\s*\{[\s\S]{0,180}SaveGameValue\s*\(\s*6\s*,\s*99\s*\)",
-                RegexOptions.IgnoreCase)) ready++;
-            string normandy2 = ReadOptional(gamePath, "Scripts/NORMANDY2/R_N2_OBJECTIVES.scr");
-            if (Regex.IsMatch(normandy2,
-                @"counter\s*=\s*0\s*;[\s\S]{0,700}If\s*\(\s*counter\s*==\s*5\s*\)",
-                RegexOptions.IgnoreCase)) ready++;
-            string libye3 = ReadOptional(gamePath, "Scripts/LIBYE3/dummy_objectives.scr");
-            if (Regex.IsMatch(libye3,
-                @"OnSignal\s*\(\s*3\s*\)\s*\{[\s\S]{0,500}_IsTeamMemberDead\s*\(\s*\)[\s\S]{0,300}SetObjectiveStatus\s*\(\s*4\s*,\s*1\s*\)",
-                RegexOptions.IgnoreCase)) ready++;
-            string africa6 = ReadOptional(gamePath, "Scripts/AFRICA6/AF5_obj.scr");
-            if (Regex.IsMatch(africa6,
-                @"Label\s+OBJ1COMPLETE\s*:[\s\S]{0,400}(?m:^[ \t]*if\s*\(\s*\(\s*!_IsTeamMemberDead\s*\(\s*\)\s*\)[\s\S]{0,180}^[ \t]*SetObjectiveStatus\s*\(\s*2\s*,\s*1\s*\))",
-                RegexOptions.IgnoreCase)) ready++;
-            string africa5Planes = ReadOptional(gamePath,
-                "Scripts/AFRICA5/AF4_letadla_organizer.scr");
-            if (Regex.IsMatch(africa5Planes,
-                @"SaveGameValue\s*\(\s*21\s*,\s*1\s*\)\s*;[\s\S]{0,400}SaveGameValue\s*\(\s*22\s*,\s*1\s*\)\s*;[\s\S]{0,400}SaveGameValue\s*\(\s*23\s*,\s*1\s*\)\s*;[\s\S]{0,400}SaveGameValue\s*\(\s*24\s*,\s*1\s*\)\s*;[\s\S]{0,400}SaveGameValue\s*\(\s*25\s*,\s*1\s*\)\s*;",
-                RegexOptions.IgnoreCase)) ready++;
-            string burgundy1 = ReadOptional(gamePath,
-                "Scripts/Burgundy1/bu1_objective_01.scr");
-            if (Regex.IsMatch(burgundy1,
-                @"(?m)^[ \t]*if\s*\(\s*_LoadGameValue\s*\(\s*53\s*\)\s*!=\s*1\s*\)[\s\S]{0,160}^[ \t]*SetObjectiveStatus\s*\(\s*3\s*,\s*0\s*\)",
-                RegexOptions.IgnoreCase)) ready++;
-            string burgundy3Objectives = ReadOptional(gamePath,
-                "Scripts/Co_Burgundy3/bur3_objectives.scr");
-            string burgundy3Prisoners = ReadOptional(gamePath,
-                "Scripts/Co_Burgundy3/bur3_obj3.scr");
-            if (burgundy3Objectives.IndexOf("SetObjectiveStatus(1, 0);",
-                    StringComparison.OrdinalIgnoreCase) >= 0
-                && Regex.Matches(burgundy3Objectives,
-                    @"(?m)^[ \t]*SetObjectiveStatus\s*\(\s*1\s*,\s*1\s*\)\s*;",
-                    RegexOptions.IgnoreCase).Count == 5
-                && Regex.IsMatch(burgundy3Objectives,
-                    @"OnSignal\s*\(\s*13\s*\)[\s\S]{0,120}vsetci\s*=\s*0",
-                    RegexOptions.IgnoreCase)
-                && burgundy3Prisoners.IndexOf("SendSignal(obj, 13);",
-                    StringComparison.OrdinalIgnoreCase) >= 0
-                && burgundy3Prisoners.IndexOf("Whenever obj3_failed ((!_ACTOR_GetState(zajatec01)) AND (!_ACTOR_GetState(zajatec02)) AND (!_ACTOR_GetState(zajatec03)) AND (!_ACTOR_GetState(zajatec04)))",
-                    StringComparison.OrdinalIgnoreCase) >= 0) ready++;
-            string czech2Objectives = ReadOptional(gamePath,
-                "Scripts/CZECH2/R_Cz2_objectives.scr");
-            if (Regex.IsMatch(czech2Objectives,
-                    @"SetObjectiveStatus\s*\(\s*2\s*,\s*0\s*\)",
-                    RegexOptions.IgnoreCase)
-                && Regex.IsMatch(czech2Objectives,
-                    @"OnSignal\s*\(\s*2\s*\)\s*\{[\s\S]{0,180}SetObjectiveStatus\s*\(\s*2\s*,\s*1\s*\)",
-                    RegexOptions.IgnoreCase)) ready++;
+            int ready = ObjectiveFixInstaller.CountActiveObjectives(gamePath);
             if (CoLibye2ObjectiveInstaller.IsActive(gamePath)) ready++;
             if (CoBrestGeneratorObjectiveInstaller.IsActive(gamePath)) ready++;
             if (CoBurgundy1StealthObjectiveInstaller.IsActive(gamePath)) ready++;
@@ -242,7 +179,11 @@ namespace HD2CommunityInstaller
                 "HD2-Guide-Joueur-Secrets-et-Easter-Eggs.pdf"))) ready++;
             if (File.Exists(Path.Combine(gamePath, "Guides",
                 "HD2-Rapport-des-Decouvertes.pdf"))) ready++;
-            return CountStatus(ready, 2);
+            if (File.Exists(Path.Combine(gamePath, "Guides",
+                "HD2-Player-Guide-Secrets-and-Easter-Eggs-EN.pdf"))) ready++;
+            if (File.Exists(Path.Combine(gamePath, "Guides",
+                "HD2-Discovery-Report-EN.pdf"))) ready++;
+            return CountStatus(ready, 4);
         }
 
         private static string ReadOptional(string gamePath, string relative)

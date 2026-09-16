@@ -44,8 +44,9 @@ namespace HD2CommunityInstaller
             {
                 ProfileLocation profile = ResolveActiveProfile(gamePath);
                 byte[] data = File.ReadAllBytes(profile.FullPath);
-                return "Deblocage des missions (profil " + profile.Name + ") : "
-                    + (IsUnlocked(data, Parse(data)) ? "deja actif" : "a activer");
+                return "Deblocage des missions : "
+                    + (IsUnlocked(data, Parse(data)) ? "deja actif" : "a activer")
+                    + " (profil " + profile.Name + ")";
             }
             catch (Exception ex)
             {

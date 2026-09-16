@@ -287,7 +287,7 @@ namespace HD2CommunityInstaller
             officialEasterEggs.Checked = !DiagnosticStatusMatcher.HasStatus(
                 diagnostic, "Easter eggs Africa 1 et Africa 4 :", "deja actifs");
             unlockMissions.Checked = !DiagnosticStatusMatcher.HasStatus(
-                diagnostic, "Deblocage des missions", "deja actif");
+                diagnostic, "Deblocage des missions :", "deja actif");
             graphics.Checked = !(DiagnosticStatusMatcher.HasStatus(
                 diagnostic, "Correctif ecran large :", "deja actif")
                 && DiagnosticStatusMatcher.HasStatus(

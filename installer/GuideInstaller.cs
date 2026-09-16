@@ -21,6 +21,14 @@ namespace HD2CommunityInstaller
             new EmbeddedGuide {
                 ResourceName = "HD2CommunityInstaller.RapportDecouvertes.pdf",
                 RelativePath = "Guides/HD2-Rapport-des-Decouvertes.pdf"
+            },
+            new EmbeddedGuide {
+                ResourceName = "HD2CommunityInstaller.PlayerGuideEN.pdf",
+                RelativePath = "Guides/HD2-Player-Guide-Secrets-and-Easter-Eggs-EN.pdf"
+            },
+            new EmbeddedGuide {
+                ResourceName = "HD2CommunityInstaller.DiscoveryReportEN.pdf",
+                RelativePath = "Guides/HD2-Discovery-Report-EN.pdf"
             }
         };
 
@@ -32,7 +40,7 @@ namespace HD2CommunityInstaller
                     if (stream == null || stream.Length < 1024)
                         throw new InvalidDataException(
                             "Guide PDF integre absent ou incomplet : " + guide.ResourceName);
-            return "Guides verifies : guide joueur et rapport des decouvertes integres.";
+            return "Guides verifies : quatre PDF francais et anglais integres.";
         }
 
         public static void Install(
@@ -40,7 +48,7 @@ namespace HD2CommunityInstaller
             Action<string> progress)
         {
             ValidateOnly();
-            InstallerCore.Report(progress, "Installation des deux guides PDF...");
+            InstallerCore.Report(progress, "Installation des quatre guides PDF...");
             Assembly assembly = Assembly.GetExecutingAssembly();
             foreach (EmbeddedGuide guide in Guides)
             {

@@ -707,15 +707,32 @@ namespace HD2CommunityInstaller
         private static string DescribeHosts()
         {
             string content = File.ReadAllText(HostsPath(), Encoding.Default);
-            int found = 0;
-            foreach (string alias in AppConfig.MasterAliases)
-                if (Regex.IsMatch(content, @"(?im)^[ \t]*" + Regex.Escape(AppConfig.MasterIp)
-                    + @"[ \t]+" + Regex.Escape(alias) + @"(?:[ \t]|$)")) found++;
+            int found = CountConfiguredMasterAliases(content);
             if (found == AppConfig.MasterAliases.Length) return "configuree";
             if (found == 0) return "non configuree";
             return "partielle (" + found + "/" + AppConfig.MasterAliases.Length + ")";
         }
 
+
+        internal static int CountConfiguredMasterAliases(string content)
+        {
+            HashSet<string> found = new HashSet<string>(
+                StringComparer.OrdinalIgnoreCase);
+            foreach (string raw in Regex.Split(content ?? String.Empty, "\r\n|\n|\r"))
+            {
+                string line = raw.Split('#')[0].Trim();
+                if (line.Length == 0) continue;
+                string[] fields = Regex.Split(line, @"\s+");
+                if (fields.Length < 2
+                    || !String.Equals(fields[0], AppConfig.MasterIp,
+                        StringComparison.OrdinalIgnoreCase)) continue;
+                for (int index = 1; index < fields.Length; index++)
+                    foreach (string alias in AppConfig.MasterAliases)
+                        if (String.Equals(fields[index], alias,
+                            StringComparison.OrdinalIgnoreCase)) found.Add(alias);
+            }
+            return found.Count;
+        }
         private static string HostsPath()
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System),

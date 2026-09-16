@@ -159,8 +159,9 @@ class HD2Doc(BaseDocTemplate):
         ])
 
 class Africa4Map(Flowable):
-    def __init__(self):
+    def __init__(self, language="fr"):
         super().__init__()
+        self.language = language
         self.width = 168*mm
         self.height = 82*mm
     def draw(self):
@@ -185,10 +186,11 @@ class Africa4Map(Flowable):
             c.drawCentredString(x,y-3,label)
         c.setFillColor(NAVY)
         c.setFont("UI-Semi",7.5)
-        c.drawString(18*mm,75*mm,"NORD")
+        c.drawString(18*mm,75*mm,"NORTH" if self.language == "en" else "NORD")
         c.line(30*mm,73*mm,30*mm,78*mm)
         c.line(30*mm,78*mm,28*mm,75.5*mm)
         c.line(30*mm,78*mm,32*mm,75.5*mm)
         c.setFont("UI",7)
-        c.drawString(18*mm,4*mm,"Schéma d'orientation - enceinte principale, pas à l'échelle")
+        caption = "Orientation diagram - main compound, not to scale" if self.language == "en" else "Schéma d'orientation - enceinte principale, pas à l'échelle"
+        c.drawString(18*mm,4*mm,caption)
         c.restoreState()

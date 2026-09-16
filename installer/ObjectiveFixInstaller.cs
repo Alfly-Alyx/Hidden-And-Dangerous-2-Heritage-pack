@@ -62,6 +62,47 @@ namespace HD2CommunityInstaller
                 + "chaine des prisonniers de Burgundy 3 cooperatif et sortie de Czech 2).";
         }
 
+        public static int CountActiveObjectives(string gamePath)
+        {
+            Dictionary<string, ObjectiveScriptSource> sources = ResolveSources(gamePath);
+            int active = 0;
+            bool burgundyObjectives = false;
+            bool burgundyPrisoners = false;
+            foreach (string relative in ScriptPaths)
+            {
+                bool ready = IsCurrentOrOfficialActive(
+                    gamePath, relative, sources[relative]);
+                if (relative.EndsWith("Co_Burgundy3/bur3_objectives.scr",
+                    StringComparison.OrdinalIgnoreCase))
+                    burgundyObjectives = ready;
+                else if (relative.EndsWith("Co_Burgundy3/bur3_obj3.scr",
+                    StringComparison.OrdinalIgnoreCase))
+                    burgundyPrisoners = ready;
+                else if (ready) active++;
+            }
+            if (burgundyObjectives && burgundyPrisoners) active++;
+            return active;
+        }
+
+        private static bool IsCurrentOrOfficialActive(
+            string gamePath, string relative, ObjectiveScriptSource source)
+        {
+            try
+            {
+                string target = InstallerCore.SafeGameTarget(gamePath, relative);
+                byte[] current;
+                if (File.Exists(target)) current = File.ReadAllBytes(target);
+                else
+                    using (DtaArchive archive = new DtaArchive(source.ArchivePath))
+                        current = archive.Read(archive.Entries[source.EntryIndex]);
+                return BytesEqual(current, PatchScript(relative, current));
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public static void Install(
             string gamePath, StateJournal journal, HashSet<string> prepared,
             Action<string> progress)

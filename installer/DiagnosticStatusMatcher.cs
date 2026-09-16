@@ -37,6 +37,19 @@ namespace HD2CommunityInstaller
                 "CMP 2.6.5 :", "deja installee"))
                 throw new InvalidOperationException(
                     "La detection refuse un etat actif suivi de details.");
+            if (!HasStatus("Deblocage des missions : deja actif (profil Alfly)",
+                "Deblocage des missions :", "deja actif"))
+                throw new InvalidOperationException(
+                    "La detection refuse un profil dont les missions sont debloquees.");
+            string hosts = "# BEGIN HD2 Community MasterList\r\n"
+                + "78.47.255.224 hd2.available.gamespy.com\r\n"
+                + "78.47.255.224 hd2.master.gamespy.com\r\n"
+                + "78.47.255.224 hd2.ms14.gamespy.com\r\n"
+                + "# END HD2 Community MasterList\r\n";
+            if (InstallerCore.CountConfiguredMasterAliases(hosts)
+                != AppConfig.MasterAliases.Length)
+                throw new InvalidOperationException(
+                    "La detection refuse une liste de serveurs Windows en CRLF.");
             return "Detection exacte des etats de l'interface verifiee.";
         }
     }
