@@ -2,119 +2,119 @@
 
 [Français](README.md) · [English](README_EN.md)
 
-Un pack de restauration et d’extension pour **Hidden & Dangerous 2: Sabre Squadron 1.12**.
+A restoration and expansion pack for **Hidden & Dangerous 2: Sabre Squadron 1.12**.
 
-Heritage Pack remet en service le jeu en ligne, corrige des objectifs et des séquences oubliées, libère l’exploration des cartes, ajoute la grande collection communautaire CMP et rend accessibles plusieurs vestiges officiels clairement signalés comme expérimentaux.
+Heritage Pack brings online play back, repairs forgotten objectives and sequences, opens maps to free exploration, adds the large CMP community collection, and makes selected official remnants available as clearly labelled experiments.
 
-> Le jeu original est nécessaire et n’est pas inclus.
+> The original game is required and is not included.
 
-[**Télécharger la dernière version**](https://github.com/Alfly-Alyx/Hidden-And-Dangerous-2-Heritage-pack/releases)
+[**Download the latest version**](https://github.com/Alfly-Alyx/Hidden-And-Dangerous-2-Heritage-pack/releases)
 
-## Ce que le pack apporte
+## What the pack adds
 
-| Fonction | Résultat dans le jeu |
+| Feature | Result in the game |
 |---|---|
-| Jeu en ligne | Rétablit la liste des serveurs communautaires et active DirectPlay si nécessaire. |
-| Missions débloquées | Une option permet d’ouvrir immédiatement les 24 missions de H&D2 et les 9 missions de Sabre Squadron pour le profil actif. |
-| Exploration libre | Supprime les avertissements, les échecs et les murs invisibles liés aux limites de zone, sans retirer les collisions normales du décor. |
-| Contenu du jeu restauré | Remet en fonctionnement des parties du jeu original que la version finale n’utilisait plus : morceaux de missions, objectifs optionnels, dialogues, animations de personnages et passages alternatifs. |
-| Easter eggs | Réactive les séquences d’Africa 1 et d’Africa 4 neutralisées par la mise à jour 1.12. |
-| Contenu communautaire | Installe CMP 2.6.5 et ses 156 cartes et missions coopératives. |
-| Vestiges officiels | Ajoute Africa5 Prototype et Normandy3 Zone au menu multijoueur avec un nom qui indique clairement leur état expérimental. |
-| Affichage | Détecte l’écran et le PC, applique la résolution maximale utilisable et adapte les graphismes aux performances de la machine. |
-| Guides | Installe deux guides en français et leurs versions anglaises. |
-| Restauration | Sauvegarde les fichiers remplacés et permet de revenir à l’état précédent. |
+| Online play | Restores the community server list and enables DirectPlay when needed. |
+| Unlocked missions | An optional setting immediately unlocks all 24 H&D2 missions and all 9 Sabre Squadron missions for the active profile. |
+| Free exploration | Removes boundary warnings, mission failure, and invisible border walls without removing normal scenery collisions. |
+| Restored game content | Restores parts of the original game that the final release no longer used: mission sections, optional objectives, dialogue, character animations, and alternate routes. |
+| Easter eggs | Restores the Africa 1 and Africa 4 sequences disabled by update 1.12. |
+| Community content | Installs CMP 2.6.5 with 156 cooperative maps and missions. |
+| Official remnants | Adds Africa5 Prototype and Normandy3 Zone to multiplayer with names that clearly show their experimental status. |
+| Display setup | Detects the monitor and PC, applies the highest usable resolution, and adjusts quality to the machine’s performance. |
+| Guides | Installs two French guides and their English editions. |
+| Restore option | Backs up replaced files and can return the game to its previous state. |
 
-L’installateur reconnaît ce qui est déjà actif. Après une installation ou une vérification, les options déjà appliquées sont automatiquement décochées.
+The installer detects features that are already active. After installation or verification, completed options are automatically unticked.
 
-Heritage Pack remet en service du contenu conçu pour H&D2 mais supprimé, désactivé ou mal relié dans la version finale. Ce ne sont pas de nouvelles missions inventées pour le pack : ces éléments étaient déjà présents dans les fichiers originaux du jeu.
+Heritage Pack restores content designed for H&D2 but removed, disabled, or incorrectly connected in the final release. These are not new missions invented for the pack: the elements were already present in the original game files.
 
 ## Installation
 
-1. Installez **Hidden & Dangerous 2: Sabre Squadron** et la mise à jour **1.12**.
-2. Fermez le jeu.
-3. Téléchargez `H-D2-Heritage-Pack-Setup.exe` depuis la page des Releases.
-4. Lancez-le en tant qu’administrateur.
-5. Vérifiez le dossier du jeu, choisissez vos options, puis cliquez sur **Installer**.
-6. Relancez l’outil et cliquez sur **Vérifier l’état** si vous souhaitez contrôler l’installation.
+1. Install **Hidden & Dangerous 2: Sabre Squadron** and update **1.12**.
+2. Close the game.
+3. Download `H-D2-Heritage-Pack-Setup.exe` from Releases.
+4. Run it as administrator.
+5. Check the game folder, choose your options, and select **Installer**.
+6. Run the tool again and select **Vérifier l’état** if you want to confirm the result.
 
-La collection CMP représente environ **1,08 Go à télécharger** et **3,12 Go installés**. Elle n’est téléchargée que si elle manque.
+CMP requires about **1.08 GB to download** and **3.12 GB once installed**. It is downloaded only when missing.
 
-## Où trouver les contenus
+## Where to find the content
 
-- Les campagnes et missions officielles restent dans les menus solo habituels.
-- Les missions CMP se trouvent dans `Multijoueur → Créer → LAN → Coopération`.
-- `PROTOTYPE - Africa5` se trouve en Deathmatch.
-- `PROTOTYPE - Normandy3 Zone` se trouve en Occupation.
-- Les quatre PDF sont copiés dans le dossier `Guides` du jeu.
+- Official campaigns and missions remain in the normal solo menus.
+- CMP missions are under `Multiplayer → Create → LAN → Cooperation`.
+- `PROTOTYPE - Africa5` is available in Deathmatch.
+- `PROTOTYPE - Normandy3 Zone` is available in Occupation.
+- All four PDFs are copied to the game’s `Guides` folder.
 
-Les deux prototypes servent à explorer des vestiges jouables. Ils ne sont pas présentés comme des missions solo terminées.
+The two prototypes are playable remnants intended for exploration. They are not presented as completed solo missions.
 
-## Guides inclus
+## Included guides
 
-### Pour les joueurs
+### For players
 
-- [Guide des secrets et easter eggs — français](output/pdf/HD2-Guide-Joueur-Secrets-et-Easter-Eggs.pdf)
+- [Secrets and easter eggs — French](output/pdf/HD2-Guide-Joueur-Secrets-et-Easter-Eggs.pdf)
 - [Secrets and easter eggs player guide — English](output/pdf/HD2-Player-Guide-Secrets-and-Easter-Eggs-EN.pdf)
 
-Ce guide explique comment déclencher les easter eggs et atteindre les lieux cachés, sans transformer la lecture en documentation technique.
+The player guide explains how to trigger every documented secret and reach hidden locations without turning into an engine manual.
 
-### Pour découvrir l’enquête
+### The investigation
 
-- [Rapport des découvertes — français](output/pdf/HD2-Rapport-des-Decouvertes.pdf)
+- [Discovery report — French](output/pdf/HD2-Rapport-des-Decouvertes.pdf)
 - [Discovery report — English](output/pdf/HD2-Discovery-Report-EN.pdf)
 
-Le rapport raconte les découvertes : contenu coupé, variantes de missions, Londres, objectifs oubliés, prototypes, armes et véhicules retrouvés dans les archives.
+The report tells the story of the findings: cut content, mission variants, London, forgotten objectives, prototypes, weapons, and vehicles found in the archives.
 
-## État actuel
+## Current status
 
-La version **0.7.6** consolide notamment :
+Version **0.7.6** consolidates:
 
-- la détection exacte des options déjà installées ;
-- la remise en service de contenu original qui ne fonctionnait plus dans la version finale ;
-- l’exploration libre appliquée aussi aux deux prototypes ;
-- les quatre guides PDF intégrés à l’installateur ;
-- l’installation réversible et la protection des sauvegardes du joueur.
+- exact detection of features that are already installed;
+- original game content that no longer worked in the final release;
+- free exploration applied to both prototypes as well;
+- all four PDF guides embedded in the installer;
+- reversible installation and protection of player progress.
 
-## Ce qui n’est pas encore jouable
+## What is not playable yet
 
-Les archives du jeu conservent des morceaux de contenus supprimés, mais pas toujours assez pour les réactiver tels quels. Cela concerne :
+The game archives retain fragments of removed content, but not always enough to simply switch it back on. This includes:
 
-- le secret du Tutorial, toujours neutralisé par la version 1.12 ;
-- les fragments de missions `ENGLAND`, `CASTLE1` et `CASTLE2`, dont l’objectif 5 de CASTLE ;
-- l’ancienne intrigue autour de Gary Bristol et les missions ou campagnes annoncées à Londres/Angleterre, en Allemagne et à Dunkerque ;
-- les armes incomplètes : les deux lance-flammes, la garrote et le ZK-383 ;
-- les avions et le Fa 223 retrouvés comme modèles ou décors, mais sans système complet permettant de les piloter.
+- the Tutorial secret, still disabled by version 1.12;
+- the `ENGLAND`, `CASTLE1`, and `CASTLE2` mission fragments, including CASTLE objective 5;
+- the former Gary Bristol storyline and the announced missions or campaigns in London/England, Germany, and Dunkirk;
+- incomplete weapons: both flamethrowers, the garrote, and the ZK-383;
+- aircraft and the Fa 223 found as models or scenery, but without a complete system for piloting them.
 
-Il faudra recréer les éléments manquants — portions de carte, objectifs, réactions de mission, animations ou comportement des armes et véhicules — puis les tester avant de présenter ces contenus comme jouables.
+The missing parts — map sections, objectives, mission reactions, animations, or weapon and vehicle behaviour — must be recreated and tested before these contents can be presented as playable.
 
-## Revenir en arrière
+## Restoring the previous game
 
-Relancez l’installateur et choisissez **Restaurer**. Heritage Pack remet les fichiers sauvegardés et retire les ajouts qu’il gère, sans écraser une progression rejouée depuis l’installation.
+Run the installer again and choose **Restaurer**. Heritage Pack restores its backups and removes the additions it manages without overwriting progress made after installation.
 
-## Signaler un problème
+## Reporting a problem
 
-Pour un blocage, une mission qui ne démarre pas ou une option mal détectée, ouvrez une [issue GitHub](https://github.com/Alfly-Alyx/Hidden-And-Dangerous-2-Heritage-pack/issues) en indiquant la mission, le mode de jeu et ce qui se passe à l’écran.
+If a mission will not start, the game hangs, or an installed feature is detected incorrectly, open a [GitHub issue](https://github.com/Alfly-Alyx/Hidden-And-Dangerous-2-Heritage-pack/issues) and include the mission, game mode, and what appears on screen.
 
-## Licence actuelle
+## Current licence
 
-Le code de H&D2 Heritage Pack est actuellement publié sous [GPL-3.0-or-later](LICENSE). Il peut être utilisé, modifié et partagé, y compris commercialement. Une version modifiée qui est distribuée doit rester sous GPL et conserver son code source accessible.
+The H&D2 Heritage Pack code is currently released under [GPL-3.0-or-later](LICENSE). It may be used, modified, and shared, including commercially. A modified version that is distributed must remain under the GPL and keep its source code available.
 
-Cette licence couvre le code du Heritage Pack, pas le jeu original ni les créations communautaires. Le correctif écran large conserve sa licence MIT, et les cartes du CMP restent attribuées à leurs créateurs. Les détails figurent dans [THIRD_PARTY.md](THIRD_PARTY.md).
+This licence covers the Heritage Pack code, not the original game or community creations. The widescreen fix retains its MIT licence, and CMP maps remain attributed to their creators. Further details are available in [THIRD_PARTY.md](THIRD_PARTY.md).
 
-Passer l’ensemble du projet sous MIT demanderait d’abord de remplacer les lecteurs d’archives liés au projet GPL **HD2unpacker**.
+Moving the whole project to MIT would first require replacing the archive readers connected to the GPL-licensed **HD2unpacker** project.
 
-## Crédits
+## Credits
 
-- **H&D2 Heritage Pack** : projet initié par **Alfly-Alyx**.
-- **Jeu original** : créé par **Illusion Softworks**.
-- **Jeu en ligne** : **JarnoKai (Mökki Medium)** et **Ondra** sont crédités pour la solution de liste maître ; le clan **=RpR=** l’héberge et la maintient. **DnA (Hawk)** a également créé l’outil historique de mise à jour du fichier hosts présenté par RpR.
-- **Community Map Package 2.6.5** : collection compilée et conservée par **=RpR=**, avec le dépôt `had2-cmp` publié par **ehylla93**.
-- **Missions et cartes du CMP** : **BetterYouThanMe, Black Akres, culticaxe, Dr_NO, GS Hawk, GUB, HippoBlindEye, Joe66, Joel, Lars, Matro, miamidos, Polanski, ProSabre, Rs_sabre, Sasha, Sqdn. Ldr. Ted Striker, Stern** et **Zdenda** sont les auteurs ou convertisseurs nommés dans les crédits de la version intégrée.
-- **Affichage écran large** : **ThirteenAG**, auteur de `HiddenandDangerous2.WidescreenFix`, distribué sous licence MIT.
+- **H&D2 Heritage Pack**: a project initiated by **Alfly-Alyx**.
+- **Original game**: created by **Illusion Softworks**.
+- **Online play**: **JarnoKai (Mökki Medium)** and **Ondra** are credited for the master-list solution; the **=RpR=** clan hosts and maintains it. **DnA (Hawk)** also created the historical hosts-file updater presented by RpR.
+- **Community Map Package 2.6.5**: compiled and preserved by **=RpR=**, with the `had2-cmp` repository published by **ehylla93**.
+- **CMP missions and maps**: **BetterYouThanMe, Black Akres, culticaxe, Dr_NO, GS Hawk, GUB, HippoBlindEye, Joe66, Joel, Lars, Matro, miamidos, Polanski, ProSabre, Rs_sabre, Sasha, Sqdn. Ldr. Ted Striker, Stern**, and **Zdenda** are the authors or converters named in the credits of the integrated version.
+- **Widescreen support**: **ThirteenAG**, author of `HiddenandDangerous2.WidescreenFix`, distributed under the MIT licence.
 
-Le détail carte par carte est conservé dans `cmp_info/README.md`, installé avec le CMP. Certaines entrées y sont indiquées sans auteur ou avec un auteur inconnu ; Heritage Pack conserve honnêtement cette mention au lieu d’inventer une attribution.
+The map-by-map details remain available in `cmp_info/README.md`, installed with CMP. Some source entries have no named author or are marked unknown; Heritage Pack preserves that wording instead of inventing an attribution.
 
-Sources : [jouer en ligne avec RpR](https://www.rprclan.com/hd2/play-online), [dépôt du CMP](https://github.com/ehylla93/had2-cmp) et [Widescreen Fixes Pack](https://github.com/ThirteenAG/WidescreenFixesPack).
+Sources: [RpR online-play page](https://www.rprclan.com/hd2/play-online), [CMP repository](https://github.com/ehylla93/had2-cmp), and [Widescreen Fixes Pack](https://github.com/ThirteenAG/WidescreenFixesPack).
 
-Heritage Pack est un projet communautaire indépendant, conçu pour préserver et redécouvrir le jeu.
+Heritage Pack is an independent community project made to preserve and rediscover the game.
