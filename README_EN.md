@@ -96,6 +96,14 @@ Run the installer again and choose **Restaurer**. Heritage Pack restores its bac
 
 If a mission will not start, the game hangs, or an installed feature is detected incorrectly, open a [GitHub issue](https://github.com/Alfly-Alyx/Hidden-And-Dangerous-2-Heritage-pack/issues) and include the mission, game mode, and what appears on screen.
 
+## Current licence
+
+The H&D2 Heritage Pack code is currently released under [GPL-3.0-or-later](LICENSE). It may be used, modified, and shared, including commercially. A modified version that is distributed must remain under the GPL and keep its source code available.
+
+This licence covers the Heritage Pack code, not the original game or community creations. The widescreen fix retains its MIT licence, and CMP maps remain attributed to their creators. Further details are available in [THIRD_PARTY.md](THIRD_PARTY.md).
+
+Moving the whole project to MIT would first require replacing the archive readers connected to the GPL-licensed **HD2unpacker** project.
+
 ## Credits
 
 - **H&D2 Heritage Pack**: a project initiated by **Alfly-Alyx**.

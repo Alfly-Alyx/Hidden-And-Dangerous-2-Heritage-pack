@@ -96,6 +96,14 @@ Relancez l’installateur et choisissez **Restaurer**. Heritage Pack remet les f
 
 Pour un blocage, une mission qui ne démarre pas ou une option mal détectée, ouvrez une [issue GitHub](https://github.com/Alfly-Alyx/Hidden-And-Dangerous-2-Heritage-pack/issues) en indiquant la mission, le mode de jeu et ce qui se passe à l’écran.
 
+## Licence actuelle
+
+Le code de H&D2 Heritage Pack est actuellement publié sous [GPL-3.0-or-later](LICENSE). Il peut être utilisé, modifié et partagé, y compris commercialement. Une version modifiée qui est distribuée doit rester sous GPL et conserver son code source accessible.
+
+Cette licence couvre le code du Heritage Pack, pas le jeu original ni les créations communautaires. Le correctif écran large conserve sa licence MIT, et les cartes du CMP restent attribuées à leurs créateurs. Les détails figurent dans [THIRD_PARTY.md](THIRD_PARTY.md).
+
+Passer l’ensemble du projet sous MIT demanderait d’abord de remplacer les lecteurs d’archives liés au projet GPL **HD2unpacker**.
+
 ## Crédits
 
 - **H&D2 Heritage Pack** : projet initié par **Alfly-Alyx**.
