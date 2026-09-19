@@ -1,0 +1,5 @@
+# Versions vérifiées le 2026-09-19 avec Python 3.14 sous Windows x64.
+charset-normalizer==3.5.1
+Pillow==12.3.0
+reportlab==5.0.1
+unicorn==2.1.4

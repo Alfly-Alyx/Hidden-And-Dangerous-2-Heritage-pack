@@ -1,0 +1,5 @@
+# Dépendances Python des outils versionnés.
+# Les audits de base utilisent surtout la bibliothèque standard.
+Pillow
+reportlab
+unicorn
