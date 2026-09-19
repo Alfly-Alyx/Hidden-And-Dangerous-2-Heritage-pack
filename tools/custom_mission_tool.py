@@ -15,6 +15,10 @@ PROJECT = Path(__file__).resolve().parents[1]
 DEFAULT_ORIGINAL = Path(r"D:\Games\Hidden and Dangerous 2")
 DEFAULT_TEST = Path(r"D:\Games\Hidden and Dangerous 2 - Test Menu Personnalise")
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
+
 
 def command_new(arguments) -> int:
     library = arguments.library.resolve()
@@ -65,17 +69,26 @@ def command_check(arguments) -> int:
 def command_integrate(arguments) -> int:
     library = arguments.library.resolve()
     # Fail early with a short creator-facing error before the longer PE rebuild.
-    command_check(argparse.Namespace(source=library, json=False))
-    command = [
-        sys.executable,
-        str(PROJECT / "tools" / "build_static_custom_menu.py"),
-        str(arguments.original_game.resolve()),
-        str(arguments.test_game.resolve()),
-        "--mission-library",
-        str(library),
-    ]
+    packages = load_library(library)
+    if not packages:
+        raise ValueError(
+            "aucune mission dans la bibliothèque; la copie de test n'a pas été modifiée"
+        )
+    summary = package_summary(packages)
+    print(f"Bibliothèque valide : {summary['packages']} mission(s), "
+          f"{summary['payload_files']} fichier(s).")
     if arguments.dry_run:
-        command.append("--dry-run")
+        print("Vérification terminée. Aucun fichier n'a été modifié.")
+        return 0
+    manager = PROJECT / "build" / "HD2CustomMissionManager.Console.exe"
+    if not manager.is_file():
+        raise FileNotFoundError(
+            "gestionnaire sûr absent; exécutez build-custom-mission-manager.ps1"
+        )
+    command = [
+        str(manager), "--integrate", str(library),
+        str(arguments.original_game.resolve()), str(arguments.test_game.resolve()),
+    ]
     completed = subprocess.run(command, cwd=PROJECT, check=False)
     if completed.returncode:
         return completed.returncode
@@ -92,7 +105,7 @@ def main() -> int:
     create.add_argument("id")
     create.add_argument("mission_directory")
     create.add_argument("title")
-    create.add_argument("--category", choices=CATEGORY_ORDER, default="original-creation")
+    create.add_argument("--category", choices=CATEGORY_ORDER, default="user-mission")
     create.set_defaults(action=command_new)
 
     check = commands.add_parser("check", help="vérifie un paquet ou une bibliothèque")

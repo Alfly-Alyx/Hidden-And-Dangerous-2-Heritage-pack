@@ -4,17 +4,20 @@ from __future__ import annotations
 
 import json
 import re
-import zlib
 from pathlib import Path
 
 
 FORMAT_VERSION = 1
 CATEGORIES = {
     "multiplayer-adaptation": 20410,
-    "original-creation": 20411,
+    "user-mission": 20411,
     "free-exploration": 20412,
 }
 CATEGORY_ORDER = tuple(CATEGORIES)
+CATEGORY_ALIASES = {
+    "original-creation": "user-mission",
+    "weapon-test": "free-exploration",
+}
 ALLOWED_PAYLOAD_ROOTS = {
     "maps", "missions", "models", "scripts", "sounds", "tables", "text"
 }
@@ -25,6 +28,10 @@ TRANSLATION_KEYS = {
     "italian", "japan", "spanish",
 }
 MAX_OBJECTIVES = 31
+TEXT_ID_START = 22_000
+TEXT_ID_END = 65_000
+TEXT_ID_BLOCK = 32
+ID_REGISTRY = ".catalogue-ids.json"
 
 
 def _object(value, label: str) -> dict:
@@ -37,7 +44,7 @@ def _string(value, label: str, maximum: int = 180) -> str:
     if not isinstance(value, str) or not value.strip():
         raise ValueError(f"{label} doit contenir du texte")
     result = value.strip()
-    if len(result) > maximum or any(ord(char) < 32 for char in result):
+    if len(result) > maximum or any(ord(char) < 32 for char in result) or '"' in result:
         raise ValueError(f"{label} est trop long ou contient un caractère interdit")
     return result
 
@@ -69,10 +76,7 @@ def translated(values: dict[str, str], language: str) -> str:
     return values.get("default") or values.get("english") or values["englishus"]
 
 
-def _allocated_ids(package_id: str, objective_count: int) -> tuple[int, list[int]]:
-    # Every package owns a deterministic block of 32 IDs. Adding another package
-    # therefore never changes the IDs already used by a creator.
-    base = 1_000_000 + (zlib.crc32(package_id.encode("ascii")) % 20_000_000) * 32
+def _allocated_ids(base: int, objective_count: int) -> tuple[int, list[int]]:
     return base, [base + index + 1 for index in range(objective_count)]
 
 
@@ -89,7 +93,8 @@ def _safe_payload_files(package_dir: Path, mission_directory: str, catalogue_onl
     has_mission = False
     has_tree = False
     for path in sorted(payload.rglob("*"), key=lambda item: str(item).casefold()):
-        if path.is_symlink():
+        is_junction = getattr(path, "is_junction", lambda: False)
+        if path.is_symlink() or is_junction():
             raise ValueError(f"{package_dir.name}: lien symbolique interdit : {path}")
         if not path.is_file():
             continue
@@ -102,6 +107,13 @@ def _safe_payload_files(package_dir: Path, mission_directory: str, catalogue_onl
         if any(part in ("", ".", "..") or ":" in part for part in parts):
             raise ValueError(f"{package_dir.name}: chemin non sûr : {relative}")
         normalized = relative.as_posix().casefold()
+        if normalized == "models/singleplayer.4ds" or (
+            len(parts) >= 3 and parts[0].casefold() == "text"
+            and parts[-1].casefold() == "texty_dd.txt"
+        ):
+            raise ValueError(
+                f"{package_dir.name}: fichier réservé au générateur : {relative}"
+            )
         has_mission = has_mission or normalized.startswith(mission_prefix)
         has_tree = has_tree or normalized == mission_prefix + "tree.klz"
         files.append({"source": path, "relative": relative})
@@ -131,6 +143,7 @@ def read_package(package_dir: Path) -> dict:
             f"{package_dir.name}: id invalide (minuscules, chiffres, '.', '_' ou '-')"
         )
     category = _string(document.get("category"), f"{package_dir.name}.category")
+    category = CATEGORY_ALIASES.get(category, category)
     if category not in CATEGORIES:
         raise ValueError(
             f"{package_dir.name}: catégorie inconnue; utilisez {', '.join(CATEGORY_ORDER)}"
@@ -167,7 +180,7 @@ def read_package(package_dir: Path) -> dict:
     catalogue_only = document.get("catalogueOnly", False)
     if not isinstance(catalogue_only, bool):
         raise ValueError(f"{package_dir.name}: catalogueOnly doit être true ou false")
-    title_id, objective_ids = _allocated_ids(package_id, len(objectives))
+    title_id, objective_ids = _allocated_ids(TEXT_ID_START, len(objectives))
     files = _safe_payload_files(package_dir, mission_directory, catalogue_only)
     return {
         "id": package_id,
@@ -185,7 +198,55 @@ def read_package(package_dir: Path) -> dict:
     }
 
 
-def load_library(library: Path) -> list[dict]:
+def _load_registry(library: Path) -> dict[str, int]:
+    path = library / ID_REGISTRY
+    if not path.is_file():
+        return {}
+    try:
+        document = json.loads(path.read_text(encoding="utf-8-sig"))
+    except json.JSONDecodeError as error:
+        raise ValueError(f"{path}: registre JSON invalide ({error})") from error
+    if not isinstance(document, dict) or document.get("format") != 1:
+        raise ValueError(f"{path}: format de registre invalide")
+    assignments = document.get("assignments")
+    if not isinstance(assignments, dict):
+        raise ValueError(f"{path}: affectations absentes")
+    result = {}
+    occupied = set()
+    for package_id, base in assignments.items():
+        if not isinstance(package_id, str) or not isinstance(base, int):
+            raise ValueError(f"{path}: affectation invalide")
+        if (
+            base < TEXT_ID_START or base + TEXT_ID_BLOCK - 1 > TEXT_ID_END
+            or (base - TEXT_ID_START) % TEXT_ID_BLOCK
+        ):
+            raise ValueError(f"{path}: plage invalide pour {package_id}")
+        if base in occupied:
+            raise ValueError(f"{path}: plage utilisée deux fois")
+        occupied.add(base)
+        result[package_id.casefold()] = base
+    return result
+
+
+def _write_registry(library: Path, registry: dict[str, int]) -> None:
+    path = library / ID_REGISTRY
+    document = {
+        "format": 1,
+        "assignments": dict(sorted(registry.items())),
+    }
+    temporary = path.with_name(path.name + ".tmp")
+    try:
+        temporary.write_text(
+            json.dumps(document, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        temporary.replace(path)
+    finally:
+        if temporary.exists():
+            temporary.unlink()
+
+
+def load_library(library: Path, write_registry: bool = False) -> list[dict]:
     if not library.is_dir():
         raise FileNotFoundError(f"Bibliothèque de missions introuvable : {library}")
     package_dirs = sorted(
@@ -197,6 +258,29 @@ def load_library(library: Path) -> list[dict]:
         key=lambda path: path.name.casefold(),
     )
     packages = [read_package(path) for path in package_dirs]
+    registry = _load_registry(library)
+    occupied = set(registry.values())
+    registry_changed = False
+    for package in packages:
+        base = registry.get(package["id"])
+        if base is None:
+            base = next(
+                (
+                    candidate for candidate in range(
+                        TEXT_ID_START, TEXT_ID_END - TEXT_ID_BLOCK + 2, TEXT_ID_BLOCK
+                    )
+                    if candidate not in occupied
+                ),
+                None,
+            )
+            if base is None:
+                raise ValueError("Plus aucun emplacement de texte personnalisé disponible")
+            registry[package["id"]] = base
+            occupied.add(base)
+            registry_changed = True
+        package["title_id"], package["objective_ids"] = _allocated_ids(
+            base, len(package["objectives"])
+        )
     ids: dict[str, str] = {}
     directories: dict[str, str] = {}
     text_ids: dict[int, str] = {}
@@ -226,6 +310,8 @@ def load_library(library: Path) -> list[dict]:
                     f"Fichier fourni par deux paquets : {item['relative']}"
                 )
             payload_paths[key] = package["id"]
+    if write_registry and (registry_changed or not (library / ID_REGISTRY).is_file()):
+        _write_registry(library, registry)
     return packages
 
 

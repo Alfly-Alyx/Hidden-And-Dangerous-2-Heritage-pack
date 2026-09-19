@@ -1,4 +1,4 @@
-# Menu de missions personnalisées — prototype statique
+# Menu de missions personnalisées — prototype retiré
 
 ## Résultat des essais
 
@@ -11,36 +11,26 @@ aussi abandonnée : son utilisation de fonctions de modification de processus a
 construction ont été retirés. Il ne faut pas désactiver l'antivirus ni créer
 d'exclusion.
 
-## Prototype préparé
+## Décision de sécurité
 
-- L'installation d'origine reste intacte.
-- La copie séparée `Hidden and Dangerous 2 - Test Menu Personnalise` contient
-  maintenant un exécutable reconstruit statiquement : aucun lanceur, aucune
-  injection dans un processus et aucune exclusion antivirus.
-- `singleplayer.4ds` contient un troisième contrôle `bcampaign02`, placé seul
-  au milieu de l'espace d'origine entre `SINGLE MISSION - CARNAGE` et `BACK`.
-- Les 42 éléments officiels gardent exactement leurs coordonnées d'origine.
-- Le texte du bouton emploie l'identifiant localisé 20402 : il suit la langue
-  active dans les huit langues installées au lieu d'être gravé dans une image.
-- Le bouton ouvre le navigateur de missions solo avec le catalogue 2 actif ;
-  il ne suit plus la commande Campagne qui lançait directement une mission.
-- Un essai suivant a montré que le navigateur parcourait encore les catalogues
-  officiels : son itération et sa sélection sont désormais limitées à
-  `Gamedata02.gdt` après le bouton personnalisé. Les entrées personnalisées
-  sont visibles sans écriture dans la progression du profil.
-- Les deux boutons `SINGLE MISSION` officiels réinitialisent ce filtre et
-  conservent leur catalogue d'origine.
-- `Gamedata02.gdt` est indépendant de `Gamedata00.gdt` et `Gamedata01.gdt`.
-- Les libellés sont ajoutés dans les huit tables de langue installées.
-- Le jeu n'a pas été lancé après la préparation.
+Le prototype statique reconstruisait `HD2_SabreSquadron.exe`, ajoutait une
+section exécutable `.patch` et détournait plusieurs branchements du moteur.
+Cette structure a été détectée sous le nom `Drop.Win32.ScoreInject.131`.
+Elle n'est plus produite, installée ni appelée par le gestionnaire pris en
+charge. Il ne faut pas désactiver l'antivirus ni créer d'exclusion.
 
-## Contenu de validation
+La copie de test doit employer l'exécutable commercial original, sans aucune
+différence d'empreinte avec sa sauvegarde. Le mode pris en charge modifie
+uniquement les fichiers de données et ajoute les missions au catalogue natif
+`Gamedata01.gdt`, après les missions officielles.
 
-Le catalogue de test expose trois rubriques : adaptations multijoueur,
-créations originales et exploration libre. Elles emploient provisoirement
-trois missions commerciales existantes (`Brest`, `Libye1`, `Sicily1`) comme
-emplacements techniques. Cela permet de vérifier la navigation et le routage
-du troisième catalogue sans présenter ces missions comme des conversions.
+## Ancien contenu de validation
+
+Le catalogue de test expose d'abord trois rubriques : adaptations multijoueur,
+missions utilisateur et exploration libre / tests d'armes. Chacune ouvre une
+liste distincte qui contient provisoirement un essai basé sur `Brest`,
+`Libye1` ou `Sicily1`. Ces dossiers servent uniquement d'emplacements
+techniques pour vérifier la navigation.
 
 Les vraies adaptations et créations seront ajoutées dans des dossiers séparés
 après leur propre validation. Les deux catalogues commerciaux ne sont jamais
@@ -48,23 +38,27 @@ modifiés.
 
 ## Intégration destinée aux créateurs
 
-Le dossier `custom-missions` à la racine du projet contient désormais un
-gabarit de paquet et une bibliothèque. Chaque mission est décrite par un petit
-fichier `mission.json`; ses ressources gardent simplement la même arborescence
-que dans le jeu sous un dossier `payload`.
+Dans la version distribuée, `HD2-Custom-Mission-Manager.exe` est placé à la
+racine du jeu. Il utilise automatiquement le dossier imposé `CustomMissions`
+situé à côté de lui : aucun chemin du jeu ou de bibliothèque n'est demandé.
+Chaque mission y possède son propre sous-dossier, un petit fichier
+`mission.json` et un dossier `payload` qui reprend l'arborescence du jeu.
 
-`PreparerMissionsPersonnalisees.ps1` vérifie tous les paquets, régénère le seul
-catalogue `Gamedata02.gdt`, ajoute les titres et objectifs traduits, puis copie
-les ressources dans la copie de test avec sauvegarde. Il ne lance pas le jeu et
-ne fabrique aucun exécutable auxiliaire. Le guide complet se trouve dans
-`custom-missions/README.md`.
+L'utilitaire détecte la langue configurée de H&D2 pour adapter son interface,
+vérifie tous les paquets, conserve les missions officielles de `Gamedata01.gdt`,
+ajoute les missions personnalisées avec un préfixe de catégorie traduit, ajoute
+les titres et objectifs traduits, puis copie les ressources dans ce même jeu avec
+sauvegarde. Il ne lance pas le jeu et n'utilise ni injection ni modification
+d'un processus. Le guide complet se trouve dans `custom-missions/README.md`.
+Une réintégration refuse d'écraser un fichier géré qui a ensuite été retouché.
+Le retrait d'un paquet et la restauration appliquent la même protection, et
+l'ensemble des écritures est annulé automatiquement si une étape échoue.
 
 ## Retour arrière
 
-La copie originale de l'exécutable est conservée sous
-`HD2_SabreSquadron.original.exe`. `RestaurerMenuTest.ps1`, placé à la racine de
-la copie de test, restaure l'exécutable, les textes et l'ancien menu sans lancer
-le jeu.
+Le gestionnaire sauvegarde les fichiers de données qu'il remplace et peut les
+restaurer sans lancer le jeu. L'exécutable commercial n'entre jamais dans la
+transaction.
 
 ## Conclusion technique
 
@@ -72,8 +66,6 @@ Le chargeur sait construire des noms `Gamedata%02d.gdt`, mais l'écran Solo
 n'enregistre explicitement que les contrôles officiels. Un troisième bouton ne
 peut donc pas être ajouté par la seule modification de `singleplayer.4ds`.
 
-La prise en charge du troisième suffixe est ajoutée directement dans la copie
-de l'exécutable, après décompactage et reconstruction hors ligne. La structure
-PE obtenue, ses 287 importations, ses quatre sections, son point d'entrée et les
-signatures des deux branchements ont été vérifiés statiquement. La validation
-en jeu reste à effectuer par l'utilisateur.
+Le projet privilégie désormais la compatibilité antivirus : exécutable intact,
+catalogue natif unique et catégories visibles dans les titres localisés. Le
+bouton autonome et les sous-menus internes restent abandonnés.

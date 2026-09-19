@@ -1,0 +1,8 @@
+{
+  "format": 1,
+  "assignments": {
+    "tests.creator-alpha": 22000,
+    "tests.exploration-bravo": 22032,
+    "tests.multiplayer-charlie": 22064
+  }
+}

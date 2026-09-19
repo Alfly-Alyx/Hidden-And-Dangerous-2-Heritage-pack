@@ -1,0 +1,12 @@
+{
+  "format": 1,
+  "id": "tests.multiplayer-charlie",
+  "category": "multiplayer-adaptation",
+  "missionDirectory": "MultiplayerCharlie",
+  "templateMission": "Brest",
+  "title": {
+    "default": "CHARLIE MULTIPLAYER ADAPTATION",
+    "french": "ADAPTATION MULTIJOUEUR CHARLIE"
+  },
+  "objectives": []
+}

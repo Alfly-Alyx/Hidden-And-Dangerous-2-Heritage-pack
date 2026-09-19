@@ -45,7 +45,13 @@ if (Test-Path -LiteralPath $backupRoot -PathType Container) {
     }
 }
 
-foreach ($relative in @("Models\singleplayer.4ds", "GameData\Gamedata02.gdt")) {
+foreach ($relative in @(
+    "Models\singleplayer.4ds",
+    "GameData\Gamedata02.gdt",
+    "GameData\Gamedata03.gdt",
+    "GameData\Gamedata04.gdt",
+    "GameData\Gamedata05.gdt"
+)) {
     $saved = Join-Path $backupRoot $relative
     $active = Join-Path $gameRoot $relative
     if (-not (Test-Path -LiteralPath $saved -PathType Leaf) -and

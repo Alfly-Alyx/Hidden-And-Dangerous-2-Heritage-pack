@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Build a static, non-injecting H&D2 custom-menu test executable.
+"""Archived experiment that rewrites the H&D2 executable.
+
+This route is intentionally absent from the supported custom-mission workflow
+because antivirus products correctly treat its added executable section and
+control-flow hooks as code-injection indicators. The supported manager never
+calls this script and leaves HD2_SabreSquadron.exe unchanged.
 
 The packed client is decompressed and its import table is reconstructed offline.
 Only a separate test installation may be targeted. The original installation is
@@ -67,6 +72,7 @@ BUILDER_SOURCE = 0x00625B25
 BUILDER_HOOK = 0x00625C81
 BUILDER_RETURN = 0x00625C88
 HANDLER_HOOK = 0x0063C090
+MENU_CONTROL_HANDLER = 0x0063B9A0
 HANDLER_ORIGINAL_CC = 0x0063C09B
 HANDLER_REJECT = 0x0063C274
 HANDLER_SINGLE_MISSION_TAIL = 0x0063BE31
@@ -74,73 +80,95 @@ LIST_BUILD_HOOK = 0x0063AE00
 LIST_BUILD_RETURN = 0x0063AE08
 LIST_SELECT_HOOK = 0x006390C9
 LIST_SELECT_RETURN = 0x006390CF
+EVENT_DISPATCH_HOOK = 0x00638E21
+EVENT_DISPATCH_RETURN = 0x00638E29
+EVENT_HANDLED_RETURN = 0x006391D4
+LIST_NEXT_HOOK = 0x0063AEFA
+LIST_NEXT_RETURN = 0x0063AEFF
+LIST_EXIT = 0x0063AF06
 NATIVE_SINGLE_HOOK = 0x0063BE2C
 NATIVE_SINGLE_RETURN = 0x0063BE31
 NATIVE_CARNAGE_HOOK = 0x0063BE73
 NATIVE_CARNAGE_RETURN = 0x0063BE78
+CATALOGUE_RESET_HOOK = 0x006B6912
+CATALOGUE_RESET_RETURN = 0x006B691C
 CUSTOM_TEXT_IDS = {
+    20499: " ",
     20402: "CUSTOM MISSIONS",
-    20410: "MULTIPLAYER ADAPTATIONS",
-    20411: "ORIGINAL CREATIONS",
+    20410: "MULTIPLAYER MISSIONS - SOLO",
+    20411: "USER MISSIONS",
     20412: "FREE EXPLORATION",
-    20420: "TECHNICAL SLOT - BREST",
-    20421: "TECHNICAL SLOT - LIBYA 1",
-    20422: "FREE EXPLORATION - SICILY 1",
+    20413: "BACK",
+    20420: "MULTIPLAYER ADAPTATION TEST - BREST",
+    20421: "USER MISSION TEST - LIBYA 1",
+    20422: "FREE EXPLORATION / WEAPON TEST - SICILY 1",
 }
 CUSTOM_TEXT_BY_LANGUAGE = {
     "czech": {
+        20499: " ",
         20402: "VLASTNÍ MISE",
         20410: "ÚPRAVY PRO VÍCE HRÁČŮ",
-        20411: "PŮVODNÍ TVORBA",
-        20412: "VOLNÝ PRŮZKUM",
-        20420: "TESTOVACÍ POZICE - BREST",
-        20421: "TESTOVACÍ POZICE - LIBYE 1",
-        20422: "VOLNÝ PRŮZKUM - SICÍLIE 1",
+        20411: "UŽIVATELSKÉ MISE",
+        20412: "VOLNÝ PRŮZKUM / TESTY ZBRANÍ",
+        20413: "ZPĚT",
+        20420: "TEST ÚPRAVY PRO VÍCE HRÁČŮ - BREST",
+        20421: "TEST UŽIVATELSKÉ MISE - LIBYE 1",
+        20422: "PRŮZKUM / TEST ZBRANÍ - SICÍLIE 1",
     },
     "french": {
+        20499: " ",
         20402: "MISSIONS PERSONNALISÉES",
-        20410: "ADAPTATIONS MULTIJOUEUR",
-        20411: "CRÉATIONS ORIGINALES",
+        20410: "MISSIONS MULTI EN SOLO",
+        20411: "MISSIONS UTILISATEUR",
         20412: "EXPLORATION LIBRE",
-        20420: "EMPLACEMENT TEST - BREST",
-        20421: "EMPLACEMENT TEST - LIBYE 1",
-        20422: "EXPLORATION LIBRE - SICILE 1",
+        20413: "RETOUR",
+        20420: "TEST ADAPTATION MULTIJOUEUR - BREST",
+        20421: "TEST MISSION UTILISATEUR - LIBYE 1",
+        20422: "EXPLORATION / TEST D'ARMES - SICILE 1",
     },
     "german": {
+        20499: " ",
         20402: "EIGENE MISSIONEN",
         20410: "MEHRSPIELER-ANPASSUNGEN",
-        20411: "EIGENE KREATIONEN",
-        20412: "FREIE ERKUNDUNG",
-        20420: "TESTPLATZ - BREST",
-        20421: "TESTPLATZ - LIBYEN 1",
-        20422: "FREIE ERKUNDUNG - SIZILIEN 1",
+        20411: "BENUTZERMISSIONEN",
+        20412: "FREIE ERKUNDUNG / WAFFENTESTS",
+        20413: "ZURÜCK",
+        20420: "MEHRSPIELER-TEST - BREST",
+        20421: "BENUTZERMISSION-TEST - LIBYEN 1",
+        20422: "ERKUNDUNG / WAFFENTEST - SIZILIEN 1",
     },
     "italian": {
+        20499: " ",
         20402: "MISSIONI PERSONALIZZATE",
         20410: "ADATTAMENTI MULTIGIOCATORE",
-        20411: "CREAZIONI ORIGINALI",
-        20412: "ESPLORAZIONE LIBERA",
-        20420: "SPAZIO DI PROVA - BREST",
-        20421: "SPAZIO DI PROVA - LIBIA 1",
-        20422: "ESPLORAZIONE LIBERA - SICILIA 1",
+        20411: "MISSIONI UTENTE",
+        20412: "ESPLORAZIONE LIBERA / TEST ARMI",
+        20413: "INDIETRO",
+        20420: "TEST ADATTAMENTO MULTIGIOCATORE - BREST",
+        20421: "TEST MISSIONE UTENTE - LIBIA 1",
+        20422: "ESPLORAZIONE / TEST ARMI - SICILIA 1",
     },
     "japan": {
+        20499: " ",
         20402: "カスタムミッション",
         20410: "マルチプレイ改作",
-        20411: "オリジナル作品",
-        20412: "フリー探索",
-        20420: "テスト枠 - BREST",
-        20421: "テスト枠 - LIBYA 1",
-        20422: "フリー探索 - SICILY 1",
+        20411: "ユーザーミッション",
+        20412: "フリー探索 / 武器テスト",
+        20413: "戻る",
+        20420: "マルチプレイ改作テスト - BREST",
+        20421: "ユーザーミッションテスト - LIBYA 1",
+        20422: "探索 / 武器テスト - SICILY 1",
     },
     "spanish": {
+        20499: " ",
         20402: "MISIONES PERSONALIZADAS",
         20410: "ADAPTACIONES MULTIJUGADOR",
-        20411: "CREACIONES ORIGINALES",
-        20412: "EXPLORACIÓN LIBRE",
-        20420: "ESPACIO DE PRUEBA - BREST",
-        20421: "ESPACIO DE PRUEBA - LIBIA 1",
-        20422: "EXPLORACIÓN LIBRE - SICILIA 1",
+        20411: "MISIONES DE USUARIO",
+        20412: "EXPLORACIÓN LIBRE / PRUEBAS DE ARMAS",
+        20413: "ATRÁS",
+        20420: "PRUEBA MULTIJUGADOR - BREST",
+        20421: "PRUEBA DE MISIÓN - LIBIA 1",
+        20422: "EXPLORACIÓN / PRUEBA DE ARMAS - SICILIA 1",
     },
 }
 CUSTOM_TEXT_ENCODINGS = {
@@ -395,8 +423,11 @@ def install_menu_code(image: bytearray, patch_rva: int) -> bytes:
         HANDLER_HOOK: bytes.fromhex("3D0000C00C"),
         LIST_BUILD_HOOK: bytes.fromhex("8B3510EA8A0033FF"),
         LIST_SELECT_HOOK: bytes.fromhex("8991E8000000"),
+        EVENT_DISPATCH_HOOK: bytes.fromhex("8B410425FF0F0003"),
+        LIST_NEXT_HOOK: bytes.fromhex("4089442410"),
         NATIVE_SINGLE_HOOK: bytes.fromhex("A134EA8A00"),
         NATIVE_CARNAGE_HOOK: bytes.fromhex("A134EA8A00"),
+        CATALOGUE_RESET_HOOK: bytes.fromhex("C780E800000001000000"),
     }
     for address, signature in expected.items():
         if read_va(address, len(signature)) != signature:
@@ -405,12 +436,19 @@ def install_menu_code(image: bytearray, patch_rva: int) -> bytes:
     patch_va = IMAGE_BASE + patch_rva
     builder_va = patch_va
     handler_va = patch_va + 0x200
-    control_name_va = patch_va + 0x400
+    custom_callback_va = patch_va + 0x4A0
+    control_name_va = patch_va + 0x420
     registration = bytearray(read_va(BUILDER_SOURCE, 0x57))
     struct.pack_into("<I", registration, 3, control_name_va)
     if registration[14] != 0x68 or struct.unpack_from("<I", registration, 15)[0] != 0x89A:
         raise ValueError("Identifiant de texte Campagne inattendu")
     struct.pack_into("<I", registration, 15, 20402)
+    for offset in (37, 61):
+        if registration[offset - 1] != 0x68 or struct.unpack_from(
+            "<I", registration, offset
+        )[0] != MENU_CONTROL_HANDLER:
+            raise ValueError("Rappel du contrôle modèle inattendu")
+        struct.pack_into("<I", registration, offset, custom_callback_va)
     for offset in (0x09, 0x1F, 0x37, 0x4F):
         if registration[offset] != 0xE8:
             raise ValueError("CALL de construction absent")
@@ -431,7 +469,8 @@ def install_menu_code(image: bytearray, patch_rva: int) -> bytes:
     struct.pack_into("<i", handler, 7, handler_va + custom_offset - (handler_va + 11))
     struct.pack_into("<i", handler, 18, HANDLER_REJECT - (handler_va + 22))
     struct.pack_into("<i", handler, 23, HANDLER_ORIGINAL_CC - (handler_va + 27))
-    # The custom catalogue enters after the native button's selector reset.
+    # Keep catalogue selector 2, then enter the native Single Mission browser.
+    # Its catalogue hierarchy supplies the three custom category groups.
     struct.pack_into(
         "<i", handler, 48,
         HANDLER_SINGLE_MISSION_TAIL - (handler_va + 52),
@@ -441,27 +480,78 @@ def install_menu_code(image: bytearray, patch_rva: int) -> bytes:
     list_filter = bytearray(bytes.fromhex(
         "8B3510EA8A00"          # mov esi,[catalogue manager]
         "33FF"                  # xor edi,edi
-        "83BEE800000002"        # cmp dword [esi+E8],2
-        "750F"                  # jne normal return
-        "BF02000000"            # mov edi,2
-        "C7850C020000FFFFFF7F"  # show every custom entry
+        "8B86E8000000"          # mov eax,[esi+E8]
+        "83F802"                # cmp eax,2
+        "7C0C"                  # jl normal return
+        "8BF8"                  # mov edi,eax
+        "C7850C02000064000000"  # native sentinel: show every custom entry
         "E900000000"
     ))
     struct.pack_into(
-        "<i", list_filter, 33,
-        LIST_BUILD_RETURN - (list_filter_va + 37),
+        "<i", list_filter, 32,
+        LIST_BUILD_RETURN - (list_filter_va + 36),
     )
 
     list_select_va = patch_va + 0x340
     list_select = bytearray(bytes.fromhex(
-        "83B9E800000002"  # cmp dword [ecx+E8],2
-        "7406"            # keep custom selector
-        "8991E8000000"    # native Sabre selector
+        "83B9E800000002"      # cmp dword [ecx+E8],2
+        "7C2E"                # official catalogue
+        "7532"                # detail catalogue: keep selector
+        "8B9608020000"        # category row selected by the player
+        "2BD0"                # convert the encoded row to 0..2
+        "83FA02"
+        "7709"                # invalid row: refresh safely
+        "83C203"              # category 0..2 -> Gamedata03..05
+        "8991E8000000"
+        "C78608020000FFFFFFFF"
+        "8BCE"
+        "E800000000"          # rebuild this screen with the chosen catalogue
+        "E900000000"          # handled without launching the placeholder
+        "8991E8000000"        # native official selector
         "E900000000"
     ))
     struct.pack_into(
-        "<i", list_select, 16,
-        LIST_SELECT_RETURN - (list_select_va + 20),
+        "<i", list_select, 46,
+        0x0063AB60 - (list_select_va + 50),
+    )
+    struct.pack_into(
+        "<i", list_select, 51,
+        EVENT_HANDLED_RETURN - (list_select_va + 55),
+    )
+    struct.pack_into(
+        "<i", list_select, 62,
+        LIST_SELECT_RETURN - (list_select_va + 66),
+    )
+
+    catalogue_reset_va = patch_va + 0x3D0
+    catalogue_reset = bytearray(bytes.fromhex(
+        "83B8E800000002"      # cmp dword [eax+E8],2
+        "7D0A"                # preserve every custom catalogue
+        "C780E800000001000000"
+        "E900000000"
+    ))
+    struct.pack_into(
+        "<i", catalogue_reset, 20,
+        CATALOGUE_RESET_RETURN - (catalogue_reset_va + 24),
+    )
+
+    list_next_va = patch_va + 0x3F0
+    list_next = bytearray(bytes.fromhex(
+        "8B0D10EA8A00"
+        "83B9E800000002"
+        "7D0A"                # custom: stop after the selected catalogue
+        "40"
+        "89442410"
+        "E900000000"
+        "E900000000"
+    ))
+    struct.pack_into(
+        "<i", list_next, 21,
+        LIST_NEXT_RETURN - (list_next_va + 25),
+    )
+    struct.pack_into(
+        "<i", list_next, 26,
+        LIST_EXIT - (list_next_va + 30),
     )
 
     def native_selector_reset(code_va: int, return_va: int) -> bytes:
@@ -471,19 +561,69 @@ def install_menu_code(image: bytearray, patch_rva: int) -> bytes:
         struct.pack_into("<i", code, 21, return_va - (code_va + 25))
         return bytes(code)
 
-    native_single_va = patch_va + 0x360
-    native_carnage_va = patch_va + 0x380
+    native_single_va = patch_va + 0x390
+    native_carnage_va = patch_va + 0x3B0
     native_single = native_selector_reset(native_single_va, NATIVE_SINGLE_RETURN)
     native_carnage = native_selector_reset(native_carnage_va, NATIVE_CARNAGE_RETURN)
+
+    event_dispatch_va = patch_va + 0x440
+    event_dispatch = bytearray(bytes.fromhex(
+        "8B4104"                  # original event code
+        "8B1510EA8A00"
+        "83BAE800000003"          # only inside a detail catalogue
+        "7C3E"
+        "8BD0"
+        "81E2FF0F0003"
+        "81FA03000002"            # bexit
+        "7408"
+        "81FA04000001"            # bexit01
+        "7526"
+        "8B1510EA8A00"
+        "C782E800000002000000"    # return to category catalogue
+        "C78608020000FFFFFFFF"
+        "8BCE"
+        "E800000000"
+        "E900000000"
+        "25FF0F0003"              # original dispatch operation
+        "E900000000"
+    ))
+    struct.pack_into(
+        "<i", event_dispatch, 71,
+        0x0063AB60 - (event_dispatch_va + 75),
+    )
+    struct.pack_into(
+        "<i", event_dispatch, 76,
+        EVENT_HANDLED_RETURN - (event_dispatch_va + 80),
+    )
+    struct.pack_into(
+        "<i", event_dispatch, 86,
+        EVENT_DISPATCH_RETURN - (event_dispatch_va + 90),
+    )
+
+    custom_callback = bytearray(bytes.fromhex(
+        "8B442408"              # event/control object
+        "85C0"
+        "7407"
+        "C740600000D00C"        # force the dedicated Custom Missions action
+        "E900000000"
+    ))
+    struct.pack_into(
+        "<i", custom_callback, 16,
+        MENU_CONTROL_HANDLER - (custom_callback_va + 20),
+    )
 
     patch = bytearray(b"\xCC" * 0x500)
     patch[0:len(builder)] = builder
     patch[0x200:0x200 + len(handler)] = handler
     patch[0x300:0x300 + len(list_filter)] = list_filter
     patch[0x340:0x340 + len(list_select)] = list_select
-    patch[0x360:0x360 + len(native_single)] = native_single
-    patch[0x380:0x380 + len(native_carnage)] = native_carnage
-    patch[0x400:0x40C] = b"bcampaign02\0"
+    patch[0x390:0x390 + len(native_single)] = native_single
+    patch[0x3B0:0x3B0 + len(native_carnage)] = native_carnage
+    patch[0x3D0:0x3D0 + len(catalogue_reset)] = catalogue_reset
+    patch[0x3F0:0x3F0 + len(list_next)] = list_next
+    patch[0x420:0x42C] = b"bcampaign02\0"
+    patch[0x440:0x440 + len(event_dispatch)] = event_dispatch
+    patch[0x4A0:0x4A0 + len(custom_callback)] = custom_callback
     write_va(BUILDER_HOOK, b"\xE9" + rel32(BUILDER_HOOK + 5, builder_va) + b"\x90\x90")
     write_va(HANDLER_HOOK, b"\xE9" + rel32(HANDLER_HOOK + 5, handler_va))
     write_va(
@@ -495,12 +635,24 @@ def install_menu_code(image: bytearray, patch_rva: int) -> bytes:
         b"\xE9" + rel32(LIST_SELECT_HOOK + 5, list_select_va) + b"\x90",
     )
     write_va(
+        EVENT_DISPATCH_HOOK,
+        b"\xE9" + rel32(EVENT_DISPATCH_HOOK + 5, event_dispatch_va) + b"\x90" * 3,
+    )
+    write_va(
+        LIST_NEXT_HOOK,
+        b"\xE9" + rel32(LIST_NEXT_HOOK + 5, list_next_va),
+    )
+    write_va(
         NATIVE_SINGLE_HOOK,
         b"\xE9" + rel32(NATIVE_SINGLE_HOOK + 5, native_single_va),
     )
     write_va(
         NATIVE_CARNAGE_HOOK,
         b"\xE9" + rel32(NATIVE_CARNAGE_HOOK + 5, native_carnage_va),
+    )
+    write_va(
+        CATALOGUE_RESET_HOOK,
+        b"\xE9" + rel32(CATALOGUE_RESET_HOOK + 5, catalogue_reset_va) + b"\x90" * 5,
     )
     return bytes(patch)
 
@@ -619,24 +771,89 @@ def validate_rebuilt_executable(data: bytes, report: dict[str, object]) -> None:
 
     expected_patch_jumps = {
         0x200 + 48: HANDLER_SINGLE_MISSION_TAIL,
-        0x300 + 33: LIST_BUILD_RETURN,
-        0x340 + 16: LIST_SELECT_RETURN,
-        0x360 + 21: NATIVE_SINGLE_RETURN,
-        0x380 + 21: NATIVE_CARNAGE_RETURN,
+        0x300 + 32: LIST_BUILD_RETURN,
+        0x340 + 46: 0x0063AB60,
+        0x340 + 51: EVENT_HANDLED_RETURN,
+        0x340 + 62: LIST_SELECT_RETURN,
+        0x390 + 21: NATIVE_SINGLE_RETURN,
+        0x3B0 + 21: NATIVE_CARNAGE_RETURN,
+        0x3D0 + 20: CATALOGUE_RESET_RETURN,
+        0x3F0 + 21: LIST_NEXT_RETURN,
+        0x3F0 + 26: LIST_EXIT,
+        0x440 + 71: 0x0063AB60,
+        0x440 + 76: EVENT_HANDLED_RETURN,
+        0x440 + 86: EVENT_DISPATCH_RETURN,
+        0x4A0 + 16: MENU_CONTROL_HANDLER,
     }
     for displacement_offset, expected_target in expected_patch_jumps.items():
         if patch_jump_target(displacement_offset) != expected_target:
             raise ValueError(
                 f"Destination de correctif incorrecte à +0x{displacement_offset:X}"
             )
-    if patch_data[0x308:0x320] != bytes.fromhex(
-        "83BEE800000002750FBF02000000C7850C020000FFFFFF7F"
+    if patch_data[0x308:0x31F] != bytes.fromhex(
+        "8B86E800000083F8027C0C8BF8C7850C02000064000000"
     ):
         raise ValueError("Filtrage du catalogue personnalisé absent")
-    if patch_data[0x340:0x34F] != bytes.fromhex(
-        "83B9E80000000274068991E8000000"
+    if patch_data[0x340:0x36D] != bytes.fromhex(
+        "83B9E8000000027C2E75328B96080200002BD083FA02770983C2038991E8000000C78608020000FFFFFFFF8BCE"
     ):
-        raise ValueError("Conservation du sélecteur personnalisé absente")
+        raise ValueError("Navigation des catégories personnalisées absente")
+    custom_callback_va = IMAGE_BASE + report["patch_rva"] + 0x4A0
+    if (
+        struct.unpack_from("<I", patch_data, 37)[0] != custom_callback_va
+        or struct.unpack_from("<I", patch_data, 61)[0] != custom_callback_va
+    ):
+        raise ValueError("Rappel dédié du bouton personnalisé absent")
+    if patch_data[0x4A0:0x4AF] != bytes.fromhex(
+        "8B44240885C07407C740600000D00C"
+    ):
+        raise ValueError("Action dédiée du bouton personnalisé absente")
+
+    # Execute the two small trampolines outside the game. This proves both the
+    # callback calling convention ([esp+8] is the originating control) and the
+    # effective 0x0CD00000 -> catalogue selector 2 route instead of merely
+    # checking that the expected bytes happen to be present.
+    stack_base = 0x00200000
+    object_base = 0x00300000
+    callback_machine = Uc(UC_ARCH_X86, UC_MODE_32)
+    callback_machine.mem_map(IMAGE_BASE + report["patch_rva"], 0x1000, UC_PROT_ALL)
+    callback_machine.mem_write(IMAGE_BASE + report["patch_rva"], patch_data[:0x500])
+    callback_machine.mem_map(stack_base, 0x1000, UC_PROT_ALL)
+    callback_machine.mem_map(object_base, 0x1000, UC_PROT_ALL)
+    callback_esp = stack_base + 0x800
+    callback_machine.mem_write(
+        callback_esp,
+        struct.pack("<IIIII", 0, 0, object_base, 0x04001000, 0),
+    )
+    callback_machine.reg_write(UC_X86_REG_ESP, callback_esp)
+    callback_machine.emu_start(
+        custom_callback_va, MENU_CONTROL_HANDLER, count=16
+    )
+    if struct.unpack(
+        "<I", callback_machine.mem_read(object_base + 0x60, 4)
+    )[0] != 0x0CD00000:
+        raise ValueError("Le rappel personnalisé ne produit pas réellement l'action 0x0CD00000")
+
+    handler_va = IMAGE_BASE + report["patch_rva"] + 0x200
+    handler_machine = Uc(UC_ARCH_X86, UC_MODE_32)
+    handler_machine.mem_map(IMAGE_BASE + report["patch_rva"], 0x1000, UC_PROT_ALL)
+    handler_machine.mem_write(IMAGE_BASE + report["patch_rva"], patch_data[:0x500])
+    handler_machine.mem_map(0x008AE000, 0x1000, UC_PROT_ALL)
+    handler_machine.mem_map(object_base, 0x2000, UC_PROT_ALL)
+    catalogue_manager = object_base
+    menu_state = object_base + 0x1000
+    handler_machine.mem_write(
+        0x008AEA10, struct.pack("<I", catalogue_manager)
+    )
+    handler_machine.mem_write(0x008AEA34, struct.pack("<I", menu_state))
+    handler_machine.reg_write(UC_X86_REG_EAX, 0x0CD00000)
+    handler_machine.emu_start(
+        handler_va, HANDLER_SINGLE_MISSION_TAIL, count=32
+    )
+    if struct.unpack(
+        "<I", handler_machine.mem_read(catalogue_manager + 0xE8, 4)
+    )[0] != 2:
+        raise ValueError("L'action personnalisée n'ouvre pas réellement le catalogue de catégories")
 
 
 def archive_entry(game: Path, name: str) -> bytes:
@@ -779,22 +996,7 @@ def custom_catalogue(data: bytes, packages: list[dict] | None = None) -> bytes:
         if item_value
     }
     if packages is None:
-        technical = (
-            ("multiplayer-adaptation", 20420, "Brest"),
-            ("original-creation", 20421, "Libye1"),
-            ("free-exploration", 20422, "Sicily1"),
-        )
-        packages = [
-            {
-                "category": category,
-                "title_id": text_id,
-                "mission_directory": directory,
-                "loading_screen": None,
-                "template_mission": directory,
-                "objective_ids": None,
-            }
-            for category, text_id, directory in technical
-        ]
+        packages = technical_packages()
     grouped = {
         category: [item for item in packages if item["category"] == category]
         for category in CATEGORY_ORDER
@@ -857,6 +1059,46 @@ def custom_catalogue(data: bytes, packages: list[dict] | None = None) -> bytes:
     return result
 
 
+def technical_packages() -> list[dict]:
+    technical = (
+        ("multiplayer-adaptation", 20420, "Brest"),
+        ("user-mission", 20421, "Libye1"),
+        ("free-exploration", 20422, "Sicily1"),
+    )
+    return [
+        {
+            "category": category,
+            "title_id": text_id,
+            "mission_directory": directory,
+            "loading_screen": None,
+            "template_mission": directory,
+            "objective_ids": None,
+        }
+        for category, text_id, directory in technical
+    ]
+
+
+def split_custom_catalogues(
+    data: bytes, packages: list[dict] | None = None
+) -> dict[str, bytes]:
+    technical = technical_packages()
+    category_entries = [
+        {
+            **item,
+            "title_id": CATEGORIES[item["category"]],
+        }
+        for item in technical
+    ]
+    detail_packages = technical if packages is None else packages
+    result = {"Gamedata02.gdt": custom_catalogue(data, category_entries)}
+    for index, category in enumerate(CATEGORY_ORDER, start=3):
+        result[f"Gamedata{index:02d}.gdt"] = custom_catalogue(
+            data,
+            [item for item in detail_packages if item["category"] == category],
+        )
+    return result
+
+
 def custom_text_tables(game: Path, packages: list[dict] | None = None) -> dict[Path, bytes]:
     text_root = game / "Text"
     if not text_root.is_dir():
@@ -913,9 +1155,12 @@ def custom_menu_scene(data: bytes) -> bytes:
     scene = parse_4ds_nodes(data)
     nodes = scene["nodes"]
     by_name = {node["name"]: node for node in nodes}
+    if "bcampaign02" in by_name:
+        raise ValueError("Le nom technique réservé au bouton personnalisé existe déjà")
     # Clone the native Single Mission control so the button artwork and its
-    # behaviour agree. The engine still registers it as bcampaign02, which
-    # receives the new 0x0CD00000 control code.
+    # behaviour agree. Registration occurs after native Back (0x0CC00000), so
+    # bcampaign02 is the next action (0x0CD00000); its dedicated callback also
+    # normalizes the value before entering the native handler.
     root = by_name["bsingle mission"]
     children = sorted(
         (node for node in nodes if node["parent_id"] == root["index"]),
@@ -995,6 +1240,84 @@ def custom_menu_scene(data: bytes) -> bytes:
     return bytes(result)
 
 
+def custom_mission_scene(data: bytes) -> bytes:
+    """Add a native category menu and reliable Back control to the mission scene.
+
+    The stock list and its controls are kept byte-for-byte. Runtime code only
+    hides them while the category selector is active, then restores them for
+    the actual mission lists.
+    """
+    scene = parse_4ds_nodes(data)
+    nodes = scene["nodes"]
+    by_name = {node["name"]: node for node in nodes}
+    reserved = {"bcustom user", "bcustom multi", "bcustom explore"}
+    if reserved & set(by_name):
+        raise ValueError("Les contrôles du sous-menu personnalisé existent déjà")
+    root = by_name["bexit"]
+    children = sorted(
+        (node for node in nodes if node["parent_id"] == root["index"]),
+        key=lambda node: node["index"],
+    )
+    if [node["name"] for node in children] != ["normal04", "actived04"]:
+        raise ValueError("Sous-arbre du bouton Retour inattendu")
+
+    specifications = (
+        ("bcustom user", "normal11", "actived11", -0.237),
+        ("bcustom multi", "normal12", "actived12", -0.323),
+        ("bcustom explore", "normal13", "actived13", -0.409),
+    )
+    layout = bytearray(data)
+    clones: list[bytes] = []
+    for control_name, normal_name, active_name, vertical in specifications:
+        new_root = scene["node_count"] + len(clones) + 1
+        replacements = {
+            "bexit": control_name.encode("ascii"),
+            "normal04": normal_name.encode("ascii"),
+            "actived04": active_name.encode("ascii"),
+        }
+        for node in [root] + children:
+            record = bytearray(layout[node["start"]:node["end"]])
+            name_offset = node["name_offset"] - node["start"]
+            name_length_offset = node["name_length_offset"] - node["start"]
+            replacement = replacements[node["name"]]
+            record = (
+                record[:name_length_offset]
+                + bytes((len(replacement),))
+                + replacement
+                + record[name_offset + node["name_length"]:]
+            )
+            parent_offset = node["parent_offset"] - node["start"]
+            struct.pack_into(
+                "<H", record, parent_offset, 0 if node is root else new_root
+            )
+            if node is not root and vertical is not None:
+                position = list(node["position"])
+                position[2] = vertical - (0.004 if node["name"] == "actived04" else 0)
+                struct.pack_into(
+                    "<3f", record, node["position_offset"] - node["start"], *position
+                )
+            clones.append(bytes(record))
+
+    table_end = scene["nodes"][-1]["end"]
+    result = bytearray(layout[:table_end] + b"".join(clones) + layout[table_end:])
+    struct.pack_into(
+        "<H", result, scene["node_count_offset"], scene["node_count"] + len(clones)
+    )
+    parsed = parse_4ds_nodes(bytes(result))
+    if parsed["node_count"] != scene["node_count"] + 9:
+        raise ValueError("Validation du sous-menu 4DS impossible")
+    for original_node, final_node in zip(nodes, parsed["nodes"][:scene["node_count"]]):
+        if (
+            original_node["name"] != final_node["name"]
+            or original_node["position"] != final_node["position"]
+        ):
+            raise ValueError("La liste de missions native a été modifiée")
+    final_names = {node["name"] for node in parsed["nodes"]}
+    if not reserved <= final_names:
+        raise ValueError("Boutons du sous-menu absents de la scène finale")
+    return bytes(result)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("original_game", type=Path)
@@ -1023,7 +1346,10 @@ def main() -> int:
         raise FileNotFoundError(target_executable)
 
     packages = (
-        load_library(arguments.mission_library.resolve())
+        load_library(
+            arguments.mission_library.resolve(),
+            write_registry=not arguments.dry_run,
+        )
         if arguments.mission_library is not None else None
     )
     payload_items = [
@@ -1035,7 +1361,7 @@ def main() -> int:
     rebuilt, report = rebuild_executable(packed)
     validate_rebuilt_executable(rebuilt, report)
     menu = custom_menu_scene(archive_entry(original, "Models\\singleplayer.4ds"))
-    catalogue = custom_catalogue(
+    catalogues = split_custom_catalogues(
         archive_entry(original, "GameData\\Gamedata01.gdt"), packages
     )
     text_tables = custom_text_tables(target, packages)
@@ -1046,15 +1372,27 @@ def main() -> int:
         "status": "STATIC_BUILD_VALIDATED_NOT_WRITTEN" if arguments.dry_run else "STATIC_TEST_BUILD_NOT_LAUNCHED",
         "target": str(target),
         "menu_sha256": digest(menu),
-        "catalogue_sha256": digest(catalogue),
+        "catalogue_sha256": {
+            name: digest(data) for name, data in catalogues.items()
+        },
         "catalogue_sections": (
             list(CATEGORY_ORDER) if packages is None else [
                 category for category in CATEGORY_ORDER
                 if any(item["category"] == category for item in packages)
             ]
         ),
-        "custom_action": "OPEN_SINGLE_MISSION_BROWSER",
-        "custom_list_scope": "GAMEDATA02_ONLY",
+        "custom_action": "OPEN_GROUPED_CUSTOM_MISSION_BROWSER",
+        "custom_control_name": "bcampaign02",
+        "custom_effective_action": "0x0CD00000",
+        "custom_action_validation": "EMULATED_CALLBACK_AND_BRANCH_TO_SELECTOR_2",
+        "custom_list_scope": "GAMEDATA02_CATEGORIES_AND_GAMEDATA03_TO_05_DETAILS",
+        "category_title_ids": {
+            category: CATEGORIES[category] for category in CATEGORY_ORDER
+        },
+        "category_detail_catalogues": {
+            category: f"Gamedata{index:02d}.gdt"
+            for index, category in enumerate(CATEGORY_ORDER, start=3)
+        },
         "custom_visibility": "ALL_CUSTOM_ENTRIES_WITHOUT_PROFILE_WRITE",
         "native_single_mission_scope": "OFFICIAL_CATALOGUES",
         "menu_layout": "ORIGINAL_LAYOUT_PLUS_ONE_CUSTOM_BUTTON",
@@ -1087,14 +1425,39 @@ def main() -> int:
         atomic_write(backup, current)
 
     menu_path = target / "Models" / "singleplayer.4ds"
-    catalogue_path = target / "GameData" / "Gamedata02.gdt"
+    catalogue_paths = {
+        target / "GameData" / name: data for name, data in catalogues.items()
+    }
     backup_root = target / "STATIC_MENU_BACKUP"
     payload_targets = [
         {**item, "target": safe_game_target(target, item["relative"])}
         for item in payload_items
     ]
+    managed_path = target / "STATIC_MENU_MANAGED_FILES.json"
+    managed = {"format": 1, "files": []}
+    if managed_path.is_file():
+        managed = json.loads(managed_path.read_text(encoding="utf-8-sig"))
+        if managed.get("format") != 1 or not isinstance(managed.get("files"), list):
+            raise ValueError("Journal des fichiers de missions invalide")
+    managed_by_path = {
+        item["relative"].casefold(): item for item in managed["files"]
+    }
+    for item in payload_targets:
+        relative = item["relative"].as_posix()
+        previous = managed_by_path.get(relative.casefold())
+        data = item["source"].read_bytes()
+        item["data"] = data
+        managed_by_path[relative.casefold()] = {
+            "relative": relative,
+            "created": (
+                previous["created"] if previous is not None
+                else not item["target"].exists()
+            ),
+            "sha256": digest(data),
+            "package_id": item["package_id"],
+        }
     files_to_replace = [
-        menu_path, catalogue_path, *text_tables.keys(),
+        menu_path, *catalogue_paths.keys(), *text_tables.keys(),
         *(item["target"] for item in payload_targets),
     ]
     for path in files_to_replace:
@@ -1108,30 +1471,12 @@ def main() -> int:
 
     atomic_write(target_executable, rebuilt)
     atomic_write(menu_path, menu)
-    atomic_write(catalogue_path, catalogue)
+    for path, data in catalogue_paths.items():
+        atomic_write(path, data)
     for path, data in text_tables.items():
         atomic_write(path, data)
-    managed_path = target / "STATIC_MENU_MANAGED_FILES.json"
-    managed = {"format": 1, "files": []}
-    if managed_path.is_file():
-        managed = json.loads(managed_path.read_text(encoding="utf-8-sig"))
-        if managed.get("format") != 1 or not isinstance(managed.get("files"), list):
-            raise ValueError("Journal des fichiers de missions invalide")
-    managed_by_path = {
-        item["relative"].casefold(): item for item in managed["files"]
-    }
     for item in payload_targets:
-        relative = item["relative"].as_posix()
-        previous = managed_by_path.get(relative.casefold())
-        created = previous["created"] if previous is not None else not item["target"].exists()
-        data = item["source"].read_bytes()
-        atomic_write(item["target"], data)
-        managed_by_path[relative.casefold()] = {
-            "relative": relative,
-            "created": created,
-            "sha256": digest(data),
-            "package_id": item["package_id"],
-        }
+        atomic_write(item["target"], item["data"])
     managed["files"] = sorted(
         managed_by_path.values(), key=lambda item: item["relative"].casefold()
     )

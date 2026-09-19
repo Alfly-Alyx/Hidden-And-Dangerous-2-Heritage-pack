@@ -13,6 +13,8 @@ if (-not (Test-Path -LiteralPath $csc)) {
     throw '.NET Framework C# compiler not found.'
 }
 
+& (Join-Path $projectRoot 'build-custom-mission-manager.ps1') -ConsoleOnly:$ConsoleOnly
+
 $build = Join-Path $projectRoot 'build'
 $dist = Join-Path $projectRoot 'dist'
 $guide = Join-Path $projectRoot 'output\pdf\HD2-Guide-Joueur-Secrets-et-Easter-Eggs.pdf'
@@ -88,4 +90,5 @@ if (-not $ConsoleOnly) {
         throw "Installer build failed: $LASTEXITCODE"
     }
     Get-FileHash -LiteralPath $finalOut -Algorithm SHA256
+
 }
