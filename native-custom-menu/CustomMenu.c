@@ -17,35 +17,28 @@ EXPORT const char MenuControlName[] = "bcampaign02";
 EXPORT const char MenuPlayerControlName[] = "bcustom user";
 EXPORT const char MenuMultiControlName[] = "bcustom multi";
 EXPORT const char MenuExploreControlName[] = "bcustom explore";
-EXPORT const char MenuBackControlName[] = "bcustom back";
 EXPORT void *MenuMissionScreen;
 EXPORT void *MenuMissionScene;
+/* These are persistent 0x40-byte definitions, NOT live GUI controls. Their
+ * target IDs at +8 address the separate runtime objects in the event queue. */
 EXPORT void *MenuCategoryControls[4];
-EXPORT void *MenuBackControl;
-EXPORT void *MenuStartControl;
-EXPORT void *MenuCaptionControl;
-EXPORT void *MenuResumeControl;
 static LONG initialized;
 static char logPath[MAX_PATH];
 
 extern int GameCount(unsigned catalogue);
 extern void GameReload(void *screen);
-extern void *GameFindNode(void *scene, const char *name);
-extern void GameSetNodeVisible(void *node, unsigned visible);
+extern void GamePostMenuMessage(const unsigned *message);
+extern unsigned GameCurrentScreenId(void);
 EXPORT unsigned MenuActivateAction(unsigned action);
 EXPORT void HookBuild(void);
 EXPORT void HookCustomCallback(void);
 EXPORT void HookPlayerCallback(void);
 EXPORT void HookMultiCallback(void);
 EXPORT void HookExploreCallback(void);
-EXPORT void HookBackCallback(void);
-EXPORT void HookNativeBackEvent(void);
 EXPORT void HookMissionBuild(void);
-EXPORT void HookStartLabel(void);
-EXPORT void HookListCaption(void);
-EXPORT void HookResumeLabel(void);
 EXPORT void HookAction(void);
 EXPORT void HookEventDispatch(void);
+EXPORT void HookBackDispatch(void);
 EXPORT void HookListBegin(void);
 EXPORT void HookListOffset(void);
 EXPORT void HookLabelOffset(void);
@@ -118,52 +111,38 @@ static void SetView(unsigned view)
     Log(line);
 }
 
-static void SetNode(const char *name, unsigned visible)
+static void SetControlVisible(unsigned target, unsigned visible)
 {
-    void *node;
-    if (!MenuMissionScene) return;
-    node = GameFindNode(MenuMissionScene, name);
-    if (node) GameSetNodeVisible(node, visible);
+    unsigned message[6] = {0, 0, 0, 0, 0, 0};
+    message[0] = target;
+    message[1] = visible ? 0x01000003 : 0x01000004;
+    if (target) GamePostMenuMessage(message);
 }
 
-/* The category selector is deliberately not a mission list. It uses four
- * native button controls added to the mission scene. The normal browser
- * furniture is restored unchanged for the three actual mission lists.
+/* The engine constructs definitions once, then reuses their live controls.
+ * Run AFTER the stock refresh and use its queue so both the text and scene
+ * visibility change together. Calling a scene vtable on a definition crashes.
  */
 EXPORT void MenuApplyLayout(unsigned view)
 {
-    static const char *categoryNodes[] = {
-        "bcustom user", "bcustom multi", "bcustom explore"
-    };
-    static const char *categoryVisuals[] = {
-        "normal11", "actived11", "normal12", "actived12",
-        "normal13", "actived13"
-    };
-    static const char *browserNodes[] = {
-        "table01", "scroll00", "text_list of profiles",
-        "bload mission", "bload lastsave", "bshort", "blong",
-        "bexit01"
+    static const unsigned browserControls[] = {
+        0x14200000, /* preview */
+        0x14300000, /* description */
+        0x14400000, /* Start */
+        0x14600000, /* scrollbar */
+        0x14700000, /* campaign group */
+        0x14800000, /* mission group */
+        0x14900000, /* List of missions */
+        0x14b00000  /* Resume */
     };
     unsigned index, categories = view == 2;
-    for (index = 0; index < sizeof(categoryNodes) / sizeof(categoryNodes[0]); index++)
-        SetNode(categoryNodes[index], categories);
-    for (index = 0; index < sizeof(categoryVisuals) / sizeof(categoryVisuals[0]); index++)
-        SetNode(categoryVisuals[index], categories && !(index & 1));
-    for (index = 0; index < sizeof(browserNodes) / sizeof(browserNodes[0]); index++)
-        SetNode(browserNodes[index], !categories);
-    if (categories) {
-        static const char *browserVisuals[] = {
-            "normal03", "actived03", "normal05", "actived05",
-            "normal06", "actived06", "normal07", "actived07"
-        };
-        for (index = 0; index < sizeof(browserVisuals) / sizeof(browserVisuals[0]); index++)
-            SetNode(browserVisuals[index], 0);
-        SetNode("screen_shot", 0);
-        SetNode("video", 0);
-        SetNode("panel", 0);
-    } else {
-        SetNode("panel", 1);
-    }
+    for (index = 0; index < 3; index++)
+        if (MenuCategoryControls[index])
+            SetControlVisible(WORD_AT((unsigned)MenuCategoryControls[index] + 8), categories);
+    for (index = 0; index < sizeof(browserControls) / sizeof(browserControls[0]); index++)
+        SetControlVisible(browserControls[index], !categories);
+    SetControlVisible(0x14500000, 1); /* real bottom Back */
+    SetControlVisible(0x14c00000, 0); /* secondary Back is hidden in stock */
 }
 
 EXPORT void MenuMissionReady(void *screen, void *scene)
@@ -175,31 +154,52 @@ EXPORT void MenuMissionReady(void *screen, void *scene)
         MenuCategoryControls[0], MenuCategoryControls[1],
         MenuCategoryControls[2]);
     Log(line);
-    MenuApplyLayout(MenuView);
-}
-
-EXPORT void MenuPrepareControl(void *control)
-{
-    unsigned index;
-    if (!control) return;
-    for (index = 0; index < 3; index++) {
-        if (control == MenuCategoryControls[index]) {
-            WORD_AT((unsigned)control + 0x60) = 0x0cd00000;
-            return;
-        }
-    }
 }
 
 EXPORT void MenuEnter(void)
 {
     SetView(2);
-    MenuApplyLayout(2);
 }
 
 EXPORT void MenuLeave(void)
 {
     SetView(0);
-    MenuApplyLayout(0);
+}
+
+/* Click callbacks never overwrite the live control's routing ID (+0x60).
+ * Queue a private application event, leaving visibility targeting intact. */
+EXPORT void MenuCategoryClick(unsigned index)
+{
+    unsigned message[6] = {0, 0, 0, 0, 0, 0};
+    if (index >= 3 || MenuView != 2) return;
+    message[1] = 0x02000ff1 + index;
+    GamePostMenuMessage(message);
+}
+
+EXPORT unsigned MenuHandleCategoryEvent(unsigned event, void *screen)
+{
+    static const unsigned views[] = {4, 3, 5};
+    unsigned index = event - 0x02000ff1;
+    if (index >= 3) return 0;
+    if (MenuView == 2 && screen && GameCurrentScreenId() == 0x14000000) {
+        SetView(views[index]);
+        GameReload(screen);
+    }
+    return 1;
+}
+
+/* The global manager consumes Back before the screen event handler runs.
+ * Intercept only the live mission browser; nested screens keep native Back. */
+EXPORT unsigned MenuHandleBack(void *screen)
+{
+    if (MenuView < 2 || GameCurrentScreenId() != 0x14000000) return 0;
+    if (MenuView >= 3) {
+        SetView(2);
+        GameReload(screen);
+        return 1;
+    }
+    MenuLeave();
+    return 0;
 }
 
 /* Return value for HookAction:
@@ -207,15 +207,6 @@ EXPORT void MenuLeave(void)
  * 1 = action handled here;
  * 2 = category Back, continue as the native 0x0CC00000 Back action.
  */
-EXPORT unsigned MenuActivateControl(void *control)
-{
-    if (control == MenuCategoryControls[0]) return MenuActivateAction(0x0cd10000);
-    if (control == MenuCategoryControls[1]) return MenuActivateAction(0x0cd20000);
-    if (control == MenuCategoryControls[2]) return MenuActivateAction(0x0cd30000);
-    if (control == MenuCategoryControls[3]) return MenuActivateAction(0x0cd40000);
-    return MenuActivateAction(0x0cd00000);
-}
-
 EXPORT unsigned MenuActivateAction(unsigned action)
 {
     unsigned view;
@@ -225,7 +216,6 @@ EXPORT unsigned MenuActivateAction(unsigned action)
     else if (action == 0x0cd40000) {
         if (MenuView >= 3) {
             SetView(2);
-            MenuApplyLayout(2);
             return 0;
         }
         MenuLeave();
@@ -236,7 +226,6 @@ EXPORT unsigned MenuActivateAction(unsigned action)
     } else return 1;
     if (MenuView != 2 || !MenuMissionScreen) return 1;
     SetView(view);
-    MenuApplyLayout(view);
     return 0;
 }
 
@@ -260,12 +249,9 @@ typedef struct {
 EXPORT MenuHook MenuHooks[] = {
     HOOK(0x625c81, "\x8b\xce\x68\xc0\xeb\x83\x00", HookBuild),
     HOOK(0x639afe, "\x83\xc4\x24\xb8\x01\x00\x00\x00", HookMissionBuild),
-    HOOK(0x639aef, "\x6a\x00\x68\x04\x00\x00\x01", HookNativeBackEvent),
-    HOOK(0x6396fe, "\x68\x35\x09\x00\x00", HookStartLabel),
-    HOOK(0x639a17, "\x68\xd2\x08\x00\x00", HookListCaption),
-    HOOK(0x639a94, "\x68\x39\x08\x00\x00", HookResumeLabel),
     HOOK(0x63c090, "\x3d\x00\x00\xc0\x0c", HookAction),
     HOOK(0x638e21, "\x8b\x41\x04\x25\xff\x0f\x00\x03", HookEventDispatch),
+    HOOK(0x66cd70, "\x3d\x03\x00\x00\x02", HookBackDispatch),
     HOOK(0x63ae00, "\x8b\x35\x10\xea\x8a\x00\x33\xff", HookListBegin),
     HOOK(0x63ae61, "\x8b\x4c\x24\x18\x53\xe8\xe5\xe4\x07\x00", HookListOffset),
     HOOK(0x63a3de, "\x6a\x00\x8b\xcd\xe8\x69\xef\x07\x00", HookLabelOffset),
@@ -292,7 +278,7 @@ EXPORT void InitializeASI(void)
     slash = strrchr(logPath, '\\');
     if (!slash || strcmp(slash + 1, "HD2_SabreSquadron.exe")) return;
     strcpy(slash + 1, "HD2.CustomMenu.log");
-    Log("Native Custom Missions menu module initialized.");
+    Log("Native Custom Missions menu module initialized (native queue v2).");
     if ((unsigned)GetModuleHandleA(NULL) != 0x400000) {
         Log("Unsupported image base. No changes applied.");
         return;

@@ -1,1 +1,4 @@
 *.pdf binary
+# These embedded documents are checked byte-for-byte by the installer.
+custom-missions/README.md text eol=lf
+dist/CustomMissions/README.md text eol=lf

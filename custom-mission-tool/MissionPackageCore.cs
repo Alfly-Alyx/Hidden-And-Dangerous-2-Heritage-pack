@@ -449,25 +449,41 @@ namespace HD2CustomMissionManager
             string payload = Path.Combine(packageRoot, "payload");
             if (!Directory.Exists(payload))
                 throw new InvalidDataException(package.Id + " : dossier payload absent.");
+            ReadPayloadFiles(payload, "", package, false);
+            RequireMissionTree(package);
+        }
+
+        private static void RejectReparsePoint(string path)
+        {
+            if ((File.GetAttributes(path) & FileAttributes.ReparsePoint) != 0)
+                throw new InvalidDataException("Lien ou jonction interdit : " + path);
+        }
+
+        private static void ReadPayloadFiles(
+            string payload, string targetPrefix, MissionPackage package,
+            bool separateResourceRoots)
+        {
             payload = Path.GetFullPath(payload).TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
             Stack<string> pending = new Stack<string>();
             pending.Push(payload.TrimEnd(Path.DirectorySeparatorChar));
-            bool foundTree = false;
             while (pending.Count > 0)
             {
                 string directory = pending.Pop();
-                if ((File.GetAttributes(directory) & FileAttributes.ReparsePoint) != 0)
-                    throw new InvalidDataException(package.Id + " : lien ou jonction interdit : " + directory);
+                RejectReparsePoint(directory);
                 foreach (string child in Directory.GetDirectories(directory)) pending.Push(child);
                 foreach (string file in Directory.GetFiles(directory))
                 {
-                    if ((File.GetAttributes(file) & FileAttributes.ReparsePoint) != 0)
-                        throw new InvalidDataException(package.Id + " : lien interdit : " + file);
+                    RejectReparsePoint(file);
                     string full = Path.GetFullPath(file);
                     if (!full.StartsWith(payload, StringComparison.OrdinalIgnoreCase))
                         throw new InvalidDataException(package.Id + " : chemin hors du paquet.");
                     string relative = full.Substring(payload.Length).Replace('\\', '/');
                     string[] parts = relative.Split('/');
+                    bool resource = separateResourceRoots && parts.Length > 1
+                        && AllowedRoots.Contains(parts[0])
+                        && !String.Equals(parts[0], "Missions", StringComparison.OrdinalIgnoreCase);
+                    if (!resource) relative = targetPrefix + relative;
+                    parts = relative.Split('/');
                     if (parts.Length == 0 || !AllowedRoots.Contains(parts[0])
                         || parts.Any(part => part == "." || part == ".." || part.IndexOf(':') >= 0))
                         throw new InvalidDataException(package.Id + " : chemin interdit : " + relative);
@@ -482,14 +498,77 @@ namespace HD2CustomMissionManager
                         || (String.Equals(parts[0], "Text", StringComparison.OrdinalIgnoreCase)
                             && String.Equals(parts[parts.Length - 1], "TEXTY_DD.txt", StringComparison.OrdinalIgnoreCase)))
                         throw new InvalidDataException(package.Id + " : fichier réservé : " + relative);
-                    string expectedTree = "Missions/" + package.MissionDirectory + "/tree.klz";
-                    if (String.Equals(relative, expectedTree, StringComparison.OrdinalIgnoreCase)) foundTree = true;
                     package.Files.Add(new PayloadFile { Source = full, Relative = relative });
                 }
             }
-            if (!foundTree)
-                throw new InvalidDataException(package.Id + " : payload/Missions/"
+        }
+
+        private static void RequireMissionTree(MissionPackage package)
+        {
+            string expectedTree = "Missions/" + package.MissionDirectory + "/tree.klz";
+            if (!package.Files.Any(file => String.Equals(
+                file.Relative, expectedTree, StringComparison.OrdinalIgnoreCase)))
+                throw new InvalidDataException(package.Id + " : Missions/"
                     + package.MissionDirectory + "/tree.klz absent.");
+        }
+
+        private static MissionPackage ReadMissionFolder(string folder)
+        {
+            RejectReparsePoint(folder);
+            string folderName = Path.GetFileName(folder);
+            string stem = ImportIdStem(folderName).Substring("import.".Length);
+            MissionPackage package = new MissionPackage {
+                Id = "folder." + stem.Substring(0, Math.Min(stem.Length, 40)) + "."
+                    + Sha256(Encoding.UTF8.GetBytes(folderName.ToUpperInvariant()))
+                        .Substring(0, 16).ToLowerInvariant(),
+                Category = "user-mission",
+                Title = ReadLocalized(folderName, folderName + ".title")
+            };
+            if (File.Exists(Path.Combine(folder, "tree.klz")))
+            {
+                if (Directory.Exists(Path.Combine(folder, "Missions")))
+                    throw new InvalidDataException(folderName
+                        + " : structure ambiguë (tree.klz et dossier Missions ensemble)."
+                        + " Utilisez soit les fichiers directs, soit Missions/<nom de mission>.");
+                package.MissionDirectory = folderName;
+                if (!MissionDirectoryPattern.IsMatch(package.MissionDirectory))
+                    throw new InvalidDataException("Nom de dossier de mission invalide : " + folderName);
+                ReadPayloadFiles(folder, "Missions/" + folderName + "/", package, true);
+            }
+            else
+            {
+                string payload = Path.Combine(folder, "payload");
+                string content = Directory.Exists(Path.Combine(payload, "Missions"))
+                    ? payload : folder;
+                RejectReparsePoint(content);
+                string missions = Path.Combine(content, "Missions");
+                if (!Directory.Exists(missions))
+                    throw new InvalidDataException(folderName
+                        + " : tree.klz absent. Placez les fichiers de la mission dans ce dossier"
+                        + " ou dans Missions/<nom de mission>.");
+                RejectReparsePoint(missions);
+                List<string> candidates = new List<string>();
+                foreach (string mission in Directory.GetDirectories(missions))
+                {
+                    RejectReparsePoint(mission);
+                    if (File.Exists(Path.Combine(mission, "tree.klz"))) candidates.Add(mission);
+                }
+                if (candidates.Count != 1)
+                    throw new InvalidDataException(folderName
+                        + " : exactement une mission contenant tree.klz est requise dans Missions.");
+                package.MissionDirectory = Path.GetFileName(candidates[0]);
+                if (!MissionDirectoryPattern.IsMatch(package.MissionDirectory))
+                    throw new InvalidDataException("Nom de dossier de mission invalide : "
+                        + package.MissionDirectory);
+                foreach (string rootName in AllowedRoots)
+                {
+                    string resourceRoot = Path.Combine(content, rootName);
+                    if (Directory.Exists(resourceRoot))
+                        ReadPayloadFiles(resourceRoot, rootName + "/", package, false);
+                }
+            }
+            RequireMissionTree(package);
+            return package;
         }
 
         public static MissionLibrary LoadLibrary(string libraryRoot, bool assignIds)
@@ -498,12 +577,21 @@ namespace HD2CustomMissionManager
             library.Root = Path.GetFullPath(libraryRoot);
             if (!Directory.Exists(library.Root))
                 throw new DirectoryNotFoundException("Bibliothèque introuvable : " + library.Root);
+            RejectReparsePoint(library.Root);
             foreach (string directory in Directory.GetDirectories(library.Root)
                 .OrderBy(item => item, StringComparer.OrdinalIgnoreCase))
             {
-                if (Path.GetFileName(directory).StartsWith("_", StringComparison.Ordinal)
-                    || !File.Exists(Path.Combine(directory, "mission.json"))) continue;
-                library.Packages.Add(ReadPackage(directory));
+                string name = Path.GetFileName(directory);
+                if (name.StartsWith("_", StringComparison.Ordinal)
+                    || name.StartsWith(".", StringComparison.Ordinal)) continue;
+                RejectReparsePoint(directory);
+                string manifest = Path.Combine(directory, "mission.json");
+                if (File.Exists(manifest))
+                {
+                    RejectReparsePoint(manifest);
+                    library.Packages.Add(ReadPackage(directory));
+                }
+                else library.Packages.Add(ReadMissionFolder(directory));
             }
             ReadRegistry(library);
             AssignIds(library);
@@ -2025,6 +2113,139 @@ namespace HD2CustomMissionManager
             if (!condition) throw new InvalidOperationException("Auto-test : " + message);
         }
 
+        private static void SafetyWrite(string path, string value)
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            File.WriteAllText(path, value, new UTF8Encoding(false));
+        }
+
+        private static void SafetyLibraryRefused(string library, string message)
+        {
+            bool refused = false;
+            try { LoadLibrary(library, false); }
+            catch (InvalidDataException) { refused = true; }
+            SafetyAssert(refused, message);
+        }
+
+        private static void RunMissionFolderSelfTests(string root)
+        {
+            string library = Path.Combine(root, "direct-folders");
+            string mission = Path.Combine(library, "Operation Test Joueur");
+            SafetyWrite(Path.Combine(mission, "tree.klz"), "test-tree");
+            SafetyWrite(Path.Combine(mission, "briefing.txt"), "briefing");
+            SafetyWrite(Path.Combine(mission, "Objects", "object.bin"), "object");
+            foreach (string resource in AllowedRoots.Where(item => item != "Missions"))
+                SafetyWrite(Path.Combine(mission, resource, "resource.bin"), resource);
+            Directory.CreateDirectory(Path.Combine(library, "_modele"));
+            Directory.CreateDirectory(Path.Combine(library, ".cache"));
+            Dictionary<string, string> before = Directory.GetFiles(
+                library, "*", SearchOption.AllDirectories).ToDictionary(
+                    path => path, path => Sha256File(path), StringComparer.OrdinalIgnoreCase);
+            MissionLibrary direct = LoadLibrary(library, false);
+            MissionPackage first = direct.Packages.Single();
+            SafetyAssert(first.Category == "user-mission"
+                && first.MissionDirectory == "Operation Test Joueur"
+                && first.Title.ForLanguage("french") == "Operation Test Joueur",
+                "le dossier brut avec espaces n'a pas gardé son nom/titre/catégorie.");
+            HashSet<string> destinations = new HashSet<string>(
+                first.Files.Select(file => file.Relative), StringComparer.OrdinalIgnoreCase);
+            SafetyAssert(destinations.Contains("Missions/Operation Test Joueur/tree.klz")
+                && destinations.Contains("Missions/Operation Test Joueur/briefing.txt")
+                && destinations.Contains("Missions/Operation Test Joueur/Objects/object.bin")
+                && AllowedRoots.Where(item => item != "Missions").All(
+                    resource => destinations.Contains(resource + "/resource.bin"))
+                && destinations.Count == 9,
+                "les fichiers directs ou les ressources du dossier brut sont mal orientés.");
+            MissionPackage again = LoadLibrary(library, false).Packages.Single();
+            SafetyAssert(first.Id == again.Id && first.TitleId == again.TitleId
+                && PackageIdPattern.IsMatch(first.Id),
+                "l'identifiant du dossier brut n'est pas stable.");
+            SafetyAssert(Directory.GetFiles(library, "*", SearchOption.AllDirectories)
+                    .Length == before.Count
+                && before.All(file => Sha256File(file.Key) == file.Value)
+                && !File.Exists(Path.Combine(mission, "mission.json"))
+                && !File.Exists(Path.Combine(library, RegistryName)),
+                "le scan a modifié les sources ou créé un manifeste/registre.");
+
+            string similar = Path.Combine(library, "Operation-Test-Joueur");
+            SafetyWrite(Path.Combine(similar, "tree.klz"), "test-tree-2");
+            MissionLibrary similarNames = LoadLibrary(library, false);
+            SafetyAssert(similarNames.Packages.Select(item => item.Id).Distinct().Count() == 2
+                && similarNames.Packages.First(item => item.MissionDirectory
+                    == "Operation Test Joueur").Id == first.Id,
+                "deux noms normalisés similaires produisent le même identifiant.");
+
+            string structuredLibrary = Path.Combine(root, "structured-folders");
+            string structured = Path.Combine(structuredLibrary, "Titre du joueur");
+            SafetyWrite(Path.Combine(structured, "Missions", "InternalName", "tree.klz"), "tree");
+            SafetyWrite(Path.Combine(structured, "Maps", "map.bin"), "map");
+            SafetyWrite(Path.Combine(structured, "README.txt"), "readme non installé");
+            MissionPackage structure = LoadLibrary(structuredLibrary, false).Packages.Single();
+            SafetyAssert(structure.MissionDirectory == "InternalName"
+                && structure.Title.ForLanguage("english") == "Titre du joueur"
+                && structure.Files.Any(file => file.Relative == "Maps/map.bin")
+                && structure.Files.Any(file => file.Relative == "Missions/InternalName/tree.klz")
+                && structure.Files.Count == 2,
+                "la structure Missions et ses ressources ne sont pas reconnues.");
+
+            string wrapped = Path.Combine(structuredLibrary, "Paquet sans manifeste", "payload");
+            SafetyWrite(Path.Combine(wrapped, "Missions", "WrappedName", "tree.klz"), "tree");
+            SafetyWrite(Path.Combine(wrapped, "Models", "model.bin"), "model");
+            MissionPackage wrappedPackage = LoadLibrary(structuredLibrary, false).Packages
+                .Single(item => item.MissionDirectory == "WrappedName");
+            SafetyAssert(wrappedPackage.Title.ForLanguage("english") == "Paquet sans manifeste"
+                && wrappedPackage.Files.Any(file => file.Relative == "Models/model.bin"),
+                "la structure payload sans manifeste n'est pas reconnue.");
+
+            string manifestMission = CreatePackage(structuredLibrary, "test.manifest-priority",
+                "ManifestName", "Titre du manifeste", "free-exploration", "french");
+            SafetyWrite(Path.Combine(manifestMission, "tree.klz"), "tree");
+            SafetyWrite(Path.Combine(structuredLibrary, "test.manifest-priority", "tree.klz"),
+                "ne doit pas changer le choix du manifeste");
+            MissionPackage manifest = LoadLibrary(structuredLibrary, false).Packages
+                .Single(item => item.Id == "test.manifest-priority");
+            SafetyAssert(manifest.Category == "free-exploration"
+                && manifest.Title.ForLanguage("french") == "Titre du manifeste"
+                && manifest.MissionDirectory == "ManifestName" && manifest.Files.Count == 1,
+                "un paquet avec manifeste a été reclassé en dossier brut.");
+
+            string duplicateMission = CreatePackage(library, "test.directory-conflict",
+                "Operation Test Joueur", "Collision", "user-mission", "english");
+            SafetyWrite(Path.Combine(duplicateMission, "tree.klz"), "tree");
+            SafetyLibraryRefused(library, "une collision de dossier brut/paquet a été acceptée.");
+
+            string collisionLibrary = Path.Combine(root, "folder-resource-conflict");
+            foreach (string name in new[] { "First", "Second" })
+            {
+                SafetyWrite(Path.Combine(collisionLibrary, name, "tree.klz"), "tree");
+                SafetyWrite(Path.Combine(collisionLibrary, name, "Maps", "same.bin"), name);
+            }
+            SafetyLibraryRefused(collisionLibrary,
+                "deux dossiers bruts peuvent écraser la même ressource.");
+
+            string invalidLibrary = Path.Combine(root, "folder-missing-tree");
+            SafetyWrite(Path.Combine(invalidLibrary, "Mission incomplete", "briefing.txt"), "briefing");
+            SafetyLibraryRefused(invalidLibrary, "un dossier sans tree.klz a été ignoré.");
+
+            string multipleLibrary = Path.Combine(root, "folder-multiple-trees");
+            foreach (string name in new[] { "First", "Second" })
+                SafetyWrite(Path.Combine(multipleLibrary, "Deux missions", "Missions", name,
+                    "tree.klz"), "tree");
+            SafetyLibraryRefused(multipleLibrary, "un dossier avec deux missions a été accepté.");
+
+            string ambiguousLibrary = Path.Combine(root, "folder-ambiguous-tree");
+            SafetyWrite(Path.Combine(ambiguousLibrary, "Ambiguous", "tree.klz"), "tree");
+            SafetyWrite(Path.Combine(ambiguousLibrary, "Ambiguous", "Missions", "Other",
+                "tree.klz"), "tree");
+            SafetyLibraryRefused(ambiguousLibrary, "une structure directe/complète ambiguë a été acceptée.");
+
+            string unsafeLibrary = Path.Combine(root, "folder-unsafe-payload");
+            SafetyWrite(Path.Combine(unsafeLibrary, "Unsafe", "tree.klz"), "tree");
+            SafetyWrite(Path.Combine(unsafeLibrary, "Unsafe", "Scripts", "evil.asi"), "MZ-test");
+            SafetyLibraryRefused(unsafeLibrary,
+                "un dossier brut peut installer un fichier exécutable .asi.");
+        }
+
         public static string RunSafetySelfTests(string parentRoot)
         {
             parentRoot = Path.GetFullPath(parentRoot);
@@ -2039,6 +2260,7 @@ namespace HD2CustomMissionManager
             try
             {
                 Directory.CreateDirectory(root);
+                RunMissionFolderSelfTests(root);
 
                 string conflictGame = Path.Combine(root, "conflict");
                 string conflictRelative = "Maps/conflict.bin";
@@ -2232,9 +2454,12 @@ namespace HD2CustomMissionManager
                                 "la panne " + failure + " n'a pas restauré un fichier initial.");
                     }
                 }
-                return "Auto-tests de sécurité réussis : 8/8 (conflit, sauvegarde absente, "
+                return "Auto-tests de sécurité réussis : 8/8 et scan des dossiers bruts "
+                    + "(fichiers directs, ressources, espaces, stabilité, sources intactes, "
+                    + "Missions, payload, priorité du manifeste, collisions, dossiers invalides). "
+                    + "Sécurité : conflit, sauvegarde absente, "
                     + "sauvegarde modifiée, charge utile exécutable, restauration, retrait, "
-                    + "limite de lignes, annulation transactionnelle).";
+                    + "limite de lignes, annulation transactionnelle.";
             }
             finally
             {

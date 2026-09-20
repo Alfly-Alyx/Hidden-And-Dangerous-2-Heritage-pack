@@ -26,15 +26,61 @@ commercial.
 
 ## Installation la plus simple
 
-1. Placer un ou plusieurs paquets directement dans `CustomMissions`.
-2. Ouvrir `HD2-Custom-Mission-Manager.exe`.
-3. Cliquer sur **Vérifier**, puis sur **Installer les missions**.
+1. Fermer le jeu.
+2. Déposer le dossier portant le nom de la mission dans `CustomMissions`.
+3. Ouvrir `HD2-Custom-Mission-Manager.exe`, puis cliquer sur
+   **Scanner et installer**.
+
+Par exemple, sans aucun fichier `mission.json` à créer :
+
+```text
+Hidden and Dangerous 2/
+  HD2-Custom-Mission-Manager.exe
+  CustomMissions/
+    Operation Lune/
+      tree.klz
+      ...autres fichiers de la mission...
+      Maps/
+        ...textures supplémentaires éventuelles...
+      Models/
+        ...modèles supplémentaires éventuels...
+```
+
+Le gestionnaire détecte automatiquement le dossier. Son nom devient le titre
+affiché dans la liste **Missions utilisateur**. Les fichiers de mission sont
+installés dans `Missions/Operation Lune`, et les ressources des sous-dossiers
+`Maps`, `Models`, `Scripts`, `Sounds`, `Tables` et `Text` sont placées dans les
+dossiers correspondants du jeu. Le dossier déposé reste intact.
+
+Une arborescence complète `Operation Lune/Missions/<nom interne>/tree.klz`
+(avec ses ressources à côté de `Missions`) est également reconnue, ainsi que
+la même arborescence sous `payload`. Un dossier doit contenir une seule
+mission identifiable ; les cas ambigus ou incomplets sont signalés.
+
+La liste est scannée à l'ouverture. **Scanner** actualise l'aperçu ;
+**Scanner et installer** effectue un nouveau scan puis l'installation.
 
 Le bouton **Ouvrir le dossier** mène toujours au dossier imposé. Le bouton
 **Nouvelle mission** peut créer automatiquement le squelette d'un nouveau
 paquet au bon endroit.
 
-## Structure d'un paquet
+Le bouton facultatif **Ajouter une mission** permet aussi de copier une mission
+depuis un autre emplacement vers `CustomMissions` et de lui donner un titre.
+Il n'est pas nécessaire pour les dossiers déposés directement.
+Pour conserver la catégorie, les objectifs et les autres métadonnées d'un
+paquet déjà préparé, copiez-le directement dans `CustomMissions` au lieu de
+le réimporter : le bouton d'ajout crée une nouvelle fiche de mission utilisateur.
+
+Le logiciel ajoute une mission existante ; il ne crée pas ses scripts et ne
+convertit pas automatiquement une mission multijoueur en mission solo.
+La validation des fichiers et de leur installation ne garantit pas la
+jouabilité d'une mission fournie : son contenu doit déjà fonctionner avec H&D2.
+
+## Paquet avancé avec manifeste facultatif
+
+Un créateur peut toujours fournir `mission.json` pour personnaliser la
+catégorie, les traductions, les objectifs et les autres paramètres. Les
+paquets existants restent reconnus sans modification.
 
 Chaque mission possède son propre sous-dossier. Par exemple :
 
@@ -108,7 +154,7 @@ sortent du jeu, les doublons et les missions sans `tree.klz`. Les fichiers déj�
 présents sont sauvegardés avant remplacement.
 
 Pour mettre une mission à jour, remplacez son `mission.json` ou son contenu
-`payload`, puis cliquez de nouveau sur **Installer les missions**. Le catalogue,
+`payload`, puis cliquez de nouveau sur **Scanner et installer**. Le catalogue,
 les traductions et les fichiers sont régénérés ensemble.
 
 Si un fichier déjà installé a été retouché directement dans le jeu depuis la

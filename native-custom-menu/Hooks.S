@@ -18,6 +18,31 @@ GameReload:
     call *%eax
     ret
 
+/* Queue a six-dword message through the stock menu dispatcher. */
+.globl GamePostMenuMessage
+GamePostMenuMessage:
+    push 4(%esp)
+    mov $0x8ae590, %ecx
+    mov $0x615a90, %eax
+    call *%eax
+    ret
+
+/* The stack stores runtime screen controls, not build-time definitions. */
+.globl GameCurrentScreenId
+GameCurrentScreenId:
+    xor %eax, %eax
+    cmpl $0, 0x8ae5f0
+    je 1f
+    mov $0x8ae5c4, %ecx
+    mov $0x628230, %eax
+    call *%eax
+    mov (%eax), %eax
+    test %eax, %eax
+    jz 1f
+    mov 0x60(%eax), %eax
+    and $0xfc000000, %eax
+1:  ret
+
 .globl GameFindNode
 GameFindNode:
     mov 4(%esp), %eax
@@ -86,57 +111,76 @@ HookCustomCallback:
     mov 8(%esp), %eax
     test %eax, %eax
     jz 1f
-    movl $0x0cd00000, 0x60(%eax)
+    /* The callback ABI is (context, runtime control, event, data), ret 16.
+     * Keep the runtime target ID intact after the native action returns. */
+    push %ebx
+    mov %eax, %ebx
+    push 0x60(%ebx)
+    movl $0x0cd00000, 0x60(%ebx)
+    push 0x18(%esp)
+    push 0x18(%esp)
+    push 0x18(%esp)
+    push 0x18(%esp)
+    mov $0x63b9a0, %eax
+    call *%eax
+    pop %edx
+    mov %edx, 0x60(%ebx)
+    pop %ebx
+    ret $16
 1:  jump(0x63b9a0)
 
 .globl HookPlayerCallback
 HookPlayerCallback:
-    mov 8(%esp), %eax
-    test %eax, %eax
-    jz 1f
-    /* The native dispatcher only accepts the registered custom-menu action.
-     * Keep that action identical for all three category controls; HookAction
-     * identifies the requested category from the clicked control pointer. */
-    movl $0x0cd00000, 0x60(%eax)
-1:
-    jump(0x63b9a0)
+    cmpl $0x04001000, 12(%esp)
+    jne 1f
+    push $0
+    call MenuCategoryClick
+    add $4, %esp
+1:  mov $1, %al
+    ret $16
 
 .globl HookMultiCallback
 HookMultiCallback:
-    mov 8(%esp), %eax
-    test %eax, %eax
-    jz 1f
-    movl $0x0cd00000, 0x60(%eax)
-1:
-    jump(0x63b9a0)
+    cmpl $0x04001000, 12(%esp)
+    jne 1f
+    push $1
+    call MenuCategoryClick
+    add $4, %esp
+1:  mov $1, %al
+    ret $16
 
 .globl HookExploreCallback
 HookExploreCallback:
-    mov 8(%esp), %eax
-    test %eax, %eax
-    jz 1f
-    movl $0x0cd00000, 0x60(%eax)
-1:
-    jump(0x63b9a0)
+    cmpl $0x04001000, 12(%esp)
+    jne 1f
+    push $2
+    call MenuCategoryClick
+    add $4, %esp
+1:  mov $1, %al
+    ret $16
 
-.globl HookBackCallback
-HookBackCallback:
-    mov 8(%esp), %eax
+/* Global Back is consumed before the mission-specific event dispatcher.
+ * EBX is the application context; the helper checks the active screen. */
+.globl HookBackDispatch
+.globl HookGlobalBack
+HookBackDispatch:
+HookGlobalBack:
+    cmp $0x02000003, %eax
+    jne 1f
+    pushfl
+    pusha
+    push %ebx
+    call MenuHandleBack
+    add $4, %esp
     test %eax, %eax
-    jz 1f
-    movl $0x0cd40000, 0x60(%eax)
-1:
-    jump(0x63b9a0)
-
-/* The stock Back control normally posts 0x01000004 to its parent screen.
- * Detail lists need a screen-local event so the mission browser can return
- * to our category selector first. The category selector keeps the native
- * parent event and therefore still returns to Single Player normally. */
-.globl HookNativeBackEvent
-HookNativeBackEvent:
-    push $0
-    push $0x02000003
-    jump(0x639af6)
+    jz 2f
+    popa
+    popfl
+    jump(0x66d96f)
+2:  popa
+    popfl
+1:  cmp $0x02000003, %eax
+    jump(0x66cd75)
 
 .globl HookMissionBuild
 HookMissionBuild:
@@ -144,28 +188,12 @@ HookMissionBuild:
     pushfl
     pusha
 
-    mov 4(%esp), %ebx
-    mov %ebx, MenuBackControl
-
     movl $0, MenuCategoryControls
     movl $0, MenuCategoryControls+4
     movl $0, MenuCategoryControls+8
-    mov %ebx, MenuCategoryControls+12
 
-    /* Category controls belong only to the selector. Rebuilding an official
-     * or detail browser while recreating them leaves their runtime text and
-     * sometimes one button frame visible over the mission list. */
-    cmpl $2, MenuView
-    je 1f
-    push 12(%ebp)
-    push 8(%ebp)
-    call MenuMissionReady
-    add $8, %esp
-    popa
-    popfl
-    mov $1, %eax
-    jump(0x639b06)
-1:
+    /* This runs once during preload. Define every category now; runtime
+     * SHOW/HIDE messages select the layout when the screen is refreshed. */
 
     mov 8(%ebp), %ecx
     push $MenuPlayerControlName
@@ -181,6 +209,12 @@ HookMissionBuild:
     push %ebx
     mov $0x614f10, %eax
     call *%eax
+    push $0
+    push $0x01000004
+    push $0
+    push %ebx
+    mov $0x614e80, %eax
+    call *%eax
     push $HookPlayerCallback
     push 8(%ebp)
     push $0x4003000
@@ -197,7 +231,7 @@ HookMissionBuild:
     push %ebx
     mov $0x61e100, %eax
     call *%eax
-    add $0x44, %esp
+    add $0x54, %esp
 
     mov 8(%ebp), %ecx
     push $MenuMultiControlName
@@ -213,6 +247,12 @@ HookMissionBuild:
     push %ebx
     mov $0x614f10, %eax
     call *%eax
+    push $0
+    push $0x01000004
+    push $0
+    push %ebx
+    mov $0x614e80, %eax
+    call *%eax
     push $HookMultiCallback
     push 8(%ebp)
     push $0x4003000
@@ -229,7 +269,7 @@ HookMissionBuild:
     push %ebx
     mov $0x61e100, %eax
     call *%eax
-    add $0x44, %esp
+    add $0x54, %esp
 
     mov 8(%ebp), %ecx
     push $MenuExploreControlName
@@ -245,6 +285,12 @@ HookMissionBuild:
     push %ebx
     mov $0x614f10, %eax
     call *%eax
+    push $0
+    push $0x01000004
+    push $0
+    push %ebx
+    mov $0x614e80, %eax
+    call *%eax
     push $HookExploreCallback
     push 8(%ebp)
     push $0x4003000
@@ -261,7 +307,7 @@ HookMissionBuild:
     push %ebx
     mov $0x61e100, %eax
     call *%eax
-    add $0x44, %esp
+    add $0x54, %esp
 
     push 12(%ebp)
     push 8(%ebp)
@@ -272,80 +318,12 @@ HookMissionBuild:
     mov $1, %eax
     jump(0x639b06)
 
-.globl HookStartLabel
-HookStartLabel:
-    push %eax
-    mov 0x14(%esp), %eax
-    mov %eax, MenuStartControl
-    pop %eax
-    push $0x935
-    jump(0x639703)
-
-.globl HookListCaption
-HookListCaption:
-    push %eax
-    mov 0x28(%esp), %eax
-    mov %eax, MenuCaptionControl
-    pop %eax
-    push $0x8d2
-    jump(0x639a1c)
-
-.globl HookResumeLabel
-HookResumeLabel:
-    mov %eax, MenuResumeControl
-    push $0x839
-    jump(0x639a99)
-
 .globl HookAction
 HookAction:
-    test %edi, %edi
-    jz 9f
-    cmp MenuCategoryControls+12, %edi
-    jne 8f
-    mov $0x0cd40000, %eax
-    jmp 1f
-8:  cmpl $2, MenuView
-    jne 9f
-    cmp MenuCategoryControls, %edi
-    jne 7f
-    mov $0x0cd10000, %eax
-    jmp 1f
-7:  cmp MenuCategoryControls+4, %edi
-    jne 6f
-    mov $0x0cd20000, %eax
-    jmp 1f
-6:  cmp MenuCategoryControls+8, %edi
-    jne 9f
-    mov $0x0cd30000, %eax
-    jmp 1f
-9:
     cmp $0x0cd00000, %eax
     je 1f
-    cmp $0x0cd10000, %eax
-    je 1f
-    cmp $0x0cd20000, %eax
-    je 1f
-    cmp $0x0cd30000, %eax
-    je 1f
-    cmp $0x0cd40000, %eax
-    je 1f
     cmp $0x0cc00000, %eax
-    jne 0f
-    cmpl $3, MenuView
-    jb 0f
-    mov $0x0cd40000, %eax
-    jmp 1f
-0:
-    cmpl $2, MenuView
-    jne 4f
-    cmp $0x0cc00000, %eax
-    jne 3f
-    push %ecx
-    push %edx
-    call MenuLeave
-    pop %edx
-    pop %ecx
-    jmp 4f
+    jump(0x63c095)
 1:  push %ecx
     push %edx
     push %eax
@@ -355,45 +333,29 @@ HookAction:
     pop %ecx
     cmp $1, %eax
     je 3f
-    cmp $2, %eax
-    je 2f
     mov 0x8aea34, %eax
     jump(0x63be31)
-2:  mov $0x0cc00000, %eax
-4:  cmp $0x0cc00000, %eax
-    jump(0x63c095)
 3:  jump(0x63c270)
 
 .globl HookEventDispatch
 HookEventDispatch:
     mov 4(%ecx), %eax
-    mov %eax, %edx
-    and $0x03000fff, %edx
-    cmp $0x02000003, %edx
-    jne 1f
-    cmpl $3, MenuView
-    jae 3f
-    cmpl $2, MenuView
-    jne 4f
-    pushfl
-    pusha
-    call MenuLeave
-    popa
-    popfl
-4:  movl $0x01000004, 4(%ecx)
-    jump(0x6391ea)
-3:
-    mov %eax, MenuLastEvent
-    mov %edx, MenuLastMaskedEvent
-    push $0x0cd40000
-    call MenuActivateAction
-    add $4, %esp
-    push %esi
-    call GameReload
-    add $4, %esp
-    jump(0x6391d4)
-1:
     and $0x03000fff, %eax
+    cmp $0x02000ff1, %eax
+    jb 1f
+    cmp $0x02000ff3, %eax
+    ja 1f
+    pusha
+    push %esi
+    push %eax
+    call MenuHandleCategoryEvent
+    add $8, %esp
+    test %eax, %eax
+    jz 2f
+    popa
+    jump(0x6391d4)
+2:  popa
+1:
     jump(0x638e29)
 
 .globl HookListBegin

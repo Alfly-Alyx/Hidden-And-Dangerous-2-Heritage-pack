@@ -30,7 +30,7 @@ namespace HD2CommunityInstaller
             new EmbeddedFile {
                 ResourceName = "HD2CommunityInstaller.CustomMissions.Readme",
                 RelativePath = "CustomMissions/README.md",
-                Sha256 = "506AD7624A1FFED8CF8356C10529FA6468AB3AFF52035A14BC92E69199E91C3F",
+                Sha256 = "A68618FCEE71845E95A6967F830CF1556E4D0916E5B2446761E4A1820F6E8415",
                 PreserveExisting = true
             },
             new EmbeddedFile {

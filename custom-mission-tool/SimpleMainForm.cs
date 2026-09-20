@@ -43,17 +43,17 @@ namespace HD2CustomMissionManager
         private void AddEnglish()
         {
             values["Title"] = "H&D2 — Custom Missions";
-            values["Instruction"] = "Place mission packages in the fixed folder below, then click Install.";
+            values["Instruction"] = "Drop each mission folder into CustomMissions, then click Scan and install.";
             values["Folder"] = "Fixed mission folder:";
             values["Language"] = "Detected game language: English";
             values["ColTitle"] = "Title"; values["ColCategory"] = "Category";
             values["ColDirectory"] = "Mission folder"; values["ColFiles"] = "Files";
             values["Import"] = "Add mission…"; values["Add"] = "Add";
             values["ImportPicker"] = "Choose the mission folder (the one containing tree.klz) or its complete package.";
-            values["Imported"] = "Mission added to Player-created missions. Click Install missions to make it available in H&D2.";
+            values["Imported"] = "Mission added to Player-created missions. Click Scan and install to make it available in H&D2.";
             values["New"] = "New mission…"; values["Open"] = "Open folder";
-            values["Refresh"] = "Refresh"; values["Check"] = "Check";
-            values["Restore"] = "Restore"; values["Install"] = "Install missions";
+            values["Refresh"] = "Scan"; values["Check"] = "Check";
+            values["Restore"] = "Restore"; values["Install"] = "Scan and install";
             values["NeverLaunch"] = "This utility never launches the game.";
             values["Count"] = "{0} mission(s), {1} file(s). The game was not launched.";
             values["Multiplayer"] = "Multiplayer adaptation";
@@ -79,17 +79,17 @@ namespace HD2CustomMissionManager
         private void AddFrench()
         {
             values["Title"] = "H&D2 — Missions personnalisées";
-            values["Instruction"] = "Placez les paquets de missions dans le dossier imposé ci-dessous, puis cliquez sur Installer.";
+            values["Instruction"] = "Déposez chaque dossier de mission dans CustomMissions, puis cliquez sur Scanner et installer.";
             values["Folder"] = "Dossier imposé des missions :";
             values["Language"] = "Langue du jeu détectée : français";
             values["ColTitle"] = "Titre"; values["ColCategory"] = "Catégorie";
             values["ColDirectory"] = "Dossier de mission"; values["ColFiles"] = "Fichiers";
             values["Import"] = "Ajouter une mission…"; values["Add"] = "Ajouter";
             values["ImportPicker"] = "Choisissez le dossier de la mission (celui qui contient tree.klz) ou son paquet complet.";
-            values["Imported"] = "Mission ajoutée aux missions créées par les joueurs. Cliquez sur Installer les missions pour la rendre disponible dans H&D2.";
+            values["Imported"] = "Mission ajoutée aux missions créées par les joueurs. Cliquez sur Scanner et installer pour la rendre disponible dans H&D2.";
             values["New"] = "Nouvelle mission…"; values["Open"] = "Ouvrir le dossier";
-            values["Refresh"] = "Actualiser"; values["Check"] = "Vérifier";
-            values["Restore"] = "Restaurer"; values["Install"] = "Installer les missions";
+            values["Refresh"] = "Scanner"; values["Check"] = "Vérifier";
+            values["Restore"] = "Restaurer"; values["Install"] = "Scanner et installer";
             values["NeverLaunch"] = "Cet utilitaire ne lance jamais le jeu.";
             values["Count"] = "{0} mission(s), {1} fichier(s). Le jeu n'a pas été lancé.";
             values["Multiplayer"] = "Adaptation multijoueur"; values["User"] = "Mission utilisateur";
@@ -113,16 +113,16 @@ namespace HD2CustomMissionManager
         private void AddGerman()
         {
             values["Title"] = "H&D2 — Eigene Missionen";
-            values["Instruction"] = "Legen Sie Missionspakete im festen Ordner ab und klicken Sie auf Installieren.";
+            values["Instruction"] = "Legen Sie jeden Missionsordner in CustomMissions ab. Klicken Sie auf Suchen und installieren.";
             values["Folder"] = "Fester Missionsordner:"; values["Language"] = "Erkannte Spielsprache: Deutsch";
             values["ColTitle"] = "Titel"; values["ColCategory"] = "Kategorie";
             values["ColDirectory"] = "Missionsordner"; values["ColFiles"] = "Dateien";
             values["Import"] = "Mission hinzufügen…"; values["Add"] = "Hinzufügen";
             values["ImportPicker"] = "Wählen Sie den Missionsordner mit tree.klz oder das vollständige Paket.";
-            values["Imported"] = "Mission zu den von Spielern erstellten Missionen hinzugefügt. Klicken Sie auf Missionen installieren.";
+            values["Imported"] = "Mission zu den von Spielern erstellten Missionen hinzugefügt. Klicken Sie auf Suchen und installieren.";
             values["New"] = "Neue Mission…"; values["Open"] = "Ordner öffnen";
-            values["Refresh"] = "Aktualisieren"; values["Check"] = "Prüfen";
-            values["Restore"] = "Wiederherstellen"; values["Install"] = "Missionen installieren";
+            values["Refresh"] = "Suchen"; values["Check"] = "Prüfen";
+            values["Restore"] = "Wiederherstellen"; values["Install"] = "Suchen und installieren";
             values["NeverLaunch"] = "Dieses Programm startet das Spiel niemals.";
             values["Multiplayer"] = "Mehrspieler-Anpassung"; values["User"] = "Benutzermission";
             values["Explore"] = "Freie Erkundung / Waffentest";
@@ -145,16 +145,16 @@ namespace HD2CustomMissionManager
         private void AddItalian()
         {
             values["Title"] = "H&D2 — Missioni personalizzate";
-            values["Instruction"] = "Inserisci i pacchetti nella cartella fissa e fai clic su Installa.";
+            values["Instruction"] = "Metti ogni cartella missione in CustomMissions, poi fai clic su Cerca e installa.";
             values["Folder"] = "Cartella fissa delle missioni:"; values["Language"] = "Lingua del gioco rilevata: italiano";
             values["ColTitle"] = "Titolo"; values["ColCategory"] = "Categoria";
             values["ColDirectory"] = "Cartella missione"; values["ColFiles"] = "File";
             values["Import"] = "Aggiungi missione…"; values["Add"] = "Aggiungi";
             values["ImportPicker"] = "Scegli la cartella della missione con tree.klz o il pacchetto completo.";
-            values["Imported"] = "Missione aggiunta alle missioni create dai giocatori. Fai clic su Installa missioni.";
+            values["Imported"] = "Missione aggiunta alle missioni create dai giocatori. Fai clic su Cerca e installa.";
             values["New"] = "Nuova missione…"; values["Open"] = "Apri cartella";
-            values["Refresh"] = "Aggiorna"; values["Check"] = "Verifica";
-            values["Restore"] = "Ripristina"; values["Install"] = "Installa missioni";
+            values["Refresh"] = "Cerca"; values["Check"] = "Verifica";
+            values["Restore"] = "Ripristina"; values["Install"] = "Cerca e installa";
             values["NeverLaunch"] = "Questa utilità non avvia mai il gioco.";
             values["Multiplayer"] = "Adattamento multigiocatore"; values["User"] = "Missione utente";
             values["Explore"] = "Esplorazione libera / test armi";
@@ -176,16 +176,16 @@ namespace HD2CustomMissionManager
         private void AddSpanish()
         {
             values["Title"] = "H&D2 — Misiones personalizadas";
-            values["Instruction"] = "Coloca los paquetes en la carpeta fija y pulsa Instalar.";
+            values["Instruction"] = "Coloca cada carpeta de misión en CustomMissions y pulsa Buscar e instalar.";
             values["Folder"] = "Carpeta fija de misiones:"; values["Language"] = "Idioma del juego detectado: español";
             values["ColTitle"] = "Título"; values["ColCategory"] = "Categoría";
             values["ColDirectory"] = "Carpeta de misión"; values["ColFiles"] = "Archivos";
             values["Import"] = "Añadir misión…"; values["Add"] = "Añadir";
             values["ImportPicker"] = "Elige la carpeta de la misión con tree.klz o su paquete completo.";
-            values["Imported"] = "Misión añadida a las misiones creadas por jugadores. Pulsa Instalar misiones.";
+            values["Imported"] = "Misión añadida a las misiones creadas por jugadores. Pulsa Buscar e instalar.";
             values["New"] = "Nueva misión…"; values["Open"] = "Abrir carpeta";
-            values["Refresh"] = "Actualizar"; values["Check"] = "Verificar";
-            values["Restore"] = "Restaurar"; values["Install"] = "Instalar misiones";
+            values["Refresh"] = "Buscar"; values["Check"] = "Verificar";
+            values["Restore"] = "Restaurar"; values["Install"] = "Buscar e instalar";
             values["NeverLaunch"] = "Esta utilidad nunca inicia el juego.";
             values["Multiplayer"] = "Adaptación multijugador"; values["User"] = "Misión de usuario";
             values["Explore"] = "Exploración libre / prueba de armas";
@@ -207,16 +207,16 @@ namespace HD2CustomMissionManager
         private void AddCzech()
         {
             values["Title"] = "H&D2 — Vlastní mise";
-            values["Instruction"] = "Vložte balíčky misí do pevné složky a klikněte na Instalovat.";
+            values["Instruction"] = "Vložte každou složku mise do CustomMissions a klikněte na Najít a instalovat.";
             values["Folder"] = "Pevná složka misí:"; values["Language"] = "Zjištěný jazyk hry: čeština";
             values["ColTitle"] = "Název"; values["ColCategory"] = "Kategorie";
             values["ColDirectory"] = "Složka mise"; values["ColFiles"] = "Soubory";
             values["Import"] = "Přidat misi…"; values["Add"] = "Přidat";
             values["ImportPicker"] = "Vyberte složku mise obsahující tree.klz nebo celý balíček.";
-            values["Imported"] = "Mise byla přidána mezi mise vytvořené hráči. Klikněte na Instalovat mise.";
+            values["Imported"] = "Mise byla přidána mezi mise vytvořené hráči. Klikněte na Najít a instalovat.";
             values["New"] = "Nová mise…"; values["Open"] = "Otevřít složku";
-            values["Refresh"] = "Obnovit"; values["Check"] = "Zkontrolovat";
-            values["Restore"] = "Obnovit zpět"; values["Install"] = "Instalovat mise";
+            values["Refresh"] = "Najít"; values["Check"] = "Zkontrolovat";
+            values["Restore"] = "Obnovit zpět"; values["Install"] = "Najít a instalovat";
             values["NeverLaunch"] = "Tento nástroj nikdy nespouští hru.";
             values["Multiplayer"] = "Úprava pro více hráčů"; values["User"] = "Uživatelská mise";
             values["Explore"] = "Volný průzkum / test zbraní";
@@ -238,16 +238,16 @@ namespace HD2CustomMissionManager
         private void AddJapanese()
         {
             values["Title"] = "H&D2 — カスタムミッション";
-            values["Instruction"] = "固定フォルダーにミッションパックを入れ、インストールを押してください。";
+            values["Instruction"] = "各ミッションのフォルダーを CustomMissions に入れ、「スキャンしてインストール」を押してください。";
             values["Folder"] = "固定ミッションフォルダー:"; values["Language"] = "検出されたゲーム言語: 日本語";
             values["ColTitle"] = "タイトル"; values["ColCategory"] = "カテゴリ";
             values["ColDirectory"] = "ミッションフォルダー"; values["ColFiles"] = "ファイル";
             values["Import"] = "ミッションを追加…"; values["Add"] = "追加";
             values["ImportPicker"] = "tree.klz を含むミッションフォルダー、または完全なパックを選択してください。";
-            values["Imported"] = "プレイヤー作成ミッションに追加しました。ミッションをインストールを押してください。";
+            values["Imported"] = "プレイヤー作成ミッションに追加しました。「スキャンしてインストール」を押してください。";
             values["New"] = "新しいミッション…"; values["Open"] = "フォルダーを開く";
-            values["Refresh"] = "更新"; values["Check"] = "確認";
-            values["Restore"] = "復元"; values["Install"] = "ミッションをインストール";
+            values["Refresh"] = "スキャン"; values["Check"] = "確認";
+            values["Restore"] = "復元"; values["Install"] = "スキャンしてインストール";
             values["NeverLaunch"] = "このツールはゲームを起動しません。";
             values["Multiplayer"] = "マルチプレイ改作"; values["User"] = "ユーザーミッション";
             values["Explore"] = "フリー探索 / 武器テスト";
@@ -513,6 +513,8 @@ namespace HD2CustomMissionManager
         private void RunWork(string operation)
         {
             if (worker.IsBusy) return;
+            // Integrate rescans the fixed library, including folders dropped
+            // after this window was opened; no manual import step is required.
             SetBusy(true); worker.RunWorkerAsync(operation);
         }
 
@@ -533,6 +535,7 @@ namespace HD2CustomMissionManager
         {
             SetBusy(false);
             if (e.Error != null) { ShowError(e.Error); return; }
+            RefreshLibrary();
             status.Text = Convert.ToString(e.Result);
             MessageBox.Show(this, Convert.ToString(e.Result), text["Done"],
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
