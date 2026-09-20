@@ -126,11 +126,6 @@ static void SetNode(const char *name, unsigned visible)
     if (node) GameSetNodeVisible(node, visible);
 }
 
-EXPORT void MenuSetControlVisible(void *control, unsigned visible)
-{
-    if (control) GameSetNodeVisible(control, visible);
-}
-
 /* The category selector is deliberately not a mission list. It uses four
  * native button controls added to the mission scene. The normal browser
  * furniture is restored unchanged for the three actual mission lists.
@@ -150,24 +145,12 @@ EXPORT void MenuApplyLayout(unsigned view)
         "bexit01"
     };
     unsigned index, categories = view == 2;
-    for (index = 0; index < sizeof(categoryNodes) / sizeof(categoryNodes[0]); index++) {
+    for (index = 0; index < sizeof(categoryNodes) / sizeof(categoryNodes[0]); index++)
         SetNode(categoryNodes[index], categories);
-        /* Runtime labels are attached to the resolved control, not to the
-         * cloned 4DS children. Hide the control itself as well so a rebuilt
-         * detail list cannot leave a bare category label behind. */
-        MenuSetControlVisible(MenuCategoryControls[index], categories);
-    }
     for (index = 0; index < sizeof(categoryVisuals) / sizeof(categoryVisuals[0]); index++)
         SetNode(categoryVisuals[index], categories && !(index & 1));
     for (index = 0; index < sizeof(browserNodes) / sizeof(browserNodes[0]); index++)
         SetNode(browserNodes[index], !categories);
-    /* The stock Start/Resume labels are runtime controls. Their 4DS roots can
-     * be hidden while the text remains visible, producing the duplicate Back
-     * row seen in game. Apply visibility to both layers. */
-    MenuSetControlVisible(MenuStartControl, !categories);
-    MenuSetControlVisible(MenuCaptionControl, !categories);
-    MenuSetControlVisible(MenuResumeControl, !categories);
-    MenuSetControlVisible(MenuBackControl, 1);
     if (categories) {
         static const char *browserVisuals[] = {
             "normal03", "actived03", "normal05", "actived05",

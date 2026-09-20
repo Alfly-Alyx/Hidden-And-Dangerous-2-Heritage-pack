@@ -53,7 +53,6 @@ class Machine:
             address, length, expected, replacement = fields
             self.hooks[address] = (length, bytes(self.uc.mem_read(expected, length)), replacement)
         self.calls = []
-        self.visibility_calls = []
         self.next_control = self.control
         self.uc.hook_add(UC_HOOK_CODE, self.on_code)
 
@@ -99,9 +98,6 @@ class Machine:
         elif address == 0x63ab60:
             self.calls.append(("reload", self.reg(UC_X86_REG_ECX), self.get(self.exports["MenuView"])))
             self.return_call(1)
-        elif address == self.exports["MenuSetControlVisible"]:
-            self.visibility_calls.append((self.get(esp + 4), self.get(esp + 8)))
-            self.return_call()
         elif address == 0x615360:
             self.calls.append(("control", self.string(self.get(esp + 8))))
             control = self.next_control
@@ -457,46 +453,6 @@ class NativeMenuTests(unittest.TestCase):
                 m.run(0x639a94, registers={UC_X86_REG_EAX: m.control}, until=0x639a99)
                 self.assertEqual(m.get(m.exports["MenuResumeControl"]), m.control)
                 self.assertEqual(m.get(m.reg(UC_X86_REG_ESP)), 0x839)
-
-    def test_category_layout_shows_only_categories_and_real_back_control(self):
-        m = Machine(2)
-        categories = m.install_category_controls()
-        start, caption, resume = 0x2005000, 0x2005100, 0x2005200
-        m.put(m.exports["MenuStartControl"], start)
-        m.put(m.exports["MenuCaptionControl"], caption)
-        m.put(m.exports["MenuResumeControl"], resume)
-
-        m.run("MenuApplyLayout", (2,))
-
-        self.assertEqual(m.visibility_calls, [
-            (categories[0], 1),
-            (categories[1], 1),
-            (categories[2], 1),
-            (start, 0),
-            (caption, 0),
-            (resume, 0),
-            (categories[3], 1),
-        ])
-
-    def test_detail_layout_hides_categories_without_hiding_native_browser(self):
-        m = Machine(4)
-        categories = m.install_category_controls()
-        start, caption, resume = 0x2005000, 0x2005100, 0x2005200
-        m.put(m.exports["MenuStartControl"], start)
-        m.put(m.exports["MenuCaptionControl"], caption)
-        m.put(m.exports["MenuResumeControl"], resume)
-
-        m.run("MenuApplyLayout", (4,))
-
-        self.assertEqual(m.visibility_calls, [
-            (categories[0], 0),
-            (categories[1], 0),
-            (categories[2], 0),
-            (start, 1),
-            (caption, 1),
-            (resume, 1),
-            (categories[3], 1),
-        ])
 
     def test_native_back_always_posts_a_screen_local_event(self):
         for view in range(6):
