@@ -10,7 +10,7 @@ namespace HD2CommunityInstaller
         public static string BuildReport(string gamePath)
         {
             StringBuilder text = new StringBuilder();
-            text.AppendLine("CMP 2.6.5 : " + DetectCmp(gamePath));
+            text.AppendLine("CMP officiel : " + DetectCmp(gamePath));
             text.AppendLine("Exploration libre : " + OfficialContentInstaller.DetectStatus(gamePath));
             text.AppendLine("Objectifs optionnels : " + DetectObjectives(gamePath));
             text.AppendLine("Guidages, routes et scripts officiels : " + DetectDormantGuidance(gamePath));
@@ -31,7 +31,18 @@ namespace HD2CommunityInstaller
                 int maps = Regex.Matches(
                     File.ReadAllText(path, Encoding.GetEncoding(1252)),
                     @"<MAP\b", RegexOptions.IgnoreCase).Count;
-                if (maps >= 156) return "deja installee (" + maps + " cartes et missions)";
+                string version = "version inconnue";
+                string readme = Path.Combine(gamePath, "cmp_info", "cmp_ReadMe.txt");
+                if (File.Exists(readme))
+                {
+                    Match found = Regex.Match(
+                        File.ReadAllText(readme, Encoding.GetEncoding(1252)),
+                        @"(?:Coop\s+Map\s+Package|CMP)\s*(?:\(CMP\))?\s*v?(?<version>\d+\.\d+\.\d+)",
+                        RegexOptions.IgnoreCase);
+                    if (found.Success) version = "version " + found.Groups["version"].Value;
+                }
+                if (maps >= 100) return "deja installee (" + version + ", "
+                    + maps + " cartes et missions)";
                 return "partielle (" + maps + " entrees)";
             }
             catch (Exception ex) { return "indeterminee (" + ex.Message + ")"; }

@@ -2,33 +2,35 @@
 
 Installation étudiée : édition GOG anglaise de Hidden & Dangerous 2: Sabre Squadron 1.12, dossier D:\Games\Hidden and Dangerous 2.
 
-Date de référence : 15 septembre 2026.
+Date de référence réseau : 20 septembre 2026.
 
 ## Résultat global
 
-Le paquet 0.7.5 est construit autour de modifications réversibles. Il ne remplace pas les archives commerciales dans le dépôt : il lit l'installation légitime, produit des fichiers de surcharge locaux et conserve une sauvegarde de chaque cible remplacée.
+Le paquet 0.8.0 est construit autour de modifications réversibles. Il ne remplace pas les archives commerciales dans le dépôt : il lit l'installation légitime, produit des fichiers de surcharge locaux et conserve une sauvegarde de chaque cible remplacée.
 
 ## Jeu en ligne
 
-GameSpy n'assure plus le service officiel. RpR publie encore en 2026 un serveur maître de remplacement, des serveurs actifs et la procédure de redirection des trois anciens noms :
+GameSpy n'assure plus le service officiel. Deux services compatibles H&D2 sont désormais interrogés par le Heritage Pack : la solution communautaire déjà utilisée, hébergée par RpR, et OpenSpy.
 
-    78.47.255.224 hd2.available.gamespy.com
-    78.47.255.224 hd2.master.gamespy.com
-    78.47.255.224 hd2.ms14.gamespy.com
+    service H&D2 existant : 78.47.255.224:28910
+    OpenSpy : 134.122.16.249:28910
+    pont local du Heritage Pack : 127.0.0.1:28910
 
-Le point 78.47.255.224:28910 répond encore au test TCP du 15 septembre 2026. Les trois noms se résolvent bien vers cette adresse sur la machine de test. Une requête maître historique complète de 146 octets pour le jeu `hd2` reçoit en plus une réponse chiffrée dont l’enveloppe EncTypeX est structurellement valide. `tools/network_master_audit.py` rend ces trois résolutions, la connexion, l’échange protocolaire et le câblage correspondant de l’installateur reproductibles dans un seul rapport horodaté. Il ne déchiffre pas encore les lignes de serveurs : leur affichage et la connexion effective restent à valider dans le jeu.
+Les deux points ont répondu au test TCP et à la requête maître historique complète de 146 octets pour le jeu `hd2`. Le contrôle du 20 septembre a déchiffré 11 serveurs sur le service existant et une liste vide, mais valide, sur OpenSpy. Le décodeur/encodeur EnctypeX a réussi un aller-retour complet pour les deux réponses. `tools/network_master_audit.py` reproduit ces contrôles ; `tools/gamespy_master_union_audit.py` calcule l’union et les doublons.
+
+L’installateur met en place un pont Windows limité à l’adresse locale. Seul le nom du navigateur de serveurs `hd2.ms14.gamespy.com` pointe vers ce pont, qui interroge les deux services en parallèle, réunit leurs adresses, supprime les doublons puis chiffre une seule réponse pour le jeu. Les noms servant au contrôle de disponibilité et à l’annonce d’une partie restent dirigés vers le service communautaire existant. La DLL `openspy-client` n’est pas nécessaire à cette architecture et n’est pas installée.
 
 La disponibilité des serveurs publiés a aussi été testée indépendamment de la liste maître. `tools/gamespy2_server_probe.py` envoie une requête GameSpy2 limitée aux informations du serveur, sans demander les joueurs ni les équipes. Les sept ports de jeu RpR 11001, 11005, 11009, 11013, 11017, 11021 et 11025 ont répondu sur leur port d’information `port + 3`. Les réponses valides annonçaient toutes H&D2 1.12 et les services Campaign, Justice, Josua Deathmatch, Objectives, Maptest, Occupation et NWM Maptest. Cela confirme sept serveurs de jeu actifs au niveau protocolaire au moment du contrôle, mais pas encore la réussite d’une connexion de joueur.
 
-Statut honnête : serveur maître et sept serveurs de jeu trouvés et joignables, configuration automatisée, mais affichage de la liste et connexion dans le jeu encore à valider visuellement sur la machine du joueur.
+Statut honnête : les deux maîtres, leur décodage et la fusion protocolaire sont validés hors jeu. L’affichage de la réponse produite par le pont et la connexion effective restent à valider visuellement dans H&D2.
 
-Le prétest combiné `tools/network_runtime_preflight.py` a également confirmé
-sur la machine du 15 septembre 2026 : exécutable Sabre Squadron présent, trois
-redirections `hosts` exactes, DirectPlay activé (`InstallState` 1), six fichiers
-du correctif écran large identiques à l'archive vérifiée et sept réponses
-GameSpy2. Le script vérifie aussi que ses six empreintes restent synchronisées
-avec `WidescreenInstaller.cs`. Il refuse volontairement d'en déduire que le
-menu Internet ou l'entrée sur une carte ont été testés.
+Le prétest combiné `tools/network_runtime_preflight.py` contrôle l’exécutable
+Sabre Squadron, les trois redirections `hosts` selon leur rôle — deux vers le
+service communautaire et le navigateur vers `127.0.0.1` —, la réponse du pont
+local, les deux services distants, DirectPlay, les six fichiers du correctif
+écran large et les réponses GameSpy2 des serveurs publiés. Il refuse
+volontairement d’en déduire que le menu Internet ou l’entrée sur une carte ont
+été testés.
 
 Sources :
 - https://www.rprclan.com/hd2/play-online
@@ -66,9 +68,9 @@ Cette liberté n'invente pas du terrain au-delà de la géométrie existante. De
 
 Arctic 1 ajoutait un second verrou dans le script vocal d'Albert : lorsque le joueur le suivait sur sa route de retour, trois avertissements précédaient le signal 14 d'échec. Les deux routes commerciales activaient cette surveillance par les signaux 30 et 31. L'option d'exploration maintient désormais le détecteur désactivé dans les deux cas ; les voix, la branche historique et les deux routes restent dans le fichier mais deviennent inaccessibles pendant l'exploration libre.
 
-## CMP 2.6.5
+## CMP officiel
 
-Version figée : commit 793d979748b27a9924fccc30fa0fba6edb7cd70f.
+Version de référence : commit 793d979748b27a9924fccc30fa0fba6edb7cd70f. Ce commit est toujours la tête de la branche principale au 20 septembre 2026.
 
 - archive : 1 084 146 265 octets ;
 - SHA-256 : DD0CA6FED1FB056DCB064813C223E0423F1FD9B13E291D106D8B983C467ABC33 ;
@@ -78,6 +80,12 @@ Version figée : commit 793d979748b27a9924fccc30fa0fba6edb7cd70f.
 - 3 118 285 955 octets déployés.
 
 Source : https://github.com/ehylla93/had2-cmp/
+
+L’installateur consulte maintenant la dernière révision du dépôt officiel. Si elle
+diffère de cette référence, il télécharge le commit exact, contrôle sa structure,
+ses limites de taille, sa version annoncée et sa liste de cartes, puis enregistre
+son SHA-256 réel dans le journal. Si GitHub ne permet pas la vérification de la
+branche, la révision de référence auditée reste disponible comme repli.
 
 ## Restaurations et corrections
 

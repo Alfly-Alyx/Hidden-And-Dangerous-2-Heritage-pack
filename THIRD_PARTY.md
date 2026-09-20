@@ -6,11 +6,26 @@ Le lecteur DTA de `tools/dta_archive.py` et `installer/DtaArchive.cs` suit la do
 
 Le code de ce dépôt est distribué sous GPL-3.0-or-later.
 
+## OpenSpy et pont GameSpy EnctypeX
+
+Le Heritage Pack interroge le service réseau du [projet OpenSpy](https://github.com/openspy)
+comme seconde source de serveurs H&D2. Il ne contient ni `openspy-client`, maintenu
+par [anzz1](https://github.com/anzz1/openspy-client), ni un binaire provenant des
+dépôts OpenSpy.
+
+La fusion des deux listes est réalisée par un pont local propre au Heritage Pack.
+Son implémentation compatible du chiffrement GameSpy EnctypeX est adaptée du fichier
+`enctypex_decoder.c` publié par **Luigi Auriemma** sous GPL-2.0-or-later. Le port et
+le reste du pont sont distribués avec le Heritage Pack sous GPL-3.0-or-later.
+
+Le service OpenSpy et le service communautaire H&D2 restent des services extérieurs :
+ils ne sont ni copiés ni exploités par le dépôt.
+
 ## Coop Map Package
 
-L’installateur sait télécharger la [Hidden & Dangerous 2 Coop Map Package](https://github.com/ehylla93/had2-cmp/) 2.6.5 au commit `793d979748b27a9924fccc30fa0fba6edb7cd70f`.
+L’installateur sait télécharger la [Hidden & Dangerous 2 Coop Map Package](https://github.com/ehylla93/had2-cmp/). Il vérifie la dernière révision officielle ; la version de référence 2.6.5 correspond au commit `793d979748b27a9924fccc30fa0fba6edb7cd70f`.
 
-L’archive CMP n’est pas stockée dans ce dépôt ni incorporée à l’exécutable. Elle est obtenue depuis sa source publique à la demande de l’utilisateur et acceptée uniquement si sa taille et son SHA-256 correspondent à la version auditée.
+L’archive CMP n’est pas stockée dans ce dépôt ni incorporée à l’exécutable. Elle est obtenue depuis sa source publique à la demande de l’utilisateur. La version de référence est verrouillée par taille et SHA-256 ; une révision officielle plus récente est contrôlée, identifiée par son commit et reçoit une empreinte SHA-256 enregistrée avant installation.
 
 Aucun fichier de licence explicite n’a été trouvé dans l’archive CMP examinée. Cette absence est une raison supplémentaire de ne pas la republier dans l’exécutable.
 

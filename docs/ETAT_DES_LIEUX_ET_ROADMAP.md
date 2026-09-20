@@ -22,13 +22,16 @@ Le projet doit produire un ensemble installable pour Hidden & Dangerous 2: Sabre
 
 ### Réseau et communauté
 
-- serveur maître communautaire RpR identifié, joignable et répondant à une
-  requête maître H&D2 complète par une enveloppe EncTypeX valide ;
+- service maître communautaire RpR et service OpenSpy identifiés, joignables et
+  répondant tous deux à une requête maître H&D2 complète ;
+- pont local prévu pour réunir et dédoublonner leurs réponses dans une seule
+  liste visible par le jeu ;
 - sept serveurs H&D2 1.12 publiés confirmés joignables par leur réponse GameSpy2,
   sans collecte de la liste des joueurs ;
-- redirection des trois noms GameSpy automatisée ;
+- redirection automatisée selon le rôle GameSpy : disponibilité et annonce vers le service communautaire, navigateur `ms14` vers le pont local ;
 - DirectPlay contrôlé ;
-- CMP 2.6.5 figée par commit, taille et SHA-256 ;
+- CMP synchronisée depuis la dernière révision du dépôt officiel, avec la 2.6.5
+  conservée comme référence verrouillée par commit, taille et SHA-256 ;
 - 156 entrées de cartes et missions communautaires intégrables.
 
 ### Exploration
@@ -323,7 +326,7 @@ Sortie attendue : campagne expérimentale clairement étiquetée.
 Objectif : livrer un paquet robuste.
 
 - options séparées par stabilité et niveau de spéculation ;
-- téléchargement à la demande de la CMP officielle épinglée, sans embarquer ses fichiers tant qu'aucune autorisation explicite de redistribution n'est établie ;
+- téléchargement à la demande de la dernière révision CMP officielle, sans embarquer ses fichiers ;
 - conservation de l'empreinte, de la provenance et de la licence MIT du correctif écran large embarqué, suivie d'un essai Internet vérifiant l'absence de conflit de clé ;
 - sauvegardes et restauration testées ;
 - contrôle de taille et d'empreinte pour chaque dépendance ;

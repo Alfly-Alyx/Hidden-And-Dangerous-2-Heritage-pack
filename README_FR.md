@@ -14,13 +14,13 @@ Heritage Pack remet en service le jeu en ligne, corrige des objectifs et des sé
 
 | Fonction | Résultat dans le jeu |
 |---|---|
-| Jeu en ligne | Rétablit la liste des serveurs communautaires et active DirectPlay si nécessaire. |
+| Jeu en ligne | Réunit le service maître H&D2 déjà utilisé et OpenSpy dans une seule liste en jeu, retire les doublons et active DirectPlay si nécessaire. |
 | Missions débloquées | Une option permet d’ouvrir immédiatement les 24 missions de H&D2 et les 9 missions de Sabre Squadron pour le profil actif. |
 | Exploration libre | Supprime les avertissements, les échecs et les murs invisibles liés aux limites de zone, sans retirer les collisions normales du décor. |
 | Contenu du jeu restauré | Remet en fonctionnement des parties du jeu original que la version finale n’utilisait plus : morceaux de missions, objectifs optionnels, dialogues, animations de personnages et passages alternatifs. |
 | Easter eggs | Réactive les séquences d’Africa 1 et d’Africa 4 neutralisées par la mise à jour 1.12. |
-| Contenu communautaire | Installe CMP 2.6.5 et ses 156 cartes et missions coopératives. |
-| Missions personnalisées | Installe le gestionnaire à la racine du jeu et un dossier `CustomMissions` prêt à recevoir les créations des joueurs, sans remplacer celles qui existent déjà. |
+| Contenu communautaire | Consulte le dépôt CMP officiel et installe ou met à jour sa dernière révision disponible (actuellement 2.6.5 avec 156 cartes et missions coopératives). |
+| Missions personnalisées | Ajoute `Solo → Missions personnalisées`, avec des listes séparées pour les missions utilisateur, les adaptations multijoueur et l’exploration libre. Le gestionnaire fourni analyse le dossier `CustomMissions` sans remplacer les créations existantes. |
 | Vestiges officiels | Ajoute Africa5 Prototype et Normandy3 Zone au menu multijoueur avec un nom qui indique clairement leur état expérimental. |
 | Affichage | Détecte l’écran et le PC, applique la résolution maximale utilisable et adapte les graphismes aux performances de la machine. |
 | Guides | Installe deux guides en français et leurs versions anglaises. |
@@ -39,13 +39,14 @@ Heritage Pack remet en service du contenu conçu pour H&D2 mais supprimé, désa
 5. Vérifiez le dossier du jeu, choisissez vos options, puis cliquez sur **Installer**.
 6. Relancez l’outil et cliquez sur **Vérifier l’état** si vous souhaitez contrôler l’installation.
 
-La collection CMP représente environ **1,08 Go à télécharger** et **3,12 Go installés**. Elle n’est téléchargée que si elle manque.
+La CMP 2.6.5 représente environ **1,08 Go à télécharger** et **3,12 Go installés**. L’installateur consulte le dépôt officiel, identifie sa version et son commit, puis télécharge uniquement la révision officielle sélectionnée.
 
 ## Où trouver les contenus
 
 - Les campagnes et missions officielles restent dans les menus solo habituels.
 - Les missions CMP se trouvent dans `Multijoueur → Créer → LAN → Coopération`.
-- Le gestionnaire `HD2-Custom-Mission-Manager.exe` et sa bibliothèque `CustomMissions` se trouvent à la racine du jeu.
+- Ouvrez `Solo → Missions personnalisées` pour accéder aux trois listes séparées.
+- Pour ajouter une mission, placez son dossier contenant `tree.klz` et ses fichiers nécessaires dans `CustomMissions`, puis lancez `HD2-Custom-Mission-Manager.exe` depuis la racine du jeu et choisissez **Scanner et installer**. Les paquets avancés existants avec `mission.json` restent compatibles.
 - `PROTOTYPE - Africa5` se trouve en Deathmatch.
 - `PROTOTYPE - Normandy3 Zone` se trouve en Occupation.
 - Les quatre PDF sont copiés dans le dossier `Guides` du jeu.
@@ -70,9 +71,11 @@ Le rapport raconte les découvertes : contenu coupé, variantes de missions, Lon
 
 ## État actuel
 
-La version **0.7.6** consolide notamment :
+La version **0.8.0** consolide notamment :
 
 - la détection exacte des options déjà installées ;
+- une seule liste H&D2 réunissant le service communautaire déjà utilisé et OpenSpy ;
+- le menu natif des missions personnalisées, ses trois catégories séparées et l’analyse automatique des dossiers de mission sans manifeste obligatoire ;
 - la remise en service de contenu original qui ne fonctionnait plus dans la version finale ;
 - l’exploration libre appliquée aussi aux deux prototypes ;
 - les quatre guides PDF intégrés à l’installateur ;
@@ -106,17 +109,24 @@ Cette licence couvre le code du Heritage Pack, pas le jeu original ni les créat
 
 Passer l’ensemble du projet sous MIT demanderait d’abord de remplacer les lecteurs d’archives liés au projet GPL **HD2unpacker**.
 
-## Crédits
+## Éléments extérieurs et leurs auteurs
 
-- **H&D2 Heritage Pack** : projet initié par **Alfly-Alyx**.
-- **Jeu original** : créé par **Illusion Softworks**.
-- **Jeu en ligne** : **JarnoKai (Mökki Medium)** et **Ondra** sont crédités pour la solution de liste maître ; le clan **=RpR=** l’héberge et la maintient. **DnA (Hawk)** a également créé l’outil historique de mise à jour du fichier hosts présenté par RpR.
-- **Community Map Package 2.6.5** : collection compilée et conservée par **=RpR=**, avec le dépôt `had2-cmp` publié par **ehylla93**.
-- **Missions et cartes du CMP** : **BetterYouThanMe, Black Akres, culticaxe, Dr_NO, GS Hawk, GUB, HippoBlindEye, Joe66, Joel, Lars, Matro, miamidos, Polanski, ProSabre, Rs_sabre, Sasha, Sqdn. Ldr. Ted Striker, Stern** et **Zdenda** sont les auteurs ou convertisseurs nommés dans les crédits de la version intégrée.
-- **Affichage écran large** : **ThirteenAG**, auteur de `HiddenandDangerous2.WidescreenFix`, distribué sous licence MIT.
+Le Heritage Pack réunit les créations et services extérieurs suivants :
+
+- **Hidden & Dangerous 2 et Sabre Squadron** — créés par **Illusion Softworks**. Le jeu commercial est nécessaire et n’est jamais inclus dans le pack.
+- **Service de liste maître H&D2 déjà utilisé** — la solution est créditée à **JarnoKai (Mökki Medium)** et **Ondra** ; elle est hébergée et maintenue par le **clan =RpR=**. **DnA (Hawk)** a créé l’ancien outil de mise à jour du fichier hosts présenté par RpR.
+- **Service réseau OpenSpy** — développé et maintenu par les **contributeurs du projet OpenSpy**. Le Heritage Pack interroge directement ce service ; la DLL séparée `openspy-client`, maintenue par **anzz1**, n’est pas embarquée puisque le pont local n’en a pas besoin.
+- **Protocole GameSpy EnctypeX** — le pont local qui réunit les deux services adapte le décodeur/encodeur GPL-2.0-or-later publié par **Luigi Auriemma**.
+- **Community Map Package 2.6.5** — compilé et conservé par le **clan =RpR=** ; son dépôt public `had2-cmp` est publié par **ehylla93**. Il est téléchargé depuis ce dépôt lorsque l’utilisateur le choisit et n’est pas stocké dans l’installateur.
+- **Missions et cartes du CMP** — **BetterYouThanMe, Black Akres, culticaxe, Dr_NO, GS Hawk, GUB, HippoBlindEye, Joe66, Joel, Lars, Matro, miamidos, Polanski, ProSabre, Rs_sabre, Sasha, Sqdn. Ldr. Ted Striker, Stern** et **Zdenda** sont les auteurs ou convertisseurs nommés dans les crédits installés avec le CMP.
+- **HiddenandDangerous2.WidescreenFix** — créé par **ThirteenAG** et inclus sous licence MIT.
+- **Recherche sur le format de HD2unpacker** — les lecteurs DTA suivent la documentation publique et l’implémentation GPL-3.0 de **M3tox**.
+- **DirectPlay** — ancien composant Windows fourni par **Microsoft**. L’installateur peut activer celui qui appartient déjà à Windows ; il ne le redistribue pas.
+
+Le **H&D2 Heritage Pack** lui-même a été initié par **Alfly-Alyx**. Son installateur, son système de restauration, son pont local de fusion des listes, son gestionnaire de missions personnalisées, ses scripts restaurés, ses tests et ses guides sont publiés dans ce dépôt.
 
 Le détail carte par carte est conservé dans `cmp_info/README.md`, installé avec le CMP. Certaines entrées y sont indiquées sans auteur ou avec un auteur inconnu ; Heritage Pack conserve honnêtement cette mention au lieu d’inventer une attribution.
 
-Sources : [jouer en ligne avec RpR](https://www.rprclan.com/hd2/play-online), [dépôt du CMP](https://github.com/ehylla93/had2-cmp) et [Widescreen Fixes Pack](https://github.com/ThirteenAG/WidescreenFixesPack).
+Sources : [jouer en ligne avec RpR](https://www.rprclan.com/hd2/play-online), [OpenSpy](https://github.com/openspy), [dépôt du CMP](https://github.com/ehylla93/had2-cmp), [Widescreen Fixes Pack](https://github.com/ThirteenAG/WidescreenFixesPack) et [HD2unpacker](https://github.com/M3tox/HD2unpacker).
 
 Heritage Pack est un projet communautaire indépendant, conçu pour préserver et redécouvrir le jeu.

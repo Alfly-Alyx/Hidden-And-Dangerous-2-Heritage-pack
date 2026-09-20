@@ -85,8 +85,8 @@ namespace HD2CommunityInstaller
             }
             text.AppendLine();
             text.AppendLine("Etat detecte des fonctions :");
-            try { text.AppendLine("Serveurs Internet communautaires : " + DescribeHosts()); }
-            catch (Exception ex) { text.AppendLine("Serveurs Internet communautaires : indetermine (" + ex.Message + ")"); }
+            try { text.AppendLine("Fusion des listes Internet : " + DescribeInternetFusion()); }
+            catch (Exception ex) { text.AppendLine("Fusion des listes Internet : indeterminee (" + ex.Message + ")"); }
             try { text.AppendLine("DirectPlay : " + (IsDirectPlayEnabled() ? "deja actif" : "a activer")); }
             catch (Exception ex) { text.AppendLine("DirectPlay : indetermine (" + ex.Message + ")"); }
             if (valid)
@@ -97,8 +97,12 @@ namespace HD2CommunityInstaller
                 text.AppendLine("Graphismes automatiques : " + GraphicsConfigurator.DetectStatus());
                 text.AppendLine(FeatureStatusDetector.BuildReport(gamePath));
             }
-            text.AppendLine("Serveur maitre TCP 28910 : "
-                + (CanConnect(AppConfig.MasterIp, 28910, 3000) ? "joignable" : "non joignable"));
+            text.AppendLine("Service communautaire TCP 28910 : "
+                + (CanConnect(AppConfig.MasterIp, AppConfig.MasterPort, 3000)
+                    ? "joignable" : "non joignable"));
+            text.AppendLine("OpenSpy TCP 28910 : "
+                + (CanConnect(AppConfig.OpenSpyMasterIp, AppConfig.MasterPort, 3000)
+                    ? "joignable" : "non joignable"));
             text.AppendLine("Journal de restauration : "
                 + (File.Exists(AppConfig.StateFile) ? "present" : "absent"));
             text.AppendLine();
@@ -178,7 +182,8 @@ namespace HD2CommunityInstaller
                 SetPercent(percent, 5);
                 if (options.ConfigureMasterServer)
                 {
-                    Report(progress, "Configuration de la liste des serveurs...");
+                    MasterBridgeInstaller.Install(journal, progress);
+                    Report(progress, "Configuration de la liste de serveurs fusionnee...");
                     ConfigureHosts(journal);
                 }
                 SetPercent(percent, 10);
@@ -504,6 +509,7 @@ namespace HD2CommunityInstaller
                 throw new InvalidOperationException(message.ToString());
             }
             GraphicsConfigurator.Restore(state, progress);
+            MasterBridgeInstaller.Uninstall(state, progress);
             for (int index = state.ProfileUnlocks.Count - 1; index >= 0; index--)
                 MissionUnlockInstaller.Restore(
                     state.GamePath, state.ProfileUnlocks[index], progress);
@@ -686,11 +692,24 @@ namespace HD2CommunityInstaller
         {
             string path = HostsPath();
             string content = File.ReadAllText(path, Encoding.Default);
-            bool marker = content.IndexOf(HostsStart, StringComparison.OrdinalIgnoreCase) >= 0
-                || content.IndexOf(HostsEnd, StringComparison.OrdinalIgnoreCase) >= 0;
+            bool hasStart = content.IndexOf(HostsStart,
+                StringComparison.OrdinalIgnoreCase) >= 0;
+            bool hasEnd = content.IndexOf(HostsEnd,
+                StringComparison.OrdinalIgnoreCase) >= 0;
+            if (hasStart != hasEnd)
+                throw new InvalidOperationException(
+                    "Un bloc HD2 Community MasterList incomplet existe deja.");
+            bool marker = hasStart && hasEnd;
+            if (marker && CountConfiguredMasterAliases(content)
+                    == AppConfig.MasterAliases.Length)
+                return;
+
+            string baseContent = marker
+                ? RemoveHostsBlockFromContent(content)
+                : content;
             int exact = 0;
             List<string> conflicts = new List<string>();
-            foreach (string raw in Regex.Split(content, "\r\n|\n|\r"))
+            foreach (string raw in Regex.Split(baseContent, "\r\n|\n|\r"))
             {
                 string line = raw.Trim();
                 if (line.Length == 0 || line.StartsWith("#")) continue;
@@ -700,7 +719,9 @@ namespace HD2CommunityInstaller
                     for (int i = 1; i < fields.Length; i++)
                         if (String.Equals(fields[i], alias, StringComparison.OrdinalIgnoreCase))
                         {
-                            if (String.Equals(fields[0], AppConfig.MasterIp, StringComparison.OrdinalIgnoreCase))
+                            if (String.Equals(fields[0],
+                                    AppConfig.ExpectedIpForMasterAlias(alias),
+                                    StringComparison.OrdinalIgnoreCase))
                                 exact++;
                             else conflicts.Add(alias + " -> " + fields[0]);
                         }
@@ -708,34 +729,36 @@ namespace HD2CommunityInstaller
             if (conflicts.Count > 0)
                 throw new InvalidOperationException(
                     "Le fichier hosts contient une adresse differente pour : " + String.Join(", ", conflicts));
-            if (marker)
-            {
-                if (exact >= AppConfig.MasterAliases.Length) return;
-                throw new InvalidOperationException("Un bloc HD2 Community MasterList incomplet existe deja.");
-            }
             if (exact >= AppConfig.MasterAliases.Length) return;
             if (exact > 0)
                 throw new InvalidOperationException("La configuration HD2 du fichier hosts est partielle.");
 
-            string newline = content.Contains("\r\n") ? "\r\n" : Environment.NewLine;
+            string newline = baseContent.Contains("\r\n") ? "\r\n" : Environment.NewLine;
             StringBuilder block = new StringBuilder();
-            if (content.Length > 0 && !content.EndsWith("\n") && !content.EndsWith("\r"))
+            if (baseContent.Length > 0 && !baseContent.EndsWith("\n")
+                && !baseContent.EndsWith("\r"))
                 block.Append(newline);
             block.Append(HostsStart).Append(newline);
             foreach (string alias in AppConfig.MasterAliases)
-                block.Append(AppConfig.MasterIp).Append(" ").Append(alias).Append(newline);
+                block.Append(AppConfig.ExpectedIpForMasterAlias(alias)).Append(" ")
+                    .Append(alias).Append(newline);
             block.Append(HostsEnd).Append(newline);
-            journal.RecordHostsChanged();
-            File.AppendAllText(path, block.ToString(), Encoding.Default);
+            if (!journal.State.HostsChanged) journal.RecordHostsChanged();
+            File.WriteAllText(path, baseContent + block, Encoding.Default);
         }
 
         private static void RemoveHostsBlock()
         {
             string path = HostsPath();
             string content = File.ReadAllText(path, Encoding.Default);
+            File.WriteAllText(path, RemoveHostsBlockFromContent(content), Encoding.Default);
+        }
+
+        private static string RemoveHostsBlockFromContent(string content)
+        {
             string pattern = @"(?ims)^[ \t]*\# BEGIN HD2 Community MasterList[ \t]*\r?\n.*?"
                 + @"^[ \t]*\# END HD2 Community MasterList[ \t]*(?:\r?\n)?";
-            File.WriteAllText(path, Regex.Replace(content, pattern, String.Empty), Encoding.Default);
+            return Regex.Replace(content, pattern, String.Empty);
         }
 
         private static string DescribeHosts()
@@ -745,6 +768,16 @@ namespace HD2CommunityInstaller
             if (found == AppConfig.MasterAliases.Length) return "configuree";
             if (found == 0) return "non configuree";
             return "partielle (" + found + "/" + AppConfig.MasterAliases.Length + ")";
+        }
+
+        private static string DescribeInternetFusion()
+        {
+            string hosts = DescribeHosts();
+            string bridge = MasterBridgeInstaller.DetectStatus();
+            if (String.Equals(hosts, "configuree", StringComparison.OrdinalIgnoreCase)
+                && bridge.StartsWith("deja actif", StringComparison.OrdinalIgnoreCase))
+                return "deja active (service actuel + OpenSpy)";
+            return "a configurer (hosts: " + hosts + "; pont: " + bridge + ")";
         }
 
 
@@ -757,13 +790,15 @@ namespace HD2CommunityInstaller
                 string line = raw.Split('#')[0].Trim();
                 if (line.Length == 0) continue;
                 string[] fields = Regex.Split(line, @"\s+");
-                if (fields.Length < 2
-                    || !String.Equals(fields[0], AppConfig.MasterIp,
-                        StringComparison.OrdinalIgnoreCase)) continue;
+                if (fields.Length < 2) continue;
                 for (int index = 1; index < fields.Length; index++)
                     foreach (string alias in AppConfig.MasterAliases)
                         if (String.Equals(fields[index], alias,
-                            StringComparison.OrdinalIgnoreCase)) found.Add(alias);
+                                StringComparison.OrdinalIgnoreCase)
+                            && String.Equals(fields[0],
+                                AppConfig.ExpectedIpForMasterAlias(alias),
+                                StringComparison.OrdinalIgnoreCase))
+                            found.Add(alias);
             }
             return found.Count;
         }

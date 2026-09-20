@@ -14,6 +14,7 @@ if (-not (Test-Path -LiteralPath $csc)) {
 }
 
 & (Join-Path $projectRoot 'build-custom-mission-manager.ps1')
+& (Join-Path $projectRoot 'build-network-bridge.ps1')
 
 $build = Join-Path $projectRoot 'build'
 $dist = Join-Path $projectRoot 'dist'
@@ -25,6 +26,8 @@ $icon = Join-Path $projectRoot 'installer\assets\hd2-heritage-icon.ico'
 $widescreen = Join-Path $projectRoot 'installer\assets\HiddenandDangerous2.WidescreenFix.zip'
 $missionManager = Join-Path $projectRoot 'dist\HD2-Custom-Mission-Manager.exe'
 $missionManagerHash = Join-Path $build 'HD2-Custom-Mission-Manager.sha256'
+$masterBridge = Join-Path $build 'HD2-Master-Bridge.exe'
+$masterBridgeHash = Join-Path $build 'HD2-Master-Bridge.sha256'
 $customMissionReadme = Join-Path $projectRoot 'custom-missions\README.md'
 $customMissionSchema = Join-Path $projectRoot 'custom-missions\mission.schema.json'
 $customMissionTemplate = Join-Path $projectRoot 'custom-missions\_modele\mission.json'
@@ -44,6 +47,9 @@ foreach ($customMissionResource in @(
 $managerSha256 = (Get-FileHash -LiteralPath $missionManager -Algorithm SHA256).Hash
 [IO.File]::WriteAllText(
     $missionManagerHash, $managerSha256 + "`n", [Text.Encoding]::ASCII)
+$bridgeSha256 = (Get-FileHash -LiteralPath $masterBridge -Algorithm SHA256).Hash
+[IO.File]::WriteAllText(
+    $masterBridgeHash, $bridgeSha256 + "`n", [Text.Encoding]::ASCII)
 foreach ($pdf in @($guide, $report, $guideEn, $reportEn)) {
     if (-not (Test-Path -LiteralPath $pdf)) {
         throw "The final PDF must be generated before building the installer: $pdf"
@@ -83,6 +89,7 @@ $references = @(
     '/reference:System.Drawing.dll',
     '/reference:System.Windows.Forms.dll',
     '/reference:System.Management.dll',
+    '/reference:System.ServiceProcess.dll',
     '/reference:System.IO.Compression.dll',
     '/reference:System.IO.Compression.FileSystem.dll'
 )
@@ -95,6 +102,8 @@ $common = @('/nologo', '/utf8output', '/checked+', '/warn:4', '/platform:anycpu'
         "/resource:$widescreen,HD2CommunityInstaller.WidescreenFix.zip",
         "/resource:$missionManager,HD2CommunityInstaller.CustomMissionManager.exe",
         "/resource:$missionManagerHash,HD2CommunityInstaller.CustomMissionManager.sha256",
+        "/resource:$masterBridge,HD2CommunityInstaller.MasterBridge.exe",
+        "/resource:$masterBridgeHash,HD2CommunityInstaller.MasterBridge.sha256",
         "/resource:$customMissionReadme,HD2CommunityInstaller.CustomMissions.Readme",
         "/resource:$customMissionSchema,HD2CommunityInstaller.CustomMissions.Schema",
         "/resource:$customMissionTemplate,HD2CommunityInstaller.CustomMissions.TemplateManifest",

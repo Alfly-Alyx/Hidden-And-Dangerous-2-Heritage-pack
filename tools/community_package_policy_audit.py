@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audit the pinned, opt-in and non-embedded CMP integration policy."""
+"""Audit the official-source, synchronized and non-embedded CMP policy."""
 
 from __future__ import annotations
 
@@ -52,6 +52,9 @@ def audit(root: Path) -> dict[str, object]:
         f'public const string CmpCommit = "{EXPECTED["commit"]}";',
         'public const string CmpUrl = '
         '"https://codeload.github.com/ehylla93/had2-cmp/zip/" + CmpCommit;',
+        'public const string CmpLatestCommitUrl =',
+        '"https://api.github.com/repos/ehylla93/had2-cmp/commits/main";',
+        'public const string CmpCodeloadBaseUrl =',
         f'public const string CmpSha256 = "{EXPECTED["sha256"]}";',
         f'public const long CmpArchiveBytes = {EXPECTED["archive_bytes"]};',
         f'public const long CmpExpandedBytes = {EXPECTED["expanded_bytes"]};',
@@ -62,9 +65,12 @@ def audit(root: Path) -> dict[str, object]:
 
     integrity_markers = [
         "new FileInfo(path).Length",
-        "actualBytes != AppConfig.CmpArchiveBytes",
+        "actualBytes != descriptor.ExpectedBytes.Value",
+        "descriptor.ExpectedSha256",
         "ComputeSha256(path)",
-        f"archive.Entries.Count != {EXPECTED['entries']}",
+        f"descriptor.IsPinned && archive.Entries.Count != {EXPECTED['entries']}",
+        "archive.Entries.Count < 1000 || archive.Entries.Count > 100000",
+        "expandedBytes > 8L * 1024 * 1024 * 1024",
         "CmpRoots.Contains(top)",
         'piece == "." || piece == ".."',
         "relative.IndexOf(':') >= 0",
@@ -73,16 +79,18 @@ def audit(root: Path) -> dict[str, object]:
         'String.Equals(top, "cmp_optional"',
         "foundMapList",
         "mapCount < 100",
+        "DetectVersion(files)",
+        "RecordCmpPackage(",
     ]
     missing = missing_markers(installer, integrity_markers)
     if missing:
         errors.append("CMP integrity/structure guard missing: " + ", ".join(missing))
 
     option_markers = [
-        'cmp.Text = "Installer CMP 2.6.5',
+        'cmp.Text = "Installer ou mettre a jour le CMP officiel',
         "cmp.Checked = true;",
         "InstallCmp = cmp.Checked",
-        '"CMP 2.6.5 :", "deja installee"',
+        '"CMP officiel :", "deja installee"',
     ]
     missing = missing_markers(main_form, option_markers)
     if missing:
@@ -114,6 +122,8 @@ def audit(root: Path) -> dict[str, object]:
     policy_markers = [
         EXPECTED["commit"],
         EXPECTED["sha256"],
+        "dernière révision",
+        "empreinte réellement installée",
         "aucune licence",
         "aucune donnée CMP n'est incorporée",
         "=RpR=",
@@ -130,9 +140,10 @@ def audit(root: Path) -> dict[str, object]:
         "ok": not errors,
         "cmp_version": EXPECTED["version"],
         "cmp_commit": EXPECTED["commit"],
-        "download_on_demand": "client.DownloadFile(new Uri(AppConfig.CmpUrl)" in installer,
-        "exact_size_required": "actualBytes != AppConfig.CmpArchiveBytes" in installer,
-        "sha256_required": "VerifySha256(package, AppConfig.CmpSha256)" in installer,
+        "download_on_demand": "client.DownloadFile(new Uri(descriptor.Url)" in installer,
+        "latest_commit_checked": "CmpLatestCommitUrl" in installer,
+        "baseline_exact_size_required": "actualBytes != descriptor.ExpectedBytes.Value" in installer,
+        "baseline_sha256_required": "descriptor.ExpectedSha256" in installer,
         "archive_entries_required": int(EXPECTED["entries"]),
         "opt_in_checkbox": "InstallCmp = cmp.Checked" in main_form,
         "embedded_cmp_archives": embedded_archives,

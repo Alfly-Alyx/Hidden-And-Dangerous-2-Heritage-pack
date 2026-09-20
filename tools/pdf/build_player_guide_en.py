@@ -10,10 +10,10 @@ def build_player_en():
     s = []
     cover(
         s,
-        "Player guide - Edition 0.7.6",
+        "Player guide - Edition 0.8.0",
         "Secrets and<br/>easter eggs",
         "Seven hidden sequences, their conditions, and the secret places used to reach them.",
-        "Hidden &amp; Dangerous 2: Sabre Squadron 1.12<br/>Practical guide in English - 16 September 2026",
+        "Hidden &amp; Dangerous 2: Sabre Squadron 1.12<br/>Practical guide in English - 20 September 2026",
     )
 
     section(
@@ -25,7 +25,7 @@ def build_player_en():
     s.append(
         info_box(
             "Recommended pack",
-            "Install H&amp;D2 Heritage Pack 0.7.6 and keep the official easter egg option selected. "
+            "Install H&amp;D2 Heritage Pack 0.8.0 and keep the official easter egg option selected. "
             "It restores the Africa 1 and Africa 4 surprises that update 1.12 disabled.",
         )
     )
@@ -78,7 +78,7 @@ def build_player_en():
         info_box(
             "Important under version 1.12",
             "Update 1.12 normally prevents climbing onto vehicles. The secret and gold bar still exist, "
-            "but the historical route may remain inaccessible. Heritage Pack 0.7.6 does not move the bar, "
+            "but the historical route may remain inaccessible. Heritage Pack 0.8.0 does not move the bar, "
             "because that would invent a new hiding place.",
             colors.HexColor("#FFF1DD"),
         )

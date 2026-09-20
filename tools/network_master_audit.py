@@ -10,8 +10,12 @@ import json
 import socket
 from pathlib import Path
 
+import gamespy_enctypex
+
 
 EXPECTED_IP = "78.47.255.224"
+OPENSPY_IP = "134.122.16.249"
+LOCAL_BRIDGE_IP = "127.0.0.1"
 EXPECTED_PORT = 28910
 ALIASES = (
     "hd2.available.gamespy.com",
@@ -88,12 +92,32 @@ def protocol_probe(host: str, port: int, timeout: float) -> dict[str, object]:
     key_material_length: int | None = None
     encrypted_payload_offset: int | None = None
     header_layout_valid = False
+    decoded_server_count: int | None = None
+    codec_roundtrip = False
     if response:
         header_length = (response[0] ^ 0xEC) + 2
         if 2 <= header_length <= len(response):
             key_material_length = response[header_length - 1] ^ 0xEA
             encrypted_payload_offset = header_length + key_material_length
             header_layout_valid = encrypted_payload_offset <= len(response)
+    if header_layout_valid:
+        try:
+            clear = gamespy_enctypex.decrypt(
+                bytes(response), b"sK8pQ9", QUERY_VALIDATE
+            )
+            _, _, servers = gamespy_enctypex.parse_server_list(clear)
+            decoded_server_count = len(servers)
+            rebuilt = gamespy_enctypex.build_endpoint_response(
+                clear, ((server.host, server.port) for server in servers)
+            )
+            encrypted = gamespy_enctypex.encrypt_with_header(
+                bytes(response), rebuilt, b"sK8pQ9", QUERY_VALIDATE
+            )
+            codec_roundtrip = gamespy_enctypex.decrypt(
+                encrypted, b"sK8pQ9", QUERY_VALIDATE
+            ) == rebuilt
+        except ValueError as decode_error:
+            error = str(decode_error)
 
     return {
         "responded": bool(response),
@@ -108,7 +132,8 @@ def protocol_probe(host: str, port: int, timeout: float) -> dict[str, object]:
         "enctypex_key_material_length": key_material_length,
         "encrypted_payload_offset": encrypted_payload_offset,
         "header_layout_valid": header_layout_valid,
-        "decoded_server_count": None,
+        "decoded_server_count": decoded_server_count,
+        "codec_roundtrip": codec_roundtrip,
         "error": error,
     }
 
@@ -116,10 +141,14 @@ def protocol_probe(host: str, port: int, timeout: float) -> dict[str, object]:
 def audit(root: Path, timeout: float) -> dict[str, object]:
     config_path = root / "installer" / "Config.cs"
     core_path = root / "installer" / "InstallerCore.cs"
+    bridge_installer_path = root / "installer" / "MasterBridgeInstaller.cs"
+    bridge_source_path = root / "network-bridge" / "BridgeHost.cs"
     errors: list[str] = []
     try:
         config = config_path.read_text(encoding="utf-8-sig")
         core = core_path.read_text(encoding="utf-8-sig")
+        bridge_installer = bridge_installer_path.read_text(encoding="utf-8-sig")
+        bridge_source = bridge_source_path.read_text(encoding="utf-8-sig")
     except OSError as error:
         return {
             "ok": False,
@@ -129,6 +158,9 @@ def audit(root: Path, timeout: float) -> dict[str, object]:
 
     config_markers = [
         f'public const string MasterIp = "{EXPECTED_IP}";',
+        f'public const string OpenSpyMasterIp = "{OPENSPY_IP}";',
+        f'public const string LocalMasterIp = "{LOCAL_BRIDGE_IP}";',
+        "ExpectedIpForMasterAlias",
         *(f'"{alias}"' for alias in ALIASES),
     ]
     missing_config = [
@@ -141,65 +173,95 @@ def audit(root: Path, timeout: float) -> dict[str, object]:
         )
     core_markers = [
         "ConfigureMasterServer",
-        "DescribeHosts",
-        f"CanConnect(AppConfig.MasterIp, {EXPECTED_PORT}, 3000)",
+        "DescribeInternetFusion",
+        "MasterBridgeInstaller.Install(journal, progress)",
+        "CanConnect(AppConfig.MasterIp, AppConfig.MasterPort, 3000)",
+        "CanConnect(AppConfig.OpenSpyMasterIp, AppConfig.MasterPort, 3000)",
     ]
     missing_core = [marker for marker in core_markers if marker not in core]
     if missing_core:
         errors.append(
             "Installer master wiring changed: " + ", ".join(missing_core)
         )
+    bridge_markers = [
+        '"78.47.255.224"',
+        '"134.122.16.249"',
+        "BuildMergedList",
+        "HashSet<ServerEndpoint>",
+        "IPAddress.Loopback",
+    ]
+    missing_bridge = [
+        marker for marker in bridge_markers if marker not in bridge_source
+    ]
+    if "HD2CommunityInstaller.MasterBridge.exe" not in bridge_installer:
+        missing_bridge.append("embedded bridge installer resource")
+    if missing_bridge:
+        errors.append("Local master bridge wiring changed: " + ", ".join(missing_bridge))
 
     aliases: dict[str, object] = {}
     for alias in ALIASES:
         addresses, resolution_error = resolved_ipv4(alias)
-        expected = EXPECTED_IP in addresses
+        expected = any(
+            address in (EXPECTED_IP, LOCAL_BRIDGE_IP) for address in addresses
+        )
         aliases[alias] = {
             "ipv4": addresses,
-            "expected_ip_effective": expected,
+            "expected_endpoint_effective": expected,
             "error": resolution_error,
         }
         if resolution_error:
             errors.append(f"{alias}: {resolution_error}")
         elif not expected:
             errors.append(
-                f"{alias}: resolves to {addresses}, expected {EXPECTED_IP}"
+                f"{alias}: resolves to {addresses}, expected {EXPECTED_IP} "
+                f"or installed bridge {LOCAL_BRIDGE_IP}"
             )
 
-    tcp = tcp_probe(EXPECTED_IP, EXPECTED_PORT, timeout)
-    if not tcp["reachable"]:
-        errors.append(
-            f"{EXPECTED_IP}:{EXPECTED_PORT}: {tcp['error']}"
+    masters: dict[str, object] = {}
+    for name, host in (("community", EXPECTED_IP), ("openspy", OPENSPY_IP)):
+        tcp = tcp_probe(host, EXPECTED_PORT, timeout)
+        protocol = protocol_probe(host, EXPECTED_PORT, timeout)
+        protocol_valid = bool(
+            protocol["responded"]
+            and protocol["header_layout_valid"]
+            and protocol["codec_roundtrip"]
         )
-
-    protocol = protocol_probe(ALIASES[-1], EXPECTED_PORT, timeout)
-    protocol_valid = (
-        protocol["responded"] and protocol["header_layout_valid"]
-    )
-    if not protocol_valid:
-        errors.append(
-            "The master accepted TCP but did not return a structurally valid "
-            f"H&D2 EncTypeX response: {protocol['error'] or 'no response'}"
-        )
+        masters[name] = {
+            "host": host,
+            "tcp": tcp,
+            "hd2_master_query": protocol,
+            "protocol_valid": protocol_valid,
+        }
+        if not tcp["reachable"]:
+            errors.append(f"{host}:{EXPECTED_PORT}: {tcp['error']}")
+        if not protocol_valid:
+            errors.append(
+                f"{name} did not return a decodable H&D2 EnctypeX response: "
+                f"{protocol['error'] or 'no response'}"
+            )
 
     return {
         "ok": not errors,
         "checked_at_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
-        "expected_master": f"{EXPECTED_IP}:{EXPECTED_PORT}",
+        "expected_masters": {
+            "community": f"{EXPECTED_IP}:{EXPECTED_PORT}",
+            "openspy": f"{OPENSPY_IP}:{EXPECTED_PORT}",
+        },
         "installer_configuration": {
             "ip_and_aliases": not missing_config,
-            "hosts_and_tcp_wiring": not missing_core,
+            "hosts_and_tcp_wiring": not missing_core and not missing_bridge,
         },
         "aliases": aliases,
-        "tcp": tcp,
-        "hd2_master_query": protocol,
-        "master_protocol_response_validated": protocol_valid,
+        "masters": masters,
+        "master_protocol_response_validated": all(
+            item["protocol_valid"] for item in masters.values()
+        ),
         "in_game_server_list_validated": False,
         "in_game_note": (
-            "The audit sends the historical 146-byte H&D2 query and verifies "
-            "the encrypted response envelope only. Decrypting the current "
-            "server rows, displaying them in game and joining one still "
-            "require runtime validation."
+            "The audit sends the historical 146-byte H&D2 query to both "
+            "services, decodes every current server row and verifies a "
+            "decrypt/re-encrypt roundtrip. Displaying the merged response "
+            "in game and joining one still require runtime validation."
         ),
         "errors": errors,
     }

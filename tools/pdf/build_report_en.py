@@ -9,10 +9,10 @@ def build_report_en():
     s = []
     cover(
         s,
-        "Game archaeology dossier - Revision 0.7.6",
+        "Game archaeology dossier - Revision 0.8.0",
         "Discovery<br/>report",
         "Cut content, internal variants, fragile objectives, routes, weapons, vehicles, and restoration feasibility.",
-        "Commercial 1.12 installation + Sabre Squadron<br/>Local research and period sources - 16 September 2026",
+        "Commercial 1.12 installation + Sabre Squadron<br/>Local research and period sources - 20 September 2026",
     )
 
     section(s, "00", "Executive summary")
@@ -32,7 +32,7 @@ def build_report_en():
             [
                 "All 33 declared solo missions were found. No complete final campaign is merely hidden from the menu.",
                 "82 readable official mission trees contain 104,405 boundary surfaces and 561 named border objects that can be neutralised.",
-                "CMP 2.6.5 is pinned to 23,600 archive entries, 23,277 installable files, and 156 map entries.",
+                "CMP is synchronized from its official repository; the 2.6.5 reference contains 23,600 archive entries, 23,277 installable files, and 156 map entries.",
                 "All 47 commercial multiplayer folders and both prototypes are declared after installation.",
                 "The 25 scripted multiplayer variants contain 203 bindings and 183 available scripts. Their twelve loose scripts have been classified.",
                 "Update 1.12 explicitly disables the Africa 1 and Africa 4 easter egg branches while leaving their scenes intact.",
@@ -60,18 +60,20 @@ def build_report_en():
     section(s, "01", "Online play and the community collection")
     s.append(
         P(
-            "RpR still publishes a replacement master server, a GameSpy redirection procedure, active servers, "
-            "and CMP 2.6.5 in 2026. A TCP probe of the master server on port 28910 succeeds."
+            "Both the established H&D2 master and OpenSpy answer the game's historical request on port 28910. "
+            "The Heritage Pack combines their replies in a local bridge, removes duplicates, and returns one encrypted list to H&D2. "
+            "On 20 September 2026, the established service listed 11 servers while OpenSpy returned an empty but valid list."
         )
     )
     s.append(
         table(
             [
                 ["Component", "Finding", "Status"],
-                ["GameSpy resolution", "Three retired host names redirect to 78.47.255.224", "Automated"],
+                ["GameSpy resolution", "Availability and reporting use the existing service; browser uses 127.0.0.1", "Automated"],
+                ["List sources", "Established H&D2 service plus OpenSpy, merged and deduplicated", "Two services"],
                 ["DirectPlay", "Required for networking on current Windows systems", "Checked"],
                 ["Internet list", "Infrastructure is present; the real in-game display still needs a human test", "Manual test"],
-                ["CMP 2.6.5", "Archive locked by exact size and SHA-256", "Integrated"],
+                ["Official CMP", "Latest commit checked; 2.6.5 reference locked", "Synchronized"],
                 ["2026 servers", "RpR publishes several ports and modes", "Public"],
             ],
             [36 * mm, 86 * mm, 46 * mm],
@@ -94,6 +96,7 @@ def build_report_en():
     s.append(P("Sources", "h2"))
     s.append(P('<link href="https://www.rprclan.com/hd2/play-online">RpR - Play Online</link>', "source"))
     s.append(P('<link href="https://rprclan.com/">RpR - servers and CMP announced in 2026</link>', "source"))
+    s.append(P('<link href="https://github.com/openspy">OpenSpy project</link>', "source"))
     s.append(P('<link href="https://github.com/ehylla93/had2-cmp/">had2-cmp repository</link>', "source"))
     s.append(PageBreak())
 
@@ -218,7 +221,7 @@ def build_report_en():
     )
     s.append(
         info_box(
-            "0.7.6 decision",
+            "0.8.0 decision",
             "Restore Africa 1 and Africa 4 through loose trigger overrides. Leave the five secrets that already work untouched. "
             "Keep the Tutorial under study until a 1.12 solution preserves the original hiding place.",
         )
@@ -439,7 +442,7 @@ def build_report_en():
                 ["Prototypes", "ENGLAND and CASTLE1/2 classified", "CASTLE2 demonstration with objective 5"],
                 ["Weapons", "Benelli prioritised; flamethrowers correctly diagnosed", "Separate additive prototype, then new models and behaviour"],
                 ["Aircraft", "Exact models located", "Choose one aircraft and build a test bench"],
-                ["Community", "CMP 2.6.5 integrated", "Review further packages one by one for licences and conflicts"],
+                ["Community", "Official CMP synchronized", "Review further packages one by one for licences and conflicts"],
             ],
             [42 * mm, 63 * mm, 63 * mm],
         )
@@ -465,6 +468,7 @@ def build_report_en():
     sources = [
         ("RpR - online play and GameSpy redirection", "https://www.rprclan.com/hd2/play-online"),
         ("RpR - active servers and CMP 2.6.5", "https://rprclan.com/"),
+        ("OpenSpy project - second list service", "https://github.com/openspy"),
         ("had2-cmp repository", "https://github.com/ehylla93/had2-cmp/"),
         ("GameSpot - pre-production interview", "https://www.gamespot.com/articles/hidden-and-dangerous-2-qanda/1100-2713950/"),
         ("Gameswelt - interview of 9 March 2001", "https://www.gameswelt.de/hidden-dangerous-2/news/interview-mit-dem-chef-designer-61828"),

@@ -23,18 +23,19 @@ namespace HD2CommunityInstaller
 
         public static string ValidateOnly()
         {
-            const string prefix = "Serveurs Internet communautaires :";
-            if (!HasStatus(prefix + " configuree", prefix, "configuree"))
+            const string prefix = "Fusion des listes Internet :";
+            if (!HasStatus(prefix + " deja active (service actuel + OpenSpy)",
+                    prefix, "deja active"))
                 throw new InvalidOperationException(
                     "La detection refuse un etat Internet configure.");
-            if (HasStatus(prefix + " non configuree", prefix, "configuree"))
+            if (HasStatus(prefix + " a configurer", prefix, "deja active"))
                 throw new InvalidOperationException(
                     "La detection confond configuree et non configuree.");
-            if (HasStatus(prefix + " partielle (1/3)", prefix, "configuree"))
+            if (HasStatus(prefix + " partiellement active", prefix, "deja active"))
                 throw new InvalidOperationException(
                     "La detection confond configuree et partielle.");
-            if (!HasStatus("CMP 2.6.5 : deja installee (156 cartes)",
-                "CMP 2.6.5 :", "deja installee"))
+            if (!HasStatus("CMP officiel : deja installee (version 2.6.5, 156 cartes)",
+                "CMP officiel :", "deja installee"))
                 throw new InvalidOperationException(
                     "La detection refuse un etat actif suivi de details.");
             if (!HasStatus("Deblocage des missions : deja actif (profil Alfly)",
@@ -44,7 +45,7 @@ namespace HD2CommunityInstaller
             string hosts = "# BEGIN HD2 Community MasterList\r\n"
                 + "78.47.255.224 hd2.available.gamespy.com\r\n"
                 + "78.47.255.224 hd2.master.gamespy.com\r\n"
-                + "78.47.255.224 hd2.ms14.gamespy.com\r\n"
+                + "127.0.0.1 hd2.ms14.gamespy.com\r\n"
                 + "# END HD2 Community MasterList\r\n";
             if (InstallerCore.CountConfiguredMasterAliases(hosts)
                 != AppConfig.MasterAliases.Length)

@@ -54,7 +54,13 @@ def hosts_state(path: Path) -> dict[str, object]:
     except OSError as hosts_error:
         error = str(hosts_error)
     exact = {
-        alias: addresses == [network_master_audit.EXPECTED_IP]
+        alias: addresses == [
+            (
+                network_master_audit.LOCAL_BRIDGE_IP
+                if alias == "hd2.ms14.gamespy.com"
+                else network_master_audit.EXPECTED_IP
+            )
+        ]
         for alias, addresses in mappings.items()
     }
     return {
@@ -190,6 +196,11 @@ def default_hosts_path() -> Path:
 
 def audit(root: Path, game: Path, hosts: Path, timeout: float) -> dict[str, object]:
     master = network_master_audit.audit(root, timeout)
+    local_bridge = network_master_audit.protocol_probe(
+        network_master_audit.LOCAL_BRIDGE_IP,
+        network_master_audit.EXPECTED_PORT,
+        timeout,
+    )
     local_hosts = hosts_state(hosts)
     widescreen = widescreen_state(game)
     widescreen_sync = widescreen_source_sync(root)
@@ -203,6 +214,11 @@ def audit(root: Path, game: Path, hosts: Path, timeout: float) -> dict[str, obje
         "widescreen": widescreen["all_exact"],
         "widescreen_manifest_sync": widescreen_sync["synchronized"],
         "master": master["ok"],
+        "local_bridge": bool(
+            local_bridge["responded"]
+            and local_bridge["header_layout_valid"]
+            and local_bridge["codec_roundtrip"]
+        ),
         "seven_public_servers": servers["all_valid"],
     }
     return {
@@ -214,6 +230,7 @@ def audit(root: Path, game: Path, hosts: Path, timeout: float) -> dict[str, obje
         "widescreen": widescreen,
         "widescreen_manifest_sync": widescreen_sync,
         "master": master,
+        "local_bridge": local_bridge,
         "public_servers": servers,
         "ready_for_visual_game_test": all(prerequisites.values()),
         "in_game_server_list_validated": False,

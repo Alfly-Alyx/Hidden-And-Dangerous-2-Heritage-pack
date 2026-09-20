@@ -6,9 +6,9 @@ def build_report():
     path = OUT / "HD2-Rapport-des-Decouvertes.pdf"
     doc = HD2Doc(str(path), "HD2 - Rapport des découvertes")
     s = []
-    cover(s, "Dossier d'archéologie - Révision 0.7.6", "Rapport des<br/>découvertes",
+    cover(s, "Dossier d'archéologie - Révision 0.8.0", "Rapport des<br/>découvertes",
           "Contenu coupé, variantes internes, objectifs fragiles, routes, armes, véhicules et faisabilité de restauration.",
-          "Installation commerciale 1.12 + Sabre Squadron<br/>Recherche locale et sources d'époque - 15 septembre 2026")
+          "Installation commerciale 1.12 + Sabre Squadron<br/>Recherche locale et sources d'époque - 20 septembre 2026")
 
     section(s,"00","Synthèse")
     s.append(info_box("Conclusion centrale",
@@ -19,7 +19,7 @@ def build_report():
     s.append(bullet([
         "33 missions solo déclarées et retrouvées : aucune campagne finale complète n'est simplement oubliée.",
         "82 arbres officiels lisibles ; 104 405 surfaces de zone et 561 objets border neutralisables.",
-        "CMP 2.6.5 figée : 23 600 entrées, 23 277 fichiers et 156 entrées de cartes.",
+        "CMP synchronisée depuis le dépôt officiel ; la référence 2.6.5 conserve 23 600 entrées, 23 277 fichiers et 156 entrées de cartes.",
         "Les 47 dossiers multijoueurs commerciaux et les deux prototypes sont tous déclarés après installation.",
         "Les 25 variantes multijoueurs scriptées totalisent 203 liaisons et 183 scripts disponibles ; leurs douze scripts libres ont été classés.",
         "Africa 1 et Africa 4 sont explicitement neutralisés par la mise à jour 1.12 alors que leurs scènes restent complètes.",
@@ -38,13 +38,14 @@ def build_report():
     s.append(PageBreak())
 
     section(s,"01","Jeu en ligne et collection communautaire")
-    s.append(P("RpR publie encore en 2026 un serveur maître, une procédure GameSpy de remplacement, des serveurs actifs et CMP 2.6.5. Le contrôle TCP du serveur maître sur le port 28910 réussit."))
+    s.append(P("Le service maître H&D2 déjà utilisé et OpenSpy répondent tous deux à la requête historique du jeu sur le port 28910. Le Heritage Pack réunit leurs réponses dans un pont local, retire les doublons et renvoie une seule liste chiffrée à H&D2. Au contrôle du 20 septembre 2026, le premier service annonçait 11 serveurs et OpenSpy une liste vide mais valide."))
     s.append(table([
         ["Élément","Constat","Statut"],
-        ["Résolution GameSpy","Trois anciens noms redirigés vers 78.47.255.224","Automatisé"],
+        ["Résolution GameSpy","Disponibilité et annonce vers le service existant ; navigateur vers 127.0.0.1","Automatisé"],
+        ["Sources de la liste","Service H&D2 existant + OpenSpy, fusionnés et dédoublonnés","Deux services"],
         ["DirectPlay","Requis sur Windows moderne pour le réseau","Contrôlé"],
         ["Liste Internet","Infrastructure présente ; affichage réel à tester dans le jeu","Test humain requis"],
-        ["CMP 2.6.5","Archive verrouillée par taille et SHA-256","Intégrée au flux"],
+        ["CMP officiel","Dernier commit vérifié ; référence 2.6.5 verrouillée","Synchronisé"],
         ["Serveurs 2026","Plusieurs ports et modes publiés par RpR","Publics"]
     ],[36*mm,86*mm,46*mm]))
     s.append(P("CMP auditée","h2"))
@@ -59,6 +60,7 @@ def build_report():
     s.append(P("Sources","h2"))
     s.append(P('<link href="https://www.rprclan.com/hd2/play-online">RpR - Play Online</link>',"source"))
     s.append(P('<link href="https://rprclan.com/">RpR - serveurs et CMP annoncés en 2026</link>',"source"))
+    s.append(P('<link href="https://github.com/openspy">Projet OpenSpy</link>',"source"))
     s.append(P('<link href="https://github.com/ehylla93/had2-cmp/">Dépôt had2-cmp</link>',"source"))
     s.append(PageBreak())
 
@@ -111,7 +113,7 @@ def build_report():
     s.append(P("Les clés A, B et C sont les objets 240, 241 et 242. Lorsqu'elles sont toutes à moins de trois mètres, le script d'origine active une valeur persistante et la scène meteor01. La mise à jour 1.12 neutralise uniquement le branchement. Les modèles, trajectoires et particules restent en place."))
     s.append(P("Africa 1 - seconde neutralisation confirmée","h2"))
     s.append(P("La comparaison de versions montre que le patch 1.12 force à zéro une condition nécessaire aux quatre morts de la mise en scène du jeep. Les trois invités, l'armure rouge, le portail de feu et la caméra sont toujours liés à la mission."))
-    s.append(info_box("Décision 0.7.6",
+    s.append(info_box("Décision 0.8.0",
         "Restaurer Africa 1 et Africa 4 avec une surcharge de leurs déclencheurs. Ne pas modifier les cinq secrets qui fonctionnent déjà. Le Tutorial reste en étude pour une solution 1.12 qui ne déplace pas arbitrairement le lingot."))
     s.append(PageBreak())
 
@@ -239,7 +241,7 @@ def build_report():
         ["Prototypes","ENGLAND et CASTLE1/2 classés","Démonstration CASTLE2 avec objectif 5"],
         ["Armes","Benelli priorisé ; lance-flammes correctement diagnostiqués","Prototype additif séparé, puis modèles et comportements nouveaux"],
         ["Aéronefs","Modèles exacts retrouvés","Choisir un appareil et construire un banc d'essai"],
-        ["Communauté","CMP 2.6.5 intégrée","Évaluer d'autres paquets un par un avec licences et conflits"]
+        ["Communauté","CMP officielle synchronisée","Évaluer d'autres paquets un par un avec licences et conflits"]
     ],[42*mm,63*mm,63*mm]))
     s.append(Spacer(1,4*mm))
     s.append(P("Ordre de travail recommandé","h2"))
@@ -258,6 +260,7 @@ def build_report():
     sources = [
         ("RpR - jouer en ligne et redirection GameSpy","https://www.rprclan.com/hd2/play-online"),
         ("RpR - serveurs actifs et CMP 2.6.5","https://rprclan.com/"),
+        ("Projet OpenSpy - second service de liste","https://github.com/openspy"),
         ("Dépôt had2-cmp","https://github.com/ehylla93/had2-cmp/"),
         ("GameSpot - entretien de préproduction","https://www.gamespot.com/articles/hidden-and-dangerous-2-qanda/1100-2713950/"),
         ("Gameswelt - entretien du 9 mars 2001","https://www.gameswelt.de/hidden-dangerous-2/news/interview-mit-dem-chef-designer-61828"),

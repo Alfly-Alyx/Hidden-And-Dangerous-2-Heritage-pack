@@ -58,7 +58,7 @@ namespace HD2CommunityInstaller
             browse.Size = new Size(90, 28);
             browse.Click += BrowseClick;
 
-            master.Text = "Retablir la liste des serveurs Internet communautaires";
+            master.Text = "Fusionner la liste du service actuel avec OpenSpy";
             master.Checked = true;
             master.AutoSize = true;
             master.Location = new Point(29, 160);
@@ -66,7 +66,7 @@ namespace HD2CommunityInstaller
             directPlay.Checked = true;
             directPlay.AutoSize = true;
             directPlay.Location = new Point(29, 188);
-            cmp.Text = "Installer CMP 2.6.5 (156 missions cooperatives communautaires)";
+            cmp.Text = "Installer ou mettre a jour le CMP officiel (156+ missions cooperatives)";
             cmp.Checked = true;
             cmp.AutoSize = true;
             cmp.Location = new Point(29, 216);
@@ -171,6 +171,7 @@ namespace HD2CommunityInstaller
             SetBusy(true);
             bar.Value = 0;
             log.Clear();
+            bool installed = false;
             InstallOptions options = new InstallOptions {
                 GamePath = gamePath.Text,
                 ConfigureMasterServer = master.Checked,
@@ -199,6 +200,7 @@ namespace HD2CommunityInstaller
                 });
                 MessageBox.Show(this, "Installation terminee.",
                     AppConfig.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                installed = true;
             }
             catch (Exception ex)
             {
@@ -207,6 +209,7 @@ namespace HD2CommunityInstaller
                     AppConfig.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally { SetBusy(false); }
+            if (installed) RunDiagnostic();
         }
 
         private async void RestoreClick(object sender, EventArgs e)
@@ -273,11 +276,11 @@ namespace HD2CommunityInstaller
         private void ApplyDetectedState(string diagnostic)
         {
             master.Checked = !DiagnosticStatusMatcher.HasStatus(
-                diagnostic, "Serveurs Internet communautaires :", "configuree");
+                diagnostic, "Fusion des listes Internet :", "deja active");
             directPlay.Checked = !DiagnosticStatusMatcher.HasStatus(
                 diagnostic, "DirectPlay :", "deja actif");
             cmp.Checked = !DiagnosticStatusMatcher.HasStatus(
-                diagnostic, "CMP 2.6.5 :", "deja installee");
+                diagnostic, "CMP officiel :", "deja installee");
             exploration.Checked = !DiagnosticStatusMatcher.HasStatus(
                 diagnostic, "Exploration libre :", "deja active");
             objectives.Checked = !DiagnosticStatusMatcher.HasStatus(

@@ -25,7 +25,12 @@ namespace HD2CommunityInstaller
         public string GamePath;
         public string BackupRoot;
         public bool HostsChanged;
+        public bool NetworkBridgeInstalled;
         public bool DirectPlayEnabledByInstaller;
+        public string CmpVersion;
+        public string CmpCommit;
+        public string CmpSha256;
+        public long CmpArchiveBytes;
         public byte[] OriginalGraphics;
         public byte[] InstalledGraphics;
         public string GraphicsProfile;
@@ -52,8 +57,20 @@ namespace HD2CommunityInstaller
                     state.BackupRoot = Decode(fields[1]);
                 else if (fields[0] == "HOSTS")
                     state.HostsChanged = fields[1] == "1";
+                else if (fields[0] == "NETWORK_BRIDGE")
+                    state.NetworkBridgeInstalled = fields[1] == "1";
                 else if (fields[0] == "DIRECTPLAY")
                     state.DirectPlayEnabledByInstaller = fields[1] == "1";
+                else if (fields[0] == "CMP" && fields.Length >= 3)
+                {
+                    state.CmpVersion = fields[1];
+                    state.CmpCommit = fields[2];
+                    if (fields.Length >= 4) state.CmpSha256 = fields[3];
+                    long archiveBytes;
+                    if (fields.Length >= 5
+                        && Int64.TryParse(fields[4], out archiveBytes))
+                        state.CmpArchiveBytes = archiveBytes;
+                }
                 else if (fields[0] == "GRAPHICS" && fields.Length >= 4)
                 {
                     if (state.OriginalGraphics == null)
@@ -154,7 +171,6 @@ namespace HD2CommunityInstaller
             writer.WriteLine("FORMAT\t1");
             writer.WriteLine("GAME\t" + InstallState.Encode(state.GamePath));
             writer.WriteLine("BACKUP\t" + InstallState.Encode(state.BackupRoot));
-            writer.WriteLine("CMP\t" + AppConfig.CmpVersion + "\t" + AppConfig.CmpCommit);
             return new StateJournal(writer, state);
         }
 
@@ -219,6 +235,24 @@ namespace HD2CommunityInstaller
         {
             writer.WriteLine("HOSTS\t1");
             State.HostsChanged = true;
+        }
+
+        public void RecordNetworkBridgeInstalled()
+        {
+            if (State.NetworkBridgeInstalled) return;
+            writer.WriteLine("NETWORK_BRIDGE\t1");
+            State.NetworkBridgeInstalled = true;
+        }
+
+        public void RecordCmpPackage(
+            string version, string commit, string sha256, long archiveBytes)
+        {
+            writer.WriteLine("CMP\t" + version + "\t" + commit + "\t"
+                + sha256 + "\t" + archiveBytes);
+            State.CmpVersion = version;
+            State.CmpCommit = commit;
+            State.CmpSha256 = sha256;
+            State.CmpArchiveBytes = archiveBytes;
         }
 
         public void RecordDirectPlayEnabled()

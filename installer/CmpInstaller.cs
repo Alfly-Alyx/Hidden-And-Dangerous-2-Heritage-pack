@@ -16,16 +16,49 @@ namespace HD2CommunityInstaller
         public string TargetPath;
     }
 
+    internal sealed class CmpPackageDescriptor
+    {
+        public string Commit;
+        public string Url;
+        public string ExpectedSha256;
+        public long? ExpectedBytes;
+
+        public bool IsPinned
+        {
+            get { return !String.IsNullOrWhiteSpace(ExpectedSha256); }
+        }
+
+        public static CmpPackageDescriptor Pinned()
+        {
+            return new CmpPackageDescriptor {
+                Commit = AppConfig.CmpCommit,
+                Url = AppConfig.CmpUrl,
+                ExpectedSha256 = AppConfig.CmpSha256,
+                ExpectedBytes = AppConfig.CmpArchiveBytes
+            };
+        }
+    }
+
+    internal sealed class CmpInstallResult
+    {
+        public string Version;
+        public int MapCount;
+        public int FileCount;
+    }
+
     internal static class CmpInstaller
     {
         public static string ValidateOnly(string archivePath, string gamePath)
         {
             InstallerCore.ValidateGamePath(gamePath);
-            VerifySha256(archivePath, AppConfig.CmpSha256);
+            CmpPackageDescriptor descriptor = CmpPackageDescriptor.Pinned();
+            VerifyPackageFile(archivePath, descriptor);
             Encoding ansi = Encoding.GetEncoding(1252);
             using (ZipArchive archive = ZipFile.OpenRead(archivePath))
             {
-                List<PackageFile> files = ValidatePackage(archive, gamePath);
+                string version;
+                List<PackageFile> files = ValidatePackage(
+                    archive, gamePath, descriptor, out version);
                 ZipArchiveEntry mapEntry = null;
                 foreach (PackageFile file in files)
                     if (String.Equals(file.RelativePath, "cmp_info/cmp_Maplist.txt",
@@ -68,7 +101,7 @@ namespace HD2CommunityInstaller
                 if (testedFlags == 0)
                     throw new InvalidDataException(
                         "Aucune limite de zone testable trouvee dans le CMP.");
-                return "Archive CMP valide: " + archive.Entries.Count
+                return "Archive CMP " + version + " valide: " + archive.Entries.Count
                     + " entrees, " + files.Count + " fichiers installables, "
                     + maps + " cartes, 2 vestiges actifs, test exploration "
                     + testedFlags + " limites neutralisees.";
@@ -80,27 +113,43 @@ namespace HD2CommunityInstaller
             Action<string> progress, Action<int> percent)
         {
             EnsureSpace(options.GamePath, options.PackageOverride);
+            CmpPackageDescriptor descriptor = ResolvePackage(
+                options.PackageOverride, progress);
             InstallerCore.Report(progress,
-                "Preparation du Community Map Package " + AppConfig.CmpVersion + "...");
-            string package = Acquire(options.PackageOverride, progress, percent);
-            InstallerCore.Report(progress, "Verification SHA-256 du paquet...");
-            VerifySha256(package, AppConfig.CmpSha256);
+                "Preparation du Community Map Package officiel (commit "
+                + ShortCommit(descriptor.Commit) + ")...");
+            string package = Acquire(
+                options.PackageOverride, descriptor, progress, percent);
+            InstallerCore.Report(progress,
+                "Verification de l'archive et calcul de son empreinte SHA-256...");
+            VerifyPackageFile(package, descriptor);
+            string packageHash = ComputeSha256(package);
+            long packageBytes = new FileInfo(package).Length;
             InstallerCore.SetPercent(percent, 35);
-            InstallArchive(package, options.GamePath, journal, prepared,
-                options.FreeExploration, progress, percent);
+            CmpInstallResult installed = InstallArchive(
+                package, options.GamePath, journal, prepared,
+                options.FreeExploration, descriptor, progress, percent);
+            journal.RecordCmpPackage(
+                installed.Version, descriptor.Commit, packageHash, packageBytes);
+            InstallerCore.Report(progress, "CMP " + installed.Version
+                + " synchronise depuis le depot officiel ("
+                + installed.MapCount + " cartes et missions).");
             if (String.IsNullOrWhiteSpace(options.PackageOverride))
                 try { File.Delete(package); } catch { }
         }
 
-        private static void InstallArchive(
+        private static CmpInstallResult InstallArchive(
             string archivePath, string gamePath, StateJournal journal,
             HashSet<string> prepared, bool patchTrees,
+            CmpPackageDescriptor descriptor,
             Action<string> progress, Action<int> percent)
         {
             Encoding ansi = Encoding.GetEncoding(1252);
             using (ZipArchive archive = ZipFile.OpenRead(archivePath))
             {
-                List<PackageFile> files = ValidatePackage(archive, gamePath);
+                string version;
+                List<PackageFile> files = ValidatePackage(
+                    archive, gamePath, descriptor, out version);
                 int completed = 0;
                 int patchedTrees = 0;
                 long neutralizedFlags = 0;
@@ -187,6 +236,11 @@ namespace HD2CommunityInstaller
                     InstallerCore.Report(progress, "Exploration libre communautaire activee sur "
                         + patchedTrees + " cartes (" + neutralizedFlags + " drapeaux et "
                         + removedBoundaries + " murs de limite retires).");
+                return new CmpInstallResult {
+                    Version = version,
+                    MapCount = mapCount,
+                    FileCount = files.Count
+                };
             }
         }
 
@@ -264,15 +318,22 @@ namespace HD2CommunityInstaller
         }
 
         private static List<PackageFile> ValidatePackage(
-            ZipArchive archive, string gamePath)
+            ZipArchive archive, string gamePath, CmpPackageDescriptor descriptor,
+            out string version)
         {
-            if (archive.Entries.Count != 23600)
+            if (descriptor.IsPinned && archive.Entries.Count != 23600)
                 throw new InvalidDataException(
                     "Nombre d'entrees CMP inattendu : " + archive.Entries.Count + ".");
+            if (!descriptor.IsPinned
+                && (archive.Entries.Count < 1000 || archive.Entries.Count > 100000))
+                throw new InvalidDataException(
+                    "Nombre d'entrees CMP non plausible : "
+                    + archive.Entries.Count + ".");
             List<PackageFile> files = new List<PackageFile>();
             HashSet<string> duplicates = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             string root = null;
             bool foundMapList = false;
+            long expandedBytes = 0;
             foreach (ZipArchiveEntry entry in archive.Entries)
             {
                 string normalized = entry.FullName.Replace('\\', '/');
@@ -283,6 +344,13 @@ namespace HD2CommunityInstaller
                 if (!String.Equals(root, pieces[0], StringComparison.Ordinal))
                     throw new InvalidDataException("Le paquet contient plusieurs racines.");
                 if (pieces.Length == 1 || normalized.EndsWith("/")) continue;
+                if (entry.Length < 0 || entry.Length > 2L * 1024 * 1024 * 1024)
+                    throw new InvalidDataException(
+                        "Taille de fichier CMP non sure : " + normalized);
+                expandedBytes += entry.Length;
+                if (expandedBytes > 8L * 1024 * 1024 * 1024)
+                    throw new InvalidDataException(
+                        "Le contenu decompresse du CMP depasse 8 Gio.");
                 foreach (string piece in pieces)
                     if (piece == "." || piece == "..")
                         throw new InvalidDataException(
@@ -312,11 +380,63 @@ namespace HD2CommunityInstaller
                 || !root.StartsWith("had2-cmp-", StringComparison.OrdinalIgnoreCase)
                 || !foundMapList)
                 throw new InvalidDataException("Structure CMP non reconnue.");
+            long available = new DriveInfo(
+                Path.GetPathRoot(gamePath)).AvailableFreeSpace;
+            if (available < expandedBytes + 1024L * 1024 * 1024)
+                throw new IOException(
+                    "Espace insuffisant pour cette revision du CMP : "
+                    + FormatBytes(expandedBytes + 1024L * 1024 * 1024)
+                    + " libres requis.");
+            version = DetectVersion(files);
             return files;
         }
 
+        private static CmpPackageDescriptor ResolvePackage(
+            string packageOverride, Action<string> progress)
+        {
+            if (!String.IsNullOrWhiteSpace(packageOverride))
+                return CmpPackageDescriptor.Pinned();
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            try
+            {
+                using (WebClient client = CreateWebClient())
+                {
+                    client.Headers.Add(HttpRequestHeader.Accept,
+                        "application/vnd.github+json");
+                    string json = client.DownloadString(
+                        new Uri(AppConfig.CmpLatestCommitUrl));
+                    Match commit = Regex.Match(json,
+                        "\\\"sha\\\"\\s*:\\s*\\\"(?<sha>[0-9a-fA-F]{40})\\\"");
+                    if (!commit.Success)
+                        throw new InvalidDataException(
+                            "Reponse GitHub sans commit CMP exploitable.");
+                    string sha = commit.Groups["sha"].Value.ToLowerInvariant();
+                    if (String.Equals(sha, AppConfig.CmpCommit,
+                        StringComparison.OrdinalIgnoreCase))
+                        return CmpPackageDescriptor.Pinned();
+                    if (progress != null)
+                        progress("Une revision CMP plus recente a ete trouvee : "
+                            + ShortCommit(sha) + ".");
+                    return new CmpPackageDescriptor {
+                        Commit = sha,
+                        Url = AppConfig.CmpCodeloadBaseUrl + sha
+                    };
+                }
+            }
+            catch (Exception error)
+            {
+                if (progress != null)
+                    progress("Verification de la derniere revision CMP impossible ("
+                        + error.Message + "). Utilisation de la revision verifiee "
+                        + ShortCommit(AppConfig.CmpCommit) + ".");
+                return CmpPackageDescriptor.Pinned();
+            }
+        }
+
         private static string Acquire(
-            string packageOverride, Action<string> progress, Action<int> percent)
+            string packageOverride, CmpPackageDescriptor descriptor,
+            Action<string> progress, Action<int> percent)
         {
             if (!String.IsNullOrWhiteSpace(packageOverride))
             {
@@ -329,11 +449,11 @@ namespace HD2CommunityInstaller
             string downloads = Path.Combine(AppConfig.DataRoot, "downloads");
             Directory.CreateDirectory(downloads);
             string target = Path.Combine(
-                downloads, "had2-cmp-" + AppConfig.CmpVersion + ".zip");
+                downloads, "had2-cmp-" + descriptor.Commit + ".zip");
             if (File.Exists(target))
                 try
                 {
-                    VerifySha256(target, AppConfig.CmpSha256);
+                    VerifyPackageFile(target, descriptor);
                     return target;
                 }
                 catch { File.Delete(target); }
@@ -341,10 +461,8 @@ namespace HD2CommunityInstaller
             string temporary = target + ".partial";
             if (File.Exists(temporary)) File.Delete(temporary);
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            using (WebClient client = new WebClient())
+            using (WebClient client = CreateWebClient())
             {
-                client.Headers.Add(HttpRequestHeader.UserAgent,
-                    "HD2-Community-Installer/" + AppConfig.Version);
                 int last = -1;
                 client.DownloadProgressChanged += delegate(
                     object sender, DownloadProgressChangedEventArgs args)
@@ -361,7 +479,7 @@ namespace HD2CommunityInstaller
                             + FormatBytes(args.BytesReceived) + ")");
                     }
                 };
-                try { client.DownloadFile(new Uri(AppConfig.CmpUrl), temporary); }
+                try { client.DownloadFile(new Uri(descriptor.Url), temporary); }
                 catch
                 {
                     if (File.Exists(temporary)) File.Delete(temporary);
@@ -388,19 +506,64 @@ namespace HD2CommunityInstaller
             }
         }
 
-        private static void VerifySha256(string path, string expected)
+        private static void VerifyPackageFile(
+            string path, CmpPackageDescriptor descriptor)
         {
             long actualBytes = new FileInfo(path).Length;
-            if (actualBytes != AppConfig.CmpArchiveBytes)
+            if (descriptor.ExpectedBytes.HasValue
+                && actualBytes != descriptor.ExpectedBytes.Value)
                 throw new InvalidDataException(
                     "Taille de l'archive CMP incorrecte. Attendue "
-                    + AppConfig.CmpArchiveBytes + " octets, obtenue "
+                    + descriptor.ExpectedBytes.Value + " octets, obtenue "
                     + actualBytes + " octets.");
-            string actual = ComputeSha256(path);
-            if (!String.Equals(actual, expected, StringComparison.OrdinalIgnoreCase))
+            if (!descriptor.ExpectedBytes.HasValue
+                && (actualBytes < 64L * 1024 * 1024
+                    || actualBytes > 4L * 1024 * 1024 * 1024))
                 throw new InvalidDataException(
-                    "Empreinte SHA-256 incorrecte. Attendue " + expected
-                    + ", obtenue " + actual + ".");
+                    "Taille de l'archive CMP non plausible : " + actualBytes + " octets.");
+            if (!String.IsNullOrWhiteSpace(descriptor.ExpectedSha256))
+            {
+                string actual = ComputeSha256(path);
+                if (!String.Equals(actual, descriptor.ExpectedSha256,
+                        StringComparison.OrdinalIgnoreCase))
+                    throw new InvalidDataException(
+                        "Empreinte SHA-256 incorrecte. Attendue "
+                        + descriptor.ExpectedSha256 + ", obtenue " + actual + ".");
+            }
+        }
+
+        private static string DetectVersion(List<PackageFile> files)
+        {
+            foreach (PackageFile file in files)
+            {
+                if (!String.Equals(file.RelativePath, "cmp_info/cmp_ReadMe.txt",
+                        StringComparison.OrdinalIgnoreCase)
+                    && !String.Equals(file.RelativePath, "cmp_info/README.md",
+                        StringComparison.OrdinalIgnoreCase)) continue;
+                string text;
+                using (StreamReader reader = new StreamReader(
+                    file.Entry.Open(), Encoding.GetEncoding(1252), false))
+                    text = reader.ReadToEnd();
+                Match match = Regex.Match(text,
+                    @"(?:Coop\s+Map\s+Package|CMP)\s*(?:\(CMP\))?\s*v?(?<version>\d+\.\d+\.\d+)",
+                    RegexOptions.IgnoreCase);
+                if (match.Success) return match.Groups["version"].Value;
+            }
+            throw new InvalidDataException("Version du CMP introuvable dans son README.");
+        }
+
+        private static WebClient CreateWebClient()
+        {
+            WebClient client = new WebClient();
+            client.Headers.Add(HttpRequestHeader.UserAgent,
+                "HD2-Heritage-Pack/" + AppConfig.Version);
+            return client;
+        }
+
+        private static string ShortCommit(string commit)
+        {
+            if (String.IsNullOrWhiteSpace(commit)) return "inconnu";
+            return commit.Length <= 12 ? commit : commit.Substring(0, 12);
         }
 
         internal static string ComputeSha256(string path)
