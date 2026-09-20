@@ -27,6 +27,7 @@ namespace HD2CommunityInstaller
                     }
                     if (command == "--self-test-local")
                     {
+                        Console.WriteLine(CustomMissionManagerInstaller.ValidateOnly());
                         Console.WriteLine(WidescreenInstaller.ValidateOnly());
                         Console.WriteLine(GraphicsConfigurator.ValidateOnly());
                         Console.WriteLine(DiagnosticStatusMatcher.ValidateOnly());
@@ -117,6 +118,7 @@ namespace HD2CommunityInstaller
                         if (args.Length < 3)
                             throw new ArgumentException("--self-test exige le dossier du jeu et l'archive CMP.");
                         Console.WriteLine(CmpInstaller.ValidateOnly(args[2], game));
+                        Console.WriteLine(CustomMissionManagerInstaller.ValidateOnly());
                         Console.WriteLine(WidescreenInstaller.ValidateOnly());
                         Console.WriteLine(GraphicsConfigurator.ValidateOnly());
                         Console.WriteLine(DiagnosticStatusMatcher.ValidateOnly());

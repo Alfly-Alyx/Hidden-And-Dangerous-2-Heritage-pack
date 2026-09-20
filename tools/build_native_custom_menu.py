@@ -16,7 +16,7 @@ def main():
                     str(ROOT / "native-custom-menu/CustomMenu.c"),
                     str(ROOT / "native-custom-menu/Hooks.S")], check=True)
     subprocess.run([sys.executable, str(ROOT / "tests/test_native_custom_menu.py")], check=True)
-    print("Experimental build only. NOT installed. GUI validation pending.")
+    print("Offline build and emulator tests passed. This script does not install or launch the game.")
 
 
 if __name__ == "__main__":

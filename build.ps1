@@ -13,7 +13,7 @@ if (-not (Test-Path -LiteralPath $csc)) {
     throw '.NET Framework C# compiler not found.'
 }
 
-& (Join-Path $projectRoot 'build-custom-mission-manager.ps1') -ConsoleOnly:$ConsoleOnly
+& (Join-Path $projectRoot 'build-custom-mission-manager.ps1')
 
 $build = Join-Path $projectRoot 'build'
 $dist = Join-Path $projectRoot 'dist'
@@ -23,6 +23,27 @@ $guideEn = Join-Path $projectRoot 'output\pdf\HD2-Player-Guide-Secrets-and-Easte
 $reportEn = Join-Path $projectRoot 'output\pdf\HD2-Discovery-Report-EN.pdf'
 $icon = Join-Path $projectRoot 'installer\assets\hd2-heritage-icon.ico'
 $widescreen = Join-Path $projectRoot 'installer\assets\HiddenandDangerous2.WidescreenFix.zip'
+$missionManager = Join-Path $projectRoot 'dist\HD2-Custom-Mission-Manager.exe'
+$missionManagerHash = Join-Path $build 'HD2-Custom-Mission-Manager.sha256'
+$customMissionReadme = Join-Path $projectRoot 'custom-missions\README.md'
+$customMissionSchema = Join-Path $projectRoot 'custom-missions\mission.schema.json'
+$customMissionTemplate = Join-Path $projectRoot 'custom-missions\_modele\mission.json'
+$customMissionTemplateReadme = Join-Path $projectRoot `
+    'custom-missions\_modele\payload\Missions\MaMission\LISEZ_MOI.txt'
+foreach ($customMissionResource in @(
+    $missionManager,
+    $customMissionReadme,
+    $customMissionSchema,
+    $customMissionTemplate,
+    $customMissionTemplateReadme
+)) {
+    if (-not (Test-Path -LiteralPath $customMissionResource)) {
+        throw "The custom mission manager resource is missing: $customMissionResource"
+    }
+}
+$managerSha256 = (Get-FileHash -LiteralPath $missionManager -Algorithm SHA256).Hash
+[IO.File]::WriteAllText(
+    $missionManagerHash, $managerSha256 + "`n", [Text.Encoding]::ASCII)
 foreach ($pdf in @($guide, $report, $guideEn, $reportEn)) {
     if (-not (Test-Path -LiteralPath $pdf)) {
         throw "The final PDF must be generated before building the installer: $pdf"
@@ -71,7 +92,13 @@ $common = @('/nologo', '/utf8output', '/checked+', '/warn:4', '/platform:anycpu'
         "/resource:$report,HD2CommunityInstaller.RapportDecouvertes.pdf",
         "/resource:$guideEn,HD2CommunityInstaller.PlayerGuideEN.pdf",
         "/resource:$reportEn,HD2CommunityInstaller.DiscoveryReportEN.pdf",
-        "/resource:$widescreen,HD2CommunityInstaller.WidescreenFix.zip"
+        "/resource:$widescreen,HD2CommunityInstaller.WidescreenFix.zip",
+        "/resource:$missionManager,HD2CommunityInstaller.CustomMissionManager.exe",
+        "/resource:$missionManagerHash,HD2CommunityInstaller.CustomMissionManager.sha256",
+        "/resource:$customMissionReadme,HD2CommunityInstaller.CustomMissions.Readme",
+        "/resource:$customMissionSchema,HD2CommunityInstaller.CustomMissions.Schema",
+        "/resource:$customMissionTemplate,HD2CommunityInstaller.CustomMissions.TemplateManifest",
+        "/resource:$customMissionTemplateReadme,HD2CommunityInstaller.CustomMissions.TemplateReadme"
     ) + $sources
 
 $consoleOut = Join-Path $build 'HD2CommunityInstaller.Console.exe'

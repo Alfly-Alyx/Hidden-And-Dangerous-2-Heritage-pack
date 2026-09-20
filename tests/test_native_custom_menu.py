@@ -53,6 +53,7 @@ class Machine:
             address, length, expected, replacement = fields
             self.hooks[address] = (length, bytes(self.uc.mem_read(expected, length)), replacement)
         self.calls = []
+        self.visibility_calls = []
         self.next_control = self.control
         self.uc.hook_add(UC_HOOK_CODE, self.on_code)
 
@@ -61,6 +62,7 @@ class Machine:
         controls = [self.control + index * 0x100 for index in range(4)]
         for index, control in enumerate(controls):
             self.put(base + index * 4, control)
+        self.put(self.exports["MenuBackControl"], controls[3])
         self.put(self.exports["MenuMissionScreen"], self.screen)
         self.put(self.exports["MenuMissionScene"], 0)
         return controls
@@ -97,6 +99,9 @@ class Machine:
         elif address == 0x63ab60:
             self.calls.append(("reload", self.reg(UC_X86_REG_ECX), self.get(self.exports["MenuView"])))
             self.return_call(1)
+        elif address == self.exports["MenuSetControlVisible"]:
+            self.visibility_calls.append((self.get(esp + 4), self.get(esp + 8)))
+            self.return_call()
         elif address == 0x615360:
             self.calls.append(("control", self.string(self.get(esp + 8))))
             control = self.next_control
@@ -128,7 +133,12 @@ class Machine:
             self.put(self.stack + 4 * i, arg)
         for register, value in (registers or {}).items():
             self.uc.reg_write(register, value)
-        target = self.exports[entry] if isinstance(entry, str) else self.hooks[entry][2]
+        if isinstance(entry, str):
+            target = self.exports[entry]
+        elif entry in self.hooks:
+            target = self.hooks[entry][2]
+        else:
+            target = entry
         self.uc.emu_start(target, until or self.stop, count=10000)
         if self.reg(UC_X86_REG_EIP) != (until or self.stop):
             raise AssertionError("Route did not reach the expected destination")
@@ -372,33 +382,47 @@ class NativeMenuTests(unittest.TestCase):
         self.assertEqual(configured, [20411, 20410, 20412])
         self.assertEqual(m.get(m.exports["MenuMissionScreen"]), m.screen)
 
-    def test_detail_builder_preloads_all_custom_controls(self):
+    def test_detail_builder_does_not_recreate_category_controls(self):
         m = Machine(4)
         frame = m.stack + 0x400
         m.put(frame + 8, m.screen)
         m.put(frame + 12, 0)
         m.run(0x639afe, registers={UC_X86_REG_EBP: frame, UC_X86_REG_ESI: m.control}, until=0x639b06)
         created = [call[1] for call in m.calls if call[0] == "control"]
-        self.assertEqual(created, [
-            b"bcustom user", b"bcustom multi", b"bcustom explore"
-        ])
+        self.assertEqual(created, [])
+        self.assertEqual(m.get(m.exports["MenuCategoryControls"]), 0)
+        self.assertEqual(m.get(m.exports["MenuCategoryControls"] + 4), 0)
+        self.assertEqual(m.get(m.exports["MenuCategoryControls"] + 8), 0)
 
-    def test_official_builder_preloads_all_custom_controls(self):
+    def test_official_builder_does_not_recreate_category_controls(self):
         m = Machine(0)
         frame = m.stack + 0x400
         m.put(frame + 8, m.screen)
         m.put(frame + 12, 0)
         m.run(0x639afe, registers={UC_X86_REG_EBP: frame, UC_X86_REG_ESI: m.control}, until=0x639b06)
         created = [call[1] for call in m.calls if call[0] == "control"]
-        self.assertEqual(created, [
-            b"bcustom user", b"bcustom multi", b"bcustom explore"
-        ])
+        self.assertEqual(created, [])
 
     def test_category_controls_normalize_action_for_native_dispatch(self):
         m = Machine(2)
         controls = m.install_category_controls()
         m.run("MenuPrepareControl", (controls[1],))
         self.assertEqual(m.get(controls[1] + 0x60), 0x0CD00000)
+
+    def test_each_category_callback_posts_the_native_custom_action(self):
+        probe = Machine(2)
+        frame = probe.stack + 0x400
+        probe.put(frame + 8, probe.screen)
+        probe.put(frame + 12, 0)
+        probe.run(0x639AFE, registers={UC_X86_REG_EBP: frame}, until=0x639B06)
+        callbacks = [call[1][5] for call in probe.calls if call[0] == 0x61E100][::2]
+        self.assertEqual(len(callbacks), 3)
+        for callback in callbacks:
+            with self.subTest(callback=hex(callback)):
+                m = Machine(2)
+                event = m.control + 0x400
+                m.run(callback, (0, event), until=0x63B9A0)
+                self.assertEqual(m.get(event + 0x60), 0x0CD00000)
 
     def test_mission_builder_keeps_the_native_back_control(self):
         m = Machine(4)
@@ -413,6 +437,66 @@ class NativeMenuTests(unittest.TestCase):
         back = m.control
         self.assertEqual(m.get(m.exports["MenuCategoryControls"] + 12), back)
         self.assertEqual(m.get(m.exports["MenuBackControl"]), back)
+
+    def test_category_layout_keeps_native_labels_for_hidden_controls(self):
+        for view in (2, 4):
+            with self.subTest(view=view, control="start"):
+                m = Machine(view)
+                m.put(m.stack + 0x10, m.control)
+                m.run(0x6396fe, until=0x639703)
+                self.assertEqual(m.get(m.exports["MenuStartControl"]), m.control)
+                self.assertEqual(m.get(m.reg(UC_X86_REG_ESP)), 0x935)
+            with self.subTest(view=view, control="caption"):
+                m = Machine(view)
+                m.put(m.stack + 0x24, m.control)
+                m.run(0x639a17, until=0x639a1c)
+                self.assertEqual(m.get(m.exports["MenuCaptionControl"]), m.control)
+                self.assertEqual(m.get(m.reg(UC_X86_REG_ESP)), 0x8D2)
+            with self.subTest(view=view, control="resume"):
+                m = Machine(view)
+                m.run(0x639a94, registers={UC_X86_REG_EAX: m.control}, until=0x639a99)
+                self.assertEqual(m.get(m.exports["MenuResumeControl"]), m.control)
+                self.assertEqual(m.get(m.reg(UC_X86_REG_ESP)), 0x839)
+
+    def test_category_layout_shows_only_categories_and_real_back_control(self):
+        m = Machine(2)
+        categories = m.install_category_controls()
+        start, caption, resume = 0x2005000, 0x2005100, 0x2005200
+        m.put(m.exports["MenuStartControl"], start)
+        m.put(m.exports["MenuCaptionControl"], caption)
+        m.put(m.exports["MenuResumeControl"], resume)
+
+        m.run("MenuApplyLayout", (2,))
+
+        self.assertEqual(m.visibility_calls, [
+            (categories[0], 1),
+            (categories[1], 1),
+            (categories[2], 1),
+            (start, 0),
+            (caption, 0),
+            (resume, 0),
+            (categories[3], 1),
+        ])
+
+    def test_detail_layout_hides_categories_without_hiding_native_browser(self):
+        m = Machine(4)
+        categories = m.install_category_controls()
+        start, caption, resume = 0x2005000, 0x2005100, 0x2005200
+        m.put(m.exports["MenuStartControl"], start)
+        m.put(m.exports["MenuCaptionControl"], caption)
+        m.put(m.exports["MenuResumeControl"], resume)
+
+        m.run("MenuApplyLayout", (4,))
+
+        self.assertEqual(m.visibility_calls, [
+            (categories[0], 0),
+            (categories[1], 0),
+            (categories[2], 0),
+            (start, 1),
+            (caption, 1),
+            (resume, 1),
+            (categories[3], 1),
+        ])
 
     def test_native_back_always_posts_a_screen_local_event(self):
         for view in range(6):

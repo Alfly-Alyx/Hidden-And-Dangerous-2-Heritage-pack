@@ -624,7 +624,9 @@ def audit(root: Path) -> dict[str, object]:
     assembly_match = re.search(
         r'AssemblyFileVersion\("([^"]+)"\)', assembly
     )
-    readme_match = re.search(r"La version\s+([0-9.]+)", readme)
+    readme_match = re.search(
+        r"(?:La version|Version)\s+\*{0,2}([0-9.]+)\*{0,2}", readme
+    )
     version = version_match.group(1) if version_match else None
     expected_assembly = version + ".0" if version else None
     version_consistency = bool(

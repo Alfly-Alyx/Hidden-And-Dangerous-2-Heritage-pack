@@ -7,15 +7,22 @@ Le fonctionnement est volontairement fixe : placez
 
 L'interface adopte automatiquement la langue détectée pour le jeu. Elle ne
 lance jamais H&D2. Elle ne modifie jamais `HD2_SabreSquadron.exe` et refuse
-l'installation si elle reconnaît l'ancien prototype exécutable portant une
-section `.patch`.
+l'installation si le client n'est pas la version 1.12 originale vérifiée.
+Le chargeur ASI fourni par le correctif écran large du Heritage Pack doit être
+présent (`d3d8.dll`).
 
-Les missions sont ajoutées au catalogue natif **Single Mission** après les
-missions officielles. Leur titre commence par une catégorie traduite, par
-exemple `[Missions utilisateur]`, afin que les deux ensembles restent
-immédiatement reconnaissables. Le jeu ne fournit pas de troisième route de
-catalogue : un bouton et des sous-menus entièrement séparés exigeraient de
-modifier son exécutable, solution retirée à cause des détections antivirus.
+L'utilitaire installe un bouton **Missions personnalisées** dans le menu Solo.
+Ce bouton ouvre exactement trois choix, traduits dans la langue active du jeu :
+
+- missions créées ou ajoutées par l'utilisateur ;
+- missions multijoueur adaptées au jeu solo ;
+- cartes d'exploration libre ou de test d'armes.
+
+Chaque choix ouvre sa propre liste. Les catalogues officiels restent dans
+`Gamedata00.gdt` et `Gamedata01.gdt` ; les listes personnalisées utilisent
+`Gamedata02.gdt` à `Gamedata05.gdt`. Le module
+`Scripts/HD2.CustomMenu.asi` raccorde ces écrans sans réécrire l'exécutable
+commercial.
 
 ## Installation la plus simple
 
@@ -66,8 +73,8 @@ un tiret bas : l'utilitaire l'ignore tant qu'il sert de modèle.
 - `user-mission` : mission créée par un utilisateur ;
 - `free-exploration` : exploration libre ou test d'armes.
 
-Ces catégories sont visibles dans le gestionnaire et dans le préfixe localisé
-du titre affiché par le jeu. Elles ne créent pas de sous-menus supplémentaires.
+Ces catégories sont visibles dans le gestionnaire et déterminent la liste du
+jeu dans laquelle la mission apparaît.
 
 Les anciennes valeurs `original-creation` et `weapon-test` restent acceptées
 et sont rangées automatiquement dans les catégories correspondantes.
@@ -118,3 +125,8 @@ annulées automatiquement.
 Le bouton **Restaurer** remet le catalogue et les fichiers sauvegardés. Un
 fichier, créé ou remplacé par un paquet, n'est supprimé ou restauré que s'il
 n'a pas été modifié depuis son installation.
+
+La restauration couvre également les quatre catalogues personnalisés, les
+deux scènes de menu, le module ASI et les traductions. Les fichiers officiels
+modifiés après l'installation sont conservés et signalés au lieu d'être
+écrasés.

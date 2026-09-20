@@ -1,33 +1,31 @@
-# Menu natif expérimental — non validé dans le jeu
+# Module natif du menu de missions personnalisées
 
-Cette extension est une nouvelle piste, pas une livraison terminée. Aucun
-lancement du jeu n'est effectué par sa construction ou ses tests hors ligne.
-Le jeu de test ne doit pas être lancé tant que le contrôle de son interface
-n'est pas fiable, conformément à la demande de l'utilisateur.
+`HD2.CustomMenu.asi` est un module x86 chargé par l'Ultimate ASI Loader déjà
+fourni avec le correctif écran large. Il ne lance aucun processus et ne modifie
+pas `HD2_SabreSquadron.exe` sur disque.
 
-Le module est compilé normalement en DLL x86 `.asi`, destiné au chargeur
-Ultimate ASI Loader déjà présent avec le correctif écran large. Il ne crée pas
-de lanceur, ne reconstruit pas l'EXE commercial et n'ouvre pas d'autre processus.
-Il adapte néanmoins le code du menu **dans le processus du jeu** ; cela ne
-garantit pas l'acceptation par tous les antivirus. Aucune exclusion ni modification
-de l'antivirus n'est autorisée.
+Le module ajoute la route vers le menu personnalisé, relie les trois boutons
+de catégories aux catalogues `Gamedata03` à `Gamedata05`, corrige les offsets
+cumulés du navigateur natif et renvoie les listes détaillées vers le sélecteur
+de catégories.
 
-Le module compare toutes les signatures attendues avant de poser ses points
-d'entrée. Une version différente du client doit être refusée. Les routes sont
-dans `Hooks.S` et la navigation est dans `CustomMenu.c`.
+Avant toute modification en mémoire, les 21 signatures du client H&D2 1.12
+sont vérifiées. Une signature inattendue annule toute installation des points
+d'entrée. La somme des lignes des six catalogues est limitée à 255 par le
+gestionnaire.
 
-Correction par rapport à l'ancien essai : la construction des lignes et leur
-affichage réutilisaient seulement la taille du catalogue 0 pour tous les
-catalogues suivants. Les identifiants et les noms des lignes entraient donc
-en conflit. La nouvelle route utilise la somme des tailles précédentes lors de
-la création des libellés, de leur affichage **et** du traitement du clic.
+Construction de développement :
 
-Construction de développement : `python tools/build_native_custom_menu.py`.
-TinyCC x86 0.9.27 doit être disponible dans `tmp/native-menu-toolchain/tcc`.
-Ce programme lance le compilateur et les tests d'émulation, jamais le jeu.
+```text
+python tools/build_native_custom_menu.py
+```
 
-À valider avant toute livraison : chargement ASI à la bonne étape du démarrage,
-bouton localisé, trois catégories, titres/listes corrects, sélection/lancement
-d'une vraie mission, retours, absence de régression des menus officiels,
-absence de détection sur la configuration de test. Les vérifications hors ligne
-ne remplacent aucun de ces contrôles.
+TinyCC x86 0.9.27 doit être présent dans
+`tmp/native-menu-toolchain/tcc`. La construction lance automatiquement les
+tests d'émulation hors ligne. `build-custom-mission-manager.ps1` embarque
+ensuite le module compilé dans `HD2-Custom-Mission-Manager.exe`.
+
+Les tests hors ligne ne remplacent pas la validation visuelle : bouton
+principal, trois catégories, listes, sélection d'une mission, retours et menus
+officiels doivent encore être contrôlés dans le jeu pour chaque version
+distribuée.

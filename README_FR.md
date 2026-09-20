@@ -20,6 +20,7 @@ Heritage Pack remet en service le jeu en ligne, corrige des objectifs et des sé
 | Contenu du jeu restauré | Remet en fonctionnement des parties du jeu original que la version finale n’utilisait plus : morceaux de missions, objectifs optionnels, dialogues, animations de personnages et passages alternatifs. |
 | Easter eggs | Réactive les séquences d’Africa 1 et d’Africa 4 neutralisées par la mise à jour 1.12. |
 | Contenu communautaire | Installe CMP 2.6.5 et ses 156 cartes et missions coopératives. |
+| Missions personnalisées | Installe le gestionnaire à la racine du jeu et un dossier `CustomMissions` prêt à recevoir les créations des joueurs, sans remplacer celles qui existent déjà. |
 | Vestiges officiels | Ajoute Africa5 Prototype et Normandy3 Zone au menu multijoueur avec un nom qui indique clairement leur état expérimental. |
 | Affichage | Détecte l’écran et le PC, applique la résolution maximale utilisable et adapte les graphismes aux performances de la machine. |
 | Guides | Installe deux guides en français et leurs versions anglaises. |
@@ -44,6 +45,7 @@ La collection CMP représente environ **1,08 Go à télécharger** et **3,12 Go 
 
 - Les campagnes et missions officielles restent dans les menus solo habituels.
 - Les missions CMP se trouvent dans `Multijoueur → Créer → LAN → Coopération`.
+- Le gestionnaire `HD2-Custom-Mission-Manager.exe` et sa bibliothèque `CustomMissions` se trouvent à la racine du jeu.
 - `PROTOTYPE - Africa5` se trouve en Deathmatch.
 - `PROTOTYPE - Normandy3 Zone` se trouve en Occupation.
 - Les quatre PDF sont copiés dans le dossier `Guides` du jeu.
@@ -100,7 +102,7 @@ Pour un blocage, une mission qui ne démarre pas ou une option mal détectée, o
 
 Le code de H&D2 Heritage Pack est actuellement publié sous [GPL-3.0-or-later](LICENSE). Il peut être utilisé, modifié et partagé, y compris commercialement. Une version modifiée qui est distribuée doit rester sous GPL et conserver son code source accessible.
 
-Cette licence couvre le code du Heritage Pack, pas le jeu original ni les créations communautaires. Le correctif écran large conserve sa licence MIT, et les cartes du CMP restent attribuées à leurs créateurs. Les détails figurent dans [THIRD_PARTY.md](THIRD_PARTY.md).
+Cette licence couvre le code du Heritage Pack, pas le jeu original ni les créations communautaires. Le correctif écran large conserve sa licence MIT, et les cartes du CMP restent attribuées à leurs créateurs. Les détails figurent dans [THIRD_PARTY.md](THIRD_PARTY.md) et dans la [notice sur le contenu communautaire](docs/CONTENU_COMMUNAUTAIRE.md).
 
 Passer l’ensemble du projet sous MIT demanderait d’abord de remplacer les lecteurs d’archives liés au projet GPL **HD2unpacker**.
 

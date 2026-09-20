@@ -18,6 +18,14 @@ $dist = Join-Path $projectRoot 'dist'
 $icon = Join-Path $projectRoot 'installer\assets\hd2-heritage-icon.ico'
 $manifest = Join-Path $projectRoot 'custom-mission-tool\app.manifest'
 New-Item -ItemType Directory -Force $build, $dist | Out-Null
+$nativeMenu = Join-Path $build 'HD2.CustomMenu.experimental.asi'
+& python (Join-Path $projectRoot 'tools\build_native_custom_menu.py')
+if ($LASTEXITCODE -ne 0) {
+    throw "Native custom-menu build failed: $LASTEXITCODE"
+}
+if (-not (Test-Path -LiteralPath $nativeMenu)) {
+    throw 'HD2.CustomMenu.experimental.asi is missing.'
+}
 
 $sources = @(
     (Join-Path $projectRoot 'custom-mission-tool\Program.cs'),
@@ -29,7 +37,8 @@ $sources = @(
 $common = @(
     '/nologo', '/utf8output', '/checked+', '/warn:4', '/platform:anycpu', '/optimize+',
     '/reference:System.dll', '/reference:System.Core.dll', '/reference:System.Drawing.dll',
-    '/reference:System.Windows.Forms.dll', '/reference:System.Web.Extensions.dll'
+    '/reference:System.Windows.Forms.dll', '/reference:System.Web.Extensions.dll',
+    "/resource:$nativeMenu,HD2CustomMissionManager.CustomMenu.asi"
 ) + $sources
 
 $consoleOut = Join-Path $build 'HD2CustomMissionManager.Console.exe'

@@ -94,7 +94,10 @@ HookPlayerCallback:
     mov 8(%esp), %eax
     test %eax, %eax
     jz 1f
-    movl $0x0cd10000, 0x60(%eax)
+    /* The native dispatcher only accepts the registered custom-menu action.
+     * Keep that action identical for all three category controls; HookAction
+     * identifies the requested category from the clicked control pointer. */
+    movl $0x0cd00000, 0x60(%eax)
 1:
     jump(0x63b9a0)
 
@@ -103,7 +106,7 @@ HookMultiCallback:
     mov 8(%esp), %eax
     test %eax, %eax
     jz 1f
-    movl $0x0cd20000, 0x60(%eax)
+    movl $0x0cd00000, 0x60(%eax)
 1:
     jump(0x63b9a0)
 
@@ -112,7 +115,7 @@ HookExploreCallback:
     mov 8(%esp), %eax
     test %eax, %eax
     jz 1f
-    movl $0x0cd30000, 0x60(%eax)
+    movl $0x0cd00000, 0x60(%eax)
 1:
     jump(0x63b9a0)
 
@@ -148,6 +151,21 @@ HookMissionBuild:
     movl $0, MenuCategoryControls+4
     movl $0, MenuCategoryControls+8
     mov %ebx, MenuCategoryControls+12
+
+    /* Category controls belong only to the selector. Rebuilding an official
+     * or detail browser while recreating them leaves their runtime text and
+     * sometimes one button frame visible over the mission list. */
+    cmpl $2, MenuView
+    je 1f
+    push 12(%ebp)
+    push 8(%ebp)
+    call MenuMissionReady
+    add $8, %esp
+    popa
+    popfl
+    mov $1, %eax
+    jump(0x639b06)
+1:
 
     mov 8(%ebp), %ecx
     push $MenuPlayerControlName
@@ -260,11 +278,7 @@ HookStartLabel:
     mov 0x14(%esp), %eax
     mov %eax, MenuStartControl
     pop %eax
-    cmpl $2, MenuView
-    jne 1f
-    push $20499
-    jump(0x639703)
-1:  push $0x935
+    push $0x935
     jump(0x639703)
 
 .globl HookListCaption
@@ -273,21 +287,13 @@ HookListCaption:
     mov 0x28(%esp), %eax
     mov %eax, MenuCaptionControl
     pop %eax
-    cmpl $2, MenuView
-    jne 1f
-    push $20499
-    jump(0x639a1c)
-1:  push $0x8d2
+    push $0x8d2
     jump(0x639a1c)
 
 .globl HookResumeLabel
 HookResumeLabel:
     mov %eax, MenuResumeControl
-    cmpl $2, MenuView
-    jne 1f
-    push $20499
-    jump(0x639a99)
-1:  push $0x839
+    push $0x839
     jump(0x639a99)
 
 .globl HookAction

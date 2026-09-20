@@ -1,65 +1,61 @@
-# Point de reprise — menu personnalisé, 19 septembre 2026
+# État du menu personnalisé — 19 septembre 2026
 
-## Consigne utilisateur prioritaire
+## Résultat courant
 
-Ne pas lancer le jeu de test si le contrôle de son interface n'est pas fiable.
-Aucun lancement n'a été effectué pendant la préparation décrite ci-dessous.
-Ne pas demander à l'utilisateur de refaire les mêmes captures à notre place.
-Ne pas qualifier le travail de terminé sans vérifier le parcours réel.
+La GUI et le gestionnaire forment maintenant un même ensemble sur la branche
+`codex/experimental-gui`.
 
-## État exact
+`HD2-Custom-Mission-Manager.exe` génère et installe :
 
-- Nouvelle piste : module natif ASI utilisant le chargeur déjà présent avec le
-  correctif écran large. Sources dans `native-custom-menu/`. Aucun lanceur ni
-  nouvel EXE commercial modifié. Le module adapte le menu en mémoire dans son
-  propre processus ; il n'est pas exempt de risque de détection antivirus.
-- Candidat courant : `output/native-menu-candidate-20260919-r2/`.
-  **Préparé dans le projet seulement, non installé, non validé dans le jeu.**
-  Le répertoire sans suffixe `-r2` est une préparation antérieure obsolète.
-- 16 tests d'émulation du module compilé passent. Ils couvrent les offsets
-  des libellés et de visibilité, les clics de catégories, les retours, le
-  blocage du lancement d'une catégorie et plusieurs invariants des menus officiels.
-  Ils utilisent de faux objets du moteur : ce n'est pas un test de la GUI.
-- F-Secure a analysé le module final : 1 fichier analysé, 0 élément nuisible,
-  le 19 septembre à 12:03 heure locale. Aucun réglage ou exclusion modifié.
-  SHA256 : `59F21ED312DA5ECD548B9EBE0A3B19E1028DADC34431868062C169D182D6EC3F`.
-  Cela ne garantit ni l'absence de blocage à l'exécution, ni l'acceptation par
-  d'autres antivirus.
-- Les EXE original et de test ont été vérifiés identiques à l'original :
-  `1EEBDE4710F800F712A05B1ECEE2BA862C144F478DF89B58E54C912E857EE78C`.
+- le bouton **Missions personnalisées** du menu Solo ;
+- le sélecteur à trois catégories ;
+- une liste native distincte par catégorie ;
+- les traductions des huit langues du jeu ;
+- le module `Scripts/HD2.CustomMenu.asi` ;
+- les fichiers de mission placés dans `CustomMissions`.
 
-## Défaut identifié hors ligne
+L'exécutable commercial reste inchangé. Le client pris en charge est
+`HD2_SabreSquadron.exe` 1.12 avec l'empreinte SHA-256
+`1EEBDE4710F800F712A05B1ECEE2BA862C144F478DF89B58E54C912E857EE78C`.
 
-Le client original suppose deux catalogues. À partir du troisième, l'ancien
-essai réutilisait la taille du catalogue 0 pour construire les identifiants des
-lignes et choisir les lignes visibles. Cela faisait réapparaître les noms
-officiels et rendait ambiguë la destination d'un clic. Le nouveau module
-calcule les sommes cumulées dans les trois chemins : création, affichage, clic.
-Il réserve les groupes de campagne aux deux catalogues officiels.
+## Correspondance des catalogues
 
-## Blocage du contrôle de l'interface
+- `Gamedata00` et `Gamedata01` : contenus officiels, non modifiés ;
+- `Gamedata02` : trois catégories ;
+- `Gamedata03` : adaptations multijoueur ;
+- `Gamedata04` : missions utilisateur ;
+- `Gamedata05` : exploration libre.
 
-L'initialisation de `computer-use` via `node_repl` a échoué deux fois avec :
-`trusted Node process exited unexpectedly; kernel reset, rerun your request`.
-La disponibilité du contrôle de la GUI n'est donc pas établie. Les anciens
-essais avec le programme local de captures/clics n'ont pas démontré un contrôle
-fiable du jeu. Ne pas reprendre les lancements à l'aveugle.
+Le module natif utilise une somme cumulative pour les libellés, la visibilité,
+la sélection et le décodage des lignes. Le gestionnaire refuse une bibliothèque
+qui ferait dépasser la limite de 255 lignes du moteur.
 
-## Ce qui reste réellement à faire
+## Validation effectuée
 
-1. Rétablir un contrôle fiable et observable de l'interface avant tout lancement.
-2. Valider le moment de chargement du module ASI. Il refuse une signature non
-   reconnue ; aucune installation différée asynchrone n'est tentée.
-3. Ajouter une limite explicite du nombre total de lignes compatible avec les
-   identifiants 8 bits du moteur avant une utilisation avec de grosses bibliothèques.
-4. Vérifier en jeu le bouton localisé, les trois catégories, leurs listes,
-   une véritable sélection/lancement de mission, les retours et les menus officiels.
-5. Adapter ensuite le gestionnaire `.exe` à cette architecture. Le gestionnaire
-   actuellement construit conserve l'ancienne approche ajoutant les missions au
-   catalogue officiel : **il ne constitue pas la livraison demandée**.
+- construction du gestionnaire avec le module ASI embarqué ;
+- égalité bit pour bit entre les sept fichiers GUI générés en C# et le candidat
+  de référence généré en Python ;
+- 31 tests d'émulation x86 du menu ;
+- validation des trois catégories de la bibliothèque d'essai ;
+- 4 groupes d'auto-tests de sécurité : conflit, restauration, retrait et
+  annulation transactionnelle ;
+- installation transactionnelle réussie dans la copie de test avec trois
+  missions et 39 fichiers de mission.
 
-La copie de test reste la base restaurée lors du diagnostic précédent. Ses
-anciens fichiers expérimentaux sont conservés dans
-`D:\Games\Hidden and Dangerous 2 - Test Menu Personnalise\__gui-baseline-20260919`.
-Ne pas présumer que `STATIC_MENU_BACKUP` contient une version originale de tous
-les fichiers : certains modèles/catalogues y étaient déjà modifiés.
+## Validation visuelle restant à refaire
+
+Le lancement du jeu a réussi, mais la capture Windows de la fenêtre a échoué
+deux fois avec `SetIsBorderRequired` / `0x80004002`. Aucun clic n'a été envoyé
+à l'aveugle. Il reste donc à refaire, dès que le contrôle de fenêtre répond :
+
+1. le bouton du menu Solo ;
+2. les trois catégories et leurs listes ;
+3. tous les retours ;
+4. la sélection et le lancement d'une mission d'essai ;
+5. l'absence de régression des menus officiels.
+
+La tâche **Heritage Pack** ne dispose actuellement d'aucune conversion solo
+validée. Africa5 Prototype peut seulement servir d'entrée d'affichage dans la
+catégorie exploration : il ne faut pas le présenter comme mission jouable ni
+redistribuer ses fichiers commerciaux. Les fichiers doivent être extraits des
+archives du jeu à l'installation.

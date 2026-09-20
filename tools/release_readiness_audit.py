@@ -15,6 +15,7 @@ import asset_presence_audit
 import boundary_label_audit
 import burma1_easter_egg_audit
 import community_package_policy_audit
+import custom_mission_setup_audit
 import easter_egg_position_audit
 import embedded_dependency_audit
 import flamethrower_evidence_audit
@@ -98,7 +99,13 @@ def working_tree(root: Path) -> dict[str, object]:
 
 def integration_state(root: Path) -> dict[str, object]:
     installer_sources = list((root / "installer").glob("*.cs"))
-    build_sources = [root / "build.ps1", *installer_sources]
+    build_sources = [
+        root / "build.ps1",
+        root / "build-custom-mission-manager.ps1",
+        *(root / "custom-mission-tool").glob("*.cs"),
+        *(root / "native-custom-menu").glob("*.c"),
+        *installer_sources,
+    ]
     combined = "\n".join(
         path.read_text(encoding="utf-8-sig", errors="replace")
         for path in build_sources
@@ -111,6 +118,10 @@ def integration_state(root: Path) -> dict[str, object]:
             "build_static_custom_menu" in combined
             or "static_menu_patch" in combined
             or "customsolomenu" in combined
+            or (
+                "hd2custommissionmanager.custommenu.asi" in combined
+                and "build_native_custom_menu.py" in combined
+            )
         ),
         "custom_status_detection": (
             "custommissions" in combined and "detectstatus" in combined
@@ -174,6 +185,7 @@ def project_evidence_state(root: Path) -> dict[str, object]:
     errors: list[str] = []
     for name, run in (
         ("community_package_policy", lambda: community_package_policy_audit.audit(root)),
+        ("custom_mission_setup", lambda: custom_mission_setup_audit.audit(root)),
         ("embedded_dependencies", lambda: embedded_dependency_audit.audit(root)),
     ):
         try:

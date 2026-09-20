@@ -6,7 +6,7 @@ def build_report():
     path = OUT / "HD2-Rapport-des-Decouvertes.pdf"
     doc = HD2Doc(str(path), "HD2 - Rapport des découvertes")
     s = []
-    cover(s, "Dossier d'archéologie - Révision 0.7.5", "Rapport des<br/>découvertes",
+    cover(s, "Dossier d'archéologie - Révision 0.7.6", "Rapport des<br/>découvertes",
           "Contenu coupé, variantes internes, objectifs fragiles, routes, armes, véhicules et faisabilité de restauration.",
           "Installation commerciale 1.12 + Sabre Squadron<br/>Recherche locale et sources d'époque - 15 septembre 2026")
 
@@ -111,7 +111,7 @@ def build_report():
     s.append(P("Les clés A, B et C sont les objets 240, 241 et 242. Lorsqu'elles sont toutes à moins de trois mètres, le script d'origine active une valeur persistante et la scène meteor01. La mise à jour 1.12 neutralise uniquement le branchement. Les modèles, trajectoires et particules restent en place."))
     s.append(P("Africa 1 - seconde neutralisation confirmée","h2"))
     s.append(P("La comparaison de versions montre que le patch 1.12 force à zéro une condition nécessaire aux quatre morts de la mise en scène du jeep. Les trois invités, l'armure rouge, le portail de feu et la caméra sont toujours liés à la mission."))
-    s.append(info_box("Décision 0.7.5",
+    s.append(info_box("Décision 0.7.6",
         "Restaurer Africa 1 et Africa 4 avec une surcharge de leurs déclencheurs. Ne pas modifier les cinq secrets qui fonctionnent déjà. Le Tutorial reste en étude pour une solution 1.12 qui ne déplace pas arbitrairement le lingot."))
     s.append(PageBreak())
 

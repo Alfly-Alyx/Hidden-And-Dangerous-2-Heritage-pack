@@ -520,13 +520,12 @@ namespace HD2CustomMissionManager
         {
             if (Convert.ToString(e.Argument) == "restore")
             {
-                MissionPackageCore.Restore(gameRoot); e.Result = text["Restored"];
+                e.Result = MissionPackageCore.Restore(gameRoot);
             }
             else
             {
-                MissionLibrary loaded = MissionPackageCore.LoadLibrary(missionRoot, false);
-                MissionPackageCore.Integrate(missionRoot, gameRoot, gameRoot);
-                e.Result = text.Format("Installed", loaded.Packages.Count, loaded.FileCount);
+                e.Result = MissionPackageCore.Integrate(
+                    missionRoot, gameRoot, gameRoot);
             }
         }
 

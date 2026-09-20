@@ -20,6 +20,7 @@ Heritage Pack brings online play back, repairs forgotten objectives and sequence
 | Restored game content | Restores parts of the original game that the final release no longer used: mission sections, optional objectives, dialogue, character animations, and alternate routes. |
 | Easter eggs | Restores the Africa 1 and Africa 4 sequences disabled by update 1.12. |
 | Community content | Installs CMP 2.6.5 with 156 cooperative maps and missions. |
+| Custom missions | Installs the manager in the game root and a ready-to-use `CustomMissions` folder without replacing existing player-created missions. |
 | Official remnants | Adds Africa5 Prototype and Normandy3 Zone to multiplayer with names that clearly show their experimental status. |
 | Display setup | Detects the monitor and PC, applies the highest usable resolution, and adjusts quality to the machine’s performance. |
 | Guides | Installs two French guides and their English editions. |
@@ -44,6 +45,7 @@ CMP requires about **1.08 GB to download** and **3.12 GB once installed**. It is
 
 - Official campaigns and missions remain in the normal solo menus.
 - CMP missions are under `Multiplayer → Create → LAN → Cooperation`.
+- `HD2-Custom-Mission-Manager.exe` and its `CustomMissions` library are installed in the game root.
 - `PROTOTYPE - Africa5` is available in Deathmatch.
 - `PROTOTYPE - Normandy3 Zone` is available in Occupation.
 - All four PDFs are copied to the game’s `Guides` folder.
@@ -100,7 +102,7 @@ If a mission will not start, the game hangs, or an installed feature is detected
 
 The H&D2 Heritage Pack code is currently released under [GPL-3.0-or-later](LICENSE). It may be used, modified, and shared, including commercially. A modified version that is distributed must remain under the GPL and keep its source code available.
 
-This licence covers the Heritage Pack code, not the original game or community creations. The widescreen fix retains its MIT licence, and CMP maps remain attributed to their creators. Further details are available in [THIRD_PARTY.md](THIRD_PARTY.md).
+This licence covers the Heritage Pack code, not the original game or community creations. The widescreen fix retains its MIT licence, and CMP maps remain attributed to their creators. Further details are available in [THIRD_PARTY.md](THIRD_PARTY.md) and the [community-content notice](docs/CONTENU_COMMUNAUTAIRE.md).
 
 Moving the whole project to MIT would first require replacing the archive readers connected to the GPL-licensed **HD2unpacker** project.
 

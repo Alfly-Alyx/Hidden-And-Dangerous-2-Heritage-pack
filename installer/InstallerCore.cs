@@ -92,6 +92,8 @@ namespace HD2CommunityInstaller
             if (valid)
             {
                 text.AppendLine("Correctif ecran large : " + WidescreenInstaller.DetectStatus(gamePath));
+                text.AppendLine("Gestionnaire de missions personnalisees : "
+                    + CustomMissionManagerInstaller.DetectStatus(gamePath));
                 text.AppendLine("Graphismes automatiques : " + GraphicsConfigurator.DetectStatus());
                 text.AppendLine(FeatureStatusDetector.BuildReport(gamePath));
             }
@@ -185,6 +187,8 @@ namespace HD2CommunityInstaller
                 foreach (FileChange change in journal.State.Changes)
                     prepared.Add(change.RelativePath);
                 GuideInstaller.Install(
+                    options.GamePath, journal, prepared, progress);
+                CustomMissionManagerInstaller.Install(
                     options.GamePath, journal, prepared, progress);
                 if (options.AutoConfigureGraphics)
                 {
@@ -877,4 +881,3 @@ namespace HD2CommunityInstaller
         }
     }
 }
-

@@ -7,13 +7,13 @@ def build_player():
     path = OUT / "HD2-Guide-Joueur-Secrets-et-Easter-Eggs.pdf"
     doc = HD2Doc(str(path), "HD2 - Guide joueur des secrets")
     s = []
-    cover(s, "Guide joueur - Edition 0.7.5", "Secrets et<br/>easter eggs",
+    cover(s, "Guide joueur - Edition 0.7.6", "Secrets et<br/>easter eggs",
           "Sept séquences cachées, leurs conditions et les coins secrets utiles pour les atteindre.",
           "Hidden &amp; Dangerous 2: Sabre Squadron 1.12<br/>Guide pratique en français - 15 septembre 2026")
 
     section(s, "01", "Avant de commencer", "Ce guide va droit au but. Il ne décrit ni le moteur du jeu ni la fabrication des missions.")
     s.append(info_box("Pack conseillé",
-        "Installez H&amp;D2 Heritage Pack 0.7.5 et laissez cochée l'option des easter eggs. "
+        "Installez H&amp;D2 Heritage Pack 0.7.6 et laissez cochée l'option des easter eggs. "
         "Elle rend à nouveau activables les surprises d'Africa 1 et d'Africa 4, neutralisées par la mise à jour 1.12."))
     s.append(Spacer(1,4*mm))
     s.append(P("Règles utiles","h2"))
@@ -49,7 +49,7 @@ def build_player():
     s.append(Spacer(1,4*mm))
     s.append(info_box("Attention avec la version 1.12",
         "La mise à jour 1.12 empêche normalement de grimper sur les véhicules. Le secret et le lingot existent toujours, "
-        "mais cette route historique peut rester inaccessible. Le Heritage Pack 0.7.5 ne déplace pas encore le lingot afin de ne pas inventer une nouvelle cachette.",
+        "mais cette route historique peut rester inaccessible. Le Heritage Pack 0.7.6 ne déplace pas encore le lingot afin de ne pas inventer une nouvelle cachette.",
         colors.HexColor("#FFF1DD")))
     s.append(P("Pourquoi c'est important","h2"))
     s.append(P("Le toit du garage est la cache d'origine. Une future correction 1.12 devra conserver cette découverte, ou signaler clairement tout nouvel accès."))

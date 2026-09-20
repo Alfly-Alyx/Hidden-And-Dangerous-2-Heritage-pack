@@ -1,71 +1,52 @@
-# Menu de missions personnalisées — prototype retiré
+# GUI expérimentale des missions personnalisées
 
-## Résultat des essais
+La branche `codex/experimental-gui` réunit désormais la GUI du jeu et
+`HD2-Custom-Mission-Manager.exe` dans un même flux d'installation.
 
-La première sonde est abandonnée : les groupes du menu se chevauchaient et le
-bouton `bcampaign02` n'était pas pris en charge par le moteur.
+## Parcours installé
 
-Une seconde approche ajoutait le routage uniquement en mémoire. Elle est elle
-aussi abandonnée : son utilisation de fonctions de modification de processus a
-été détectée par l'antivirus. Le lanceur, son code source et ses outils de
-construction ont été retirés. Il ne faut pas désactiver l'antivirus ni créer
-d'exclusion.
+Le menu **Single Player Game** reçoit un bouton **Custom Missions** entre
+**Single Mission - Carnage** et **Back**. Il ouvre un écran comportant trois
+boutons :
 
-## Décision de sécurité
+1. missions utilisateur ;
+2. missions multijoueur adaptées au solo ;
+3. exploration libre / tests d'armes.
 
-Le prototype statique reconstruisait `HD2_SabreSquadron.exe`, ajoutait une
-section exécutable `.patch` et détournait plusieurs branchements du moteur.
-Cette structure a été détectée sous le nom `Drop.Win32.ScoreInject.131`.
-Elle n'est plus produite, installée ni appelée par le gestionnaire pris en
-charge. Il ne faut pas désactiver l'antivirus ni créer d'exclusion.
+Chaque bouton ouvre un catalogue distinct. Les libellés du bouton principal,
+des trois catégories, des titres de listes et des missions suivent la langue
+active parmi les huit langues prises en charge par H&D2.
 
-La copie de test doit employer l'exécutable commercial original, sans aucune
-différence d'empreinte avec sa sauvegarde. Le mode pris en charge modifie
-uniquement les fichiers de données et ajoute les missions au catalogue natif
-`Gamedata01.gdt`, après les missions officielles.
+## Architecture
 
-## Ancien contenu de validation
+- `Gamedata02.gdt` contient les trois entrées de catégories ;
+- `Gamedata03.gdt` contient les adaptations multijoueur ;
+- `Gamedata04.gdt` contient les missions utilisateur ;
+- `Gamedata05.gdt` contient les cartes d'exploration libre ;
+- `Models/singleplayer.4ds` reçoit le bouton d'accès ;
+- `Models/single mission 2.4ds` reçoit les trois boutons de catégories ;
+- `Scripts/HD2.CustomMenu.asi` raccorde les contrôles au navigateur natif.
 
-Le catalogue de test expose d'abord trois rubriques : adaptations multijoueur,
-missions utilisateur et exploration libre / tests d'armes. Chacune ouvre une
-liste distincte qui contient provisoirement un essai basé sur `Brest`,
-`Libye1` ou `Sicily1`. Ces dossiers servent uniquement d'emplacements
-techniques pour vérifier la navigation.
+L'exécutable commercial n'est jamais réécrit. Le module ASI vérifie toutes les
+signatures du client 1.12 avant de modifier en mémoire les routes du menu. Le
+gestionnaire exige le chargeur ASI du correctif écran large (`d3d8.dll`).
 
-Les vraies adaptations et créations seront ajoutées dans des dossiers séparés
-après leur propre validation. Les deux catalogues commerciaux ne sont jamais
-modifiés.
+## Installation et retour arrière
 
-## Intégration destinée aux créateurs
+Le gestionnaire construit les quatre catalogues depuis le catalogue original
+de `SabreSquadron.dta`, génère les scènes de menu depuis les modèles originaux,
+installe les traductions et copie les missions placées dans `CustomMissions`.
+L'ensemble est appliqué dans une transaction unique.
 
-Dans la version distribuée, `HD2-Custom-Mission-Manager.exe` est placé à la
-racine du jeu. Il utilise automatiquement le dossier imposé `CustomMissions`
-situé à côté de lui : aucun chemin du jeu ou de bibliothèque n'est demandé.
-Chaque mission y possède son propre sous-dossier, un petit fichier
-`mission.json` et un dossier `payload` qui reprend l'arborescence du jeu.
+`STATIC_MENU_MANAGED_FILES.json` mémorise l'empreinte de chaque fichier créé ou
+remplacé. Une mise à jour ou une restauration refuse d'écraser un fichier qui a
+été retouché depuis l'installation.
 
-L'utilitaire détecte la langue configurée de H&D2 pour adapter son interface,
-vérifie tous les paquets, conserve les missions officielles de `Gamedata01.gdt`,
-ajoute les missions personnalisées avec un préfixe de catégorie traduit, ajoute
-les titres et objectifs traduits, puis copie les ressources dans ce même jeu avec
-sauvegarde. Il ne lance pas le jeu et n'utilise ni injection ni modification
-d'un processus. Le guide complet se trouve dans `custom-missions/README.md`.
-Une réintégration refuse d'écraser un fichier géré qui a ensuite été retouché.
-Le retrait d'un paquet et la restauration appliquent la même protection, et
-l'ensemble des écritures est annulé automatiquement si une étape échoue.
+## État de validation
 
-## Retour arrière
-
-Le gestionnaire sauvegarde les fichiers de données qu'il remplace et peut les
-restaurer sans lancer le jeu. L'exécutable commercial n'entre jamais dans la
-transaction.
-
-## Conclusion technique
-
-Le chargeur sait construire des noms `Gamedata%02d.gdt`, mais l'écran Solo
-n'enregistre explicitement que les contrôles officiels. Un troisième bouton ne
-peut donc pas être ajouté par la seule modification de `singleplayer.4ds`.
-
-Le projet privilégie désormais la compatibilité antivirus : exécutable intact,
-catalogue natif unique et catégories visibles dans les titres localisés. Le
-bouton autonome et les sous-menus internes restent abandonnés.
+Les tests hors ligne exécutent les adaptateurs x86 compilés et couvrent les
+trois boutons, les listes, les retours, les offsets cumulés et la préservation
+des menus officiels. Le gestionnaire reproduit bit pour bit les catalogues et
+scènes générés par l'outil Python de référence. Une validation visuelle
+complète dans le jeu reste obligatoire avant de qualifier cette branche de
+version stable.

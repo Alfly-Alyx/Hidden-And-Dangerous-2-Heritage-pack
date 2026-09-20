@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "milestone": "0.7.5",
+  "milestone": "0.7.6",
   "purpose": "Validation en jeu des restaurations stables avant la compilation finale.",
   "rules": [
     "Un cas ne passe à passed qu'après un essai dans Hidden & Dangerous 2 1.12.",

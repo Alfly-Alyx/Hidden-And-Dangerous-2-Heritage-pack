@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -47,6 +48,7 @@ namespace HD2CustomMissionManager
         public readonly List<LocalizedText> Objectives = new List<LocalizedText>();
         public readonly List<PayloadFile> Files = new List<PayloadFile>();
         public int TitleId;
+        public bool PreserveTemplateObjectives;
         public readonly List<int> ObjectiveIds = new List<int>();
     }
 
@@ -68,6 +70,7 @@ namespace HD2CustomMissionManager
         public string Relative;
         public bool Created;
         public string Sha256;
+        public string BackupSha256;
         public string PackageId;
     }
 
@@ -213,6 +216,14 @@ namespace HD2CustomMissionManager
 
     internal static class MissionPackageCore
     {
+        private const string ExpectedExecutableSha256 =
+            "1EEBDE4710F800F712A05B1ECEE2BA862C144F478DF89B58E54C912E857EE78C";
+        private const string MenuModuleResource =
+            "HD2CustomMissionManager.CustomMenu.asi";
+        private const string RuntimeOwner = "__custom-menu-runtime__";
+        private const int MaximumMenuRows = 255;
+        private const string ExpectedAsiLoaderSha256 =
+            "A07F2B90B0EA9CFFB568218E500EA3280B750C195E83D82A6BB7A252642708E3";
         private const int TextIdStart = 22000;
         private const int TextIdEnd = 65000;
         private const int TextIdBlock = 32;
@@ -254,9 +265,31 @@ namespace HD2CustomMissionManager
                     { "japan", "自由探索 / 武器テスト" }
                 } }
             };
+        private static readonly Dictionary<int, Dictionary<string, string>> MenuNames =
+            new Dictionary<int, Dictionary<string, string>> {
+                { 20402, new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
+                    { "default", "CUSTOM MISSIONS" }, { "english", "CUSTOM MISSIONS" },
+                    { "EnglishUS", "CUSTOM MISSIONS" }, { "french", "MISSIONS PERSONNALISÉES" },
+                    { "german", "EIGENE MISSIONEN" }, { "italian", "MISSIONI PERSONALIZZATE" },
+                    { "spanish", "MISIONES PERSONALIZADAS" }, { "czech", "VLASTNÍ MISE" },
+                    { "japan", "カスタムミッション" }
+                } },
+                { 20413, new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
+                    { "default", "BACK" }, { "english", "BACK" }, { "EnglishUS", "BACK" },
+                    { "french", "RETOUR" }, { "german", "ZURÜCK" },
+                    { "italian", "INDIETRO" }, { "spanish", "ATRÁS" },
+                    { "czech", "ZPĚT" }, { "japan", "戻る" }
+                } }
+            };
         private static readonly HashSet<string> AllowedRoots =
             new HashSet<string>(new[] {
                 "Maps", "Missions", "Models", "Scripts", "Sounds", "Tables", "Text"
+            }, StringComparer.OrdinalIgnoreCase);
+        private static readonly HashSet<string> ForbiddenPayloadExtensions =
+            new HashSet<string>(new[] {
+                ".asi", ".dll", ".exe", ".com", ".bat", ".cmd", ".ps1",
+                ".vbs", ".vbe", ".js", ".jse", ".wsf", ".wsh", ".hta",
+                ".msi", ".msp", ".lnk", ".url", ".pif", ".cpl", ".drv", ".sys"
             }, StringComparer.OrdinalIgnoreCase);
         private static readonly HashSet<string> TranslationKeys =
             new HashSet<string>(new[] {
@@ -279,6 +312,14 @@ namespace HD2CustomMissionManager
         private static string CategoryName(string category, string language)
         {
             Dictionary<string, string> values = CategoryNames[category];
+            string value;
+            if (values.TryGetValue(language, out value)) return value;
+            return values["default"];
+        }
+
+        private static string MenuName(int textId, string language)
+        {
+            Dictionary<string, string> values = MenuNames[textId];
             string value;
             if (values.TryGetValue(language, out value)) return value;
             return values["default"];
@@ -430,7 +471,14 @@ namespace HD2CustomMissionManager
                     if (parts.Length == 0 || !AllowedRoots.Contains(parts[0])
                         || parts.Any(part => part == "." || part == ".." || part.IndexOf(':') >= 0))
                         throw new InvalidDataException(package.Id + " : chemin interdit : " + relative);
+                    string extension = Path.GetExtension(relative);
+                    if (ForbiddenPayloadExtensions.Contains(extension))
+                        throw new InvalidDataException(package.Id
+                            + " : type de fichier exécutable interdit dans un paquet : "
+                            + relative);
                     if (String.Equals(relative, "Models/singleplayer.4ds", StringComparison.OrdinalIgnoreCase)
+                        || String.Equals(relative, "Models/single mission 2.4ds", StringComparison.OrdinalIgnoreCase)
+                        || String.Equals(relative, "Scripts/HD2.CustomMenu.asi", StringComparison.OrdinalIgnoreCase)
                         || (String.Equals(parts[0], "Text", StringComparison.OrdinalIgnoreCase)
                             && String.Equals(parts[parts.Length - 1], "TEXTY_DD.txt", StringComparison.OrdinalIgnoreCase)))
                         throw new InvalidDataException(package.Id + " : fichier réservé : " + relative);
@@ -863,7 +911,7 @@ namespace HD2CustomMissionManager
             bool title = false;
             bool directory = false;
             bool loading = mission.LoadingScreen == null;
-            bool objectives = false;
+            bool objectives = mission.PreserveTemplateObjectives;
             GdtBlock objectiveModel = model.Children.FirstOrDefault(child => child.Kind == 0x28);
             List<byte[]> content = new List<byte[]>();
             foreach (GdtBlock child in model.Children)
@@ -885,7 +933,9 @@ namespace HD2CustomMissionManager
                 }
                 else if (child.Kind == 0x28)
                 {
-                    if (!objectives)
+                    if (mission.PreserveTemplateObjectives)
+                        content.Add(EncodeExisting(child));
+                    else if (!objectives)
                     {
                         if (objectiveModel == null && mission.ObjectiveIds.Count > 0)
                             throw new InvalidDataException("Le gabarit ne contient aucun objectif.");
@@ -949,18 +999,23 @@ namespace HD2CustomMissionManager
             return EncodeBlock(campaign.Kind, Join(content));
         }
 
-        public static byte[] ReadSourceCatalogue(string originalGame)
+        private static byte[] ReadArchiveEntry(string originalGame, string entryName)
         {
             string archivePath = Path.Combine(Path.GetFullPath(originalGame), "SabreSquadron.dta");
             if (!File.Exists(archivePath)) throw new FileNotFoundException("SabreSquadron.dta introuvable.", archivePath);
             using (DtaArchive archive = new DtaArchive(archivePath))
             {
                 DtaEntry entry = archive.Entries.FirstOrDefault(item =>
-                    String.Equals(item.Name.Replace('/', '\\'), "GameData\\Gamedata01.gdt",
+                    String.Equals(item.Name.Replace('/', '\\'), entryName.Replace('/', '\\'),
                         StringComparison.OrdinalIgnoreCase));
-                if (entry == null) throw new InvalidDataException("Gamedata01.gdt absent de l'archive.");
+                if (entry == null) throw new InvalidDataException(entryName + " absent de l'archive.");
                 return archive.Read(entry);
             }
+        }
+
+        public static byte[] ReadSourceCatalogue(string originalGame)
+        {
+            return ReadArchiveEntry(originalGame, "GameData\\Gamedata01.gdt");
         }
 
         public static byte[] BuildCatalogue(byte[] source, MissionLibrary library)
@@ -1020,6 +1075,169 @@ namespace HD2CustomMissionManager
             return result;
         }
 
+        private static byte[] BuildCustomCatalogue(
+            byte[] source, IList<MissionPackage> packages)
+        {
+            List<GdtBlock> root;
+            if (!TryParseBlocks(source, 0, source.Length, out root))
+                throw new InvalidDataException("Catalogue Sabre Squadron illisible.");
+            GdtBlock top = root.FirstOrDefault(block => block.Kind == 0x01);
+            GdtBlock main = top == null ? null : Direct(top, 0x05);
+            if (main == null) throw new InvalidDataException("Liste des campagnes absente.");
+            List<GdtBlock> sourceCampaigns = main.Children
+                .Where(block => block.Kind == 0x3C).ToList();
+            if (sourceCampaigns.Count < CategoryOrder.Length)
+                throw new InvalidDataException("Trois gabarits de campagne requis.");
+
+            Dictionary<string, GdtBlock> templates =
+                new Dictionary<string, GdtBlock>(StringComparer.OrdinalIgnoreCase);
+            foreach (GdtBlock mission in Walk(main.Children).Where(block => block.Kind == 0x32))
+            {
+                GdtBlock directory = Direct(mission, 0x36);
+                if (directory != null) templates[BlockString(directory)] = mission;
+            }
+
+            Dictionary<int, List<MissionPackage>> grouped =
+                new Dictionary<int, List<MissionPackage>>();
+            for (int index = 0; index < CategoryOrder.Length; index++)
+            {
+                string category = CategoryOrder[index];
+                List<MissionPackage> matches = packages.Where(item =>
+                    String.Equals(item.Category, category, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+                if (matches.Count > 0) grouped[index] = matches;
+            }
+
+            int campaignIndex = 0;
+            List<byte[]> mainContent = new List<byte[]>();
+            foreach (GdtBlock child in main.Children)
+            {
+                if (child.Kind == 0x3C)
+                {
+                    List<MissionPackage> missions;
+                    if (grouped.TryGetValue(campaignIndex, out missions))
+                        mainContent.Add(RewriteCampaign(
+                            child, CategoryIds[CategoryOrder[campaignIndex]], missions, templates));
+                    campaignIndex++;
+                }
+                else mainContent.Add(EncodeExisting(child));
+            }
+
+            byte[] rebuiltMain = EncodeBlock(0x05, Join(mainContent));
+            List<byte[]> topContent = new List<byte[]>();
+            foreach (GdtBlock child in top.Children)
+                topContent.Add(Object.ReferenceEquals(child, main)
+                    ? rebuiltMain : EncodeExisting(child));
+            byte[] rebuiltTop = EncodeBlock(0x01, Join(topContent));
+            byte[] result = Join(root.Select(block =>
+                Object.ReferenceEquals(block, top) ? rebuiltTop : EncodeExisting(block)));
+            ValidateCustomCatalogue(result, packages);
+            return result;
+        }
+
+        private static void ValidateCustomCatalogue(
+            byte[] data, IList<MissionPackage> packages)
+        {
+            List<GdtBlock> root;
+            if (!TryParseBlocks(data, 0, data.Length, out root))
+                throw new InvalidDataException("Validation du catalogue personnalisé impossible.");
+            List<string> expected = CategoryOrder.SelectMany(category => packages
+                .Where(item => String.Equals(item.Category, category,
+                    StringComparison.OrdinalIgnoreCase))
+                .Select(item => item.MissionDirectory)).ToList();
+            List<string> actual = Walk(root).Where(block => block.Kind == 0x32)
+                .Select(block => Direct(block, 0x36)).Where(block => block != null)
+                .Select(BlockString).ToList();
+            if (!actual.SequenceEqual(expected, StringComparer.OrdinalIgnoreCase))
+                throw new InvalidDataException(
+                    "Le catalogue personnalisé ne contient pas les missions attendues.");
+        }
+
+        private static MissionPackage TechnicalPackage(
+            string category, int titleId, string missionDirectory)
+        {
+            return new MissionPackage {
+                Id = RuntimeOwner + "." + category,
+                Category = category,
+                MissionDirectory = missionDirectory,
+                TemplateMission = missionDirectory,
+                TitleId = titleId,
+                PreserveTemplateObjectives = true,
+                Title = new LocalizedText()
+            };
+        }
+
+        private static List<string> CatalogueMissionDirectories(
+            byte[] source, string catalogueName)
+        {
+            List<GdtBlock> root;
+            if (!TryParseBlocks(source, 0, source.Length, out root))
+                throw new InvalidDataException(catalogueName + " illisible.");
+            GdtBlock top = root.FirstOrDefault(block => block.Kind == 0x01);
+            GdtBlock main = top == null ? null : Direct(top, 0x05);
+            if (main == null)
+                throw new InvalidDataException("Liste des campagnes absente de "
+                    + catalogueName + ".");
+            return Walk(main.Children).Where(block => block.Kind == 0x32)
+                .Select(block => Direct(block, 0x36)).Where(block => block != null)
+                .Select(BlockString).ToList();
+        }
+
+        private static Dictionary<string, byte[]> BuildCustomCatalogues(
+            byte[] source, byte[] originalSource, MissionLibrary library)
+        {
+            List<GdtBlock> root;
+            if (!TryParseBlocks(source, 0, source.Length, out root))
+                throw new InvalidDataException("Catalogue Sabre Squadron illisible.");
+            GdtBlock top = root.FirstOrDefault(block => block.Kind == 0x01);
+            GdtBlock main = top == null ? null : Direct(top, 0x05);
+            if (main == null) throw new InvalidDataException("Liste des campagnes absente.");
+            List<string> expansionDirectories = Walk(main.Children)
+                .Where(block => block.Kind == 0x32)
+                .Select(block => Direct(block, 0x36)).Where(block => block != null)
+                .Select(BlockString).ToList();
+            List<string> originalDirectories = CatalogueMissionDirectories(
+                originalSource, "Gamedata00.gdt");
+            List<string> officialDirectories = originalDirectories
+                .Concat(expansionDirectories).ToList();
+            HashSet<string> official = new HashSet<string>(
+                officialDirectories, StringComparer.OrdinalIgnoreCase);
+            foreach (MissionPackage package in library.Packages)
+                if (official.Contains(package.MissionDirectory))
+                    throw new InvalidDataException(
+                        "Le dossier de mission entre en conflit avec une mission officielle : "
+                        + package.MissionDirectory);
+            ValidateMenuRowLimit(officialDirectories.Count, library.Packages.Count);
+
+            List<MissionPackage> categories = new List<MissionPackage> {
+                TechnicalPackage("multiplayer-adaptation", 20410, "Brest"),
+                TechnicalPackage("user-mission", 20411, "Libye1"),
+                TechnicalPackage("free-exploration", 20412, "Sicily1")
+            };
+            Dictionary<string, byte[]> result =
+                new Dictionary<string, byte[]>(StringComparer.OrdinalIgnoreCase);
+            result["Gamedata02.gdt"] = BuildCustomCatalogue(source, categories);
+            for (int index = 0; index < CategoryOrder.Length; index++)
+            {
+                string category = CategoryOrder[index];
+                List<MissionPackage> detail = library.Packages.Where(item =>
+                    String.Equals(item.Category, category, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+                result["Gamedata" + (index + 3).ToString("D2") + ".gdt"] =
+                    BuildCustomCatalogue(source, detail);
+            }
+            return result;
+        }
+
+        private static void ValidateMenuRowLimit(int officialRows, int packageRows)
+        {
+            int totalRows = officialRows + CategoryOrder.Length + packageRows;
+            if (totalRows > MaximumMenuRows)
+                throw new InvalidDataException(
+                    "Trop de missions pour le moteur du jeu : " + totalRows + "/"
+                    + MaximumMenuRows + " lignes.");
+        }
+
         private static void ValidateCatalogue(
             byte[] data, IList<string> officialDirectories, MissionLibrary library)
         {
@@ -1052,16 +1270,23 @@ namespace HD2CustomMissionManager
                     ? Encoding.GetEncoding(1250)
                     : String.Equals(language, "japan", StringComparison.OrdinalIgnoreCase)
                         ? new UTF8Encoding(false) : Encoding.GetEncoding(1252);
-                byte[] original = File.ReadAllBytes(path);
+                string relative = Path.GetFullPath(path).Substring(
+                    Path.GetFullPath(testGame).TrimEnd(Path.DirectorySeparatorChar).Length)
+                    .TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                string backup = Path.Combine(testGame, "STATIC_MENU_BACKUP", relative);
+                byte[] original = File.ReadAllBytes(
+                    File.Exists(backup) ? backup : path);
                 string text = encoding.GetString(original);
                 string separator = text.Contains("\r\n") ? "\r\n" : "\n";
                 Dictionary<int, string> values = new Dictionary<int, string>();
+                values[20499] = " ";
+                values[20402] = MenuName(20402, language);
+                values[20413] = MenuName(20413, language);
                 foreach (string category in CategoryOrder)
                     values[CategoryIds[category]] = CategoryName(category, language);
                 foreach (MissionPackage package in library.Packages)
                 {
-                    values[package.TitleId] = "[" + CategoryName(package.Category, language)
-                        + "] " + package.Title.ForLanguage(language);
+                    values[package.TitleId] = package.Title.ForLanguage(language);
                     for (int index = 0; index < package.Objectives.Count; index++)
                         values[package.ObjectiveIds[index]] = package.Objectives[index].ForLanguage(language);
                 }
@@ -1082,6 +1307,171 @@ namespace HD2CustomMissionManager
                 result[path] = encoding.GetBytes(text);
             }
             if (result.Count == 0) throw new InvalidDataException("Aucune table TEXTY_DD.txt trouvée.");
+            return result;
+        }
+
+        private static void WriteUInt16(byte[] data, int offset, ushort value)
+        {
+            byte[] encoded = BitConverter.GetBytes(value);
+            Buffer.BlockCopy(encoded, 0, data, offset, encoded.Length);
+        }
+
+        private static void WriteSingle(byte[] data, int offset, float value)
+        {
+            byte[] encoded = BitConverter.GetBytes(value);
+            Buffer.BlockCopy(encoded, 0, data, offset, encoded.Length);
+        }
+
+        private static byte[] CloneSceneRecord(
+            byte[] source, int start, int end,
+            int nameLengthOffset, int nameOffset, int oldNameLength, string replacement,
+            int parentOffset, ushort parentId, int positionOffset, float[] position)
+        {
+            byte[] name = Encoding.ASCII.GetBytes(replacement);
+            if (name.Length > Byte.MaxValue)
+                throw new InvalidDataException("Nom de contrôle 4DS trop long.");
+            int prefixLength = nameLengthOffset - start;
+            int suffixOffset = nameOffset + oldNameLength;
+            byte[] record = new byte[prefixLength + 1 + name.Length + end - suffixOffset];
+            Buffer.BlockCopy(source, start, record, 0, prefixLength);
+            record[prefixLength] = (byte)name.Length;
+            Buffer.BlockCopy(name, 0, record, prefixLength + 1, name.Length);
+            Buffer.BlockCopy(source, suffixOffset, record, prefixLength + 1 + name.Length,
+                end - suffixOffset);
+            WriteUInt16(record, parentOffset - start, parentId);
+            if (position != null)
+                for (int axis = 0; axis < 3; axis++)
+                    WriteSingle(record, positionOffset - start + axis * 4, position[axis]);
+            return record;
+        }
+
+        private static byte[] AssembleScene(
+            byte[] source, int tableEnd, int nodeCountOffset, ushort nodeCount,
+            IEnumerable<byte[]> clones)
+        {
+            List<byte[]> records = clones.ToList();
+            int length = source.Length + records.Sum(record => record.Length);
+            byte[] result = new byte[length];
+            Buffer.BlockCopy(source, 0, result, 0, tableEnd);
+            int cursor = tableEnd;
+            foreach (byte[] record in records)
+            {
+                Buffer.BlockCopy(record, 0, result, cursor, record.Length);
+                cursor += record.Length;
+            }
+            Buffer.BlockCopy(source, tableEnd, result, cursor, source.Length - tableEnd);
+            WriteUInt16(result, nodeCountOffset, nodeCount);
+            return result;
+        }
+
+        private static byte[] BuildSinglePlayerScene(byte[] source)
+        {
+            const string sourceHash =
+                "2B5737C979063BEDADCB2F716CE2CB84E2DDB8DD9BE5EF98E7DF9743A2EAC97D";
+            const string resultHash =
+                "7A605F3077DBAD273A08D76934731FC7EFBDB15692BDD0922781DB5E49809A62";
+            if (!String.Equals(Sha256(source), sourceHash, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidDataException(
+                    "Modèle Models/singleplayer.4ds non pris en charge.");
+            List<byte[]> clones = new List<byte[]> {
+                CloneSceneRecord(source, 3790, 3887, 3838, 3839, 15,
+                    "bcampaign02", 3791, 0, 3793,
+                    new[] { 1.223745346069336f, 0.08429983258247375f,
+                        -3.6848626372432136e-09f }),
+                CloneSceneRecord(source, 3887, 4107, 3938, 3939, 9,
+                    "actived10", 3891, 43, 3893,
+                    new[] { 0.03888195753097534f, 0.06750348210334778f,
+                        -0.684241533279419f }),
+                CloneSceneRecord(source, 4107, 4326, 4158, 4159, 8,
+                    "normal10", 4111, 43, 4113,
+                    new[] { -0.5084920525550842f, 0.06750348210334778f,
+                        -0.6833477020263672f })
+            };
+            byte[] result = AssembleScene(source, 11718, 2199, 45, clones);
+            if (!String.Equals(Sha256(result), resultHash, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidDataException("Validation du nouveau menu Solo impossible.");
+            return result;
+        }
+
+        private static byte[] BuildSingleMissionScene(byte[] source)
+        {
+            const string sourceHash =
+                "BE8A5A85230BC67E335E469EE7093C77816C51D4E12C829BF737CA7B6727E50F";
+            const string resultHash =
+                "A18B5883DF7EAC40A32ECBDC40D5D7968A30DCC0F51D8565F38807711B89B084";
+            if (!String.Equals(Sha256(source), sourceHash, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidDataException(
+                    "Modèle Models/single mission 2.4ds non pris en charge.");
+            List<byte[]> clones = new List<byte[]>();
+            string[] roots = { "bcustom user", "bcustom multi", "bcustom explore" };
+            string[] normals = { "normal11", "normal12", "normal13" };
+            string[] actives = { "actived11", "actived12", "actived13" };
+            ushort[] parents = { 41, 44, 47 };
+            float[] normalZ = { -0.2370000034570694f, -0.3230000138282776f,
+                -0.4090000092983246f };
+            float[] activeZ = { -0.2409999966621399f, -0.3269999921321869f,
+                -0.4129999876022339f };
+            for (int index = 0; index < roots.Length; index++)
+            {
+                clones.Add(CloneSceneRecord(source, 2563, 2650, 2611, 2612, 5,
+                    roots[index], 2564, 0, 2566, null));
+                clones.Add(CloneSceneRecord(source, 2650, 2869, 2701, 2702, 8,
+                    normals[index], 2654, parents[index], 2656,
+                    new[] { -0.3327277898788452f, 0.06750348210334778f,
+                        normalZ[index] }));
+                clones.Add(CloneSceneRecord(source, 2869, 3089, 2920, 2921, 9,
+                    actives[index], 2873, parents[index], 2875,
+                    new[] { 0.21464622020721436f, 0.06750348210334778f,
+                        activeZ[index] }));
+            }
+            byte[] result = AssembleScene(source, 12213, 1747, 49, clones);
+            if (!String.Equals(Sha256(result), resultHash, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidDataException(
+                    "Validation du sous-menu de missions personnalisées impossible.");
+            return result;
+        }
+
+        private static byte[] ReadMenuModule()
+        {
+            using (Stream stream = Assembly.GetExecutingAssembly()
+                .GetManifestResourceStream(MenuModuleResource))
+            {
+                if (stream == null)
+                    throw new InvalidDataException(
+                        "Module HD2.CustomMenu.asi absent du gestionnaire.");
+                using (MemoryStream output = new MemoryStream())
+                {
+                    stream.CopyTo(output);
+                    byte[] result = output.ToArray();
+                    if (result.Length < 4096 || result[0] != (byte)'M'
+                        || result[1] != (byte)'Z')
+                        throw new InvalidDataException("Module HD2.CustomMenu.asi invalide.");
+                    int peOffset = BitConverter.ToInt32(result, 0x3c);
+                    if (peOffset < 0x40 || peOffset + 6 > result.Length
+                        || result[peOffset] != (byte)'P' || result[peOffset + 1] != (byte)'E'
+                        || result[peOffset + 2] != 0 || result[peOffset + 3] != 0
+                        || BitConverter.ToUInt16(result, peOffset + 4) != 0x014c)
+                        throw new InvalidDataException(
+                            "Module HD2.CustomMenu.asi invalide ou non x86.");
+                    return result;
+                }
+            }
+        }
+
+        private static Dictionary<string, byte[]> BuildRuntimeFiles(
+            string originalGame, MissionLibrary library, byte[] sourceCatalogue)
+        {
+            Dictionary<string, byte[]> result =
+                new Dictionary<string, byte[]>(StringComparer.OrdinalIgnoreCase);
+            foreach (KeyValuePair<string, byte[]> catalogue in
+                BuildCustomCatalogues(sourceCatalogue,
+                    ReadArchiveEntry(originalGame, "GameData\\Gamedata00.gdt"), library))
+                result["GameData/" + catalogue.Key] = catalogue.Value;
+            result["Models/singleplayer.4ds"] = BuildSinglePlayerScene(
+                ReadArchiveEntry(originalGame, "Models\\singleplayer.4ds"));
+            result["Models/single mission 2.4ds"] = BuildSingleMissionScene(
+                ReadArchiveEntry(originalGame, "Models\\single mission 2.4ds"));
+            result["Scripts/HD2.CustomMenu.asi"] = ReadMenuModule();
             return result;
         }
 
@@ -1160,6 +1550,8 @@ namespace HD2CustomMissionManager
                     Relative = relative,
                     Created = Convert.ToBoolean(item["created"]),
                     Sha256 = Convert.ToString(item["sha256"]),
+                    BackupSha256 = item.ContainsKey("backup_sha256")
+                        ? Convert.ToString(item["backup_sha256"]) : "",
                     PackageId = item.ContainsKey("package_id") ? Convert.ToString(item["package_id"]) : ""
                 };
                 result[relative] = file;
@@ -1176,6 +1568,7 @@ namespace HD2CustomMissionManager
                 record["relative"] = file.Relative;
                 record["created"] = file.Created;
                 record["sha256"] = file.Sha256;
+                if (!file.Created) record["backup_sha256"] = file.BackupSha256;
                 record["package_id"] = file.PackageId;
                 files.Add(record);
             }
@@ -1201,6 +1594,22 @@ namespace HD2CustomMissionManager
             string executable = Path.Combine(target, "HD2_SabreSquadron.exe");
             if (!File.Exists(executable) || !File.Exists(Path.Combine(target, "SabreSquadron.dta")))
                 throw new InvalidDataException("Installation Sabre Squadron incomplète.");
+            string executableHash = Sha256File(executable);
+            if (!String.Equals(executableHash, ExpectedExecutableSha256,
+                StringComparison.OrdinalIgnoreCase))
+                throw new InvalidDataException(
+                    "Version de HD2_SabreSquadron.exe non prise en charge. "
+                    + "Le menu personnalisé exige le client 1.12 original vérifié.");
+            string asiLoader = Path.Combine(target, "d3d8.dll");
+            if (!File.Exists(asiLoader))
+                throw new InvalidDataException(
+                    "Chargeur ASI absent (d3d8.dll). Installez d'abord le correctif écran large "
+                    + "fourni avec le Heritage Pack.");
+            if (!String.Equals(Sha256File(asiLoader), ExpectedAsiLoaderSha256,
+                StringComparison.OrdinalIgnoreCase))
+                throw new InvalidDataException(
+                    "Le fichier d3d8.dll n'est pas le chargeur ASI vérifié du Heritage Pack. "
+                    + "Réinstallez le correctif écran large avant le menu personnalisé.");
             byte[] executableBytes = File.ReadAllBytes(executable);
             if (Encoding.ASCII.GetString(executableBytes).Contains(".patch"))
                 throw new InvalidDataException(
@@ -1232,6 +1641,18 @@ namespace HD2CustomMissionManager
             return Sha256(result);
         }
 
+        public static string RuntimeHashesForTest(
+            string libraryRoot, string originalGame)
+        {
+            MissionLibrary library = LoadLibrary(libraryRoot, false);
+            Dictionary<string, byte[]> files = BuildRuntimeFiles(
+                Path.GetFullPath(originalGame), library, ReadSourceCatalogue(originalGame));
+            Dictionary<string, string> hashes = new Dictionary<string, string>();
+            foreach (KeyValuePair<string, byte[]> file in files)
+                hashes[file.Key] = Sha256(file.Value);
+            return Json.Serialize(hashes);
+        }
+
         private static Dictionary<string, ManagedFile> CloneManagedState(
             Dictionary<string, ManagedFile> source)
         {
@@ -1242,6 +1663,7 @@ namespace HD2CustomMissionManager
                     Relative = pair.Value.Relative,
                     Created = pair.Value.Created,
                     Sha256 = pair.Value.Sha256,
+                    BackupSha256 = pair.Value.BackupSha256,
                     PackageId = pair.Value.PackageId
                 };
             return result;
@@ -1264,6 +1686,40 @@ namespace HD2CustomMissionManager
                     "Le fichier déjà géré a été modifié ou supprimé depuis la dernière intégration : "
                     + previous.Relative + ". Il est conservé; remettez-le en état ou restaurez-le "
                     + "explicitement avant de réintégrer ce paquet.");
+            if (!previous.Created)
+            {
+                string backup = Path.Combine(game, "STATIC_MENU_BACKUP",
+                    previous.Relative.Replace('/', Path.DirectorySeparatorChar));
+                if (!File.Exists(backup))
+                    throw new FileNotFoundException(
+                        "Sauvegarde d'origine absente pour le fichier déjà géré : "
+                        + previous.Relative, backup);
+                string actual = Sha256File(backup);
+                if (!String.IsNullOrWhiteSpace(previous.BackupSha256)
+                    && !String.Equals(actual, previous.BackupSha256,
+                        StringComparison.OrdinalIgnoreCase))
+                    throw new InvalidDataException(
+                        "La sauvegarde d'origine a été modifiée : " + previous.Relative);
+                previous.BackupSha256 = actual;
+            }
+        }
+
+        private static byte[] ReadManagedBackup(string game, ManagedFile file)
+        {
+            string backup = Path.Combine(game, "STATIC_MENU_BACKUP",
+                file.Relative.Replace('/', Path.DirectorySeparatorChar));
+            if (!File.Exists(backup))
+                throw new FileNotFoundException(
+                    "Sauvegarde absente pour le fichier géré : " + file.Relative, backup);
+            byte[] data = File.ReadAllBytes(backup);
+            string actual = Sha256(data);
+            if (!String.IsNullOrWhiteSpace(file.BackupSha256)
+                && !String.Equals(actual, file.BackupSha256,
+                    StringComparison.OrdinalIgnoreCase))
+                throw new InvalidDataException(
+                    "La sauvegarde d'origine a été modifiée : " + file.Relative);
+            file.BackupSha256 = actual;
+            return data;
         }
 
         private static void PlanRemovedManagedFiles(
@@ -1283,14 +1739,7 @@ namespace HD2CustomMissionManager
                 if (file.Created)
                     transaction.AddDelete(target);
                 else
-                {
-                    string backup = Path.Combine(game, "STATIC_MENU_BACKUP",
-                        file.Relative.Replace('/', Path.DirectorySeparatorChar));
-                    if (!File.Exists(backup))
-                        throw new FileNotFoundException(
-                            "Sauvegarde absente pour le fichier retiré : " + file.Relative, backup);
-                    transaction.AddWrite(target, File.ReadAllBytes(backup));
-                }
+                    transaction.AddWrite(target, ReadManagedBackup(game, file));
                 managed.Remove(file.Relative);
                 cleaned++;
             }
@@ -1311,14 +1760,7 @@ namespace HD2CustomMissionManager
                 if (file.Created)
                     transaction.AddDelete(target);
                 else
-                {
-                    string backup = Path.Combine(game, "STATIC_MENU_BACKUP",
-                        file.Relative.Replace('/', Path.DirectorySeparatorChar));
-                    if (!File.Exists(backup))
-                        throw new FileNotFoundException(
-                            "Sauvegarde absente pour le fichier à restaurer : " + file.Relative, backup);
-                    transaction.AddWrite(target, File.ReadAllBytes(backup));
-                }
+                    transaction.AddWrite(target, ReadManagedBackup(game, file));
                 managed.Remove(file.Relative);
                 restored++;
             }
@@ -1361,6 +1803,68 @@ namespace HD2CustomMissionManager
             restored++;
         }
 
+        private static bool PlanLegacyCatalogueMigration(
+            string game, FileTransaction transaction)
+        {
+            Dictionary<string, string> hashes =
+                ReadInstallHashMap(game, "catalogue_sha256");
+            string installedHash;
+            if (!hashes.TryGetValue("Gamedata01.gdt", out installedHash))
+                return false;
+            string relative = "GameData/Gamedata01.gdt";
+            string target = SafeGameTarget(game, relative);
+            if (!File.Exists(target) || String.IsNullOrWhiteSpace(installedHash)
+                || !String.Equals(Sha256File(target), installedHash,
+                    StringComparison.OrdinalIgnoreCase))
+                throw new InvalidDataException(
+                    "L'ancien catalogue personnalisé a été modifié. Restaurez-le avec "
+                    + "l'ancienne version du gestionnaire avant la migration.");
+            string backup = Path.Combine(game, "STATIC_MENU_BACKUP", "GameData",
+                "Gamedata01.gdt");
+            if (!File.Exists(backup))
+                throw new FileNotFoundException(
+                    "Sauvegarde de l'ancien Gamedata01.gdt absente; migration refusée.",
+                    backup);
+            transaction.AddWrite(target, File.ReadAllBytes(backup));
+            return true;
+        }
+
+        private static void RegisterManagedOutput(
+            string game, Dictionary<string, ManagedFile> managed,
+            HashSet<string> desired, string relative, byte[] data, string owner)
+        {
+            relative = relative.Replace('\\', '/');
+            string target = SafeGameTarget(game, relative);
+            ManagedFile previous;
+            bool created;
+            string backupSha256 = "";
+            if (managed.TryGetValue(relative, out previous))
+            {
+                EnsureManagedOverwriteSafe(game, previous);
+                created = previous.Created;
+                backupSha256 = previous.BackupSha256;
+            }
+            else
+            {
+                created = !File.Exists(target);
+                if (!created)
+                {
+                    string backup = Path.Combine(game, "STATIC_MENU_BACKUP",
+                        relative.Replace('/', Path.DirectorySeparatorChar));
+                    backupSha256 = File.Exists(backup)
+                        ? Sha256File(backup) : Sha256File(target);
+                }
+            }
+            managed[relative] = new ManagedFile {
+                Relative = relative,
+                Created = created,
+                Sha256 = Sha256(data),
+                BackupSha256 = backupSha256,
+                PackageId = owner
+            };
+            desired.Add(relative);
+        }
+
         public static string Integrate(
             string libraryRoot, string originalGame, string testGame)
         {
@@ -1371,63 +1875,60 @@ namespace HD2CustomMissionManager
             testGame = Path.GetFullPath(testGame);
             ValidatePreparedTestGame(originalGame, testGame);
             byte[] sourceCatalogue = ReadSourceCatalogue(originalGame);
-            Dictionary<string, byte[]> catalogues = new Dictionary<string, byte[]> {
-                { "Gamedata01.gdt", BuildCatalogue(sourceCatalogue, library) }
-            };
+            Dictionary<string, byte[]> outputs =
+                BuildRuntimeFiles(originalGame, library, sourceCatalogue);
             Dictionary<string, byte[]> textTables = BuildTextTables(testGame, library);
+            string gameRoot = testGame.TrimEnd(Path.DirectorySeparatorChar)
+                + Path.DirectorySeparatorChar;
+            foreach (KeyValuePair<string, byte[]> table in textTables)
+            {
+                string relative = Path.GetFullPath(table.Key).Substring(gameRoot.Length)
+                    .Replace('\\', '/');
+                if (outputs.ContainsKey(relative))
+                    throw new InvalidDataException("Fichier généré deux fois : " + relative);
+                outputs[relative] = table.Value;
+            }
             Dictionary<string, ManagedFile> managed =
                 CloneManagedState(ReadManagedState(testGame));
             HashSet<string> desired =
                 new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             List<Tuple<MissionPackage, PayloadFile, string, byte[]>> payload =
                 new List<Tuple<MissionPackage, PayloadFile, string, byte[]>>();
+            foreach (KeyValuePair<string, byte[]> output in outputs)
+                RegisterManagedOutput(
+                    testGame, managed, desired, output.Key, output.Value, RuntimeOwner);
             foreach (MissionPackage package in library.Packages)
                 foreach (PayloadFile file in package.Files)
                 {
+                    if (outputs.ContainsKey(file.Relative))
+                        throw new InvalidDataException(
+                            "Un paquet tente de remplacer un fichier réservé au menu : "
+                            + file.Relative);
                     string target = SafeGameTarget(testGame, file.Relative);
                     byte[] data = File.ReadAllBytes(file.Source);
-                    ManagedFile previous;
-                    bool created;
-                    if (managed.TryGetValue(file.Relative, out previous))
-                    {
-                        EnsureManagedOverwriteSafe(testGame, previous);
-                        created = previous.Created;
-                    }
-                    else
-                        created = !File.Exists(target);
-                    managed[file.Relative] = new ManagedFile {
-                        Relative = file.Relative, Created = created, Sha256 = Sha256(data),
-                        PackageId = package.Id
-                    };
-                    desired.Add(file.Relative);
+                    RegisterManagedOutput(
+                        testGame, managed, desired, file.Relative, data, package.Id);
                     payload.Add(Tuple.Create(package, file, target, data));
                 }
 
             FileTransaction transaction = new FileTransaction(null);
             int cleaned = 0;
             int preserved = 0;
+            bool migratedLegacyCatalogue =
+                PlanLegacyCatalogueMigration(testGame, transaction);
             PlanRemovedManagedFiles(
                 testGame, desired, managed, transaction, ref cleaned, ref preserved);
-            foreach (string name in catalogues.Keys)
-            {
-                string catalogueTarget = Path.Combine(testGame, "GameData", name);
-                string catalogueBackup = Path.Combine(
-                    testGame, "STATIC_MENU_BACKUP", "GameData", name);
-                if (!File.Exists(catalogueTarget) && !File.Exists(catalogueBackup))
-                    transaction.AddWrite(catalogueBackup, sourceCatalogue);
-                else
-                    PlanBackupIfNeeded(transaction, testGame, catalogueTarget);
-            }
-            foreach (string path in textTables.Keys)
-                PlanBackupIfNeeded(transaction, testGame, path);
+            foreach (string relative in outputs.Keys)
+                if (!managed[relative].Created)
+                    PlanBackupIfNeeded(
+                        transaction, testGame, SafeGameTarget(testGame, relative));
             foreach (Tuple<MissionPackage, PayloadFile, string, byte[]> item in payload)
-                PlanBackupIfNeeded(transaction, testGame, item.Item3);
+                if (!managed[item.Item2.Relative].Created)
+                    PlanBackupIfNeeded(transaction, testGame, item.Item3);
 
-            foreach (KeyValuePair<string, byte[]> catalogue in catalogues)
+            foreach (KeyValuePair<string, byte[]> output in outputs)
                 transaction.AddWrite(
-                    Path.Combine(testGame, "GameData", catalogue.Key), catalogue.Value);
-            foreach (KeyValuePair<string, byte[]> table in textTables)
-                transaction.AddWrite(table.Key, table.Value);
+                    SafeGameTarget(testGame, output.Key), output.Value);
             foreach (Tuple<MissionPackage, PayloadFile, string, byte[]> item in payload)
                 transaction.AddWrite(item.Item3, item.Item4);
             transaction.AddWrite(
@@ -1438,20 +1939,25 @@ namespace HD2CustomMissionManager
                     Path.Combine(library.Root, RegistryName), RegistryBytes(library));
 
             Dictionary<string, object> report = new Dictionary<string, object>();
-            report["status"] = "CUSTOM_MISSIONS_INSTALLED_NATIVE_CATALOGUE_GAME_NOT_LAUNCHED";
+            report["status"] =
+                "CUSTOM_MISSIONS_INSTALLED_THREE_LIST_GUI_GAME_NOT_LAUNCHED";
             report["missions"] = library.Packages.Count;
             report["payload_files"] = library.FileCount;
+            report["migrated_legacy_catalogue"] = migratedLegacyCatalogue;
             Dictionary<string, string> catalogueHashes = new Dictionary<string, string>();
-            foreach (KeyValuePair<string, byte[]> catalogue in catalogues)
-                catalogueHashes[catalogue.Key] = Sha256(catalogue.Value);
+            foreach (KeyValuePair<string, byte[]> output in outputs)
+                if (output.Key.StartsWith("GameData/", StringComparison.OrdinalIgnoreCase))
+                    catalogueHashes[Path.GetFileName(output.Key)] = Sha256(output.Value);
             report["catalogue_sha256"] = catalogueHashes;
             Dictionary<string, string> textHashes = new Dictionary<string, string>();
-            string gameRoot = testGame.TrimEnd(Path.DirectorySeparatorChar)
-                + Path.DirectorySeparatorChar;
-            foreach (KeyValuePair<string, byte[]> table in textTables)
-                textHashes[Path.GetFullPath(table.Key).Substring(gameRoot.Length).Replace('\\', '/')]
-                    = Sha256(table.Value);
+            foreach (KeyValuePair<string, byte[]> output in outputs)
+                if (output.Key.StartsWith("Text/", StringComparison.OrdinalIgnoreCase))
+                    textHashes[output.Key] = Sha256(output.Value);
             report["text_table_sha256"] = textHashes;
+            Dictionary<string, string> runtimeHashes = new Dictionary<string, string>();
+            foreach (KeyValuePair<string, byte[]> output in outputs)
+                runtimeHashes[output.Key] = Sha256(output.Value);
+            report["runtime_sha256"] = runtimeHashes;
             report["library"] = library.Root;
             transaction.AddWrite(
                 Path.Combine(testGame, "CUSTOM_MISSIONS_INSTALL.json"),
@@ -1460,7 +1966,8 @@ namespace HD2CustomMissionManager
             library.RegistryChanged = false;
             return library.Packages.Count + " mission(s) intégrée(s), " + library.FileCount
                 + " fichier(s) copiés, " + cleaned + " ancien(s) fichier(s) retiré(s), "
-                + preserved + " fichier(s) modifié(s) conservé(s). Le jeu n'a pas été lancé.";
+                + preserved + " fichier(s) modifié(s) conservé(s). Les trois listes et le menu "
+                + "personnalisé sont installés. Le jeu n'a pas été lancé.";
         }
 
         public static string Restore(string testGame)
@@ -1469,6 +1976,8 @@ namespace HD2CustomMissionManager
             ValidateNoGameProcess();
             Dictionary<string, ManagedFile> managed =
                 CloneManagedState(ReadManagedState(testGame));
+            bool currentRuntime = managed.Values.Any(file =>
+                String.Equals(file.PackageId, RuntimeOwner, StringComparison.OrdinalIgnoreCase));
             int restored = 0;
             int preserved = 0;
             FileTransaction transaction = new FileTransaction(null);
@@ -1476,18 +1985,20 @@ namespace HD2CustomMissionManager
                 testGame, managed, transaction, ref restored, ref preserved);
             Dictionary<string, string> catalogueHashes =
                 ReadInstallHashMap(testGame, "catalogue_sha256");
-            string catalogueName = "Gamedata01.gdt";
             string catalogueExpected;
-            catalogueHashes.TryGetValue(catalogueName, out catalogueExpected);
-            PlanRestoreGeneratedFile(
-                testGame, "GameData/" + catalogueName, catalogueExpected,
-                transaction, ref restored, ref preserved);
-            Dictionary<string, string> textHashes =
-                ReadInstallHashMap(testGame, "text_table_sha256");
-            foreach (KeyValuePair<string, string> table in textHashes)
+            if (catalogueHashes.TryGetValue("Gamedata01.gdt", out catalogueExpected))
                 PlanRestoreGeneratedFile(
-                    testGame, table.Key, table.Value,
+                    testGame, "GameData/Gamedata01.gdt", catalogueExpected,
                     transaction, ref restored, ref preserved);
+            if (!currentRuntime)
+            {
+                Dictionary<string, string> textHashes = ReadInstallHashMap(
+                    testGame, "text_table_sha256");
+                foreach (KeyValuePair<string, string> table in textHashes)
+                    PlanRestoreGeneratedFile(
+                        testGame, table.Key, table.Value,
+                        transaction, ref restored, ref preserved);
+            }
             transaction.AddWrite(
                 Path.Combine(testGame, "STATIC_MENU_MANAGED_FILES.json"),
                 ManagedStateBytes(managed));
@@ -1547,6 +2058,69 @@ namespace HD2CustomMissionManager
                 SafetyAssert(conflictRefused, "la réintégration a accepté un fichier modifié.");
                 SafetyAssert(File.ReadAllBytes(conflictTarget).SequenceEqual(authorChange),
                     "le fichier modifié a changé pendant le refus.");
+
+                string missingBackupGame = Path.Combine(root, "missing-backup");
+                string missingBackupRelative = "Models/missing-backup.bin";
+                string missingBackupTarget = SafeGameTarget(
+                    missingBackupGame, missingBackupRelative);
+                Directory.CreateDirectory(Path.GetDirectoryName(missingBackupTarget));
+                File.WriteAllBytes(missingBackupTarget, installed);
+                ManagedFile missingBackup = new ManagedFile {
+                    Relative = missingBackupRelative, Created = false,
+                    Sha256 = Sha256(installed), PackageId = "test.missing-backup"
+                };
+                bool missingBackupRefused = false;
+                try { EnsureManagedOverwriteSafe(missingBackupGame, missingBackup); }
+                catch (FileNotFoundException) { missingBackupRefused = true; }
+                SafetyAssert(missingBackupRefused,
+                    "la réintégration a recréé une sauvegarde originale absente.");
+
+                string changedBackupGame = Path.Combine(root, "changed-backup");
+                string changedBackupRelative = "Models/changed-backup.bin";
+                string changedBackupTarget = SafeGameTarget(
+                    changedBackupGame, changedBackupRelative);
+                Directory.CreateDirectory(Path.GetDirectoryName(changedBackupTarget));
+                File.WriteAllBytes(changedBackupTarget, installed);
+                byte[] expectedOriginal = Encoding.UTF8.GetBytes("expected-original");
+                string changedBackupPath = Path.Combine(
+                    changedBackupGame, "STATIC_MENU_BACKUP", "Models",
+                    "changed-backup.bin");
+                Directory.CreateDirectory(Path.GetDirectoryName(changedBackupPath));
+                File.WriteAllBytes(changedBackupPath, authorChange);
+                ManagedFile changedBackup = new ManagedFile {
+                    Relative = changedBackupRelative, Created = false,
+                    Sha256 = Sha256(installed), BackupSha256 = Sha256(expectedOriginal),
+                    PackageId = "test.changed-backup"
+                };
+                bool changedBackupRefused = false;
+                try { EnsureManagedOverwriteSafe(changedBackupGame, changedBackup); }
+                catch (InvalidDataException) { changedBackupRefused = true; }
+                SafetyAssert(changedBackupRefused,
+                    "la réintégration a accepté une sauvegarde originale modifiée.");
+
+                string unsafeLibrary = Path.Combine(root, "unsafe-library");
+                string unsafeMission = CreatePackage(
+                    unsafeLibrary, "test.unsafe-payload", "UnsafePayload",
+                    "Unsafe payload", "user-mission", "english");
+                File.WriteAllBytes(Path.Combine(unsafeMission, "tree.klz"),
+                    Encoding.ASCII.GetBytes("test-tree"));
+                string unsafeScript = Path.Combine(
+                    unsafeLibrary, "test.unsafe-payload", "payload", "Scripts",
+                    "evil.asi");
+                Directory.CreateDirectory(Path.GetDirectoryName(unsafeScript));
+                File.WriteAllBytes(unsafeScript, Encoding.ASCII.GetBytes("MZ-test"));
+                bool executablePayloadRefused = false;
+                try { LoadLibrary(unsafeLibrary, false); }
+                catch (InvalidDataException) { executablePayloadRefused = true; }
+                SafetyAssert(executablePayloadRefused,
+                    "un paquet a pu installer un fichier exécutable .asi.");
+
+                ValidateMenuRowLimit(33, 219);
+                bool rowOverflowRefused = false;
+                try { ValidateMenuRowLimit(33, 220); }
+                catch (InvalidDataException) { rowOverflowRefused = true; }
+                SafetyAssert(rowOverflowRefused,
+                    "la limite du moteur a accepté plus de 255 lignes de menu.");
 
                 string restoreGame = Path.Combine(root, "restore-modified");
                 string restoreRelative = "Models/replaced.bin";
@@ -1658,7 +2232,9 @@ namespace HD2CustomMissionManager
                                 "la panne " + failure + " n'a pas restauré un fichier initial.");
                     }
                 }
-                return "Auto-tests de sécurité réussis : 4/4 (conflit, restauration, retrait, annulation transactionnelle).";
+                return "Auto-tests de sécurité réussis : 8/8 (conflit, sauvegarde absente, "
+                    + "sauvegarde modifiée, charge utile exécutable, restauration, retrait, "
+                    + "limite de lignes, annulation transactionnelle).";
             }
             finally
             {
