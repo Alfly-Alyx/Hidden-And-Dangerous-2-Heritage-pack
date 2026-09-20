@@ -23,7 +23,6 @@ Heritage Pack remet en service le jeu en ligne, corrige des objectifs et des sé
 | Missions personnalisées | Ajoute `Solo → Missions personnalisées`, avec des listes séparées pour les missions utilisateur, les adaptations multijoueur et l’exploration libre. Le gestionnaire fourni analyse le dossier `CustomMissions` sans remplacer les créations existantes. |
 | Vestiges officiels | Ajoute Africa5 Prototype et Normandy3 Zone au menu multijoueur avec un nom qui indique clairement leur état expérimental. |
 | Affichage | Détecte l’écran et le PC, applique la résolution maximale utilisable et adapte les graphismes aux performances de la machine. |
-| Guides | Installe deux guides en français et leurs versions anglaises. |
 | Restauration | Sauvegarde les fichiers remplacés et permet de revenir à l’état précédent. |
 
 L’installateur reconnaît ce qui est déjà actif. Après une installation ou une vérification, les options déjà appliquées sont automatiquement décochées.
@@ -49,11 +48,13 @@ La CMP 2.6.5 représente environ **1,08 Go à télécharger** et **3,12 Go insta
 - Pour ajouter une mission, placez son dossier contenant `tree.klz` et ses fichiers nécessaires dans `CustomMissions`, puis lancez `HD2-Custom-Mission-Manager.exe` depuis la racine du jeu et choisissez **Scanner et installer**. Les paquets avancés existants avec `mission.json` restent compatibles.
 - `PROTOTYPE - Africa5` se trouve en Deathmatch.
 - `PROTOTYPE - Normandy3 Zone` se trouve en Occupation.
-- Les quatre PDF sont copiés dans le dossier `Guides` du jeu.
 
 Les deux prototypes servent à explorer des vestiges jouables. Ils ne sont pas présentés comme des missions solo terminées.
 
-## Guides inclus
+## Documents séparés de la release
+
+Ces PDF sont proposés séparément sur la page de la release GitHub.
+L’installateur ne les copie pas et ne les gère pas dans le dossier du jeu.
 
 ### Pour les joueurs
 
@@ -79,7 +80,6 @@ La version **0.8.0** consolide notamment :
 - le déploiement automatique de ce menu dans le jeu par l’installateur principal, même avant l’ajout d’une mission personnalisée ;
 - la remise en service de contenu original qui ne fonctionnait plus dans la version finale ;
 - l’exploration libre appliquée aussi aux deux prototypes ;
-- les quatre guides PDF intégrés à l’installateur ;
 - l’installation réversible et la protection des sauvegardes du joueur.
 
 ## Ce qui n’est pas encore jouable

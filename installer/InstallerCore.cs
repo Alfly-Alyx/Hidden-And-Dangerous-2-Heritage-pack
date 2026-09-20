@@ -143,7 +143,6 @@ namespace HD2CommunityInstaller
             text.AppendLine("Czech 4 : les trois soldats reagissent a la seconde approche de la place.");
             text.AppendLine("France : guidage original des acces souterrains de Lighthouse et seconde route de Brest reactivables.");
             text.AppendLine("London : l'arene London_mp est achevee sous le nom Poland; la campagne anglaise reste distincte.");
-            text.AppendLine("Guides : le guide joueur et le rapport des decouvertes sont inclus.");
             text.AppendLine("Aucune cle de produit n'est lue, affichee ou modifiee.");
             return text.ToString();
         }
@@ -191,8 +190,6 @@ namespace HD2CommunityInstaller
                     StringComparer.OrdinalIgnoreCase);
                 foreach (FileChange change in journal.State.Changes)
                     prepared.Add(change.RelativePath);
-                GuideInstaller.Install(
-                    options.GamePath, journal, prepared, progress);
                 CustomMissionManagerInstaller.Install(
                     options.GamePath, journal, prepared, progress);
                 WidescreenInstaller.Install(

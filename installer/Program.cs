@@ -40,7 +40,6 @@ namespace HD2CommunityInstaller
                         Console.WriteLine(CoBrestGeneratorObjectiveInstaller.ValidateOnly(game));
                         Console.WriteLine(CoBurgundy1StealthObjectiveInstaller.ValidateOnly(game));
                         Console.WriteLine(OfficialEasterEggInstaller.ValidateOnly(game));
-                        Console.WriteLine(GuideInstaller.ValidateOnly());
                         Console.WriteLine(DormantContentInstaller.ValidateOnly(game));
                         Console.WriteLine(NormandyRouteInstaller.ValidateOnly(game));
                         Console.WriteLine(BrestRouteInstaller.ValidateOnly(game));
@@ -132,7 +131,6 @@ namespace HD2CommunityInstaller
                         Console.WriteLine(CoBrestGeneratorObjectiveInstaller.ValidateOnly(game));
                         Console.WriteLine(CoBurgundy1StealthObjectiveInstaller.ValidateOnly(game));
                         Console.WriteLine(OfficialEasterEggInstaller.ValidateOnly(game));
-                        Console.WriteLine(GuideInstaller.ValidateOnly());
                         Console.WriteLine(DormantContentInstaller.ValidateOnly(game));
                         Console.WriteLine(NormandyRouteInstaller.ValidateOnly(game));
                         Console.WriteLine(BrestRouteInstaller.ValidateOnly(game));

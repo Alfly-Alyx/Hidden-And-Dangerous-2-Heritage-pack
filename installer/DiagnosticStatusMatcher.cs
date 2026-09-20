@@ -51,6 +51,21 @@ namespace HD2CommunityInstaller
                 != AppConfig.MasterAliases.Length)
                 throw new InvalidOperationException(
                     "La detection refuse une liste de serveurs Windows en CRLF.");
+            string slashGuide =
+                "Guides/HD2-Guide-Joueur-Secrets-et-Easter-Eggs.pdf";
+            string backslashGuide =
+                @"Guides\HD2-Guide-Joueur-Secrets-et-Easter-Eggs.pdf";
+            if (!String.Equals(
+                    InstallState.NormalizeRelativePath(slashGuide),
+                    InstallState.NormalizeRelativePath(backslashGuide),
+                    StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException(
+                    "Le journal ne normalise pas les separateurs de chemins.");
+            if (!InstallState.IsExternalReleaseGuide(slashGuide)
+                || InstallState.IsExternalReleaseGuide(
+                    @"Guides\HD2-Guide-Joueur-Secrets-et-Easter-Eggs.txt"))
+                throw new InvalidOperationException(
+                    "Le journal ne distingue pas exactement les PDF externes.");
             return "Detection exacte des etats de l'interface verifiee.";
         }
     }

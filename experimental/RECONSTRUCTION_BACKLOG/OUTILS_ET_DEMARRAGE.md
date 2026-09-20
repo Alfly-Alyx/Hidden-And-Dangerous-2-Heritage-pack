@@ -147,8 +147,8 @@ de contourner les contrôles.
 - Réseau : `network_master_audit.py`, `gamespy2_server_probe.py` et
   `network_runtime_preflight.py`. Ces outils accèdent au réseau et ne prouvent
   pas à eux seuls une connexion réussie dans le jeu.
-- PDF : scripts sous `tools/pdf/` (ReportLab requis). Les quatre PDF finaux
-  doivent exister et être plus récents que leurs sources avant la construction.
+- PDF : scripts sous `tools/pdf/` (ReportLab requis). Les quatre PDF finaux sont
+  publiés comme fichiers séparés de la release et ne font pas partie du setup.
 
 ## Construction de l'installateur
 
@@ -159,7 +159,7 @@ de contourner les contrôles.
 
 Le premier appel valide la compilation console; le second produit l'exécutable
 Windows final. Le script utilise le compilateur .NET Framework, les sources C#
-de `installer/`, l'icône, l'archive Widescreen et les quatre PDF. Ne pas lancer
+de `installer/`, l'icône et l'archive Widescreen. Ne pas lancer
 la construction tant que le travail porte seulement sur une étude `.disabled`.
 
 ## Checklist avant la première modification

@@ -23,7 +23,6 @@ Heritage Pack brings online play back, repairs forgotten objectives and sequence
 | Custom missions | Adds `Solo → Custom Missions`, with separate lists for player missions, multiplayer adaptations, and free exploration. The included manager scans the `CustomMissions` folder without replacing existing creations. |
 | Official remnants | Adds Africa5 Prototype and Normandy3 Zone to multiplayer with names that clearly show their experimental status. |
 | Display setup | Detects the monitor and PC, applies the highest usable resolution, and adjusts quality to the machine’s performance. |
-| Guides | Installs two French guides and their English editions. |
 | Restore option | Backs up replaced files and can return the game to its previous state. |
 
 The installer detects features that are already active. After installation or verification, completed options are automatically unticked.
@@ -49,11 +48,13 @@ CMP 2.6.5 requires about **1.08 GB to download** and **3.12 GB once installed**.
 - To add a mission, place its folder containing `tree.klz` and its required files in `CustomMissions`, then run `HD2-Custom-Mission-Manager.exe` from the game root and select **Scan and install**. Existing advanced packages with `mission.json` remain supported.
 - `PROTOTYPE - Africa5` is available in Deathmatch.
 - `PROTOTYPE - Normandy3 Zone` is available in Occupation.
-- All four PDFs are copied to the game’s `Guides` folder.
 
 The two prototypes are playable remnants intended for exploration. They are not presented as completed solo missions.
 
-## Included guides
+## Separate release documents
+
+These PDFs are separate downloads on the GitHub release page. The installer
+does not copy or manage them in the game folder.
 
 ### For players
 
@@ -79,7 +80,6 @@ Version **0.8.0** consolidates:
 - automatic deployment of that in-game menu by the main Heritage Pack installer, even before a custom mission is added;
 - original game content that no longer worked in the final release;
 - free exploration applied to both prototypes as well;
-- all four PDF guides embedded in the installer;
 - reversible installation and protection of player progress.
 
 ## What is not playable yet

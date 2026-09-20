@@ -10,6 +10,22 @@ import os
 from pathlib import Path, PureWindowsPath
 
 
+EXTERNAL_RELEASE_GUIDES = {
+    str(PureWindowsPath("Guides/HD2-Guide-Joueur-Secrets-et-Easter-Eggs.pdf")).casefold(),
+    str(PureWindowsPath("Guides/HD2-Rapport-des-Decouvertes.pdf")).casefold(),
+    str(PureWindowsPath("Guides/HD2-Player-Guide-Secrets-and-Easter-Eggs-EN.pdf")).casefold(),
+    str(PureWindowsPath("Guides/HD2-Discovery-Report-EN.pdf")).casefold(),
+}
+
+
+def normalize_relative(value: str) -> str:
+    return str(PureWindowsPath(value))
+
+
+def is_external_release_guide(value: str) -> bool:
+    return normalize_relative(value).casefold() in EXTERNAL_RELEASE_GUIDES
+
+
 def decode(value: str) -> str:
     return base64.b64decode(value, validate=True).decode("utf-8")
 
@@ -80,8 +96,10 @@ def audit(path: Path, verify_hashes: bool) -> dict[str, object]:
             elif kind == "BACKUP" and len(fields) >= 2:
                 backup_root = Path(decode(fields[1]))
             elif kind in ("CREATED", "REPLACED") and len(fields) >= 2:
-                relative = decode(fields[1])
-                key = str(PureWindowsPath(relative)).casefold()
+                relative = normalize_relative(decode(fields[1]))
+                if is_external_release_guide(relative):
+                    continue
+                key = relative.casefold()
                 if key in by_path:
                     errors.append(f"line {number}: duplicate tracked path {relative}")
                     continue
@@ -93,8 +111,10 @@ def audit(path: Path, verify_hashes: bool) -> dict[str, object]:
                 changes.append(change)
                 by_path[key] = change
             elif kind == "HASH" and len(fields) >= 3:
-                relative = decode(fields[1])
-                key = str(PureWindowsPath(relative)).casefold()
+                relative = normalize_relative(decode(fields[1]))
+                if is_external_release_guide(relative):
+                    continue
+                key = relative.casefold()
                 change = by_path.get(key)
                 if change is None:
                     errors.append(f"line {number}: hash without tracked path {relative}")
@@ -105,7 +125,7 @@ def audit(path: Path, verify_hashes: bool) -> dict[str, object]:
                     change["sha256"] = fields[2].upper()
             elif kind == "PROFILE_UNLOCK" and len(fields) >= 5:
                 profile_unlocks.append({
-                    "relative": decode(fields[1]),
+                    "relative": normalize_relative(decode(fields[1])),
                     "base_bytes": len(base64.b64decode(fields[2], validate=True)),
                     "sabre_bytes": len(base64.b64decode(fields[3], validate=True)),
                     "sha256": fields[4].upper(),

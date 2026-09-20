@@ -17,7 +17,6 @@ namespace HD2CommunityInstaller
             text.AppendLine("Easter eggs Africa 1 et Africa 4 : " + DetectEasterEggs(gamePath));
             text.AppendLine("Vestiges Normandy3 Zone et Africa5 Prototype : "
                 + DetectExperimentalVestiges(gamePath));
-            text.AppendLine("Guides PDF : " + DetectGuides(gamePath));
             text.AppendLine(MissionUnlockInstaller.DescribeStatus(gamePath));
             return text.ToString().TrimEnd();
         }
@@ -181,20 +180,6 @@ namespace HD2CommunityInstaller
             int ready = (normandy && normandyFiles ? 1 : 0)
                 + (africa && africaFiles ? 1 : 0);
             return CountStatus(ready, 2);
-        }
-
-        private static string DetectGuides(string gamePath)
-        {
-            int ready = 0;
-            if (File.Exists(Path.Combine(gamePath, "Guides",
-                "HD2-Guide-Joueur-Secrets-et-Easter-Eggs.pdf"))) ready++;
-            if (File.Exists(Path.Combine(gamePath, "Guides",
-                "HD2-Rapport-des-Decouvertes.pdf"))) ready++;
-            if (File.Exists(Path.Combine(gamePath, "Guides",
-                "HD2-Player-Guide-Secrets-and-Easter-Eggs-EN.pdf"))) ready++;
-            if (File.Exists(Path.Combine(gamePath, "Guides",
-                "HD2-Discovery-Report-EN.pdf"))) ready++;
-            return CountStatus(ready, 4);
         }
 
         private static string ReadOptional(string gamePath, string relative)

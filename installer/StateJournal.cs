@@ -81,7 +81,7 @@ namespace HD2CommunityInstaller
                 else if (fields[0] == "PROFILE_UNLOCK" && fields.Length >= 5)
                 {
                     state.ProfileUnlocks.Add(new ProfileUnlockChange {
-                        RelativePath = Decode(fields[1]),
+                        RelativePath = NormalizeRelativePath(Decode(fields[1])),
                         OriginalBase = Convert.FromBase64String(fields[2]),
                         OriginalSabre = Convert.FromBase64String(fields[3]),
                         InstalledSha256 = fields[4]
@@ -89,16 +89,19 @@ namespace HD2CommunityInstaller
                 }
                 else if (fields[0] == "CREATED" || fields[0] == "REPLACED")
                 {
+                    string relative = NormalizeRelativePath(Decode(fields[1]));
+                    if (IsExternalReleaseGuide(relative)) continue;
                     FileChange change = new FileChange {
                         WasCreated = fields[0] == "CREATED",
-                        RelativePath = Decode(fields[1])
+                        RelativePath = relative
                     };
                     state.Changes.Add(change);
                     byPath[change.RelativePath] = change;
                 }
                 else if (fields[0] == "HASH" && fields.Length >= 3)
                 {
-                    string relative = Decode(fields[1]);
+                    string relative = NormalizeRelativePath(Decode(fields[1]));
+                    if (IsExternalReleaseGuide(relative)) continue;
                     FileChange change;
                     if (byPath.TryGetValue(relative, out change))
                         change.InstalledSha256 = fields[2];
@@ -107,6 +110,31 @@ namespace HD2CommunityInstaller
             if (String.IsNullOrWhiteSpace(state.GamePath) || String.IsNullOrWhiteSpace(state.BackupRoot))
                 throw new InvalidDataException("Le journal d'installation est incomplet.");
             return state;
+        }
+
+        internal static string NormalizeRelativePath(string value)
+        {
+            return value == null ? null : value
+                .Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar)
+                .Replace('/', Path.DirectorySeparatorChar)
+                .Replace('\\', Path.DirectorySeparatorChar);
+        }
+
+        internal static bool IsExternalReleaseGuide(string relativePath)
+        {
+            string relative = NormalizeRelativePath(relativePath);
+            return String.Equals(relative,
+                    @"Guides\HD2-Guide-Joueur-Secrets-et-Easter-Eggs.pdf",
+                    StringComparison.OrdinalIgnoreCase)
+                || String.Equals(relative,
+                    @"Guides\HD2-Rapport-des-Decouvertes.pdf",
+                    StringComparison.OrdinalIgnoreCase)
+                || String.Equals(relative,
+                    @"Guides\HD2-Player-Guide-Secrets-and-Easter-Eggs-EN.pdf",
+                    StringComparison.OrdinalIgnoreCase)
+                || String.Equals(relative,
+                    @"Guides\HD2-Discovery-Report-EN.pdf",
+                    StringComparison.OrdinalIgnoreCase);
         }
 
         internal static string Encode(string value)
@@ -176,18 +204,21 @@ namespace HD2CommunityInstaller
 
         public void RecordCreated(string relativePath)
         {
+            relativePath = InstallState.NormalizeRelativePath(relativePath);
             writer.WriteLine("CREATED\t" + InstallState.Encode(relativePath));
             State.Changes.Add(new FileChange { WasCreated = true, RelativePath = relativePath });
         }
 
         public void RecordReplacement(string relativePath)
         {
+            relativePath = InstallState.NormalizeRelativePath(relativePath);
             writer.WriteLine("REPLACED\t" + InstallState.Encode(relativePath));
             State.Changes.Add(new FileChange { WasCreated = false, RelativePath = relativePath });
         }
 
         public void RecordHash(string relativePath, string sha256)
         {
+            relativePath = InstallState.NormalizeRelativePath(relativePath);
             writer.WriteLine(
                 "HASH\t" + InstallState.Encode(relativePath) + "\t" + sha256);
             for (int index = State.Changes.Count - 1; index >= 0; index--)
@@ -207,6 +238,7 @@ namespace HD2CommunityInstaller
             string relativePath, byte[] originalBase, byte[] originalSabre,
             string installedSha256)
         {
+            relativePath = InstallState.NormalizeRelativePath(relativePath);
             writer.WriteLine("PROFILE_UNLOCK\t" + InstallState.Encode(relativePath)
                 + "\t" + Convert.ToBase64String(originalBase)
                 + "\t" + Convert.ToBase64String(originalSabre)
