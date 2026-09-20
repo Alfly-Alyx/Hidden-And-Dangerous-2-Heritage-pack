@@ -1957,8 +1957,6 @@ namespace HD2CustomMissionManager
             string libraryRoot, string originalGame, string testGame)
         {
             MissionLibrary library = LoadLibrary(libraryRoot, false);
-            if (library.Packages.Count == 0)
-                throw new InvalidDataException("Aucune mission dans la bibliothèque; aucun fichier n'a été modifié.");
             originalGame = Path.GetFullPath(originalGame);
             testGame = Path.GetFullPath(testGame);
             ValidatePreparedTestGame(originalGame, testGame);

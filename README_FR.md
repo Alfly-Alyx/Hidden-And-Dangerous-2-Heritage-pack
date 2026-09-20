@@ -76,6 +76,7 @@ La version **0.8.0** consolide notamment :
 - la détection exacte des options déjà installées ;
 - une seule liste H&D2 réunissant le service communautaire déjà utilisé et OpenSpy ;
 - le menu natif des missions personnalisées, ses trois catégories séparées et l’analyse automatique des dossiers de mission sans manifeste obligatoire ;
+- le déploiement automatique de ce menu dans le jeu par l’installateur principal, même avant l’ajout d’une mission personnalisée ;
 - la remise en service de contenu original qui ne fonctionnait plus dans la version finale ;
 - l’exploration libre appliquée aussi aux deux prototypes ;
 - les quatre guides PDF intégrés à l’installateur ;

@@ -156,9 +156,9 @@ namespace HD2CommunityInstaller
                 MissionUnlockInstaller.ValidateOnly(options.GamePath);
             if (options.AutoConfigureGraphics)
             {
-                WidescreenInstaller.ValidateOnly();
                 GraphicsConfigurator.ValidateOnly();
             }
+            WidescreenInstaller.ValidateOnly();
             bool updating = File.Exists(AppConfig.StateFile);
             if (updating)
                 EnsureSafeUpdate(options.GamePath);
@@ -195,12 +195,10 @@ namespace HD2CommunityInstaller
                     options.GamePath, journal, prepared, progress);
                 CustomMissionManagerInstaller.Install(
                     options.GamePath, journal, prepared, progress);
+                WidescreenInstaller.Install(
+                    options.GamePath, journal, prepared, progress);
                 if (options.AutoConfigureGraphics)
-                {
-                    WidescreenInstaller.Install(
-                        options.GamePath, journal, prepared, progress);
                     GraphicsConfigurator.Apply(journal, progress);
-                }
                 if (options.FreeExploration)
                     OfficialContentInstaller.Install(
                         options.GamePath, journal, prepared, progress, percent);
@@ -441,6 +439,8 @@ namespace HD2CommunityInstaller
                         options.GamePath, journal, prepared, progress);
                 if (options.UnlockAllMissions)
                     MissionUnlockInstaller.Install(options.GamePath, journal, progress);
+                CustomMissionManagerInstaller.ActivateMenu(
+                    options.GamePath, journal, prepared, progress);
                 int sealedHashes = journal.SealMissingHashes(options.GamePath);
                 if (sealedHashes > 0)
                     Report(progress, "Journal de restauration securise : "

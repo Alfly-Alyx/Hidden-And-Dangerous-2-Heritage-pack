@@ -31,6 +31,7 @@ def audit(root: Path) -> dict[str, object]:
     core_path = root / "installer" / "InstallerCore.cs"
     program_path = root / "installer" / "Program.cs"
     build_path = root / "build.ps1"
+    manager_core_path = root / "custom-mission-tool" / "MissionPackageCore.cs"
     errors: list[str] = []
 
     manager_bytes = manager.read_bytes() if manager.is_file() else b""
@@ -56,6 +57,7 @@ def audit(root: Path) -> dict[str, object]:
     core = core_path.read_text(encoding="utf-8-sig")
     program = program_path.read_text(encoding="utf-8-sig")
     build = build_path.read_text(encoding="utf-8-sig")
+    manager_core = manager_core_path.read_text(encoding="utf-8-sig")
 
     installer_markers = [
         'RelativePath = "HD2-Custom-Mission-Manager.exe"',
@@ -66,6 +68,9 @@ def audit(root: Path) -> dict[str, object]:
         "ValidateExecutable(content)",
         "string expected = ReadManagerHash();",
         "string actual = ComputeSha256(content);",
+        '"Scripts/HD2.CustomMenu.asi"',
+        'RunManager(manager, "--integrate", emptyLibrary, gamePath, gamePath)',
+        "CUSTOM_MISSIONS_INSTALLED_THREE_LIST_GUI_GAME_NOT_LAUNCHED",
     ]
     for relative, expected in SKELETON.items():
         installer_markers.extend((
@@ -91,10 +96,14 @@ def audit(root: Path) -> dict[str, object]:
 
     if "CustomMissionManagerInstaller.Install(" not in core:
         errors.append("InstallerCore does not install the custom mission manager")
+    if "CustomMissionManagerInstaller.ActivateMenu(" not in core:
+        errors.append("InstallerCore does not activate the in-game custom mission menu")
     if "CustomMissionManagerInstaller.DetectStatus(" not in core:
         errors.append("InstallerCore diagnostic does not report manager status")
     if program.count("CustomMissionManagerInstaller.ValidateOnly()") != 2:
         errors.append("Both local and full self-tests must validate manager resources")
+    if "Aucune mission dans la bibliothèque; aucun fichier n'a été modifié." in manager_core:
+        errors.append("The manager still refuses to deploy the GUI for an empty library")
 
     return {
         "ok": not errors,

@@ -76,6 +76,7 @@ Version **0.8.0** consolidates:
 - exact detection of features that are already installed;
 - one H&D2 server list assembled from the established community service and OpenSpy;
 - the native custom-mission menu, its three separate categories, and automatic scanning of mission folders without a required manifest;
+- automatic deployment of that in-game menu by the main Heritage Pack installer, even before a custom mission is added;
 - original game content that no longer worked in the final release;
 - free exploration applied to both prototypes as well;
 - all four PDF guides embedded in the installer;

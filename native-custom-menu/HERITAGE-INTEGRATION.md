@@ -12,6 +12,12 @@ dans `dist/H-D2-Heritage-Pack-Setup.exe`. Le raccordement est dans
 Préserver les missions et autres fichiers utilisateur non suivis lors des mises
 à jour ; ne pas redistribuer les fichiers commerciaux utilisés pour les tests.
 
+Le setup principal doit aussi exécuter l'intégration avec une bibliothèque vide
+après l'installation du CMP et des autres surcharges. Cela déploie réellement
+les scènes, catalogues, textes et le module ASI dans le jeu dès l'installation,
+même si le joueur n'a encore ajouté aucune mission. Copier seulement le
+gestionnaire ne constitue pas une intégration de la GUI.
+
 ## Parcours joueur
 
 Le joueur dépose `CustomMissions/Nom de la mission/` avec `tree.klz` et les
