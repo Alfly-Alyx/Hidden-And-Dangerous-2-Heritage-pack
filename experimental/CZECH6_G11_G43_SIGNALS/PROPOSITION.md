@@ -3,6 +3,13 @@
 État : étude non intégrée, révisée le 14 septembre 2026. Cette proposition n'altère aucun
 script commercial et ne doit pas rejoindre le lot stable sans test dynamique.
 
+Relecture du 25 septembre : la porte de baseline ci-dessous reste fermée; aucun
+handler 1 n'a été généré. La variante séparée
+[`czech6-radio-before-alarm`](../CZECH6_RADIO_SABOTAGE_DUAL_PATH/ETUDE.md)
+rétablit une paire Base pour une autre question (récompense de sabotage). Elle
+ne doit pas être cumulée avec un futur essai de réveil, dont le témoin doit
+conserver le traitement d'alarme Patch décrit ici.
+
 ## Classification
 
 **Intention plausible, corps récepteur manquant.** Les deux signaux émetteurs
@@ -49,7 +56,8 @@ de signaux à G11/G43 lors de son alarme. Ces asymétries doivent rester intacte
 
 La couche Patch conserve cette absence de gestionnaire du signal 1. Elle retire
 par ailleurs un `SendSignal(obj, 1)` du traitement d'alarme de G11 ; cette
-correction distincte doit être préservée dans tout futur override.
+correction distincte doit être préservée dans tout futur override **de cette
+étude de réveil**. Le laboratoire radio Base est un profil alternatif séparé.
 
 ### Récepteur G43
 

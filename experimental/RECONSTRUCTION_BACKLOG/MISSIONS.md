@@ -59,17 +59,17 @@ Chemins : `experimental/ARCTIC1_*` et
 | `CZECH4_R_CZ4_HODINY` | Faux positif | Fichier vide résiduel; rien à restaurer. |
 | `CZECH6_ISU_DUAL_ROUTE` | Prototype désactivé | Profil reproductible `czech6-isu-base-route`, 2144 octets; trajet Base à 12 et sortie Patch conservée. Quatre empreintes, conducteur, passagers, ISU et checkpoints vérifiés. Alternative fixe au sélecteur existant, pas cumulable; collisions/sortie à tester. |
 | `CZECH6_RADIO_SABOTAGE_DUAL_PATH` | Prototype désactivé | Paire câble/opérateur identique à la Base, 1156 + 2415 octets. Correction de sens : après alarme, la Base laisse casser le câble mais ne récompense plus le sabotage; le Patch récompense indépendamment de l'alarme. Deux propriétaires liés et câbles décodés en 4DS; export partiel interdit. |
-| `CZECH6_G40_ALERT_RECEIVERS` | À documenter | G40 envoie signal 1 à G11/G43 sans récepteur. Déduire seulement depuis `OnAlarm`; ne pas heurter le signal 2 de sabotage ni la proximité. |
-| `CZECH6_G40_G41_DIALOGUE_SYNC` | À documenter | La conversation envoyait autrefois signal 1 aux deux acteurs. Tester si un arrêt de boucle gestuelle avant parole est nécessaire; sinon classer faux positif. |
+| `CZECH6_G40_ALERT_RECEIVERS` | Documenté, bloqué baseline | Étude CZECH6_G11_G43_SIGNALS : aucun prototype avant observation commerciale à plus de 50 m. Réveil éventuellement redondant; ne pas dupliquer cascade ou route et conserver le Patch pour cet essai, distinct de la paire radio Base. |
+| `CZECH6_G40_G41_DIALOGUE_SYNC` | Documenté, observation requise | Dialogue et gestes déjà actifs; deux émissions 1 commentées sans handlers acteurs. Ne pas les réactiver seules. Vérifier visuellement le besoin avant de créer une synchronisation moderne; interruption commerciale conservée. |
 
 ## Normandy 1
 
 | Dossier | État | Informations disponibles et suite |
 |---|---|---|
 | `NORMANDY1_INNER_GUARD_ALTERNATE_TRIGGERS` | Prototype désactivé, anciens porteurs bloqués | Étude NORMANDY1_LEGACY_ACTIVATORS : les porteurs 2–3 m restent absents. Paire moderne N24/N25 à 30 m dans les scripts déjà liés, 1857 + 1915 octets; les signaux de N01 et les routes restent inchangés. Course proximité/alarme à tester. |
-| `NORMANDY1_N13_EXTRA_APPROACHES` | À documenter | A2/A3 envoyaient signal 1 à N13, mais leurs positions manquent. N12_A1..4 activent déjà N12/N13. Ne restaurer que si des emplacements distincts sont prouvés. |
+| `NORMANDY1_N13_EXTRA_APPROACHES` | Documenté, bloqué placement | Étude NORMANDY1_LEGACY_ACTIVATORS : A2/A3 envoyaient signal 1 à N13, mais leurs positions manquent. N12_A1..4 activent déjà N12/N13. Aucun porteur ajouté sans emplacement distinct prouvé. |
 | `NORMANDY1_N17_SIGNAL2_BRANCH` | Bloqué preuve | Ancien A2 envoyait signal 2 à N17, sans gestionnaire. L'acteur actuel A1 déclenche N17/18/19 par signal 1. Ne pas inventer de réaction. |
-| `NORMANDY1_ACTIVATOR_VARIANTS` | Faible priorité | N14_A2 historique portée 3 contre A1 portée 2; N12_A5 est un duplicata sans acteur. |
+| `NORMANDY1_ACTIVATOR_VARIANTS` | Documenté, remplacé / bloqué propriétaire | Étude NORMANDY1_LEGACY_ACTIVATORS : N14_A2 est déjà lié au script commun N14_A1, ne pas doubler sa portée. N12_A5 est un duplicata sans porteur, pas un détecteur à créer arbitrairement. |
 | `X_N1_kamera-ya` | Faux positif | Reconnexion déjà stable. |
 
 ## Normandy 2 et 3

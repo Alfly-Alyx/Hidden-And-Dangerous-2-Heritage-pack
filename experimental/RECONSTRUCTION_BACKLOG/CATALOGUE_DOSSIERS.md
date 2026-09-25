@@ -2,7 +2,7 @@
 
 Ce catalogue recense les dossiers de premier niveau présents sur la branche. Il complète le registre thématique : sa fonction est de rendre visible tout ce qui existe déjà, y compris les études qui ne demandent pas d'action immédiate.
 
-Total : **150 dossiers**.
+Total : **151 dossiers**.
 
 | Dossier | Fichiers directs | Sous-dossiers |
 |---|---|---|
@@ -124,6 +124,7 @@ Total : **150 dossiers**.
 | [CZECH4_MISSING_SIGNAL_HANDLERS](../CZECH4_MISSING_SIGNAL_HANDLERS/) | `PROPOSITION.md`, `PROTOTYPE_CZ4_PLATOON04_SIGNAL5.scr.disabled` | — |
 | [CZECH4_VESTIGES_VARIANT](../CZECH4_VESTIGES_VARIANT/) | `ETUDE.md`, `PLAN_COUNTER_PLATOON07_09.md`, `PROTOTYPE_CZ4_DOG01_CONTROLLER.scr.disabled` | — |
 | [CZECH6_G11_G43_SIGNALS](../CZECH6_G11_G43_SIGNALS/) | `PROPOSITION.md` | — |
+| [CZECH6_G40_G41_DIALOGUE_SYNC](../CZECH6_G40_G41_DIALOGUE_SYNC/) | `ETUDE.md` | — |
 | [CZECH6_ISU_DUAL_ROUTE](../CZECH6_ISU_DUAL_ROUTE/) | `PROPOSITION.md`, `PROTOTYPE_ROUTE_SELECTOR.scr.disabled` | — |
 | [CZECH6_RADIO_SABOTAGE_DUAL_PATH](../CZECH6_RADIO_SABOTAGE_DUAL_PATH/) | `ETUDE.md` | — |
 | [DFS230_DECOR](../DFS230_DECOR/) | `ETUDE.md`, `MANIFEST.md` | — |
