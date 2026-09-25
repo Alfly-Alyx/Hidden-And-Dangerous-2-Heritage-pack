@@ -143,6 +143,15 @@ que l'arbre de travail n'est pas propre ou que l'installateur final n'est pas à
 jour. Un échec pendant le développement est donc une information, pas une raison
 de contourner les contrôles.
 
+## Reconstruction binaire coop désactivée
+
+`tools/build_burgundy_ambient_patch.py` vérifie et peut construire une comparaison
+scène/registre pour les dix porteurs d'ambiance Co_Burgundy3. Contrôle en lecture
+seule par défaut; `--build` produit exclusivement un ZIP `.scene-patch.zip.disabled`
+sous `.analysis/`. Aucun installateur ni paquet de mission activable n'est créé.
+Sources, limites réseau et commandes :
+[étude Co_Burgundy3](../CO_BURGUNDY3_REMOVED_AMBIENT_CONTROLLERS/ETUDE.md).
+
 ## Menu personnalisé, réseau et documents
 
 - Menu/paquets : `custom_mission_packages.py`, `custom_mission_tool.py`,

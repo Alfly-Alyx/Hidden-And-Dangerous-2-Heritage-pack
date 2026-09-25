@@ -33,7 +33,10 @@ registre complète ces fichiers sans activer de script expérimental dans le jeu
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Quatre profils Africa 5 restent des scripts seuls :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **157 tests Python**, compilation console et auto-tests de sécurité C# réussis.
+- **172 tests Python**, compilation console et auto-tests de sécurité C# réussis.
+- Une comparaison binaire Co_Burgundy3 supplémentaire reconstruit dix porteurs
+  d'ambiance et dix liaisons sans modifier les scripts ou sons. Elle reste
+  inerte et n'est pas comptée parmi les laboratoires de mission.
 - **159 dossiers** recensés. Les études continuent : certains vestiges exigent
   encore une cible, un propriétaire, une ressource ou une observation préalable.
 - L'installation actuelle n'est pas modifiée. Cinq profils refusent ses
