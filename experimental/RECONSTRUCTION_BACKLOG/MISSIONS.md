@@ -66,7 +66,7 @@ Chemins : `experimental/ARCTIC1_*` et
 
 | Dossier | État | Informations disponibles et suite |
 |---|---|---|
-| `NORMANDY1_INNER_GUARD_ALTERNATE_TRIGGERS` | À documenter | Détecteurs N24/N25 orphelins, portée 2–3 m; positions d'acteurs perdues. La version commerciale active N01 sur alarme. Recréer uniquement avec placement géométrique démontré et anti-double. |
+| `NORMANDY1_INNER_GUARD_ALTERNATE_TRIGGERS` | Prototype désactivé, anciens porteurs bloqués | Étude NORMANDY1_LEGACY_ACTIVATORS : les porteurs 2–3 m restent absents. Paire moderne N24/N25 à 30 m dans les scripts déjà liés, 1857 + 1915 octets; les signaux de N01 et les routes restent inchangés. Course proximité/alarme à tester. |
 | `NORMANDY1_N13_EXTRA_APPROACHES` | À documenter | A2/A3 envoyaient signal 1 à N13, mais leurs positions manquent. N12_A1..4 activent déjà N12/N13. Ne restaurer que si des emplacements distincts sont prouvés. |
 | `NORMANDY1_N17_SIGNAL2_BRANCH` | Bloqué preuve | Ancien A2 envoyait signal 2 à N17, sans gestionnaire. L'acteur actuel A1 déclenche N17/18/19 par signal 1. Ne pas inventer de réaction. |
 | `NORMANDY1_ACTIVATOR_VARIANTS` | Faible priorité | N14_A2 historique portée 3 contre A1 portée 2; N12_A5 est un duplicata sans acteur. |
@@ -108,7 +108,7 @@ Chemins : `experimental/ARCTIC1_*` et
 | `CO_BURGUNDY2_CLOSURE` | À fermer | Seuls les scripts libres de cheval/cochon subsistent, propriétaires absents; `ge_pruchod2` diffère des profils coop `nuda`; les sauts commentés n'ont pas de labels/valeurs. |
 | `BURGUNDY3_INTERROGATION_GESTURES` | Documenté | Le contrôleur envoie 10..17 en alternance; les 19 répliques fonctionnent, mais les gestes manquent. N'utiliser que des animations commerciales prouvées et interrompables sur alarme. |
 | `BURGUNDY3_JEEP_24_REPLACED_BRANCH` | Documenté, bloqué preuve | Branche véhicule commentée, `car05` absent; la version commerciale joue l'animation de bureau et la coop `nuda`. Reconstituer le chemin avant sélecteur. |
-| `BURGUNDY3_EXPLOSION_SOUND_DUAL_TRIGGER` | Documenté | La branche directe envoie signal 10, le son réagit à cutscene4, et la cutscene émet déjà les deux. Toute variante doit être idempotente pour éviter le double son. |
+| `BURGUNDY3_EXPLOSION_SOUND_DUAL_TRIGGER` | Prototype désactivé | Étude BURGUNDY3_DEPOT_EXPLOSION_SOUND : paire complète 3348 + 1239 octets. Nouveau signal moderne 11 seulement sur destruction directe, réception désarmée avant le son; cinématique et anciens signaux 10 inchangés. Neuf frames vérifiées; mix et courses à tester. |
 | `BURGUNDY3_EN22_EN23_END_STATE` | À documenter | La branche directe tue sous distance <15; la cutscene applique de gros dégâts, avec anciens `Kill` commentés. Comparer dégâts seuls et mort explicite sous le même filtre. |
 | `CO_BURGUNDY3_CLOSURE` | À fermer | Dix porteurs ambiants absents; Maquis signal1 sans émetteur mais déjà détruit sur alarme; frames manquantes = sous-nœuds, pas routes. |
 | `CO_BURGUNDY1_CLOSURE` | À fermer | Douze contrôleurs oiseaux/portes sans `dummy_snd1..12`; JohnAshley et chien absents; explosion 05 déjà liée à objectif02; commentaires LookAround identiques solo/coop. |

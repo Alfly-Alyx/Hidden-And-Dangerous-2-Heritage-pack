@@ -6,7 +6,7 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
-from build_reconstruction_variant import load_catalog, apply_edits
+from build_reconstruction_variant import load_catalog, apply_edits, change_specs
 from objective_audit import split_comments
 
 
@@ -76,6 +76,71 @@ class SeatedGuardContractTests(unittest.TestCase):
         body = next(after for before, after in self.edits.items() if "HUMAN_TurnAt(see)" in before)
         self.assertLess(body.index("SitActive = 1"), body.index("HUMAN_ACTIVITY_Sit(sit)"))
         self.assertIn("Delay(RNDwait)", body)
+
+
+class InnerGuardContractTests(unittest.TestCase):
+    def test_both_guards_only_enable_the_existing_detector(self):
+        specs = change_specs(load_catalog()["normandy-inner-guards-proximity"])
+        self.assertEqual([s["actor"] for s in specs], ["N24", "N25"])
+        for spec in specs:
+            self.assertEqual(spec["edits"], [{"before": "SetWhenever(player, false);",
+                                             "after": "SetWhenever(player, true);"}])
+
+    def test_signal_routes_and_mode_three_seven_branch_stay_byte_identical(self):
+        # Invented contract fixture: the changed statement is after the 3/7 jump.
+        prefix = (b"If((gametype==3) OR (gametype==7))\r\n{\r\n"
+                  b" SetWhenever(player, true);\r\n GoTo dalej;\r\n}\r\n")
+        suffix = (b"\r\nLabel dalej:\r\nWhenever activate(_SignalReceived(1))\r\n"
+                  b"{ HUMAN_Suspend(false); GoTo alarmed; }\r\n"
+                  b"Label alarmed:\r\nHUMAN_Move(\"N25_1\");\r\n")
+        source = prefix + b"SetWhenever(player, false);" + suffix
+        for spec in change_specs(load_catalog()["normandy-inner-guards-proximity"]):
+            self.assertEqual(apply_edits(source, spec["edits"]),
+                             prefix + b"SetWhenever(player, true);" + suffix)
+
+
+class DepotSoundContractTests(unittest.TestCase):
+    def setUp(self):
+        self.profile = load_catalog()["burgundy3-direct-explosion-sound"]
+        self.sender, self.receiver = change_specs(self.profile)
+
+    def test_new_signal_is_scoped_to_direct_label_and_keeps_old_signal(self):
+        edit, = self.sender["edits"]
+        self.assertTrue(edit["before"].startswith("Label DESTROY_DMG:\n"))
+        self.assertEqual(edit["after"], edit["before"] + "\n    SendSignal(snd_strom, 11);")
+        cinematic = b'OnCutscene(4) { SendSignal(snd_strom, 10); }\r\n'
+        direct = edit["before"].replace("\n", "\r\n").encode("ascii")
+        result = apply_edits(cinematic + direct + b'\r\nMakeExplosion(expl, 1, 1);\r\n}', [edit])
+        self.assertTrue(result.startswith(cinematic))
+        self.assertEqual(result.count(b'SendSignal(snd_strom, 11);'), 1)
+
+    def test_receiver_is_monostable_before_first_sound_and_keeps_cinematic_body(self):
+        edit, = self.receiver["edits"]
+        body = edit["after"].split("OnCutscene(4)", 1)[0]
+        self.assertTrue(body.startswith("OnSignal(11)"))
+        self.assertLess(body.index("EnableSignal(11, false)"), body.index("FRM_SetOn"))
+        self.assertNotIn("OnSignal(10)", body)
+        self.assertNotIn("EnableSignal(11, true)", body)
+        source = b'OnCutscene(4)\r\n{ ORIGINAL_BODY(); }\r\nOnCutsceneDone(4) {}'
+        self.assertTrue(apply_edits(source, [edit]).endswith(source))
+
+    def test_sound_order_delays_and_source_frames_are_explicit(self):
+        body = self.receiver["edits"][0]["after"]
+        self.assertEqual(re.findall(r'FRM_SetOn\(snd(\d), true\)', body),
+                         ['7', '8', '9', '1', '2', '3', '4', '5', '6'])
+        self.assertEqual(re.findall(r'Delay\((\d+)\)', body), ['150', '150', '100', '100', '100'])
+        check = next(c for c in self.profile["checks"] if c["entry"].endswith('sounds.bin'))
+        self.assertEqual(len(set(check["values"])), 9)
+        self.assertIn(check["entry"], self.profile["evidence"])
+        self.assertEqual(self.receiver["owner_entry"], 'missions/burgundy3/scene2.bin')
+
+    def test_receiver_delta_matches_existing_reviewed_fragment(self):
+        root = Path(__file__).resolve().parents[1]
+        fragment = (root / 'experimental/BURGUNDY3_DEPOT_EXPLOSION_SOUND/'
+                    'PROTOTYPE_ADDITIF_DIRECT_SIGNAL11.scr.disabled').read_text(encoding='utf-8')
+        fragment = split_comments(fragment)[0].strip()
+        inserted = self.receiver["edits"][0]["after"].split('OnCutscene(4)', 1)[0].strip()
+        self.assertEqual(inserted, fragment)
 
 
 if __name__ == "__main__":

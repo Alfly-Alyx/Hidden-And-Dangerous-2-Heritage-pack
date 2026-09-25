@@ -1,7 +1,7 @@
 # Étude expérimentale — activateurs legacy de Normandy 1
 
-État : étude et delta désactivé, 14 septembre 2026. Aucun binding, script actif,
-registre, installateur ou fichier du jeu n'est modifié.
+État : paire complète reproductible désactivée, 25 septembre 2026. Aucun binding,
+script actif, registre, installateur ou fichier du jeu n'est modifié.
 
 Cette étude applique le
 [`principe de reconstruction additive`](../PRINCIPE_RECONSTRUCTION_ADDITIVE.md) :
@@ -92,6 +92,36 @@ Il faut parler de « porteur absent ou non libre » avec précision : les acteur
 Ils ne sont pas disponibles pour réattacher les variantes de même suffixe.
 
 ## Risques et protocole de test
+
+### Réalisation hors jeu du 25 septembre 2026
+
+Le profil `normandy-inner-guards-proximity` du
+[catalogue](../reconstruction-variants.json) exporte les deux scripts ensemble,
+jamais séparément. Il applique une forme plus petite du delta proposé : seule
+la ligne `SetWhenever(player, false)` devient `true` dans chaque acteur.
+La branche commerciale des types 3/7 et son saut vers `dalej` restent ainsi
+octet pour octet identiques. Le changement concerne la branche de repli des
+autres types, dans ce laboratoire destiné au solo; il ne constitue pas une
+validation de ces autres modes de partie.
+
+Les six sources sont épinglées : les deux acteurs, l'émetteur N01, le registre,
+les acteurs sérialisés et les checkpoints. Aucun nouveau porteur, signal,
+position ou nom de route. Le générateur vérifie les deux liaisons et les trois
+routes existantes. Le détecteur à 30 m ne reçoit pas de nouveau désarmement :
+ses interactions avec le signal d'alarme restent à éprouver, comme ci-dessous.
+
+| Sortie complète locale | Octets | SHA-256 |
+|---|---:|---|
+| N24 | 1857 | `d8c31825aa45b46c0ded16a2a19cd4ad58de9badc3915bdffd5281f397be6ed0` |
+| N25 | 1915 | `f89dcd7e860f8986cf1793280131e89cf1fa2350b477f6a5f472bcbc3b566252` |
+
+Le laboratoire inerte comprend 183 fichiers par branche, 157 scripts
+accessibles sur 166 présents et les huit objectifs commerciaux conservés.
+Espaces : `H2Lab_normandy_f5adb4591fd1_B` et `_V`. Deux tests de contrat et
+l'inspection des deux diff confirment que les routes et les gestionnaires ne
+changent pas; ils ne démontrent pas l'ordonnancement des événements en moteur.
+
+### Validation moteur — toujours en attente
 
 La proximité 30 m et le signal N01 peuvent se produire dans le même instant.
 Le moteur doit démontrer que le réveil est idempotent et que la branche

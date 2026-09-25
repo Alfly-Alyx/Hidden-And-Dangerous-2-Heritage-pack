@@ -1,6 +1,6 @@
 # Étude expérimentale — son de l'explosion du dépôt de Burgundy 3
 
-État : analyse statique et maquette additive désactivée, 14 septembre 2026.
+État : paire complète reproductible désactivée, 25 septembre 2026.
 Aucun script commercial, binding ou installateur n'est modifié. La règle
 générale est définie dans
 [`../PRINCIPE_RECONSTRUCTION_ADDITIVE.md`](../PRINCIPE_RECONSTRUCTION_ADDITIVE.md).
@@ -135,6 +135,42 @@ le petit corps sonore au lieu de refactorer `OnCutscene(4)`, afin que le chemin
 release reste textuellement intact.
 
 ## Limites de la preuve
+
+### Réalisation reproductible du 25 septembre 2026
+
+Le profil `burgundy3-direct-explosion-sound` du
+[catalogue](../reconstruction-variants.json) assemble désormais le contrôleur
+de destruction et le récepteur sonore en une paire indivisible. Le premier
+ajoute une émission 11 uniquement à `DESTROY_DMG`; le second reçoit exactement
+le fragment revu ci-dessus, avant ses gestionnaires commerciaux inchangés.
+L'export isolé d'un seul membre est interdit par le générateur.
+
+Sept sources commerciales sont épinglées. `la_bu3_FuelStorage_01` est un
+propriétaire dans `actors.bin`, tandis que `e_treeb_160` est sérialisé dans
+`scene2.bin`; les deux liaisons sont uniques. Les neuf frames sonores sont
+vérifiées comme champs nommés dans `sounds.bin`. Le parcours statique de tous
+les scripts locaux n'a trouvé que les deux émetteurs historiques vers
+`e_treeb_160`, tous deux sur 10. D'autres personnages emploient 11 dans leurs
+dialogues : ce nombre est réservé ici **pour ce récepteur**, pas globalement
+dans la mission.
+
+| Sortie complète locale | Octets | SHA-256 |
+|---|---:|---|
+| Contrôleur de destruction | 3348 | `f764069924bdc930c04cc8b6b299c4813dbd966a2e7c04f393b11c6d099dab8d` |
+| Récepteur sonore | 1239 | `e5b83bd4a6e590c11eb0d5126aadfcb72d2d28acb11fc4f5e02ff2aec835e294` |
+
+Le laboratoire inerte comprend 105 fichiers par branche, 89 scripts accessibles
+et les neuf objectifs commerciaux inchangés. Espaces :
+`H2Lab_burgundy3_88c0acc4ba0e_B` et `_V`. Quatre tests vérifient le site d'émission,
+le désarmement avant le premier son, l'ordre des neuf couches/délais, la
+conservation du corps cinématique et l'identité avec le fragment revu.
+
+Ce contrôle n'est pas un simulateur d'événements. La désactivation de 11 ne
+verrouille pas `OnCutscene(4)` : une cinématique relancée artificiellement peut
+toujours jouer son mix commercial. L'exclusion normale dépend du choix de
+branche à la mort du dépôt; courses, sauvegardes et rendu restent à tester.
+
+### Limite de validation
 
 La sûreté démontrée est celle du **routage** : signal distinct, branche
 exclusive, réception monostable, aucun changement du chemin cinématique. Le

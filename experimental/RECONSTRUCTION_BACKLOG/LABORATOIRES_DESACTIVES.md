@@ -10,14 +10,17 @@ commerciales. Elles ne sont **ni installées, ni lancées, ni validées en moteu
 - Chaque copie possède son identifiant et son dossier `H2Lab_…_B` ou `H2Lab_…_V`.
 - Géométrie, collisions, acteurs, registre et scripts locaux sont copiés depuis
   les archives effectives. Seuls les scripts explicitement déclarés diffèrent
-  dans la variante : un par profil, ou la paire indivisible de la radio Czech 6.
+  dans la variante : un par profil, ou une paire indivisible (radio Czech 6,
+  gardes Normandy 1, son Burgundy 3).
 - Tous les fichiers de charge utile et les manifestes portent `.disabled`, y
   compris à l'intérieur du ZIP. Une extraction accidentelle ne crée pas de
   paquet scannable par le gestionnaire.
 - Les scripts accessibles depuis le registre, `#include` et `ScriptAssign` sont
   contrôlés. Dépendance absente, nom dynamique, chemin externe ou chemin figé
   vers la mission originale : refus, pas de remappage deviné.
-- Aucun objectif ou signal nouveau n'est introduit. Le gestionnaire conserve
+- Aucun objectif nouveau n'est introduit. Les nouveaux signaux de comportement
+  doivent être explicitement documentés (11 vers le son du dépôt Burgundy 3).
+  Le gestionnaire conserve
   intégralement les blocs d'objectifs du gabarit Base ou Sabre, dans leur ordre.
 - Les ressources globales restent fournies par l'installation légitime. La
   fermeture statique des scripts ne prouve pas leur résolution par le moteur
@@ -67,6 +70,8 @@ catalogue temporaire sont ensuite retirés. Ce n'est pas un test du jeu.
 | Czech 3 | 99 | 76 | 4 |
 | Czech 4 | 124 | 105 | 4 |
 | Sicily 2 | 131 | 117 | 9 |
+| Normandy 1 | 183 | 157 | 8 |
+| Burgundy 3 | 105 | 89 | 9 |
 
 Les douze entrées témoin/variante de cette série ont passé l'audit de catalogue.
 Le profil supplémentaire AF1_26 emploie les mêmes 156 sources Africa 1 et conserve
@@ -91,9 +96,15 @@ entrées et seize scripts modifiés**, catalogue
 `33939de79d993364b0c18e3093801b3d41e7f039bc308ef30515477b6b49152c`.
 Ce profil reste exclusif de celui du poste d'alarme du même garde.
 
-Les **129 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
+Les deux paires Normandy 1/Burgundy 3 portent le total à **dix-sept laboratoires,
+trente-quatre entrées et vingt scripts modifiés**, catalogue
+`9a9862e763d141f1c49fd302780a3c9fd8860dee363c621ac603c7ebcb273e28`.
+Les neuf missions Sabre d'origine restent identiques, objectifs inclus.
+
+Les **135 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
 huit cas de conservation d'objectifs, quatre contrôles de lecture de catalogues,
-huit modèles de prédicat de charges et contrats d'assise, quatorze cas de groupes atomiques/4DS
+quatorze modèles/contrats de charges, assise, proximité et son,
+quatorze cas de groupes atomiques/4DS
 et 28 tests d'émulation du menu.
 Les auto-tests C# passent également. Le contrôle
 de dépendances distingue maintenant une désaffectation explicite

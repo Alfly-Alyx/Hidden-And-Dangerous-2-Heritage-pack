@@ -3,6 +3,65 @@
   "reference_edition": "GOG English Sabre Squadron 1.12",
   "profiles": [
     {
+      "id": "normandy-inner-guards-proximity",
+      "title": "Normandy 1 — réveil de proximité N24/N25, routes d'alarme conservées",
+      "classification": "MODERNE",
+      "source": "scripts/normandy/x_n1_n24.scr",
+      "actor": "N24",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/normandy/x_n1_n24.scr": {"archive": "Scripts.dta", "size": 1858, "sha256": "88f2aba11ebfcfc219c3af30a808c27da28427cb5854b473557dd595df636a26"},
+        "scripts/normandy/x_n1_n25.scr": {"archive": "Scripts.dta", "size": 1916, "sha256": "bb81388d622927a53a5fcf7db7d5c490d2be02261ce0f2983eb531b7e75096db"},
+        "scripts/normandy/x_n1_n01.scr": {"archive": "Scripts.dta", "size": 3093, "sha256": "65b56565ea5e82e186111b98707703e09338aecf2a7d70f9f1347d9556bbf466"},
+        "missions/normandy/scripts.dta": {"archive": "missions.dta", "size": 8963, "sha256": "a6a00057e3eed961da1863e99a2938609c2d5e2050d0ffe1756815e358cac42b"},
+        "missions/normandy/actors.bin": {"archive": "Patch.dta", "size": 36397, "sha256": "dc9d25782aa4080930e7191690f985b7c100244a3d7fa01a04a4e77f33768c97"},
+        "missions/normandy/check2.bin": {"archive": "missions.dta", "size": 136676, "sha256": "85b80ed066bbb6ca6ea984d3af18d7b4a66394736fc5b2d7d2a0e6bedf42736a"}
+      },
+      "checks": [
+        {"kind": "frames", "entry": "missions/normandy/actors.bin", "values": ["N01", "N24", "N25"]},
+        {"kind": "nul_strings", "entry": "missions/normandy/check2.bin", "values": ["N24_1", "N25_1", "N25_2"]}
+      ],
+      "edits": [{"before": "SetWhenever(player, false);", "after": "SetWhenever(player, true);"}],
+      "additional_changes": [
+        {"source": "scripts/normandy/x_n1_n25.scr", "actor": "N25", "edits": [
+          {"before": "SetWhenever(player, false);", "after": "SetWhenever(player, true);"}
+        ]}
+      ]
+    },
+    {
+      "id": "burgundy3-direct-explosion-sound",
+      "title": "Burgundy 3 — couche sonore directe sur signal moderne 11 distinct",
+      "classification": "MODERNE",
+      "source": "scripts/burgundy3/bur3_vybuch.scr",
+      "actor": "la_bu3_FuelStorage_01",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/burgundy3/bur3_vybuch.scr": {"archive": "SabreSquadron.dta", "size": 3316, "sha256": "c5fd6d7c3d30f84dd193209d5615b85cb443be2f06a995ed089e9fc9d48b71ba"},
+        "scripts/burgundy3/snd_vybuch_paliva.scr": {"archive": "SabreSquadron.dta", "size": 855, "sha256": "7e9748c5db825f22f98f67b1ec75e527f1acbcc5a495232e5f71ba31c1ed084e"},
+        "scripts/burgundy3/bur3_maquis01.scr": {"archive": "SabreSquadron.dta", "size": 1274, "sha256": "44a90a52b6be9a57d6ca39c245616bfef3adf808bb268f41260af5b3bc088ac0"},
+        "missions/burgundy3/scripts.dta": {"archive": "SabreSquadron.dta", "size": 3421, "sha256": "606d7a312b600d9e3b15060d3faa32c27ef6ebe73c1ca38c0f78f899b4b98ac5"},
+        "missions/burgundy3/actors.bin": {"archive": "SabreSquadron.dta", "size": 22645, "sha256": "669dbf9a0902601e9e8e2a1b832f27dfbe300578750d8879655061a61c67bcae"},
+        "missions/burgundy3/scene2.bin": {"archive": "SabreSquadron.dta", "size": 5008185, "sha256": "7bcbed955744bd5b5646cbc6ce68dfd8d8d02b786677b378698d6c643cedb94c"},
+        "missions/burgundy3/sounds.bin": {"archive": "SabreSquadron.dta", "size": 14614, "sha256": "d7991998f0e4e2988ce28d7b902cb19bb8e76cd5e6d481fd6cc234291a406e15"}
+      },
+      "checks": [
+        {"kind": "frames", "entry": "missions/burgundy3/scene2.bin", "values": ["e_treeb_160"]},
+        {"kind": "frames", "entry": "missions/burgundy3/sounds.bin", "values": ["s_vrz1", "s_vrz2", "s_vrz3", "s_kus1", "s_kus2", "s_kus3", "s_ex_far", "s_ex_near", "s_ex_in"]}
+      ],
+      "edits": [{
+        "before": "Label DESTROY_DMG:\n  block\n  {\n    FRM_SetOn(lampa, false);\n    SendSignal(snd_strom, 10);",
+        "after": "Label DESTROY_DMG:\n  block\n  {\n    FRM_SetOn(lampa, false);\n    SendSignal(snd_strom, 10);\n    SendSignal(snd_strom, 11);"
+      }],
+      "additional_changes": [
+        {"source": "scripts/burgundy3/snd_vybuch_paliva.scr", "actor": "e_treeb_160", "owner_entry": "missions/burgundy3/scene2.bin", "edits": [{
+          "before": "OnCutscene(4)",
+          "after": "OnSignal(11)\n{\n  EnableSignal(11, false);\n  block\n  {\n    FRM_SetOn(snd7, true);\n    FRM_SetOn(snd8, true);\n    FRM_SetOn(snd9, true);\n  }\n  FRM_SetOn(snd1, true);\n  Delay(150);\n  FRM_SetOn(snd2, true);\n  Delay(150);\n  FRM_SetOn(snd3, true);\n  Delay(100);\n  FRM_SetOn(snd4, true);\n  Delay(100);\n  FRM_SetOn(snd5, true);\n  Delay(100);\n  FRM_SetOn(snd6, true);\n}\n\nOnCutscene(4)"
+        }]}
+      ]
+    },
+    {
       "id": "arctic4-guard3-sit-smoke",
       "title": "Arctic 4 — assise et cigarette, variante moderne avec sorties protégées",
       "classification": "MODERNE",
