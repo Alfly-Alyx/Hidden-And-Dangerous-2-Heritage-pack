@@ -3,6 +3,32 @@
   "reference_edition": "GOG English Sabre Squadron 1.12",
   "profiles": [
     {
+      "id": "arctic4-guard3-sit-smoke",
+      "title": "Arctic 4 — assise et cigarette, variante moderne avec sorties protégées",
+      "classification": "MODERNE",
+      "source": "scripts/arctic4/r_arc3_static_guard_3.scr",
+      "actor": "Static_Guard_3",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/arctic4/r_arc3_static_guard_3.scr": {"archive": "Scripts.dta", "size": 2508, "sha256": "73e72535024bedf65787ae3fda305724ab1386c6941c9809ea786fbe9a41208b"},
+        "missions/arctic4/scripts.dta": {"archive": "missions.dta", "size": 6073, "sha256": "618dbf08b27f3d58ffe5b67b6f515da3f3c17672a8d42ffa1e0f6f2396d64d57"},
+        "missions/arctic4/actors.bin": {"archive": "missions.dta", "size": 16359, "sha256": "280aa09645a1610db10c2708263f4d1dc7b35694f99d48872388039c7f77fdfb"},
+        "missions/arctic4/scene2.bin": {"archive": "Patch.dta", "size": 3579974, "sha256": "df28fdab6a40d59d26abf696f0e45291310356f3fb637c54aa2e3f0f9f204e37"}
+      },
+      "checks": [{"kind": "frames", "entry": "missions/arctic4/scene2.bin", "values": ["Dummy_Static_Guard_3_see", "Dummy_Static_Guard_3_sit"]}],
+      "edits": [
+        {"before": "integer  AIEvent;", "after": "integer  AIEvent;\ninteger SitActive = 0;"},
+        {"before": "// Frame see;", "after": "Frame see;"},
+        {"before": "// Frame sit;", "after": "Frame sit;"},
+        {"before": "label loop:", "after": "label loop:\n  If (SitActive == 1)\n  {\n    HUMAN_ACTIVITY_Smoke(False);\n    HUMAN_SetAnim(\"\", 300, 300, False);\n    HUMAN_SETMODE_Stand();\n    SitActive = 0;\n    Delay(650);\n    HUMAN_ACTIVITY_Smoke(True);\n  }"},
+        {"before": "//  HUMAN_TurnAt(see);\n//  Delay(1500);\n//  HUMAN_ACTIVITY_Sit(sit);\n//  Delay(1500);\n//  HUMAN_ACTIVITY_Smoke(True);\n//  Delay(750);\n//  HUMAN_SetAnim(\"%%kourimsed2\", 500, 500, True);", "after": "  HUMAN_ACTIVITY_Smoke(False);\n  HUMAN_TurnAt(see);\n  Delay(1500);\n  SitActive = 1;\n  HUMAN_ACTIVITY_Sit(sit);\n  Delay(1500);\n  HUMAN_ACTIVITY_Smoke(True);\n  Delay(750);\n  Delay(RNDwait);\n//  HUMAN_SetAnim(\"%%kourimsed2\", 500, 500, True);"},
+        {"before": "  HUMAN_SetAnim(\"\", 300, 300, False);\n  Block", "after": "  HUMAN_SetAnim(\"\", 300, 300, False);\n  If (SitActive == 1)\n  {\n    HUMAN_SETMODE_Stand();\n    SitActive = 0;\n  }\n  Block"},
+        {"before": "OnSignal(1)\n{", "after": "OnSignal(1)\n{\n  If (SitActive == 1)\n  {\n    HUMAN_ACTIVITY_Smoke(False);\n    HUMAN_SetAnim(\"\", 300, 300, False);\n    HUMAN_SETMODE_Stand();\n    SitActive = 0;\n  }"},
+        {"before": "OnDeath()\n{", "after": "OnDeath()\n{\n  HUMAN_ACTIVITY_Smoke(False);\n  SitActive = 0;"}
+      ]
+    },
+    {
       "id": "czech6-radio-before-alarm",
       "title": "Czech 6 — sabotage récompensé seulement avant l'alarme, paire Base",
       "source": "scripts/czech6/c5_obj02.scr",

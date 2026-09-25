@@ -86,9 +86,14 @@ Son emballage contient obligatoirement les deux scripts Base; un fichier manquan
 ou resté en version Patch est refusé. Les anciens ZIP à un seul script restent
 lisibles par le vérificateur.
 
-Les **125 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
+L'assise du garde 3 Arctic 4 porte le total à **quinze laboratoires, trente
+entrées et seize scripts modifiés**, catalogue
+`33939de79d993364b0c18e3093801b3d41e7f039bc308ef30515477b6b49152c`.
+Ce profil reste exclusif de celui du poste d'alarme du même garde.
+
+Les **129 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
 huit cas de conservation d'objectifs, quatre contrôles de lecture de catalogues,
-quatre modèles de prédicat de charges, quatorze cas de groupes atomiques/4DS
+huit modèles de prédicat de charges et contrats d'assise, quatorze cas de groupes atomiques/4DS
 et 28 tests d'émulation du menu.
 Les auto-tests C# passent également. Le contrôle
 de dépendances distingue maintenant une désaffectation explicite

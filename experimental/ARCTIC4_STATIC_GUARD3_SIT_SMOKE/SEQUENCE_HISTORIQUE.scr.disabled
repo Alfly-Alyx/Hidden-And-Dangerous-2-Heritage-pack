@@ -1,0 +1,12 @@
+// TRANSCRIPTION HISTORIQUE DESACTIVEE — fragment non autonome.
+// Les sept appels ci-dessous sont deja commentes dans la source commerciale.
+// Aucune preuve active de %%kourimsed2 : ne pas decommenter en bloc.
+// Le profil moderne complet utilise les primitives Sit/Smoke et des sorties
+// protegees. Cette transcription n'est pas un fichier installable.
+//  HUMAN_TurnAt(see);
+//  Delay(1500);
+//  HUMAN_ACTIVITY_Sit(sit);
+//  Delay(1500);
+//  HUMAN_ACTIVITY_Smoke(True);
+//  Delay(750);
+//  HUMAN_SetAnim("%%kourimsed2", 500, 500, True);

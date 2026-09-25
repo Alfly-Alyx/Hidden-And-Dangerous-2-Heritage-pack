@@ -7,6 +7,7 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
 from build_reconstruction_variant import load_catalog, apply_edits
+from objective_audit import split_comments
 
 
 class ChargePredicateTests(unittest.TestCase):
@@ -41,6 +42,40 @@ class ChargePredicateTests(unittest.TestCase):
         self.assertEqual(result.split(b"\n", 1)[1], source.split(b"\n", 1)[1])
         self.assertNotIn(b"SetActorState", result)
         self.assertNotIn(b"SetObjectiveStatus", result)
+
+
+class SeatedGuardContractTests(unittest.TestCase):
+    def setUp(self):
+        self.profile = load_catalog()["arctic4-guard3-sit-smoke"]
+        self.edits = {edit["before"]: edit["after"] for edit in self.profile["edits"]}
+
+    def test_unverified_named_animation_stays_commented(self):
+        active = split_comments("\n".join(self.edits.values()))[0]
+        self.assertNotIn("%%kourimsed2", active)
+        self.assertIn("HUMAN_ACTIVITY_Sit(sit)", active)
+        self.assertNotIn("StaticGuard3_5", active)
+        self.assertEqual(self.profile["classification"], "MODERNE")
+
+    def test_patrol_returns_to_standing_before_any_new_movement(self):
+        source = b"label loop:\nMoveToNextPoint();"
+        result = apply_edits(source, [{"before": "label loop:", "after": self.edits["label loop:"]}])
+        self.assertLess(result.index(b"HUMAN_SETMODE_Stand"), result.index(b"MoveToNextPoint"))
+        self.assertIn(b"SitActive = 0", result)
+
+    def test_signal_cleans_posture_but_death_does_not_stand_up_a_corpse(self):
+        signal = self.edits["OnSignal(1)\n{"]
+        self.assertIn("HUMAN_ACTIVITY_Smoke(False)", signal)
+        self.assertIn("HUMAN_SETMODE_Stand()", signal)
+        self.assertIn("SitActive = 0", signal)
+        death = self.edits["OnDeath()\n{"]
+        self.assertIn("HUMAN_ACTIVITY_Smoke(False)", death)
+        self.assertNotIn("Stand", death)
+        self.assertNotIn("HUMAN_SetAnim", death)
+
+    def test_sitting_flag_is_armed_before_sit_can_be_interrupted(self):
+        body = next(after for before, after in self.edits.items() if "HUMAN_TurnAt(see)" in before)
+        self.assertLess(body.index("SitActive = 1"), body.index("HUMAN_ACTIVITY_Sit(sit)"))
+        self.assertIn("Delay(RNDwait)", body)
 
 
 if __name__ == "__main__":
