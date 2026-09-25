@@ -166,6 +166,16 @@ Sources, limites réseau et commandes :
 - PDF : scripts sous `tools/pdf/` (ReportLab requis). Les quatre PDF finaux sont
   publiés comme fichiers séparés de la release et ne font pas partie du setup.
 
+## Audit des vestiges Normandy 2
+
+`tools/audit_normandy2_vestiges.py --game "D:\Games\Hidden and Dangerous 2" --archives-only`
+contrôle sans écriture les dix soldats des vagues, les orientations Blue et
+l'incompatibilité entre l'ancien coordinateur et les récepteurs actuels du
+signal 25. Il empreinte 179 sources et exclut explicitement 17 surcharges
+installées; le mode strict les refuse. Huit tests synthétiques accompagnent
+l'[étude du protocole](../NORMANDY2_FAKE_DEFENCE_COORDINATOR/ETUDE.md).
+Aucune position ni réception de signal n'est déduite automatiquement.
+
 ## Construction de l'installateur
 
 ```powershell

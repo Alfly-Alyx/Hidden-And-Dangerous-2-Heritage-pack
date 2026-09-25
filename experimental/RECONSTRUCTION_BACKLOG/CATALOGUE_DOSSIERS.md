@@ -2,7 +2,7 @@
 
 Ce catalogue recense les dossiers de premier niveau présents sur la branche. Il complète le registre thématique : sa fonction est de rendre visible tout ce qui existe déjà, y compris les études qui ne demandent pas d'action immédiate.
 
-Total : **165 dossiers**.
+Total : **168 dossiers**.
 
 | Dossier | Fichiers directs | Sous-dossiers |
 |---|---|---|
@@ -157,6 +157,9 @@ Total : **165 dossiers**.
 | [TUTORIAL_SW2_THREE_ACTION_VARIANT](../TUTORIAL_SW2_THREE_ACTION_VARIANT/) | `ETUDE.md` | — |
 | [CO_BURGUNDY1_CLOSURE](../CO_BURGUNDY1_CLOSURE/) | `ETUDE.md` | — |
 | [NORMANDY1_LEGACY_ACTIVATORS](../NORMANDY1_LEGACY_ACTIVATORS/) | `ETUDE.md`, `PROTOTYPE_SOLO_PROXIMITY_DELTA.scr.disabled` | — |
+| [NORMANDY2_ACTIVE_PLACEHOLDERS](../NORMANDY2_ACTIVE_PLACEHOLDERS/) | `ETUDE.md` | — |
+| [NORMANDY2_FAKE_DEFENCE_COORDINATOR](../NORMANDY2_FAKE_DEFENCE_COORDINATOR/) | `ETUDE.md` | — |
+| [NORMANDY2_INCOMPLETE_WAVES](../NORMANDY2_INCOMPLETE_WAVES/) | `ETUDE.md` | — |
 | [NORMANDY2_LEGACY_GO_NETWORK](../NORMANDY2_LEGACY_GO_NETWORK/) | `ETUDE.md` | — |
 | [NORMANDY2_REMOVED_DEFENDERS](../NORMANDY2_REMOVED_DEFENDERS/) | `ETUDE.md`, `MATRICE_ACTEURS.md` | — |
 | [NORMANDY2_RETURN_DETECTORS](../NORMANDY2_RETURN_DETECTORS/) | `ETUDE.md` | — |
