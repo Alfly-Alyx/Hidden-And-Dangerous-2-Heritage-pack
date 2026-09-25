@@ -35,7 +35,7 @@ Chemins : `experimental/ARCTIC1_*` et
 
 | Dossier | État | Informations disponibles et suite |
 |---|---|---|
-| `CZECH2_LEGACY_PLAYER_STAGING_ADDITIVE` | À documenter | Scripts libres `player1assign..4` et `startscriptengl1..4`; checkpoints `en1..4` et `Ger1_1` présents. Les frames player ne sont pas initialisées. Garder `cut2` du joueur le plus proche par défaut et empêcher tout double téléport. |
+| [CZECH2_LEGACY_PLAYER_STAGING_ADDITIVE](../CZECH2_LEGACY_PLAYER_STAGING_ADDITIVE/ETUDE.md) | Documenté / bloqué contrat | Huit scripts non liés, frames player sans initialisation explicite; checkpoints présents. Ancienne mise en place sur cinématique 1, cut2 commerciale sur 2 : ne pas les confondre ni doubler les affectations. |
 | `CZECH2_GER12_DEATH_STAGING` | Prototype désactivé | Profil reproductible `czech2-ger12-lie`, 380 octets; seule la posture historique est réactivée. Acteur et liaison vérifiés. Le dummy assis reste hors variante; animation/mort/interruption à tester en moteur. |
 | `DOCUMENTS_LOST_MESSAGE_19993808` | Bloqué preuve | L'identifiant n'apparaît que dans quatre lignes commentées et aucun texte n'a été retrouvé dans 9 643 entrées. Le signal de perte reste actif. Une phrase moderne optionnelle doit être anti-répétition et ne jamais être présentée comme officielle. |
 
@@ -43,7 +43,7 @@ Chemins : `experimental/ARCTIC1_*` et
 
 | Dossier | État | Informations disponibles et suite |
 |---|---|---|
-| `CZECH3_END_CUTSCENE_PLAYER_VISIBILITY` | À documenter | Les doubles sont créés et les joueurs réels téléportés vers `Com1..4`. Masquer un joueur seulement si son double existe et garantir le rétablissement même en cas d'interruption. |
+| [CZECH3_END_CUTSCENE_PLAYER_VISIBILITY](../CZECH3_END_CUTSCENE_PLAYER_VISIBILITY/ETUDE.md) | Documenté / bloqué contrat | Contrôleur atteint par affectation dynamique; doubles créés pour 1/2 seulement, nettoyage prévu pour quatre. Aucun masquage global : établir sélection, existence de chaque double et sorties d'interruption. |
 | `CZECH3_NOSIC2_SMOKE_IDLE_VARIANT` | Prototype désactivé | Profil de 8358 octets : rotation vers `ja_patnik17` et 42 s remplacent les 5 s sans cumul. Acteur, frame et liaison vérifiés; laboratoire de 99 fichiers, 76 scripts accessibles, quatre objectifs conservés. Partie de cartes et interruptions à tester. |
 | `CZECH3_FORMATION_CLEANUP_DUAL_PATH` | Prototype désactivé | Profil moderne conditionnel chez le chef seul, 2817 octets : état local armé après création, effacé avant Destroy à l'alarme. Aucun second signal vers le coordinateur, retrait individuel inchangé. Nécessité réelle, morts et courses à comparer au témoin. |
 | `CZECH3_OBJ_RADIO` | Bloqué preuve | `czech3_obj` n'a que la liaison Box29. Le script libre vise `l_a1ra_`, absent; la scène contient `la_b1_radio_` et son enfant. Reconstituer hiérarchie, propriétaire et son avant toute substitution. |
@@ -52,7 +52,7 @@ Chemins : `experimental/ARCTIC1_*` et
 
 | Dossier | État | Informations disponibles et suite |
 |---|---|---|
-| `CZECH4_SKLEPERS_MISSING_RETREAT_POINTS` | À documenter | Trois scripts utilisent `Move("???")`; la note indique un ancien redesign de checkpoints. Rechercher trois destinations distinctes dans la géométrie, avec comportement immédiat comme profil par défaut. |
+| [CZECH4_SKLEPERS_MISSING_RETREAT_POINTS](../CZECH4_SKLEPERS_MISSING_RETREAT_POINTS/ETUDE.md) | Documenté / bloqué géométrie | Trois mouvements ??? commentés sur signal 11, acteurs et émetteur présents. Destinations modernes distinctes à relever; réaction immédiate et masque numérique 373 conservés, malgré le commentaire incohérent. |
 | `CZECH4_PLATOON04_SIGNAL5` | Prototype désactivé | Profil complet `czech4-pianist-signal5`, 3224 octets, issu du fragment dans CZECH4_MISSING_SIGNAL_HANDLERS. Réveil, arrêt des deux sons et du piano, désarmement des proximités 40/30, combat sans type d'alarme inventé. Laboratoire : 124 fichiers, 105 scripts accessibles. |
 | `CZECH4_COUNTER_PLATOON07_09` | Documenté, bloqué preuve | Le compteur libre vise 06–09 après trois signaux 10, mais seul 06 possède un acteur. Déterminer renommage, suppression ou abandon. |
 | `CZECH4_DOG01_OWNERLESS` | Documenté, bloqué preuve | Script libre maître `Runner03`, sans chien ni liaison. Exiger modèle, placement et route avant activation. |
@@ -82,7 +82,7 @@ Chemins : `experimental/ARCTIC1_*` et
 | `NORMANDY2_INCOMPLETE_WAVES` | À documenter | Wave1 a un déplacement de bâtiment incomplet; Wave2 contient des chemins vides; certains acteurs manquent. Créer des checkpoints modernes depuis la géométrie. |
 | `NORMANDY2_ACTIVE_PLACEHOLDERS` | À documenter | Séparer : panique/mort Red31, regard du conducteur Tiger vers balcon, orientation `Ally_1` des Blues. |
 | Correctifs déjà stables | Faux positif | Compteur allié, signal 7 Red26 et boucle Blue OnSignal5 A1→A5 pour 15 acteurs. Blue12/16 sont absents. |
-| `NORMANDY3_MP_ZONE_TRUNCATED_CONTAINERS` | À documenter | Conteneurs Zone tronqués tandis que les fichiers MP complets existent. Étudier une fusion par préfixe; ne jamais versionner les binaires commerciaux. |
+| [NORMANDY3_MP_ZONE_TRUNCATED_CONTAINERS](../NORMANDY3_MP_ZONE_TRUNCATED_CONTAINERS/ETUDE.md) | Documenté / fusion bloquée | Aucun des trois fragments n'est un préfixe exact du MP complet; tailles différentes, concaténation refusée. Audit reproductible et cinq tests. Le repli existant requiert huit compléments, pas cinq; aucune conversion solo validée. |
 
 ## Norway
 
@@ -159,4 +159,4 @@ Chemins : `experimental/ARCTIC1_*` et
 |---|---|---|
 | `BU1-BRIDGE` | Documenté, bloqué porteur/protocole | Étude BURMA1_BRIDGE_LEGACY_TRIGGER : script non lié/non accessible, signal1 sans handlers. Réveil 60 m déjà actif, avec embarquement Type97 pour 32 et routes distinctes pour 33/34. Centre du rayon 7 m inconnu : pas de doublon déclaré ni de trigger inventé. |
 | `TUTORIAL_EASTER_EGG_ACCESS_112` | Documenté | Chaîne de jeu complète; seul l'accès physique est cassé par la désactivation de l'escalade véhicule. Ajouter un appui/échelle existant, sans téléport ni rollback moteur. Bedford (-17.804197,-1.512808,80.766449), bouton modèle (-52.354725,1.906093,-2.890001), activateur (57.962864,1.353687,41.821579). |
-| `TUTORIAL_SW2_THREE_ACTION_VARIANT` | À documenter | `dummy_SW2` libre envoie signal2; SW1/SW3 liés envoient 1/3; compteur ne traite que 1/3. Le chemin commercial 1+3 reste suffisant; la variante 1+2+3 ne doit jamais bloquer. |
+| [TUTORIAL_SW2_THREE_ACTION_VARIANT](../TUTORIAL_SW2_THREE_ACTION_VARIANT/ETUDE.md) | Documenté / bloqué accessibilité | SW2 existe sans liaison, mais sert déjà de cible caméra. Variante atomique liaison/compteur à trois drapeaux distincts et verrou unique; prouver l'accès au rayon 1 avant de l'exiger. Commercial 1+3 intact. |

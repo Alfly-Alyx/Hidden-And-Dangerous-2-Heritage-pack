@@ -2,7 +2,7 @@
 
 Ce catalogue recense les dossiers de premier niveau présents sur la branche. Il complète le registre thématique : sa fonction est de rendre visible tout ce qui existe déjà, y compris les études qui ne demandent pas d'action immédiate.
 
-Total : **159 dossiers**.
+Total : **164 dossiers**.
 
 | Dossier | Fichiers directs | Sous-dossiers |
 |---|---|---|
@@ -150,6 +150,11 @@ Total : **159 dossiers**.
 | [ME323_DECOR](../ME323_DECOR/) | `ETUDE.md`, `MANIFEST.md` | — |
 | [MG34_PORTABLE](../MG34_PORTABLE/) | `ETUDE.md`, `MANIFEST.md`, `RECONSTRUCTION.plan.disabled` | — |
 | [MP_ONLY_TO_SOLO_MATRIX](../MP_ONLY_TO_SOLO_MATRIX/) | `METHODE_WRAPPER_SOLO.md`, `README.md`, `REGISTRE_CONCEPTS_INCOMPLETS.md` | `AFRIKA5_MP`, `ALPS3_MP_ZONE`, `ALPS3_OBJ`, `ARDENS1_OBJ`, `ARDENS2_MP_ZONE`, `LONDON_MP`, `NORMANDY2B_MP_ZONE`, `NORMANDY3_MP`, `NORMANDY3_MP_ZONE`, `NORMANDY4_MP_ZONE` |
+| [NORMANDY3_MP_ZONE_TRUNCATED_CONTAINERS](../NORMANDY3_MP_ZONE_TRUNCATED_CONTAINERS/) | `ETUDE.md` | — |
+| [CZECH2_LEGACY_PLAYER_STAGING_ADDITIVE](../CZECH2_LEGACY_PLAYER_STAGING_ADDITIVE/) | `ETUDE.md` | — |
+| [CZECH3_END_CUTSCENE_PLAYER_VISIBILITY](../CZECH3_END_CUTSCENE_PLAYER_VISIBILITY/) | `ETUDE.md` | — |
+| [CZECH4_SKLEPERS_MISSING_RETREAT_POINTS](../CZECH4_SKLEPERS_MISSING_RETREAT_POINTS/) | `ETUDE.md` | — |
+| [TUTORIAL_SW2_THREE_ACTION_VARIANT](../TUTORIAL_SW2_THREE_ACTION_VARIANT/) | `ETUDE.md` | — |
 | [NORMANDY1_LEGACY_ACTIVATORS](../NORMANDY1_LEGACY_ACTIVATORS/) | `ETUDE.md`, `PROTOTYPE_SOLO_PROXIMITY_DELTA.scr.disabled` | — |
 | [NORMANDY2_LEGACY_GO_NETWORK](../NORMANDY2_LEGACY_GO_NETWORK/) | `ETUDE.md` | — |
 | [NORMANDY2_REMOVED_DEFENDERS](../NORMANDY2_REMOVED_DEFENDERS/) | `ETUDE.md`, `MATRICE_ACTEURS.md` | — |

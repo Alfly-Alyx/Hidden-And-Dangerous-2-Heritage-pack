@@ -14,6 +14,7 @@ import re
 from pathlib import Path
 
 from dta_archive import DtaArchive
+from objective_audit import blocks
 from script_binding_audit import parse_bindings, scene_frame_names
 from tree_klz import audit_bytes
 
@@ -120,6 +121,35 @@ def archived_data(
     return archive.read(matches[0])
 
 
+def prefix_comparison(fragment: bytes, complete: bytes) -> dict[str, object]:
+    """Measure a proposed prefix splice without repairing or emitting any bytes.
+
+    Matching payload prefixes would still not authenticate an original variant.
+    Container lengths are reported separately, never silently normalized.
+    """
+    if len(fragment) < 6 or len(complete) < 6:
+        raise ValueError('Both containers require a six-byte header')
+    fragment_declared = int.from_bytes(fragment[2:6], 'little')
+    base_declared = int.from_bytes(complete[2:6], 'little')
+    limit = min(len(fragment), len(complete))
+    mismatch = next((index for index in range(6, limit)
+                     if fragment[index] != complete[index]), None)
+    return {
+        'fragment_stored_bytes': len(fragment),
+        'fragment_declared_bytes': fragment_declared,
+        'complete_stored_bytes': len(complete),
+        'complete_declared_bytes': base_declared,
+        'same_container_kind': fragment[:2] == complete[:2],
+        'same_declared_length': fragment_declared == base_declared,
+        'payload_is_prefix': mismatch is None and len(fragment) <= len(complete),
+        'first_payload_mismatch_offset': mismatch,
+        'fragment_structurally_complete': blocks(fragment, 0, len(fragment)) is not None,
+        'reference_structurally_complete': blocks(complete, 0, len(complete)) is not None,
+        'automatic_splice_authorized': False,
+        'runtime_status': 'pending',
+    }
+
+
 def africa_runtime_status(
     registry: bytes, actors: bytes, scene: bytes
 ) -> dict[str, object]:
@@ -170,6 +200,12 @@ def archive_plan(game: Path):
                 archive, "Missions/NORMANDY3_MP", name
             )
             for name in NORMANDY_TRUNCATED_CONTAINERS
+        }
+        normandy_prefixes = {
+            name: prefix_comparison(
+                archived_data(archive, "Missions/NORMANDY3_MP_ZONE", name),
+                archived_data(archive, "Missions/NORMANDY3_MP", name),
+            ) for name in NORMANDY_TRUNCATED_CONTAINERS
         }
         africa_runtime = africa_runtime_status(
             archived_data(
@@ -279,6 +315,7 @@ def archive_plan(game: Path):
             "completed_files": len(normandy_complete),
             "truncated_containers": normandy_truncated,
             "base_containers": normandy_base_containers,
+            "prefix_comparisons": normandy_prefixes,
         },
     }
 
