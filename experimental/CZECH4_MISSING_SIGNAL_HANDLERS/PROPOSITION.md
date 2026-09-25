@@ -107,6 +107,20 @@ joue et vérifier s'il réagit déjà malgré l'absence de handler. Après le de
 Critère d'arrêt : tout redémarrage de `%%piano`, maintien d'un son, double
 réaction d'alarme ou écriture inattendue de la valeur 15 invalide le prototype.
 
+### Point de réalisation du pianiste — 25 septembre 2026
+
+Le profil `czech4-pianist-signal5` du
+[catalogue reproductible](../reconstruction-variants.json) insère désormais le
+fragment révisé complet dans une copie du script commercial. Un test compare
+l'insertion à ce fragment octet textuel par octet textuel; aucun autre
+gestionnaire n'est remplacé. Le script du pianiste, celui du Pumperz, le registre,
+les acteurs et les sons sont verrouillés par cinq empreintes. Le pianiste et le
+Pumperz sont sérialisés et liés; les deux émetteurs sonores sont identifiés dans
+`sounds.bin`. La réception reste **MODERNE** et non validée en moteur.
+
+Le profil se fabrique avec les générateurs de variantes et de laboratoires,
+sans installer de fichier. Il ne concerne ni le sniper ni les Plazzars.
+
 ## Sniper 01 — signal 1 probablement redondant
 
 `CZ4_Detector_01.scr` envoie le signal 1 à six acteurs lorsque le joueur entre

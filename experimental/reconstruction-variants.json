@@ -3,6 +3,49 @@
   "reference_edition": "GOG English Sabre Squadron 1.12",
   "profiles": [
     {
+      "id": "czech4-pianist-signal5",
+      "title": "Czech 4 — réaction moderne du pianiste au signal 5",
+      "classification": "MODERNE",
+      "source": "scripts/czech4/cz4_platoon_04.scr",
+      "actor": "CZ4_Platoon_04",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/czech4/cz4_platoon_04.scr": {"archive": "Scripts.dta", "size": 2745, "sha256": "b49432d6e3c0245d9828ff5b415f8627201f57f5fabf78b7eee8d2a74825cfb0"},
+        "scripts/czech4/cz4_apumperz_01.scr": {"archive": "Scripts.dta", "size": 3560, "sha256": "888aa68d93ab0dbc4da816bcaa31033df8c6df06f2508a30d25bb59de5f241f4"},
+        "missions/czech4/scripts.dta": {"archive": "missions.dta", "size": 4429, "sha256": "c78869d4fe89291ed7639a638f84c1aebd1d60358af08c74a08e9507b79caf00"},
+        "missions/czech4/actors.bin": {"archive": "missions.dta", "size": 19406, "sha256": "d33db362d9371d0b89c52edfbdb10b36dbb3bac1d17acc95497ad6b9f17a5ae8"},
+        "missions/czech4/sounds.bin": {"archive": "missions.dta", "size": 9868, "sha256": "f2bb84263a5c21325e0bb6e79076c5abd0702b4265fb2e8bf362f5f799c16a84"}
+      },
+      "checks": [
+        {"kind": "frames", "entry": "missions/czech4/actors.bin", "values": ["CZ4_APumperz_01"]},
+        {"kind": "frames", "entry": "missions/czech4/sounds.bin", "values": ["l_4piano_", "S_piano_far"]}
+      ],
+      "edits": [{"before": "OnAlarm()", "after": "OnSignal(5)\n{\n  DisableSignals(True);\n  SetWhenever(AKTIVACE, false);\n  SetWhenever(AKTIVACE2, false);\n\n  HUMAN_Suspend(false);\n  HUMAN_SetAnim(\"\", 200, 200, 0);\n\n  Block\n  {\n    FRM_SetOn(zvuk, false);\n    FRM_SetOn(zvuk2, false);\n  }\n  Delay(200);\n  FRM_SetOn(zvuk, false);\n  FRM_SetOn(zvuk2, false);\n\n  HUMAN_SetOptimized(1);\n  HUMAN_SETMODE_Stand();\n  HUMAN_TurnAtNearestPlayer();\n  SetAlarmType(1023, true);\n  HUMAN_SETAIMODE_Aggressive();\n  HUMAN_Stop();\n  EndScript();\n}\n\nOnAlarm()"}]
+    },
+    {
+      "id": "sicily2-three-cleared-wave",
+      "title": "Sicily 2 — vague moderne après au moins trois charges retirées",
+      "classification": "MODERNE",
+      "source": "scripts/sicily2/sic2_vlna2_aktivator.scr",
+      "actor": "dummy_druha_vlna",
+      "owner_entry": "missions/sicily2/scene2.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/sicily2/sic2_vlna2_aktivator.scr": {"archive": "SabreSquadron.dta", "size": 3228, "sha256": "bbb0504b6ebc6727ccee2c3efa845bceb954e4ce3c3d6ef4a314300d7469744a"},
+        "scripts/sicily2/sic2_naloze_test.scr": {"archive": "SabreSquadron.dta", "size": 957, "sha256": "37ed15f5e2155cdefb08b1d528f80a29d1a95e572b338934b122910f5d3aedc7"},
+        "missions/sicily2/scripts.dta": {"archive": "SabreSquadron.dta", "size": 4703, "sha256": "ba3161d7fc0852414c7eab86eeddfdee6cffed9951c6d270c73ec65b6cae2318"},
+        "missions/sicily2/actors.bin": {"archive": "SabreSquadron.dta", "size": 43767, "sha256": "de49e4151ffbd7c99e0e90ac08cb991ab3eece3f77e937d48368f826cc78a546"},
+        "missions/sicily2/scene2.bin": {"archive": "SabreSquadron.dta", "size": 6040297, "sha256": "813956bf834dfb0c662a728944fe9fbfb187956d51c3db23ea3d6bc0bc4e1a7a"}
+      },
+      "checks": [
+        {"kind": "frames", "entry": "missions/sicily2/actors.bin", "values": ["naloz_1", "naloz_2", "naloz_3", "naloz_4", "naloz_5", "naloz_6", "GER_16", "GER_17", "GER_18", "GER_19", "GER_20", "GER_21", "GER_22", "GER_23", "GER_24", "GER_25", "GER_26", "GER_27", "GER_28", "GER_29", "GER_30", "GER_31", "Add_12", "Add_13"]},
+        {"kind": "frames", "entry": "missions/sicily2/scene2.bin", "values": ["dummy_naloze_test", "dummy_budicek_vlna1"]}
+      ],
+      "edits": [{"before": "Whenever gogogo ( ( ((((((_ACTOR_GetState(N1)==3) + (_ACTOR_GetState(N2)==3)) + (_ACTOR_GetState(N3)==3)) + (_ACTOR_GetState(N4)==3)) + (_ACTOR_GetState(N5)==3)) + (_ACTOR_GetState(N6)==3)) == 3  ) )", "after": "Whenever gogogo ( ( ((((((_ACTOR_GetState(N1)==0) + (_ACTOR_GetState(N2)==0)) + (_ACTOR_GetState(N3)==0)) + (_ACTOR_GetState(N4)==0)) + (_ACTOR_GetState(N5)==0)) + (_ACTOR_GetState(N6)==0)) >= 3  ) )"}]
+    },
+    {
       "id": "czech3-nosic2-long-smoke",
       "title": "Czech 3 — ancienne pause fumée de 42 secondes",
       "source": "scripts/czech3/r_cz3_nosic2.scr",

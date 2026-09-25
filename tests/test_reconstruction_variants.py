@@ -105,6 +105,19 @@ class VariantTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "serialized actor"):
             builder.prepare(self.profile, MemorySources(self.files))
 
+    def test_typed_scene_controller_owner_requires_explicit_pinned_entry(self):
+        self.repin("missions/example/actors.bin", field(0x10, "Other"))
+        name = "missions/example/scene2.bin"
+        raw = field(0x10, "Owner")
+        self.files[name] = ("missions.dta", raw)
+        self.profile["evidence"][name] = {"archive": "missions.dta", "size": len(raw),
+                                           "sha256": builder.digest(raw)}
+        with self.assertRaisesRegex(ValueError, "serialized actor"):
+            builder.prepare(self.profile, MemorySources(self.files))
+        self.profile["owner_entry"] = name
+        _, report = builder.prepare(self.profile, MemorySources(self.files))
+        self.assertEqual(report["owner_entry"], name)
+
     def test_missing_checkpoint_refused(self):
         self.repin("missions/example/check2.bin", b"P10\0")
         with self.assertRaisesRegex(ValueError, "prerequisite: P1"):
@@ -281,7 +294,27 @@ class CatalogTests(unittest.TestCase):
 
     def test_shipped_catalog_loads(self):
         profiles = builder.load_catalog()
-        self.assertEqual(len(profiles), 11)
+        self.assertEqual(len(profiles), 13)
+
+    def test_pianist_handler_matches_reviewed_fragment_and_does_not_guess_alarm_type(self):
+        profile = builder.load_catalog()["czech4-pianist-signal5"]
+        fragment = (ROOT / "experimental/CZECH4_MISSING_SIGNAL_HANDLERS/"
+                    "PROTOTYPE_CZ4_PLATOON04_SIGNAL5.scr.disabled").read_text(encoding="utf-8")
+        handler = fragment[fragment.index("OnSignal(5)"):].strip()
+        self.assertEqual(profile["edits"][0]["after"], handler + "\n\nOnAlarm()")
+        self.assertNotIn("_GetAlarmType", handler)
+        self.assertNotIn("SaveGameValue", handler)
+        self.assertNotIn("HUMAN_Move(", handler)
+        self.assertLess(handler.index("SetWhenever(AKTIVACE, false)"), handler.index("Delay(200)"))
+        self.assertLess(handler.index("SetWhenever(AKTIVACE2, false)"), handler.index("Delay(200)"))
+
+    def test_scene_owner_must_be_pinned_and_local(self):
+        self.profile["owner_entry"] = "missions/example/scene2.bin"
+        with self.assertRaisesRegex(ValueError, "Missing script, registry or actor evidence"):
+            self.load([self.profile])
+        self.profile["owner_entry"] = "missions/other/scene2.bin"
+        with self.assertRaisesRegex(ValueError, "Owner evidence"):
+            self.load([self.profile])
 
     def test_nosic2_pause_replaces_instead_of_stacking_delays(self):
         profile = builder.load_catalog()["czech3-nosic2-long-smoke"]

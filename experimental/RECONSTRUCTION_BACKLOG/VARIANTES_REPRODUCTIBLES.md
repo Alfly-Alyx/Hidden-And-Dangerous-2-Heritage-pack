@@ -1,7 +1,7 @@
 # Variantes reproductibles
 
 État vérifié le **25 septembre 2026** sur la branche
-`codex/reconstruction-phase-1` : onze scripts dérivés ont été construits et
+`codex/reconstruction-phase-1` : treize scripts dérivés ont été construits et
 comparés aux sources commerciales. **Aucun n'est installé ni validé en jeu.**
 
 Le [catalogue machine](../reconstruction-variants.json) contient uniquement les
@@ -25,13 +25,15 @@ modifier les archives.
 | `arctic4-gunner1-flak-exit` | Sortie moderne du véhicule avant le retour au poste. | 1635 | [Flak](../ARCTIC4_AMBIENT_ANIMATIONS_AND_FLAK_EXIT/PROPOSITION.md) |
 | `arctic4-guard2-cold-fallback` | Activité Cold moderne dans la branche aléatoire 3. | 3674 | [Ambiance](../ARCTIC4_AMBIENT_ANIMATIONS_AND_FLAK_EXIT/PROPOSITION.md) |
 | `arctic4-guard6-cold-fallback` | Activité Cold moderne après la bouteille, délais conservés. | 1493 | [Ambiance](../ARCTIC4_AMBIENT_ANIMATIONS_AND_FLAK_EXIT/PROPOSITION.md) |
+| `sicily2-three-cleared-wave` | Au moins trois états 0 déclenchent la vague; aucune charge modifiée. | 3228 | [Déminage](../SICILY2_CHARGES_DUAL_STATE_WAVE/ETUDE.md) |
+| `czech4-pianist-signal5` | Réception moderne de l'alerte, fermeture audio/animation, proximités désarmées. | 3224 | [Pianiste](../CZECH4_MISSING_SIGNAL_HANDLERS/PROPOSITION.md) |
 
 Le choix est **exclusif avant chargement** : une copie laboratoire emploiera soit
 le script commercial, soit le script dérivé pour le même propriétaire. Aucun
 signal de sélection, objectif, compteur ou état de sauvegarde n'est ajouté.
 Ne pas empiler ces profils avec une autre modification du même script. La
 fabrication d'un fichier seule n'est pas la création d'une mission laboratoire
-complète. Les onze profils disposent maintenant aussi de
+complète. Les treize profils disposent maintenant aussi de
 [copies A/B inertes](LABORATOIRES_DESACTIVES.md), contrôlées hors jeu.
 
 ## Reproduction
@@ -51,7 +53,7 @@ Un fichier existant est refusé, jamais écrasé. `--output` permet de choisir u
 nouveau nom dans cet espace. Aucune option n'installe le résultat dans le jeu.
 
 Les vérifications couvrent les archives effectives Base/Patch/Sabre, les tailles
-et SHA-256 de **33 entrées commerciales distinctes**, la liaison unique du propriétaire,
+et SHA-256 de **43 entrées commerciales distinctes**, la liaison unique du propriétaire,
 sa présence sérialisée, les prérequis nommés et l'unicité de chaque modification.
 Une entrée correspondante de `PatchX01.dta` est refusée plutôt que de deviner sa
 priorité. Les fins de ligne et l'encodage commercial restent inchangés en dehors
@@ -93,11 +95,13 @@ les archives dans la première série; les deux profils Africa 1 doivent continu
 | Arctic 4, sortie Flak | `a194663f7d19402bfa200370a30966daefc7e4b433834a6a21e32835beab4b37` |
 | Arctic 4, froid garde 2 | `c0e66c88797c17af1663bf8da69f033245e86670742009a7fb63bf1009d43f04` |
 | Arctic 4, froid garde 6 | `368463f3e57880f0e41b18a65c2cd6a541996882020e4c6dde9018f5e3e86118` |
+| Sicily 2, vague après déminage | `0f0414e6432b26f2030ffb10f40713db4e51ee3ddf7acb5b84fb1b93e72caf37` |
+| Czech 4, pianiste | `d2c32f0046563682a5d9299d6eaa67d97f6b5791584908838ec0a6eaf51633e6` |
 
-Les 44 tests de variantes utilisent des données inventées et ne nécessitent pas
+Les 47 tests de variantes utilisent des données inventées et ne nécessitent pas
 de jeu. Ils couvrent notamment les refus de source modifiée, liaison dupliquée,
 ressource absente, remplacement ambigu, surcharge inattendue, sortie active,
-écriture dans le jeu et écrasement d'un fichier. Les onze diff réels ont aussi
+écriture dans le jeu et écrasement d'un fichier. Les treize diff réels ont aussi
 été inspectés. Ce ne sont ni une compilation du langage du jeu ni des essais
 de comportement de l'IA.
 
@@ -106,5 +110,5 @@ de comportement de l'IA.
 Les copies laboratoire sont générées, intégralement désactivées. Résoudre leur
 chargement réel et leur espace de scripts dans une installation de test isolée,
 puis exécuter les scénarios des études et la
-[barrière de validation](VALIDATION.md). Les onze profils restent `pending` pour
+[barrière de validation](VALIDATION.md). Les treize profils restent `pending` pour
 l'exécution; aucun résultat manuel n'a été converti artificiellement en succès.

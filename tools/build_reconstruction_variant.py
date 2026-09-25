@@ -67,6 +67,10 @@ def load_catalog(path: Path = CATALOG) -> dict:
         evidence = profile["evidence"]
         required = {source, f"missions/{mission}/scripts.dta",
                     f"missions/{mission}/actors.bin"}
+        owner_entry = profile.get("owner_entry", f"missions/{mission}/actors.bin")
+        if owner_entry not in (f"missions/{mission}/actors.bin", f"missions/{mission}/scene2.bin"):
+            raise ValueError("Owner evidence must be the mission actors or typed scene frames")
+        required.add(owner_entry)
         if not required.issubset(evidence):
             raise ValueError(f"Missing script, registry or actor evidence: {identifier}")
         for name, proof in evidence.items():
@@ -207,7 +211,8 @@ def prepare(profile: dict, sources) -> tuple[bytes, dict]:
                 if actor.casefold() == profile["actor"].casefold()]
     if len(bindings) != 1 or normalized(bindings[0]) != source_name.rsplit("/", 1)[1]:
         raise ValueError(f"Missing or conflicting owner binding: {profile['actor']}")
-    actor_names = scene_frame_names(verified[f"missions/{mission}/actors.bin"])
+    owner_entry = profile.get("owner_entry", f"missions/{mission}/actors.bin")
+    actor_names = scene_frame_names(verified[owner_entry])
     if profile["actor"].casefold() not in actor_names:
         raise ValueError(f"Missing serialized actor: {profile['actor']}")
     for check in profile.get("checks", []):
@@ -222,6 +227,7 @@ def prepare(profile: dict, sources) -> tuple[bytes, dict]:
     variant = apply_edits(source, profile["edits"])
     report = {
         "profile": profile["id"], "mission": mission, "actor": profile["actor"],
+        "owner_entry": owner_entry,
         "source": source_name,
         "source_archive": profile["evidence"][source_name]["archive"],
         "source_sha256": digest(source), "variant_sha256": digest(variant),

@@ -53,7 +53,7 @@ Chemins : `experimental/ARCTIC1_*` et
 | Dossier | État | Informations disponibles et suite |
 |---|---|---|
 | `CZECH4_SKLEPERS_MISSING_RETREAT_POINTS` | À documenter | Trois scripts utilisent `Move("???")`; la note indique un ancien redesign de checkpoints. Rechercher trois destinations distinctes dans la géométrie, avec comportement immédiat comme profil par défaut. |
-| `CZECH4_PLATOON04_SIGNAL5` | Documenté | `APumperz` envoie le signal 5 aux pelotons 01–06; le pianiste 04 n'a pas de récepteur. Le correctif doit arrêter piano/son/animation, activer le combat et conserver la proximité 40. |
+| `CZECH4_PLATOON04_SIGNAL5` | Prototype désactivé | Profil complet `czech4-pianist-signal5`, 3224 octets, issu du fragment dans CZECH4_MISSING_SIGNAL_HANDLERS. Réveil, arrêt des deux sons et du piano, désarmement des proximités 40/30, combat sans type d'alarme inventé. Laboratoire : 124 fichiers, 105 scripts accessibles. |
 | `CZECH4_COUNTER_PLATOON07_09` | Documenté, bloqué preuve | Le compteur libre vise 06–09 après trois signaux 10, mais seul 06 possède un acteur. Déterminer renommage, suppression ou abandon. |
 | `CZECH4_DOG01_OWNERLESS` | Documenté, bloqué preuve | Script libre maître `Runner03`, sans chien ni liaison. Exiger modèle, placement et route avant activation. |
 | `CZECH4_R_CZ4_HODINY` | Faux positif | Fichier vide résiduel; rien à restaurer. |
@@ -97,7 +97,7 @@ Chemins : `experimental/ARCTIC1_*` et
 | Dossier | État | Informations disponibles et suite |
 |---|---|---|
 | `SICILY1_IT40_DUAL_DOOR_BEHAVIOR` | Prototype désactivé | Profil reproductible `sicily1-it40-open-doors`, 2464 octets; deux appels réactivés. Portes retrouvées dans scene.4ds/scene2.bin, pas dans les frames humaines; verrou commercial inchangé. Solo uniquement, coop non transposable sans étude. |
-| `SICILY2_CHARGES_DUAL_STATE_WAVE` | À documenter | Six charges avaient une transition 0→3 commentée. L'activateur de vague met exactement trois charges à l'état 3; l'objectif exige les six à l'état 0. Compter les charges retirées/désamorcées sans casser l'objectif. |
+| `SICILY2_CHARGES_DUAL_STATE_WAVE` | Prototype désactivé | L'activateur observe trois états 3, il ne les écrit pas. Profil moderne `sicily2-three-cleared-wave` : au moins trois états 0, sans toucher aux charges ni à l'objectif des six états 0. Laboratoire : 131 fichiers, 117 scripts accessibles. Seuil 2→4 et 4096 combinaisons contrôlés hors moteur. |
 
 ## Burgundy et Co-Burgundy
 
