@@ -428,6 +428,18 @@ namespace HD2CustomMissionManager
             package.TemplateMission = OptionalString(document, "templateMission", package.Id + ".templateMission", 64);
             if (package.TemplateMission != null && !MissionDirectoryPattern.IsMatch(package.TemplateMission))
                 throw new InvalidDataException(package.Id + " : templateMission invalide.");
+            object preserveObjectives;
+            if (document.TryGetValue("preserveTemplateObjectives", out preserveObjectives))
+            {
+                if (!(preserveObjectives is bool))
+                    throw new InvalidDataException(
+                        package.Id + " : preserveTemplateObjectives doit être un booléen.");
+                package.PreserveTemplateObjectives = (bool)preserveObjectives;
+            }
+            if (package.PreserveTemplateObjectives
+                && (package.TemplateMission == null || document.ContainsKey("objectives")))
+                throw new InvalidDataException(package.Id
+                    + " : preserveTemplateObjectives exige templateMission et interdit le champ objectives.");
             object title;
             if (!document.TryGetValue("title", out title))
                 throw new InvalidDataException(package.Id + " : titre absent.");
@@ -1106,7 +1118,35 @@ namespace HD2CustomMissionManager
             return ReadArchiveEntry(originalGame, "GameData\\Gamedata01.gdt");
         }
 
-        public static byte[] BuildCatalogue(byte[] source, MissionLibrary library)
+        private static Dictionary<string, GdtBlock> MissionTemplates(
+            byte[] expansionSource, byte[] originalSource)
+        {
+            Dictionary<string, GdtBlock> templates =
+                new Dictionary<string, GdtBlock>(StringComparer.OrdinalIgnoreCase);
+            foreach (byte[] data in new[] { expansionSource, originalSource })
+            {
+                if (data == null) continue;
+                List<GdtBlock> parsed;
+                if (!TryParseBlocks(data, 0, data.Length, out parsed))
+                    throw new InvalidDataException("Catalogue de gabarits illisible.");
+                GdtBlock top = parsed.FirstOrDefault(block => block.Kind == 0x01);
+                GdtBlock main = top == null ? null : Direct(top, 0x05);
+                if (main == null) throw new InvalidDataException("Catalogue de gabarits sans campagnes.");
+                foreach (GdtBlock mission in Walk(main.Children).Where(block => block.Kind == 0x32))
+                {
+                    GdtBlock directory = Direct(mission, 0x36);
+                    if (directory == null) continue;
+                    string name = BlockString(directory);
+                    if (templates.ContainsKey(name))
+                        throw new InvalidDataException("Gabarit de mission ambigu : " + name);
+                    templates.Add(name, mission);
+                }
+            }
+            return templates;
+        }
+
+        public static byte[] BuildCatalogue(
+            byte[] source, MissionLibrary library, byte[] originalSource = null)
         {
             List<GdtBlock> root;
             if (!TryParseBlocks(source, 0, source.Length, out root))
@@ -1116,19 +1156,13 @@ namespace HD2CustomMissionManager
             if (main == null) throw new InvalidDataException("Liste des campagnes absente.");
             List<GdtBlock> sourceCampaigns = main.Children.Where(block => block.Kind == 0x3C).ToList();
             if (sourceCampaigns.Count < 3) throw new InvalidDataException("Trois gabarits de campagne requis.");
-            Dictionary<string, GdtBlock> templates =
-                new Dictionary<string, GdtBlock>(StringComparer.OrdinalIgnoreCase);
-            foreach (GdtBlock mission in Walk(main.Children).Where(block => block.Kind == 0x32))
-            {
-                GdtBlock directory = Direct(mission, 0x36);
-                if (directory != null) templates[BlockString(directory)] = mission;
-            }
+            Dictionary<string, GdtBlock> templates = MissionTemplates(source, originalSource);
             List<string> officialDirectories = Walk(main.Children)
                 .Where(block => block.Kind == 0x32)
                 .Select(block => Direct(block, 0x36)).Where(block => block != null)
                 .Select(BlockString).ToList();
             HashSet<string> officialSet = new HashSet<string>(
-                officialDirectories, StringComparer.OrdinalIgnoreCase);
+                templates.Keys, StringComparer.OrdinalIgnoreCase);
             foreach (MissionPackage package in library.Packages)
                 if (officialSet.Contains(package.MissionDirectory))
                     throw new InvalidDataException(
@@ -1164,7 +1198,7 @@ namespace HD2CustomMissionManager
         }
 
         private static byte[] BuildCustomCatalogue(
-            byte[] source, IList<MissionPackage> packages)
+            byte[] source, IList<MissionPackage> packages, byte[] originalSource = null)
         {
             List<GdtBlock> root;
             if (!TryParseBlocks(source, 0, source.Length, out root))
@@ -1177,13 +1211,7 @@ namespace HD2CustomMissionManager
             if (sourceCampaigns.Count < CategoryOrder.Length)
                 throw new InvalidDataException("Trois gabarits de campagne requis.");
 
-            Dictionary<string, GdtBlock> templates =
-                new Dictionary<string, GdtBlock>(StringComparer.OrdinalIgnoreCase);
-            foreach (GdtBlock mission in Walk(main.Children).Where(block => block.Kind == 0x32))
-            {
-                GdtBlock directory = Direct(mission, 0x36);
-                if (directory != null) templates[BlockString(directory)] = mission;
-            }
+            Dictionary<string, GdtBlock> templates = MissionTemplates(source, originalSource);
 
             Dictionary<int, List<MissionPackage>> grouped =
                 new Dictionary<int, List<MissionPackage>>();
@@ -1304,7 +1332,7 @@ namespace HD2CustomMissionManager
             };
             Dictionary<string, byte[]> result =
                 new Dictionary<string, byte[]>(StringComparer.OrdinalIgnoreCase);
-            result["Gamedata02.gdt"] = BuildCustomCatalogue(source, categories);
+            result["Gamedata02.gdt"] = BuildCustomCatalogue(source, categories, originalSource);
             for (int index = 0; index < CategoryOrder.Length; index++)
             {
                 string category = CategoryOrder[index];
@@ -1312,7 +1340,7 @@ namespace HD2CustomMissionManager
                     String.Equals(item.Category, category, StringComparison.OrdinalIgnoreCase))
                     .ToList();
                 result["Gamedata" + (index + 3).ToString("D2") + ".gdt"] =
-                    BuildCustomCatalogue(source, detail);
+                    BuildCustomCatalogue(source, detail, originalSource);
             }
             return result;
         }
@@ -1724,7 +1752,8 @@ namespace HD2CustomMissionManager
         {
             MissionLibrary library = LoadLibrary(libraryRoot, false);
             if (library.Packages.Count == 0) throw new InvalidDataException("Bibliothèque vide.");
-            byte[] result = BuildCatalogue(ReadSourceCatalogue(originalGame), library);
+            byte[] result = BuildCatalogue(ReadSourceCatalogue(originalGame), library,
+                ReadArchiveEntry(originalGame, "GameData\\Gamedata00.gdt"));
             if (!String.IsNullOrWhiteSpace(outputPath)) WriteAtomic(outputPath, result);
             return Sha256(result);
         }
@@ -2244,6 +2273,82 @@ namespace HD2CustomMissionManager
                 "un dossier brut peut installer un fichier exécutable .asi.");
         }
 
+        private static byte[] SafetyCatalogue(params byte[][] missions)
+        {
+            return EncodeBlock(0x01, EncodeBlock(0x05, Join(missions.Select(
+                mission => EncodeBlock(0x3C, Join(new[] {
+                    EncodeInteger(0x3D, 999), EncodeBlock(0x05, mission) }))))));
+        }
+
+        private static void RunObjectiveTemplateSelfTests(string root)
+        {
+            string library = Path.Combine(root, "preserve-objectives");
+            string missionPath = CreatePackage(library, "test.preserve-objectives",
+                "LabMission", "Laboratoire", "user-mission", "english");
+            SafetyWrite(Path.Combine(missionPath, "tree.klz"), "invented-tree");
+            string manifestPath = Path.Combine(library, "test.preserve-objectives", "mission.json");
+            Dictionary<string, object> document = AsObject(
+                Json.DeserializeObject(File.ReadAllText(manifestPath)), "test manifest");
+            document.Remove("objectives");
+            document["templateMission"] = "SourceMission";
+            document["preserveTemplateObjectives"] = true;
+            SafetyWrite(manifestPath, Json.Serialize(document));
+            MissionPackage package = LoadLibrary(library, false).Packages.Single();
+            SafetyAssert(package.PreserveTemplateObjectives && package.ObjectiveIds.Count == 0,
+                "le manifeste n'a pas conservé les objectifs du gabarit.");
+            byte[] first = EncodeBlock(0x28, Join(new[] {
+                EncodeInteger(0x29, 111), EncodeInteger(0x2A, 7) }));
+            byte[] second = EncodeBlock(0x28, Join(new[] {
+                EncodeInteger(0x29, 222), EncodeInteger(0x2A, 9) }));
+            byte[] source = EncodeBlock(0x32, Join(new[] {
+                EncodeInteger(0x33, 333), EncodeBlock(0x36,
+                    Encoding.ASCII.GetBytes("SourceMission\0")), first, second }));
+            List<GdtBlock> parsed;
+            SafetyAssert(TryParseBlocks(source, 0, source.Length, out parsed),
+                "le gabarit synthétique est invalide.");
+            byte[] rebuilt = RewriteMission(parsed.Single(), package);
+            List<GdtBlock> result;
+            SafetyAssert(TryParseBlocks(rebuilt, 0, rebuilt.Length, out result),
+                "la mission reconstruite est invalide.");
+            List<byte[]> objectives = result.Single().Children.Where(
+                block => block.Kind == 0x28).Select(EncodeExisting).ToList();
+            SafetyAssert(objectives.Count == 2 && objectives[0].SequenceEqual(first)
+                && objectives[1].SequenceEqual(second),
+                "les objectifs hérités ont perdu un texte, un drapeau ou leur ordre.");
+            byte[] originalCatalogue = SafetyCatalogue(source);
+            byte[][] expansionMissions = Enumerable.Range(0, 3).Select(index =>
+                EncodeBlock(0x32, Join(new[] { EncodeInteger(0x33, 444),
+                    EncodeBlock(0x36, Encoding.ASCII.GetBytes("Expansion" + index + "\0")),
+                    first }))).ToArray();
+            byte[] expansionCatalogue = SafetyCatalogue(expansionMissions);
+            byte[] custom = BuildCustomCatalogue(expansionCatalogue,
+                new List<MissionPackage> { package }, originalCatalogue);
+            List<GdtBlock> customBlocks;
+            SafetyAssert(TryParseBlocks(custom, 0, custom.Length, out customBlocks),
+                "le catalogue avec gabarit Base est invalide.");
+            GdtBlock cloned = Walk(customBlocks).Single(block => block.Kind == 0x32);
+            List<byte[]> inherited = cloned.Children.Where(block => block.Kind == 0x28)
+                .Select(EncodeExisting).ToList();
+            SafetyAssert(BlockString(Direct(cloned, 0x36)) == "LabMission"
+                && inherited.Count == 2 && inherited[1].SequenceEqual(second),
+                "la mission Base n'a pas été copiée dans le catalogue personnalisé.");
+            bool ambiguous = false;
+            try { MissionTemplates(originalCatalogue, originalCatalogue); }
+            catch (InvalidDataException) { ambiguous = true; }
+            SafetyAssert(ambiguous, "un gabarit Base/Sabre ambigu a été accepté.");
+            document["objectives"] = new object[0];
+            SafetyWrite(manifestPath, Json.Serialize(document));
+            SafetyLibraryRefused(library, "conservation et objectifs explicites acceptés ensemble.");
+            document.Remove("objectives");
+            document.Remove("templateMission");
+            SafetyWrite(manifestPath, Json.Serialize(document));
+            SafetyLibraryRefused(library, "conservation sans gabarit acceptée.");
+            document["templateMission"] = "SourceMission";
+            document["preserveTemplateObjectives"] = "true";
+            SafetyWrite(manifestPath, Json.Serialize(document));
+            SafetyLibraryRefused(library, "conservation non booléenne acceptée.");
+        }
+
         public static string RunSafetySelfTests(string parentRoot)
         {
             parentRoot = Path.GetFullPath(parentRoot);
@@ -2259,6 +2364,7 @@ namespace HD2CustomMissionManager
             {
                 Directory.CreateDirectory(root);
                 RunMissionFolderSelfTests(root);
+                RunObjectiveTemplateSelfTests(root);
 
                 string conflictGame = Path.Combine(root, "conflict");
                 string conflictRelative = "Maps/conflict.bin";
@@ -2452,7 +2558,7 @@ namespace HD2CustomMissionManager
                                 "la panne " + failure + " n'a pas restauré un fichier initial.");
                     }
                 }
-                return "Auto-tests de sécurité réussis : 8/8 et scan des dossiers bruts "
+                return "Auto-tests de sécurité réussis : 8/8, conservation des objectifs Base/Sabre et scan des dossiers bruts "
                     + "(fichiers directs, ressources, espaces, stabilité, sources intactes, "
                     + "Missions, payload, priorité du manifeste, collisions, dossiers invalides). "
                     + "Sécurité : conflit, sauvegarde absente, "

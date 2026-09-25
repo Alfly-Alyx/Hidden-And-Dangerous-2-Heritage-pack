@@ -89,6 +89,8 @@ Commandes de départ :
 | `tools/model_wireframe.py` | Rendre une vue filaire de modèle; nécessite Pillow. |
 | `tools/prototype_deployment_audit.py` | Contrôler les deux prototypes installés sans les confondre avec des missions solo validées. |
 | `tools/build_reconstruction_variant.py` | Vérifier ou générer un profil exclusif `.scr.disabled` depuis les archives légitimes, sans installation; voir [la procédure](VARIANTES_REPRODUCTIBLES.md). |
+| `tools/build_reconstruction_lab.py` | Générer une copie témoin et une variante complète dans un ZIP intégralement désactivé; voir [les laboratoires](LABORATOIRES_DESACTIVES.md). |
+| `tools/reconstruction_catalogue_audit.py` | Contrôler les objectifs hérités des laboratoires avec le gestionnaire compilé et des charges utiles factices; aucune installation. |
 
 Avant toute attribution d'ID :
 

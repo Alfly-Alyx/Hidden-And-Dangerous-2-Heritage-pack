@@ -1,0 +1,76 @@
+# Laboratoires A/B inertes
+
+Le générateur `tools/build_reconstruction_lab.py` transforme chaque profil en
+deux copies complètes de mission : témoin commercial et variante. Les sorties
+restent sous `.analysis/`, hors jeu, non distribuables car dérivées des archives
+commerciales. Elles ne sont **ni installées, ni lancées, ni validées en moteur**.
+
+## Garanties et limites
+
+- Chaque copie possède son identifiant et son dossier `H2Lab_…_B` ou `H2Lab_…_V`.
+- Géométrie, collisions, acteurs, registre et scripts locaux sont copiés depuis
+  les archives effectives. Une seule source de script diffère dans la variante.
+- Tous les fichiers de charge utile et les manifestes portent `.disabled`, y
+  compris à l'intérieur du ZIP. Une extraction accidentelle ne crée pas de
+  paquet scannable par le gestionnaire.
+- Les scripts accessibles depuis le registre, `#include` et `ScriptAssign` sont
+  contrôlés. Dépendance absente, nom dynamique, chemin externe ou chemin figé
+  vers la mission originale : refus, pas de remappage deviné.
+- Aucun objectif ou signal nouveau n'est introduit. Le gestionnaire conserve
+  intégralement les blocs d'objectifs du gabarit Base ou Sabre, dans leur ordre.
+- Les ressources globales restent fournies par l'installation légitime. La
+  fermeture statique des scripts ne prouve pas leur résolution par le moteur
+  sous un nouveau nom de mission, ni l'absence de toute dépendance implicite.
+
+La vérification ZIP contrôle l'intégrité et la cohérence internes, pas une
+signature d'authenticité. L'origine commerciale est contrôlée lors de la
+génération depuis les archives et les empreintes du catalogue de variantes.
+
+## Commandes
+
+Lecture seule par défaut; `--build` crée un fichier neuf, jamais un écrasement :
+
+```powershell
+.\.venv\Scripts\python.exe tools\build_reconstruction_lab.py --game "D:\Games\Hidden and Dangerous 2" --archives-only --profile czech2-ger12-lie
+.\.venv\Scripts\python.exe tools\build_reconstruction_lab.py --game "D:\Games\Hidden and Dangerous 2" --archives-only --profile czech2-ger12-lie --build
+.\.venv\Scripts\python.exe tools\build_reconstruction_lab.py --verify .analysis\laboratories\czech2-ger12-lie.lab.zip.disabled
+```
+
+`--archives-only` exclut explicitement les surcharges locales et enregistre leurs
+empreintes pertinentes. Il ne valide pas leur compatibilité avec la variante.
+
+Pour contrôler les catalogues avec le gestionnaire compilé :
+
+```powershell
+.\build-custom-mission-manager.ps1 -ConsoleOnly
+$labBundles = @(Get-ChildItem -LiteralPath .analysis\laboratories\20260925 -Filter *.lab.zip.disabled | Select-Object -ExpandProperty FullName)
+.\.venv\Scripts\python.exe tools\reconstruction_catalogue_audit.py --game "D:\Games\Hidden and Dangerous 2" @labBundles
+```
+
+Cet audit fabrique une bibliothèque temporaire de **faux contenus non jouables**
+pour exercer le gestionnaire. Il n'extrait pas les missions du ZIP. Il compare
+les objectifs hérités octet par octet, vérifie que les neuf missions Sabre sont
+inchangées et génère en mémoire les fichiers du menu. Les faux paquets et le
+catalogue temporaire sont ensuite retirés. Ce n'est pas un test du jeu.
+
+## Mesures de la première série — 25 septembre 2026
+
+| Mission | Fichiers copiés par branche | Scripts accessibles | Objectifs conservés par branche |
+|---|---:|---:|---:|
+| Arctic 4 | 115 | 100 | 9 |
+| Czech 2 | 110 | 83 | 6 |
+| Sicily 1 | 102 | 90 | 9 |
+| Africa 1 | 156 | 114 | 10 |
+| Czech 6 | 109 | 95 | 6 |
+| Libye 3 | 85 | 73 | 6 |
+
+Les douze entrées témoin/variante de cette série ont passé l'audit de catalogue.
+Le profil supplémentaire AF1_26 emploie les mêmes 156 sources Africa 1 et conserve
+les dix objectifs; le contrôle a également réussi avec les quatorze entrées.
+Les tests automatisés couvrent 41 cas de variantes, 18 cas de laboratoires et
+huit cas de conservation d'objectifs, plus les auto-tests C# et les 28 tests
+d'émulation du menu. Ces nombres ne comptent aucun essai moteur.
+Restent obligatoires : installation dans une copie de test explicitement isolée,
+apparition dans le menu, chargement, résolution locale des scripts, interruptions,
+sauvegarde/reprise, objectifs et fin de mission comparés au témoin. Aucun retrait
+de `.disabled` ni intégration au jeu courant n'est effectué par ces outils.

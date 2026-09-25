@@ -130,7 +130,7 @@ Chemins : `experimental/ARCTIC1_*` et
 
 | Dossier | État | Informations disponibles et suite |
 |---|---|---|
-| `AFRICA1_AF1_26_INCOMPLETE_START_LOOP` | À documenter | Le script actif contient `START doplnit` en boucle et y revient après alarme. Corriger la boucle sans inventer de route. |
+| `AFRICA1_AF1_26_INCOMPLETE_START_LOOP` | Prototype désactivé | Profil moderne `africa1-af126-safe-idle` : seule l'arête vide START→START devient START→END; gestionnaires et réglages inchangés. Liaison et acteur vérifiés; nouvelle alarme et reprise à tester en moteur. |
 | `AFRICA1_OFFICER_21_CUTSCENE_MOVE` | Prototype désactivé | Profil reproductible de 3369 octets depuis les archives. L'appel se situe pendant OnCutscene(10), après caméra/voix et 2100 ms, pas avant la cinématique. Registre libre Heritage détecté et exclu explicitement; compatibilité installée, cadrage et synchronisation non validés. |
 | `AFRICA1_M_DVR_H01_LIGHTMAP_DOOR` | Bloqué preuve | Frame visuelle présente, script libre complet mais groupe lightmap absent. Retrouver un nom d'éditeur valide ou classer irréparable. |
 | `AFRICA1_PLAYER_INTRO_AND_OFFICER_REACTION_COMPOSITE` | À documenter | Les anciens player01..04 réagissent à cutscene10; les scripts actuels affectent `CUTSAS` pour intro3 puis finissent. Composer sans double affectation et garder le gestionnaire vivant. |

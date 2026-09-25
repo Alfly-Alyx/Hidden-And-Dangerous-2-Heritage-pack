@@ -3,6 +3,22 @@
   "reference_edition": "GOG English Sabre Squadron 1.12",
   "profiles": [
     {
+      "id": "africa1-af126-safe-idle",
+      "title": "Africa 1 — sortie moderne de la boucle incomplète AF1_26",
+      "classification": "MODERNE",
+      "source": "scripts/africa1/af1_26.scr",
+      "actor": "AF1_26",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/africa1/af1_26.scr": {"archive": "Patch.dta", "size": 1752, "sha256": "864019f2264626732713ba796df742b90d7867a0768c92445f096ba345123dc2"},
+        "missions/africa1/scripts.dta": {"archive": "missions.dta", "size": 4622, "sha256": "d37bd79e7d779407884d9cc3329432c0e01f80abb6cf3c1baa6fb8f8293a1d39"},
+        "missions/africa1/actors.bin": {"archive": "Patch.dta", "size": 77797, "sha256": "3eb5c28c0e091b50b3550cb295c71e08ce025291917dfa5bf0d0d4b37513b7a5"}
+      },
+      "checks": [],
+      "edits": [{"before": "Label START:\n//  doplnit\ngoto START;", "after": "Label START:\n//  doplnit\ngoto END;"}]
+    },
+    {
       "id": "arctic4-guard3-alarm-post",
       "title": "Arctic 4 — poste d'alarme historique du garde 3",
       "source": "scripts/arctic4/r_arc3_static_guard_3.scr",

@@ -167,6 +167,14 @@ def read_package(package_dir: Path) -> dict:
         )
         if not MISSION_DIRECTORY_RE.fullmatch(template_mission):
             raise ValueError(f"{package_dir.name}: templateMission invalide")
+    preserve_objectives = document.get("preserveTemplateObjectives", False)
+    if not isinstance(preserve_objectives, bool):
+        raise ValueError(f"{package_dir.name}: preserveTemplateObjectives doit être un booléen")
+    if preserve_objectives and (not template_mission or "objectives" in document):
+        raise ValueError(
+            f"{package_dir.name}: preserveTemplateObjectives exige templateMission "
+            "et interdit le champ objectives"
+        )
     title = _translations(document.get("title"), f"{package_dir.name}.title")
     raw_objectives = document.get("objectives", [])
     if not isinstance(raw_objectives, list) or len(raw_objectives) > MAX_OBJECTIVES:
@@ -188,6 +196,7 @@ def read_package(package_dir: Path) -> dict:
         "mission_directory": mission_directory,
         "loading_screen": loading_screen,
         "template_mission": template_mission,
+        "preserve_template_objectives": preserve_objectives,
         "title": title,
         "title_id": title_id,
         "objectives": objectives,

@@ -905,7 +905,9 @@ def rewrite_mission(node, mission: dict) -> bytes:
     title_replaced = False
     directory_replaced = False
     loading_replaced = mission["loading_screen"] is None
-    objectives_replaced = mission.get("objective_ids") is None
+    preserve_objectives = (mission.get("preserve_template_objectives", False)
+                           or mission.get("objective_ids") is None)
+    objectives_replaced = preserve_objectives
     objective_model = next((child for child in node.children if child.kind == 0x28), None)
     for child in node.children:
         if child.kind == 0x33 and not title_replaced:
@@ -917,7 +919,7 @@ def rewrite_mission(node, mission: dict) -> bytes:
         elif child.kind == 0x36 and not directory_replaced:
             payload.extend(encode_string_block(0x36, mission["mission_directory"], child.payload))
             directory_replaced = True
-        elif child.kind == 0x28 and mission.get("objective_ids") is not None:
+        elif child.kind == 0x28 and not preserve_objectives:
             if not objectives_replaced:
                 if objective_model is None and mission["objective_ids"]:
                     raise ValueError("Le gabarit ne contient aucun objectif clonable")

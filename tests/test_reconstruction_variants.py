@@ -281,7 +281,20 @@ class CatalogTests(unittest.TestCase):
 
     def test_shipped_catalog_loads(self):
         profiles = builder.load_catalog()
-        self.assertEqual(len(profiles), 6)
+        self.assertEqual(len(profiles), 7)
+
+    def test_af126_modern_fix_removes_only_the_empty_back_edge(self):
+        profile = builder.load_catalog()["africa1-af126-safe-idle"]
+        self.assertEqual(profile["classification"], "MODERNE")
+        prefix = b"OnAlarmDone(){ goto START; }\r\nLabel ACTIVATE:\r\nIdle();\r\ngoto END;\r\n"
+        source = prefix + b"Label START:\r\n//  doplnit\r\ngoto START;\r\n\r\nLabel END:"
+        expected = prefix + b"Label START:\r\n//  doplnit\r\ngoto END;\r\n\r\nLabel END:"
+        self.assertEqual(builder.apply_edits(source, profile["edits"]), expected)
+
+    def test_af126_fix_refuses_a_loop_that_already_has_an_activity(self):
+        profile = builder.load_catalog()["africa1-af126-safe-idle"]
+        with self.assertRaisesRegex(ValueError, "exactly once"):
+            builder.apply_edits(b"Label START:\r\nMove();\r\ngoto START;", profile["edits"])
 
     def test_duplicate_profile_refused(self):
         with self.assertRaisesRegex(ValueError, "duplicate profile"):

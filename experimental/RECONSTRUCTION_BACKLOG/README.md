@@ -51,9 +51,11 @@ registre complète ces fichiers sans activer de script expérimental dans le jeu
   rapports internes, sources externes et règles de conservation.
 - [État de préparation](ETAT_PREPARATION.md) : photo vérifiée de la branche et
   de l'environnement juste avant le début des travaux.
-- [Variantes reproductibles](VARIANTES_REPRODUCTIBLES.md) : six scripts
+- [Variantes reproductibles](VARIANTES_REPRODUCTIBLES.md) : sept scripts
   expérimentaux générés localement, contrôles automatisés, provenance,
   conflit de surcharge Africa 1 et validations en moteur encore en attente.
+- [Laboratoires désactivés](LABORATOIRES_DESACTIVES.md) : copies A/B complètes,
+  fermeture des scripts et préservation des objectifs Base/Sabre, sans installation.
 
 ## Travaux immédiatement recommandés
 

@@ -1,7 +1,7 @@
 # Variantes reproductibles — première série
 
 État vérifié le **25 septembre 2026** sur la branche
-`codex/reconstruction-phase-1` : six scripts dérivés ont été construits et
+`codex/reconstruction-phase-1` : sept scripts dérivés ont été construits et
 comparés aux sources commerciales. **Aucun n'est installé ni validé en jeu.**
 
 Le [catalogue machine](../reconstruction-variants.json) contient uniquement les
@@ -20,12 +20,15 @@ modifier les archives.
 | `africa1-officer21-cutscene-move` | Déplacement au point existant pendant la cinématique 10. | 3369 | [Officier](../AFRICA1_OFFICER_21_CUTSCENE_MOVE/ETUDE.md) |
 | `czech6-isu-base-route` | Route de trois points à 12; sortie Patch conservée. | 2144 | [ISU](../CZECH6_ISU_DUAL_ROUTE/PROPOSITION.md) |
 | `libye3-german15-move-to-alarm` | Déplacement vers l'alarme avant les réglages de combat. | 1342 | [German15](../LIBYE3_GERMAN15_ALARM_DUAL_BEHAVIOR/ETUDE.md) |
+| `africa1-af126-safe-idle` | Sortie moderne de la boucle vide après alarme, sans route ajoutée. | 1750 | [Garde 26](../AFRICA1_AF1_26_INCOMPLETE_START_LOOP/ETUDE.md) |
 
 Le choix est **exclusif avant chargement** : une copie laboratoire emploiera soit
 le script commercial, soit le script dérivé pour le même propriétaire. Aucun
 signal de sélection, objectif, compteur ou état de sauvegarde n'est ajouté.
 Ne pas empiler ces profils avec une autre modification du même script. La
-fabrication d'un fichier n'est pas la création d'une mission laboratoire complète.
+fabrication d'un fichier seule n'est pas la création d'une mission laboratoire
+complète. Les sept profils disposent maintenant aussi de
+[copies A/B inertes](LABORATOIRES_DESACTIVES.md), contrôlées hors jeu.
 
 ## Reproduction
 
@@ -44,7 +47,7 @@ Un fichier existant est refusé, jamais écrasé. `--output` permet de choisir u
 nouveau nom dans cet espace. Aucune option n'installe le résultat dans le jeu.
 
 Les vérifications couvrent les archives effectives Base/Patch/Sabre, les tailles
-et SHA-256 de **25 entrées commerciales**, la liaison unique du propriétaire,
+et SHA-256 de **26 entrées commerciales distinctes**, la liaison unique du propriétaire,
 sa présence sérialisée, les prérequis nommés et l'unicité de chaque modification.
 Une entrée correspondante de `PatchX01.dta` est refusée plutôt que de deviner sa
 priorité. Les fins de ligne et l'encodage commercial restent inchangés en dehors
@@ -68,7 +71,8 @@ Pour reconstruire **explicitement la seule référence commerciale** :
 Cette option n'efface ni ne remplace la surcharge. Le rapport enregistre son
 empreinte sous `excluded_loose_overrides` et conserve
 `installed_game_compatibility: not_tested`. Les six contrôles réussissent contre
-les archives; le contrôle strict d'Africa 1 doit continuer à refuser la surcharge.
+les archives dans la première série; les deux profils Africa 1 doivent continuer
+à refuser la surcharge en contrôle strict.
 
 ## Empreintes des sorties vérifiées
 
@@ -80,17 +84,19 @@ les archives; le contrôle strict d'Africa 1 doit continuer à refuser la surcha
 | Africa 1 | `92e3656a2cc5f73be16a2e1069d79b0e87a404d459f4875c41534ebd96498024` |
 | Czech 6 | `19b0274ca5efce004f0933b9ef74d25d9020b1055728b749d9a94673abebfac7` |
 | Libye 3 | `12bc58e7220307830df876f682735b1af80fcfb9e8a840bc65b1323a6699ae29` |
+| Africa 1, garde 26 | `b3bde2cafffa5965d277d81c3f28dbf5dd0e624b5b09f21c9648162a2c03a57e` |
 
-Les 39 tests automatisés utilisent des données inventées et ne nécessitent pas
+Les 41 tests de variantes utilisent des données inventées et ne nécessitent pas
 de jeu. Ils couvrent notamment les refus de source modifiée, liaison dupliquée,
 ressource absente, remplacement ambigu, surcharge inattendue, sortie active,
-écriture dans le jeu et écrasement d'un fichier. Les six diff réels ont aussi
+écriture dans le jeu et écrasement d'un fichier. Les sept diff réels ont aussi
 été inspectés. Ce ne sont ni une compilation du langage du jeu ni des essais
 de comportement de l'IA.
 
 ## Travail restant avant activation
 
-Créer des copies laboratoire réellement isolées, résoudre leur chargement et
-leur espace de scripts, puis exécuter les scénarios des études et la
-[barrière de validation](VALIDATION.md). Les six profils restent `pending` pour
+Les copies laboratoire sont générées, intégralement désactivées. Résoudre leur
+chargement réel et leur espace de scripts dans une installation de test isolée,
+puis exécuter les scénarios des études et la
+[barrière de validation](VALIDATION.md). Les sept profils restent `pending` pour
 l'exécution; aucun résultat manuel n'a été converti artificiellement en succès.

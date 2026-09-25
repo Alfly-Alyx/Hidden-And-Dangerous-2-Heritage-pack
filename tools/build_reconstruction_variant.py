@@ -124,6 +124,13 @@ class ArchiveSources:
     def __exit__(self, *args):
         return self.stack.__exit__(*args)
 
+    def mission_entries(self, mission: str) -> list[str]:
+        if not re.fullmatch(r"[a-z0-9_]+", mission):
+            raise ValueError("Invalid source mission name")
+        prefixes = (f"missions/{mission}/", f"scripts/{mission}/")
+        return sorted({name for _, index in self.index.values() for name in index
+                       if name.startswith(prefixes)})
+
     def read(self, name: str) -> tuple[str, bytes]:
         name = entry_path(name)
         # Loose overrides are deliberately not used as an unverified baseline.

@@ -138,6 +138,11 @@ et sont rangées automatiquement dans les catégories correspondantes.
 - `templateMission` : mission officielle facultative dont les paramètres
   internes servent de gabarit. Sans ce champ, le gabarit de la catégorie est
   utilisé.
+- `preserveTemplateObjectives` : avec la valeur `true` et un `templateMission`
+  explicite, conserve exactement les objectifs du gabarit, leurs textes, leur
+  ordre et leurs drapeaux. Le champ `objectives` doit alors être absent, même
+  s'il aurait été vide. Cette option sert notamment aux copies de laboratoire
+  d'une mission existante. Elle ne valide pas leurs scripts ni leur jouabilité.
 
 Les langues reconnues sont `czech`, `english`, `EnglishUS`, `french`, `german`,
 `italian`, `japan` et `spanish`. Il n'est pas nécessaire de fournir les huit :
