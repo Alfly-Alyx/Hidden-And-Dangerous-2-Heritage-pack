@@ -147,7 +147,7 @@ Chemins : `experimental/ARCTIC1_*` et
 | Africa4 déjà étudiés | Documenté | Ne pas dupliquer les dossiers d'introduction, compteur, proximité et autres études existantes. |
 | `AFRICA5_PALM14_AMBIENT_SOUND` | À documenter | Contrôleur présent mais non lié; source `S_vrzplm14` absente, chaînes 1..13/15 complètes. Déduire la source 14 depuis les voisines et la transformation du contrôleur. |
 | `AFRICA5_ENDING_RADIO_LINES_58_60` | Bloqué ressource | IDs 09991958/60 commentés, tables de synchronisation présentes, WAV absents, 61 actif. Rechercher les langues officielles; sinon étiqueter toute voix/sous-titre comme moderne. |
-| `AFRICA5_STORAGE_ALARM_FILTER_VARIANTS` | À documenter | Les filtres `SetAlarmType` commentés diffèrent; créer profils exclusifs et tests. |
+| `AFRICA5_STORAGE_ALARM_FILTER_VARIANTS` | Scripts désactivés, laboratoire bloqué | Trois profils indépendants pour 01/02/03 : filtres 4/516/516, un commentaire retiré par script. Réactivations après signal 2 distinctes et testées comme masques. Laboratoires refusés : ancien détecteur runway01 référencé mais absent. |
 | `AFRICA5_SNIPER31_RANGE_VARIANT` | À documenter | `Whenever npir` 14 m et bascules commentés; proposer uniquement un profil de portée. |
 | `AFRICA5_RANDOM_FACE_SEED_VARIANT` | À documenter | Initialisations aléatoires commentées contre valeurs déterministes 10/3…; sélecteur exclusif. |
 | Correctifs Africa5 stables | Information | `SetEvents(true)` AF4_43 et visage `e_f0w1` AF4_10 forment le socle; ne pas les dupliquer. |

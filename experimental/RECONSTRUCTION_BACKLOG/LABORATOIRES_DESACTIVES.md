@@ -105,9 +105,15 @@ Le conducteur du Panzer Libye 3 porte le total à **dix-huit laboratoires,
 trente-six entrées et vingt et un scripts modifiés**, catalogue
 `54ec1ed7aed8f0a435327279eed8fe8f079199a887764c528c49d0e637a75bb3`.
 
-Les **144 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
+Trois profils supplémentaires de filtres du magasin Africa 5 disposent de
+scripts générés, **mais pas de laboratoire** : le registre commercial référence
+`af4_runway01_detector.scr`, absent. La fermeture est refusée sans supprimer le
+binding ni inventer un remplacement. Le total reste donc 18 laboratoires pour
+21 profils; les 36 entrées du catalogue ne comprennent aucun profil Africa 5.
+
+Les **147 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
 huit cas de conservation d'objectifs, quatre contrôles de lecture de catalogues,
-seize modèles/contrats de charges, assise, proximité, son et conduite,
+dix-neuf modèles/contrats de charges, assise, proximité, son, conduite et filtres,
 quatorze cas de groupes atomiques/4DS
 28 tests d'émulation du menu et sept contrôles de la chaîne Norway dormante.
 Les auto-tests C# passent également. Le contrôle

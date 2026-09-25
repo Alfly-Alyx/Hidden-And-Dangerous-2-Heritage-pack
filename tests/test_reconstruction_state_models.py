@@ -164,5 +164,33 @@ class PanzerDriverContractTests(unittest.TestCase):
         self.assertNotIn(b'SendSignal', result)
 
 
+class StorageAlarmFilterTests(unittest.TestCase):
+    def test_profiles_only_uncomment_the_initial_mask(self):
+        profiles = load_catalog()
+        for number, mask in [('01', 4), ('02', 516), ('03', 516)]:
+            p = profiles[f'africa5-storage{number}-alarm-filter']
+            self.assertEqual(len(change_specs(p)), 1)
+            self.assertEqual(p['actor'], 'AF4_sklad' + number)
+            self.assertEqual(p['edits'], [{
+                'before': f'  //SetAlarmType({mask}, false);',
+                'after': f'  SetAlarmType({mask}, false);',
+            }])
+
+    def test_initial_mask_bits_are_not_a_global_alarm_shutdown(self):
+        for mask, excluded in [(4, {4}), (516, {4, 512})]:
+            enabled = 1023 & ~mask
+            for flag in [1, 2, 4, 8, 16, 32, 64, 128, 256, 512]:
+                self.assertEqual(bool(enabled & flag), flag not in excluded)
+
+    def test_signal_two_restores_steps_for_02_but_all_categories_for_03(self):
+        # Explicit bit-mask model, not a simulation of event delivery.
+        initial = 1023 & ~516
+        guard02 = initial | 6
+        guard03 = initial | 1023
+        self.assertTrue(guard02 & 4)
+        self.assertFalse(guard02 & 512)
+        self.assertEqual(guard03, 1023)
+
+
 if __name__ == "__main__":
     unittest.main()

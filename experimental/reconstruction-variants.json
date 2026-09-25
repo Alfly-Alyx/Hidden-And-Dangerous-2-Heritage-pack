@@ -3,6 +3,117 @@
   "reference_edition": "GOG English Sabre Squadron 1.12",
   "profiles": [
     {
+      "id": "africa5-storage01-alarm-filter",
+      "title": "Africa 5 — filtre historique 4 du garde de magasin 01",
+      "source": "scripts/africa5/af4_sklad01.scr",
+      "actor": "AF4_sklad01",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/africa5/af4_sklad01.scr": {
+          "archive": "Patch.dta",
+          "size": 1735,
+          "sha256": "c188938b33b7adba86496d2c8f3bb313278bc9946af894999429dd19b3025033"
+        },
+        "missions/africa5/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 7140,
+          "sha256": "c5b32bcc3d74cea53ee9b29675a6154a148ee77998d6174dce5783bb84937db6"
+        },
+        "missions/africa5/actors.bin": {
+          "archive": "missions.dta",
+          "size": 44535,
+          "sha256": "b219f2311fd3c91d3c9afa2b3e5a31510bf981fb9a7cb5eb851c0ac29f485319"
+        },
+        "scripts/africa5/af4_sklad05.scr": {
+          "archive": "Patch.dta",
+          "size": 2511,
+          "sha256": "9fd715e15dd948cca4ef4f4308a5b9b94fff6d39eda1408674fed1e88e7687df"
+        }
+      },
+      "checks": [],
+      "edits": [
+        {
+          "before": "  //SetAlarmType(4, false);",
+          "after": "  SetAlarmType(4, false);"
+        }
+      ]
+    },
+    {
+      "id": "africa5-storage02-alarm-filter",
+      "title": "Africa 5 — filtre historique 516 du garde de magasin 02",
+      "source": "scripts/africa5/af4_sklad02.scr",
+      "actor": "AF4_sklad02",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/africa5/af4_sklad02.scr": {
+          "archive": "Patch.dta",
+          "size": 2538,
+          "sha256": "04cd1e238d57f73d8716f7520d41a8e615403501fdc23f03ad3de49585e9ad83"
+        },
+        "missions/africa5/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 7140,
+          "sha256": "c5b32bcc3d74cea53ee9b29675a6154a148ee77998d6174dce5783bb84937db6"
+        },
+        "missions/africa5/actors.bin": {
+          "archive": "missions.dta",
+          "size": 44535,
+          "sha256": "b219f2311fd3c91d3c9afa2b3e5a31510bf981fb9a7cb5eb851c0ac29f485319"
+        },
+        "scripts/africa5/af4_sklad05.scr": {
+          "archive": "Patch.dta",
+          "size": 2511,
+          "sha256": "9fd715e15dd948cca4ef4f4308a5b9b94fff6d39eda1408674fed1e88e7687df"
+        }
+      },
+      "checks": [],
+      "edits": [
+        {
+          "before": "  //SetAlarmType(516, false);",
+          "after": "  SetAlarmType(516, false);"
+        }
+      ]
+    },
+    {
+      "id": "africa5-storage03-alarm-filter",
+      "title": "Africa 5 — filtre historique 516 du garde de magasin 03",
+      "source": "scripts/africa5/af4_sklad03.scr",
+      "actor": "AF4_sklad03",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/africa5/af4_sklad03.scr": {
+          "archive": "Patch.dta",
+          "size": 2684,
+          "sha256": "7dd18ba3df42edc0bd503fa4eda7372c6dba57dbeb7683578388e9ba3515f413"
+        },
+        "missions/africa5/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 7140,
+          "sha256": "c5b32bcc3d74cea53ee9b29675a6154a148ee77998d6174dce5783bb84937db6"
+        },
+        "missions/africa5/actors.bin": {
+          "archive": "missions.dta",
+          "size": 44535,
+          "sha256": "b219f2311fd3c91d3c9afa2b3e5a31510bf981fb9a7cb5eb851c0ac29f485319"
+        },
+        "scripts/africa5/af4_sklad05.scr": {
+          "archive": "Patch.dta",
+          "size": 2511,
+          "sha256": "9fd715e15dd948cca4ef4f4308a5b9b94fff6d39eda1408674fed1e88e7687df"
+        }
+      },
+      "checks": [],
+      "edits": [
+        {
+          "before": "  //SetAlarmType(516, false);",
+          "after": "  SetAlarmType(516, false);"
+        }
+      ]
+    },
+    {
       "id": "libye3-panzer-driver-alarm-gate",
       "title": "Libye 3 — masque historique des alarmes jusqu'à la fin du trajet du char",
       "source": "scripts/libye3/li3_german_con_1.scr",

@@ -2,7 +2,7 @@
 
 Ce catalogue recense les dossiers de premier niveau présents sur la branche. Il complète le registre thématique : sa fonction est de rendre visible tout ce qui existe déjà, y compris les études qui ne demandent pas d'action immédiate.
 
-Total : **148 dossiers**.
+Total : **149 dossiers**.
 
 | Dossier | Fichiers directs | Sous-dossiers |
 |---|---|---|
@@ -37,6 +37,7 @@ Total : **148 dossiers**.
 | [AFRICA5_PHYSICAL_FAN](../AFRICA5_PHYSICAL_FAN/) | `ETUDE.md`, `PROTOTYPE_ONUSE_ONESHOT.scr.disabled`, `PROTOTYPE_PIR_ONESHOT.scr.disabled` | — |
 | [AFRICA5_READING_AF4_19](../AFRICA5_READING_AF4_19/) | `PROPOSITION.md`, `PROTOTYPE_INVESTIGATE_FALLBACK.scr.disabled`, `PROTOTYPE_READ_API.scr.disabled` | — |
 | [AFRICA5_READING_GUARD_19](../AFRICA5_READING_GUARD_19/) | `ETUDE.md`, `PROTOTYPE_INTERRUPT_SAFE.scr.disabled`, `PROTOTYPE_RELEASE_FALLBACK.scr.disabled` | — |
+| [AFRICA5_STORAGE_ALARM_FILTER_VARIANTS](../AFRICA5_STORAGE_ALARM_FILTER_VARIANTS/) | `ETUDE.md` | — |
 | [AICHI_DECOR](../AICHI_DECOR/) | `ETUDE.md`, `MANIFEST.md` | — |
 | [AIRCRAFT_DECOR_LAB](../AIRCRAFT_DECOR_LAB/) | `ETUDE.md`, `LAB_SELECTOR.plan.disabled`, `MANIFEST.md`, `ORPHAN_SCRIPTS.md` | — |
 | [ALPS1_ALARM_SIGNAL_CHAIN_34_35](../ALPS1_ALARM_SIGNAL_CHAIN_34_35/) | `ETUDE.md`, `PROTOTYPE_GE34_EMITTER.scr.disabled`, `PROTOTYPE_GE35_HANDLERS.scr.disabled`, `VARIANT_SELECTOR.plan.disabled` | — |

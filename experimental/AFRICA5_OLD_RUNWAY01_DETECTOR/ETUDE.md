@@ -72,6 +72,16 @@ reconstruction.
 
 ## Protocole de confirmation
 
+### Conséquence sur les laboratoires — 25 septembre 2026
+
+La fabrication des trois variantes de filtres d'alarme du magasin confirme le
+blocage de fermeture : `af4_runway01_detector.scr` manque au registre effectif.
+Le générateur refuse la copie complète, même si les scripts de gardes se
+reconstruisent correctement. Aucun binding supprimé, aucun remplacement neutre
+inventé et aucune dérogation ajoutée. Une baseline de mission intégrant ce
+fossile doit être résolue explicitement avant les essais A/B; la présente étude
+ne constitue pas à elle seule une autorisation de masquer la dépendance.
+
 1. mesurer la baseline avant le dialogue de Schumann : aucune surveillance
    active de l'objectif 4 ;
 2. terminer le dialogue et vérifier le premier contrôle dans la fenêtre de
