@@ -6,6 +6,12 @@ Le lecteur DTA de `tools/dta_archive.py` et `installer/DtaArchive.cs` suit la do
 
 Le code de ce dépôt est distribué sous GPL-3.0-or-later.
 
+Le décodeur Python `tools/dta_audio.py` adapte également l'algorithme DPCM mono
+et ses sept tables de deltas depuis `ISDM.cpp` et `ISDM.h`, révision
+`882ceb8bb2f8473f1295f3a7a8e6c6a038ccf5f6`. Il ajoute des validations strictes
+de format, de tailles et d'état par fichier. Les constantes du codec ne sont
+pas des données audio du jeu. Le lecteur C# n'est pas modifié par cet ajout.
+
 ## OpenSpy et pont GameSpy EnctypeX
 
 Le Heritage Pack interroge le service réseau du [projet OpenSpy](https://github.com/openspy)

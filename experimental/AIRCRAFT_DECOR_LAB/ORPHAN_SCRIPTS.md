@@ -20,8 +20,12 @@ DFS 230.
 ## Africa 6 et Africa 1
 
 `AF5_airanim.scr` saute directement à `END`; les six appels
-`#aircraft1.I3D..#aircraft6.I3D` sont inatteignables. Retirer le `goto` serait
-une reconstruction de contrôle et n'établirait aucun modèle associé.
+`#aircraft1.I3D..#aircraft6.I3D` sont inatteignables. L'audit du 26 septembre a
+retrouvé les six supports 4DS/pistes 5DS et la hiérarchie
+`#aircraftdum.airdummy -> ju88` dans Africa6. Le Ju 88 actif est déjà lié à sa
+chaîne native : retirer le saut ne serait pas un simple ajout décoratif et
+pourrait doubler son pilotage. Voir l'
+[étude du support et de la séquence](../AFRICA6_AIRANIM_OWNER_AND_SEQUENCE/ETUDE.md).
 
 `AF1_snd_aircraft.scr` boucle seulement `PlaySound(1,8)` toutes les quatre
 secondes et n'a pas de propriétaire démontré. Ne pas l'attacher au Ju 52 ou à

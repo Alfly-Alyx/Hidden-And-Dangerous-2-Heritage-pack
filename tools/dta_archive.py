@@ -13,6 +13,8 @@ import struct
 from dataclasses import asdict, dataclass
 from pathlib import Path, PureWindowsPath
 
+from dta_audio import DpcmMonoDecoder, DPCM_TYPES
+
 ARCHIVES = (
     ("Maps", 0xB438AB00, 0xF26527FAB438D0A5),
     ("Maps_C", 0xB038DC00, 0xE26520FAB038D0A0),
@@ -163,6 +165,7 @@ class DtaArchive:
         if decode_name(name) != entry.name:
             raise ValueError(f"Filename changed while reading {entry.name}")
         destination = bytearray()
+        audio = DpcmMonoDecoder()  # State belongs to this entry, never to the archive.
         if self.version == "ISD1":
             raw_sizes = self.stream.read(entry.blocks * 4)
             sizes = struct.unpack(f"<{entry.blocks}I", raw_sizes)
@@ -171,7 +174,7 @@ class DtaArchive:
                 block = self.stream.read(raw_size & 0xFFFF)
                 if entry.encrypted:
                     block = xor_data(block, self.key)
-                destination.extend(self._decode_block(block_type, block, entry.name))
+                destination.extend(self._decode_block(block_type, block, entry.name, audio))
         else:
             for _ in range(entry.blocks):
                 raw_size = self.stream.read(4)
@@ -183,20 +186,23 @@ class DtaArchive:
                     block = xor_data(block, self.key)
                 if not block:
                     raise ValueError(f"Empty block in {entry.name}")
-                destination.extend(self._decode_block(block[0], block[1:], entry.name))
+                destination.extend(self._decode_block(block[0], block[1:], entry.name, audio))
         if len(destination) != entry.size:
             raise ValueError(
                 f"Decoded size mismatch for {entry.name}: "
                 f"{len(destination)} != {entry.size}"
             )
+        audio.finish(len(destination))
         return bytes(destination)
 
     @staticmethod
-    def _decode_block(block_type: int, block: bytes, name: str) -> bytes:
+    def _decode_block(block_type: int, block: bytes, name: str, audio=None) -> bytes:
         if block_type == 0:
             return block
         if block_type == 1:
             return decompress_lzss(block)
+        if block_type in DPCM_TYPES and audio is not None:
+            return audio.decode(block_type, block)
         raise ValueError(
             f"Unsupported DPCM audio block type {block_type} in {name}"
         )

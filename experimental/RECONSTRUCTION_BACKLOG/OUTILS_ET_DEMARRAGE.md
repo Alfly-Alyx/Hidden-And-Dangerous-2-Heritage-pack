@@ -176,6 +176,13 @@ installées; le mode strict les refuse. Huit tests synthétiques accompagnent
 l'[étude du protocole](../NORMANDY2_FAKE_DEFENCE_COORDINATOR/ETUDE.md).
 Aucune position ni réception de signal n'est déduite automatiquement.
 
+## Audio commercial en lecture seule
+
+`tools/audit_audio_resources.py` mesure les WAV sélectionnés en mémoire, sans
+export. Le lecteur DPCM mono, testé sur les sept tables et ISD0/ISD1, est décrit
+dans [AUDIO_RESSOURCES.md](AUDIO_RESSOURCES.md), avec les empreintes des sept
+premières ressources vérifiées. Aucun binaire audio n'entre dans Git.
+
 ## Construction de l'installateur
 
 ```powershell
