@@ -2,7 +2,7 @@
 
 Ce catalogue recense les dossiers de premier niveau présents sur la branche. Il complète le registre thématique : sa fonction est de rendre visible tout ce qui existe déjà, y compris les études qui ne demandent pas d'action immédiate.
 
-Total : **164 dossiers**.
+Total : **165 dossiers**.
 
 | Dossier | Fichiers directs | Sous-dossiers |
 |---|---|---|
@@ -155,6 +155,7 @@ Total : **164 dossiers**.
 | [CZECH3_END_CUTSCENE_PLAYER_VISIBILITY](../CZECH3_END_CUTSCENE_PLAYER_VISIBILITY/) | `ETUDE.md` | — |
 | [CZECH4_SKLEPERS_MISSING_RETREAT_POINTS](../CZECH4_SKLEPERS_MISSING_RETREAT_POINTS/) | `ETUDE.md` | — |
 | [TUTORIAL_SW2_THREE_ACTION_VARIANT](../TUTORIAL_SW2_THREE_ACTION_VARIANT/) | `ETUDE.md` | — |
+| [CO_BURGUNDY1_CLOSURE](../CO_BURGUNDY1_CLOSURE/) | `ETUDE.md` | — |
 | [NORMANDY1_LEGACY_ACTIVATORS](../NORMANDY1_LEGACY_ACTIVATORS/) | `ETUDE.md`, `PROTOTYPE_SOLO_PROXIMITY_DELTA.scr.disabled` | — |
 | [NORMANDY2_LEGACY_GO_NETWORK](../NORMANDY2_LEGACY_GO_NETWORK/) | `ETUDE.md` | — |
 | [NORMANDY2_REMOVED_DEFENDERS](../NORMANDY2_REMOVED_DEFENDERS/) | `ETUDE.md`, `MATRICE_ACTEURS.md` | — |

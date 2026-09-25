@@ -111,7 +111,7 @@ Chemins : `experimental/ARCTIC1_*` et
 | `BURGUNDY3_EXPLOSION_SOUND_DUAL_TRIGGER` | Prototype désactivé | Étude BURGUNDY3_DEPOT_EXPLOSION_SOUND : paire complète 3348 + 1239 octets. Nouveau signal moderne 11 seulement sur destruction directe, réception désarmée avant le son; cinématique et anciens signaux 10 inchangés. Neuf frames vérifiées; mix et courses à tester. |
 | [BURGUNDY3_EN22_EN23_END_STATE](../BURGUNDY3_EN22_EN23_END_STATE/ETUDE.md) | Prototype désactivé | Huit préfixes commentés retirés seulement dans la cinématique; filtre strict <15 conservé. Laboratoire A/B inerte, neuf objectifs identiques. Comparaison dégâts/mort en jeu requise; profil exclusif du son direct. |
 | `CO_BURGUNDY3_CLOSURE` | Fermeture partielle / prototype inerte | [Ambiance](../CO_BURGUNDY3_REMOVED_AMBIENT_CONTROLLERS/ETUDE.md) : dix records exacts et dix liaisons reconstruits dans une paire scène/registre désactivée, sans mission activable. Reste la fermeture Maquis signal1 et des références de sous-nœuds; aucun faux checkpoint créé. |
-| `CO_BURGUNDY1_CLOSURE` | À fermer | Douze contrôleurs oiseaux/portes sans `dummy_snd1..12`; JohnAshley et chien absents; explosion 05 déjà liée à objectif02; commentaires LookAround identiques solo/coop. |
+| [CO_BURGUNDY1_CLOSURE](../CO_BURGUNDY1_CLOSURE/ETUDE.md) | Prototype inerte / faux positifs séparés | Douze porteurs et liaisons exacts reconstruits sans copier sons/scripts, registre 91→103. John/chien restent soumis à l'étude d'éditeur. Explosion 05 déjà commandée par objectif02; deux commentaires LookAround identiques solo/coop. |
 
 ## Libye et Co-Libye
 

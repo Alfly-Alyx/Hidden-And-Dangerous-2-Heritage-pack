@@ -128,14 +128,15 @@ Le départ aléatoire de palette Africa 5 ajoute un quatrième script seul, sans
 laboratoire pour la même dépendance de piste manquante. Total courant :
 **24 profils, 27 scripts dérivés, 20 laboratoires et 40 entrées**.
 
-Les **181 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
+Les **183 tests Python** au 26 septembre couvrent 47 cas de variantes, 20 cas de laboratoires,
 huit cas de conservation d'objectifs, quatre contrôles de lecture de catalogues,
 vingt-neuf modèles/contrats de charges, assise, proximité, son, conduite, filtres, formation, mort et visages,
 quatorze cas de groupes atomiques/4DS,
 28 tests d'émulation du menu, sept contrôles de la chaîne Norway dormante et
-dix-neuf tests des comparaisons scène/registre Co_Burgundy2/3 et cinq tests des
+vingt et un tests des comparaisons scène/registre Co_Burgundy1/2/3 et cinq tests des
 préfixes incomplets Normandy 3 Zone.
 Ces comparaisons binaires
+[Burgundy 1](../CO_BURGUNDY1_CLOSURE/ETUDE.md),
 [Burgundy 2](../CO_BURGUNDY2_ANIMAL_AMBIENCE/ETUDE.md) et
 [Burgundy 3](../CO_BURGUNDY3_REMOVED_AMBIENT_CONTROLLERS/ETUDE.md)
 ne sont pas des laboratoires complets : aucun manifeste activable ni entrée de menu.

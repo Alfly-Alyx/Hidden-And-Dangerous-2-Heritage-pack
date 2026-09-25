@@ -1,6 +1,6 @@
 # Registre maître des reconstructions expérimentales
 
-Inventaire initial : **2026-09-19**. Dernière mise à jour : **2026-09-25**.
+Inventaire initial : **2026-09-19**. Dernière mise à jour : **2026-09-26**.
 
 Branche de travail actuelle : `codex/reconstruction-phase-1`.
 La préparation de `codex/experimental-reconstruction-inventory` a été intégrée
@@ -26,18 +26,18 @@ registre complète ces fichiers sans activer de script expérimental dans le jeu
 
 ## Légende d'état
 
-### Avancement vérifié le 25 septembre 2026
+### Avancement vérifié le 26 septembre 2026
 
 - **24 profils / 27 scripts dérivés** reconstruits depuis les archives, avec
   78 sources épinglées; tous restent désactivés et non validés en jeu.
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Quatre profils Africa 5 restent des scripts seuls :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **181 tests Python**, compilation console et auto-tests de sécurité C# réussis.
-- Deux comparaisons binaires Co_Burgundy2/3 supplémentaires reconstruisent
-  respectivement deux/dix porteurs et leurs liaisons sans modifier les scripts
+- **183 tests Python**, compilation console et auto-tests de sécurité C# réussis.
+- Trois comparaisons binaires Co_Burgundy1/2/3 supplémentaires reconstruisent
+  respectivement douze/deux/dix porteurs et leurs liaisons sans modifier les scripts
   ou sons. Elles restent inertes, hors compte des laboratoires de mission.
-- **164 dossiers** recensés. Les études continuent : certains vestiges exigent
+- **165 dossiers** recensés. Les études continuent : certains vestiges exigent
   encore une cible, un propriétaire, une ressource ou une observation préalable.
 - L'installation actuelle n'est pas modifiée. Cinq profils refusent ses
   surcharges pertinentes en mode strict; les exclusions et empreintes sont

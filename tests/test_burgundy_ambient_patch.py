@@ -141,6 +141,20 @@ class AmbientRecipeTests(unittest.TestCase):
         self.assertEqual(recipe['reviewed_script_differences'], {})
         self.assertTrue(recipe['sounds_identical'])
 
+    def test_burgundy_one_keeps_the_nonconsecutive_official_bird_mapping(self):
+        recipe = RECIPES['co-burgundy1-ambience']
+        self.assertEqual(len(recipe['owners']), 12)
+        self.assertEqual(recipe['owners']['dummy_snd5'], 'bur1_snd_bird6.scr')
+        self.assertEqual(recipe['owners']['dummy_snd6'], 'bur1_snd_door1.scr')
+        self.assertEqual(recipe['owners']['dummy_snd12'], 'bur1_snd_door7.scr')
+        self.assertEqual(recipe['reviewed_script_differences'], {})
+
+    def test_burgundy_one_does_not_import_john_dog_or_an_objective(self):
+        recipe = RECIPES['co-burgundy1-ambience']
+        self.assertEqual(set(recipe['owners']), {f'dummy_snd{i}' for i in range(1, 13)})
+        self.assertEqual(recipe['sound_count'], 21)
+        self.assertFalse(recipe['sounds_identical'])
+
 
 class AmbientOutputTests(unittest.TestCase):
     def setUp(self):

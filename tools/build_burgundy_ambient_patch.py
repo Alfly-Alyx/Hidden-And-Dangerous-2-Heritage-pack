@@ -46,7 +46,27 @@ PINS_B2 = {
     'missions/co_burgundy2/actors.bin': (41758, '209be5a6d6403fe482b5f22ff6960e57a09291ba826d23342e6cef86267ddfb6'),
     'missions/co_burgundy2/scene.4ds': (3670973, '0b79e4157e944a713a96e53e80b19753e800dfab853e1f07a558b250e03476d5'),
 }
+OWNERS_B1 = {f'dummy_snd{i}': script for i, script in enumerate([
+    'bur1_snd_bird1.scr', 'bur1_snd_bird2.scr', 'bur1_snd_bird3.scr',
+    'bur1_snd_bird4.scr', 'bur1_snd_bird6.scr',
+    *[f'bur1_snd_door{i}.scr' for i in range(1, 8)],
+], 1)}
+PINS_B1 = {
+    'missions/burgundy1/scene2.bin': (8053475, 'ef50a34d146a2f7f38d197002aa7c6b6c530e1c9b3b27b9647205f726f3c2eb6'),
+    'missions/burgundy1/scripts.dta': (3965, '26286ef163f3dc7c7c041847d7b7ac6bf1285816ae12aab0cbbd97df2d470e9c'),
+    'missions/burgundy1/sounds.bin': (19504, 'e0a9a110c2921abc0f754dc5252b3322e710e8a57578b59dd995211b4ef25e8b'),
+    'missions/co_burgundy1/scene2.bin': (7551923, '20b520c6570cfacaf137cd15b10890a36cc390e75f598a40bbe91782b6837180'),
+    'missions/co_burgundy1/mpscripts.dta': (3376, '1714d8b87f29be8755cb50fb3b2b77a802d357aa28ab3b62bcc24ddd937b315c'),
+    'missions/co_burgundy1/sounds.bin': (18239, 'e6fd7c62477032890827ec591684151f4dcc9fc5d606c786a02315b747dfbbe5'),
+    'missions/co_burgundy1/actors.bin': (29363, 'c9b3893f4abcd1545ce69d66d2192ac45dfec814fbdde2abe84d5f523a30c5d0'),
+    'missions/co_burgundy1/scene.4ds': (2111807, 'faf222ee18380accf71ef7c6cdc173351576afd412d8dc035027f3a98a12f54e'),
+}
 RECIPES = {
+    'co-burgundy1-ambience': {
+        'solo': 'burgundy1', 'coop': 'co_burgundy1', 'owners': OWNERS_B1, 'pins': PINS_B1,
+        'scripts_sha': 'd5fa37363dd7517b17efc84bfbeafc913f5868f0f6960b7c01ca71f3738a4648',
+        'sounds_identical': False, 'sound_count': 21, 'reviewed_script_differences': {},
+    },
     'co-burgundy3-ambience': {
         'solo': 'burgundy3', 'coop': 'co_burgundy3', 'owners': OWNERS, 'pins': PINS,
         'scripts_sha': SCRIPT_SET_SHA, 'sounds_identical': True, 'sound_count': 24,

@@ -146,11 +146,12 @@ de contourner les contrôles.
 ## Reconstruction binaire coop désactivée
 
 `tools/build_burgundy_ambient_patch.py` vérifie et peut construire une comparaison
-scène/registre pour les dix porteurs d'ambiance Co_Burgundy3 ou les deux porteurs
-animaux Co_Burgundy2. Contrôle en lecture
+scène/registre pour les douze porteurs Co_Burgundy1, les deux porteurs animaux
+Co_Burgundy2 ou les dix porteurs Co_Burgundy3. Contrôle en lecture
 seule par défaut; `--build` produit exclusivement un ZIP `.scene-patch.zip.disabled`
 sous `.analysis/`. Aucun installateur ni paquet de mission activable n'est créé.
 Sources, limites réseau et commandes :
+[étude Co_Burgundy1](../CO_BURGUNDY1_CLOSURE/ETUDE.md),
 [étude Co_Burgundy3](../CO_BURGUNDY3_REMOVED_AMBIENT_CONTROLLERS/ETUDE.md) et
 [étude Co_Burgundy2](../CO_BURGUNDY2_ANIMAL_AMBIENCE/ETUDE.md).
 
