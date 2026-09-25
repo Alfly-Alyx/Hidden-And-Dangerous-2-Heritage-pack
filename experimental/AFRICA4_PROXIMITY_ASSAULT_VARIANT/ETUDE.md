@@ -28,8 +28,13 @@ profils de mission sélectionnés avant chargement :
 Le script charge `_LoadGameValue(20)`, puis la copie Base/Patch inspectée force
 immédiatement `odvysilali = 1`. La branche alternative 20/30 secondes et les
 signaux 1/2 restent lisibles, mais la release observée choisit de fait le chemin
-vrai : signal soldat 1 et délai 30 secondes. Une variante ne doit pas supprimer
-ce forçage en prétendant « restaurer » le choix radio sans étude séparée.
+vrai : signal soldat 1 et délai 30 secondes. Cette baseline commerciale doit
+être distinguée de Heritage : son module `Africa4RadioConsequenceInstaller.cs`
+retire déjà ce forçage et restaure les signaux alternatifs selon la campagne.
+Une variante de proximité ne doit pas remettre le forçage ni écraser cette
+restauration. Le fragment historique sur signal 1 fixe n'établit pas, à lui seul,
+le contrat d'une branche de proximité respectant aussi le cas non averti.
+Les deux baselines nécessitent donc des essais séparés avant composition.
 
 ## Preuves
 

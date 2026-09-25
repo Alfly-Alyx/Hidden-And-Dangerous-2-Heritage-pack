@@ -124,9 +124,13 @@ Les neuf missions Sabre restent identiques. Avec Africa 5 : 23 profils et
 26 scripts dérivés, dont trois sans laboratoire. Les deux profils Burgundy 3
 restent exclusifs, pas fusionnés.
 
-Les **153 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
+Le départ aléatoire de palette Africa 5 ajoute un quatrième script seul, sans
+laboratoire pour la même dépendance de piste manquante. Total courant :
+**24 profils, 27 scripts dérivés, 20 laboratoires et 40 entrées**.
+
+Les **157 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
 huit cas de conservation d'objectifs, quatre contrôles de lecture de catalogues,
-vingt-cinq modèles/contrats de charges, assise, proximité, son, conduite, filtres, formation et mort,
+vingt-neuf modèles/contrats de charges, assise, proximité, son, conduite, filtres, formation, mort et visages,
 quatorze cas de groupes atomiques/4DS,
 28 tests d'émulation du menu et sept contrôles de la chaîne Norway dormante.
 Les auto-tests C# passent également. Le contrôle

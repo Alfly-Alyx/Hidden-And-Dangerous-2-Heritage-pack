@@ -1,0 +1,13 @@
+// FRAGMENT HISTORIQUE — NE PAS INSTALLER COMME SCRIPT COMPLET.
+// Site 1 : dans Whenever radio_used, juste avant goto GOOO.
+// Remplacer les trois lignes commentees par ces trois lignes, sans les ajouter en double.
+CSC_FadeOutToColor(200, 0, 0, 0);
+Delay(1000);
+CSC_FadeIn(700);
+
+// Site 2 : apres le calcul de zpozdeni, juste avant SendSignal(af01, signal1).
+// Remplacer uniquement //Delay(20000), conserver les attentes actives suivantes.
+Delay(20000);
+
+// Conserver la politique radio du temoin choisi, notamment la restauration Heritage.
+// Selection exclusive avant chargement; priorites de fondus et sauvegardes non validees.

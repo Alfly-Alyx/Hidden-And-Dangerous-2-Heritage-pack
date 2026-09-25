@@ -1,7 +1,7 @@
 # Variantes reproductibles
 
 État vérifié le **25 septembre 2026** sur la branche
-`codex/reconstruction-phase-1` : vingt-trois profils, soit vingt-six scripts dérivés,
+`codex/reconstruction-phase-1` : vingt-quatre profils, soit vingt-sept scripts dérivés,
 ont été construits et
 comparés aux sources commerciales. **Aucun n'est installé ni validé en jeu.**
 
@@ -38,6 +38,7 @@ modifier les archives.
 | `africa5-storage03-alarm-filter` | Même filtre, réactivation commerciale distincte; laboratoire bloqué. | 2682 | [Magasin](../AFRICA5_STORAGE_ALARM_FILTER_VARIANTS/ETUDE.md) |
 | `czech3-leader-formation-cleanup` | Dissolution conditionnelle par le chef seul, sans second émetteur. | 2817 | [Formation](../CZECH3_FORMATION_CLEANUP_DUAL_PATH/ETUDE.md) |
 | `burgundy3-cutscene-nearby-guard-deaths` | Mort explicite historique sous distance stricte <15 pendant la cinématique. | 3300 | [Gardes 22/23](../BURGUNDY3_EN22_EN23_END_STATE/ETUDE.md) |
+| `africa5-random-german-face-seed` | Départ aléatoire de la palette existante; quatre palettes inutilisées inchangées. | 6863 | [Visages](../AFRICA5_RANDOM_FACE_SEED_VARIANT/ETUDE.md) |
 
 Le choix est **exclusif avant chargement** : une copie laboratoire emploiera soit
 les scripts commerciaux, soit leurs variantes pour les mêmes propriétaires. Aucun
@@ -47,7 +48,7 @@ et limité au récepteur sonore; ce n'est pas un sélecteur de variante.
 Ne pas empiler ces profils avec une autre modification du même script. La
 fabrication d'un fichier seule n'est pas la création d'une mission laboratoire
 complète. Vingt profils disposent de
-[copies A/B inertes](LABORATOIRES_DESACTIVES.md), contrôlées hors jeu. Les trois
+[copies A/B inertes](LABORATOIRES_DESACTIVES.md), contrôlées hors jeu. Les quatre
 profils Africa 5 sont reconstruits comme scripts seulement : leur laboratoire
 est refusé car `af4_runway01_detector.scr` est référencé mais absent de la
 source commerciale. Le contrôle n'est pas contourné.
@@ -76,7 +77,7 @@ le générateur de laboratoires pour ces paires; aucun composant n'est proposé
 isolément.
 
 Les vérifications couvrent les archives effectives Base/Patch/Sabre, les tailles
-et SHA-256 de **76 entrées commerciales distinctes**, la liaison unique du propriétaire,
+et SHA-256 de **78 entrées commerciales distinctes**, la liaison unique du propriétaire,
 sa présence sérialisée, les prérequis nommés et l'unicité de chaque modification.
 Une entrée correspondante de `PatchX01.dta` est refusée plutôt que de deviner sa
 priorité. Les fins de ligne et l'encodage commercial restent inchangés en dehors
@@ -90,16 +91,17 @@ machine, `Missions/africa1/Scripts.dta` fait 4663 octets, SHA-256
 4622 octets dans l'archive. La liaison AF1_21 reste présente, mais cela ne prouve
 pas la compatibilité de toute la mission modifiée.
 
-Le contrôle des 23 profils relève aussi deux autres surcharges pertinentes :
+Le contrôle des 24 profils relève aussi trois autres surcharges pertinentes :
 
 | Fichier libre préexistant | Octets | SHA-256 |
 |---|---:|---|
 | `Missions/normandy/Scripts.dta` | 9007 | `0f5d7f32b0a21c92253dfaa89671c1e1fd94665ca693992aa6590e06b0a0533e` |
 | `Scripts/africa5/AF4_sklad01.scr` | 1806 | `3c4c4295c2f627490ebb63bdb2e3a9e77d2cf6d5dfab51107b416231a25cb138` |
+| `Scripts/africa5/AF4_faceassigner.scr` | 6832 | `98b22d84fc4507a0a322cb60df832096b902bd890cf590db5b47d3f535ed068f` |
 
 Le registre Normandy commercial fait 8963 octets, le script Africa 5 Patch
-1735. Les quatre profils refusés en mode strict sont donc la paire Normandy,
-le filtre Africa 5 garde 01 et les deux variantes Africa 1. Ces fichiers libres
+1735. Les cinq profils refusés en mode strict sont donc la paire Normandy,
+le filtre Africa 5 garde 01, les visages Africa 5 et les deux variantes Africa 1. Ces fichiers libres
 ne sont ni remplacés ni réputés compatibles; leur exclusion explicite est
 consignée dans les rapports. Un contrôle de profil ne vérifie que ses sources
 épinglées; un laboratoire inspecte en plus tous les fichiers copiés de sa mission.
@@ -147,12 +149,13 @@ les archives dans la première série; les deux profils Africa 1 doivent continu
 | Africa 5, magasin 03 | `68051d380d7512b700aa08e30fb0b39a5b490f7270664042e17d45de597ef5b2` |
 | Czech 3, chef de formation | `072bf39ada1e412789b8777168a7e3001bcf49b85622b07dd7526d0d8efaa67c` |
 | Burgundy 3, gardes 22/23 | `34d3a527c2e4105195e6b57fe045412f39c2ac1456248401e75bf21ba0f3ff97` |
+| Africa 5, départ de palette | `967febeaf9d9b00fc2053b64d64af4b6923192817aa65d7ec158256e968f881b` |
 
 Les 47 tests de variantes utilisent des données inventées et ne nécessitent pas
 de jeu. Ils couvrent notamment les refus de source modifiée, liaison dupliquée,
 ressource absente, remplacement ambigu, surcharge inattendue, sortie active,
 écriture dans le jeu et écrasement d'un fichier. Quatorze autres tests couvrent
-les groupes de scripts indivisibles et les propriétaires 4DS typés. Les vingt-six
+les groupes de scripts indivisibles et les propriétaires 4DS typés. Les vingt-sept
 diff réels ont aussi
 été inspectés. Ce ne sont ni une compilation du langage du jeu ni des essais
 de comportement de l'IA.
@@ -160,9 +163,9 @@ de comportement de l'IA.
 ## Travail restant avant activation
 
 Les vingt copies laboratoire sont générées, intégralement désactivées.
-Résoudre d'abord la dépendance manquante pour les trois profils Africa 5.
+Résoudre d'abord la dépendance manquante pour les quatre profils Africa 5.
 Résoudre ensuite leur
 chargement réel et leur espace de scripts dans une installation de test isolée,
 puis exécuter les scénarios des études et la
-[barrière de validation](VALIDATION.md). Les vingt-trois profils restent `pending` pour
+[barrière de validation](VALIDATION.md). Les vingt-quatre profils restent `pending` pour
 l'exécution; aucun résultat manuel n'a été converti artificiellement en succès.

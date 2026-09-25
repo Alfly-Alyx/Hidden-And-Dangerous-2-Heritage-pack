@@ -250,5 +250,50 @@ class DepotGuardDeathContractTests(unittest.TestCase):
         self.assertEqual(len(source) - len(result), 16)
 
 
+class FaceSeedContractTests(unittest.TestCase):
+    def setUp(self):
+        self.profile = load_catalog()['africa5-random-german-face-seed']
+        self.edit, = self.profile['edits']
+
+    def test_single_replacement_does_not_duplicate_the_declaration(self):
+        source = ('//INTEGER rnd_german\t\t= _RandomInt(german_faces_count);\n'
+                  + self.edit['before'] + '\nINTEGER rnd_italian = 3;\n').encode('ascii')
+        result = apply_edits(source, [self.edit]).decode('ascii')
+        active = split_comments(result)[0]
+        self.assertEqual(active.count('INTEGER rnd_german'), 1)
+        self.assertEqual(active.count('_RandomInt('), 1)
+        self.assertIn('INTEGER rnd_italian = 3;', active)
+
+    def test_only_the_existing_german_start_index_changes(self):
+        self.assertEqual(self.edit['after'], self.edit['before'].replace('= 10;', '= _RandomInt(german_faces_count);'))
+        self.assertEqual(self.profile['classification'], 'MODERNE')
+        targets = self.profile['checks'][0]['values']
+        self.assertEqual(len(targets), 46)
+        self.assertEqual(len(set(targets)), 46)
+        self.assertFalse({'AF4_10', 'AF4_12', 'AF4_23'} & set(targets))
+
+    def test_all_fourteen_starts_only_rotate_the_existing_palette(self):
+        # Model of the commercial increment/wrap, not the engine RNG.
+        for start in range(14):
+            index, assigned = start, []
+            for _ in range(46):
+                assigned.append(index)
+                index += 1
+                if index == 14:
+                    index = 0
+            self.assertEqual(set(assigned), set(range(14)))
+            self.assertEqual(len(set(assigned[:14])), 14)
+            self.assertTrue(all(assigned.count(i) in (3, 4) for i in range(14)))
+
+    def test_delta_commutes_with_separate_heritage_fixed_face_restoration(self):
+        fixed = 'FRM_FindFrame(act, "AF4_10"); FRM_SwitchFaceTexture(act, "e_f0w1");'
+        restore = [{'before': '//' + fixed, 'after': fixed}]
+        source = (self.edit['before'] + '\r\n//' + fixed + '\r\n').encode('ascii')
+        variant_then_fixed = apply_edits(apply_edits(source, [self.edit]), restore)
+        fixed_then_variant = apply_edits(apply_edits(source, restore), [self.edit])
+        self.assertEqual(variant_then_fixed, fixed_then_variant)
+        self.assertIn(('\r\n' + fixed + '\r\n').encode('ascii'), fixed_then_variant)
+
+
 if __name__ == "__main__":
     unittest.main()

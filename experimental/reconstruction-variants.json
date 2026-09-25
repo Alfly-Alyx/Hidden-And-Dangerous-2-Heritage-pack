@@ -3,6 +3,24 @@
   "reference_edition": "GOG English Sabre Squadron 1.12",
   "profiles": [
     {
+      "id": "africa5-random-german-face-seed",
+      "title": "Africa 5 — départ aléatoire de la palette allemande existante",
+      "classification": "MODERNE",
+      "source": "scripts/africa5/af4_faceassigner.scr",
+      "actor": "dummy_face_assigner",
+      "owner_entry": "missions/africa5/scene2.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/africa5/af4_faceassigner.scr": {"archive": "Patch.dta", "size": 6835, "sha256": "c4ed19c80aabc200205c1c7a50d8ca063e5ccea2c26be9a6ce22fb9e9eb3ef3d"},
+        "missions/africa5/scripts.dta": {"archive": "missions.dta", "size": 7140, "sha256": "c5b32bcc3d74cea53ee9b29675a6154a148ee77998d6174dce5783bb84937db6"},
+        "missions/africa5/actors.bin": {"archive": "missions.dta", "size": 44535, "sha256": "b219f2311fd3c91d3c9afa2b3e5a31510bf981fb9a7cb5eb851c0ac29f485319"},
+        "missions/africa5/scene2.bin": {"archive": "missions.dta", "size": 6973053, "sha256": "53b1e6eb9fcbb6a295ff6d8f0ec960db5ced3c92e77b25d5a1843f19ecb5ec8f"}
+      },
+      "checks": [{"kind": "frames", "entry": "missions/africa5/actors.bin", "values": ["AF4_mechanic_01", "AF4_03", "AF4_04", "AF4_05", "AF4_08", "AF4_11", "AF4_13", "AF4_14", "AF4_15", "AF4_16", "AF4_17", "AF4_18", "AF4_19", "AF4_20", "AF4_21", "AF4_22", "AF4_24", "AF4_25", "AF4_26", "AF4_27", "AF4_28", "AF4_29", "AF4_30", "AF4_31", "AF4_32", "AF4_34", "AF4_35", "AF4_36", "AF4_40", "AF4_41", "AF4_42", "AF4_43", "AF4_44", "AF4_45", "AF4_46", "AF4_47", "AF4_48", "AF4_sklad01", "AF4_sklad02", "AF4_sklad03", "AF4_sklad04", "AF4_sklad05", "AF4_sklad06", "AF4_sklad07", "AF4_mechanic_02", "AF4_mechanic_03"]}],
+      "edits": [{"before": "INTEGER rnd_german\t\t\t= 10;", "after": "INTEGER rnd_german\t\t\t= _RandomInt(german_faces_count);"}]
+    },
+    {
       "id": "burgundy3-cutscene-nearby-guard-deaths",
       "title": "Burgundy 3 — morts historiques des gardes proches pendant la cinématique",
       "source": "scripts/burgundy3/bur3_vybuch.scr",

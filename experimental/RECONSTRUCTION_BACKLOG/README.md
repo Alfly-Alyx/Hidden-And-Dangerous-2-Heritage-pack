@@ -28,15 +28,15 @@ registre complète ces fichiers sans activer de script expérimental dans le jeu
 
 ### Avancement vérifié le 25 septembre 2026
 
-- **23 profils / 26 scripts dérivés** reconstruits depuis les archives, avec
-  76 sources épinglées; tous restent désactivés et non validés en jeu.
+- **24 profils / 27 scripts dérivés** reconstruits depuis les archives, avec
+  78 sources épinglées; tous restent désactivés et non validés en jeu.
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
-  commerciaux conservés. Trois profils Africa 5 restent des scripts seuls :
+  commerciaux conservés. Quatre profils Africa 5 restent des scripts seuls :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **153 tests Python**, compilation console et auto-tests de sécurité C# réussis.
-- **155 dossiers** recensés. Les études continuent : certains vestiges exigent
+- **157 tests Python**, compilation console et auto-tests de sécurité C# réussis.
+- **159 dossiers** recensés. Les études continuent : certains vestiges exigent
   encore une cible, un propriétaire, une ressource ou une observation préalable.
-- L'installation actuelle n'est pas modifiée. Quatre profils refusent ses
+- L'installation actuelle n'est pas modifiée. Cinq profils refusent ses
   surcharges pertinentes en mode strict; les exclusions et empreintes sont
   consignées pour Africa 1, Normandy 1 et Africa 5.
 
@@ -69,7 +69,7 @@ multijoueur vers solo n'ont toujours aucune validation de jeu.
   rapports internes, sources externes et règles de conservation.
 - [État de préparation](ETAT_PREPARATION.md) : photo vérifiée de la branche et
   de l'environnement juste avant le début des travaux.
-- [Variantes reproductibles](VARIANTES_REPRODUCTIBLES.md) : vingt-trois profils et vingt-six scripts
+- [Variantes reproductibles](VARIANTES_REPRODUCTIBLES.md) : vingt-quatre profils et vingt-sept scripts
   expérimentaux générés localement, contrôles automatisés, provenance,
   conflit de surcharge Africa 1 et validations en moteur encore en attente.
 - [Laboratoires désactivés](LABORATOIRES_DESACTIVES.md) : copies A/B complètes,
