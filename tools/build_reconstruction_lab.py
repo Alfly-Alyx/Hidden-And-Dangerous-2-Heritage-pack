@@ -15,7 +15,7 @@ import sys
 import zipfile
 
 from build_reconstruction_variant import (
-    ROOT, ArchiveSources, digest, entry_path, load_catalog, prepare,
+    ROOT, ArchiveSources, digest, entry_path, load_catalog, prepare_changes,
 )
 from mission_closure_audit import INCLUDE_RE, transitive_scripts
 from objective_audit import split_comments
@@ -71,7 +71,7 @@ def script_closure(files: dict[str, bytes], mission: str) -> dict:
 
 
 def plan_lab(profile: dict, sources) -> tuple[dict[str, bytes], dict]:
-    variant, variant_report = prepare(profile, sources)
+    changes, variant_report = prepare_changes(profile, sources)
     mission = profile["source"].split("/")[1]
     files, provenance = {}, {}
     for name in sources.mission_entries(mission):
@@ -84,20 +84,21 @@ def plan_lab(profile: dict, sources) -> tuple[dict[str, bytes], dict]:
     required = {f"missions/{mission}/{name}" for name in REQUIRED_MISSION_FILES}
     if not required.issubset(files):
         raise ValueError("Incomplete source mission: " + ", ".join(sorted(required - files.keys())))
-    if files.get(profile["source"]) is None:
-        raise ValueError("The variant script is outside the copied source set")
-    if digest(files[profile["source"]]) != variant_report["source_sha256"]:
-        raise ValueError("Source changed between validation and packaging")
+    for change in variant_report["changes"]:
+        if files.get(change["source"]) is None:
+            raise ValueError("The variant script is outside the copied source set")
+        if digest(files[change["source"]]) != change["source_sha256"]:
+            raise ValueError("Source changed between validation and packaging")
     needles = [f"{kind}{sep}{mission}{sep}".encode("ascii")
                for kind in ("missions", "scripts") for sep in ("/", "\\")]
     for name, raw in files.items():
         if any(needle in raw.lower() for needle in needles):
             raise ValueError(f"Hard-coded original mission path requires manual remapping: {name}")
     baseline_closure = script_closure(files, mission)
-    changed_files = {**files, profile["source"]: variant}
+    changed_files = {**files, **changes}
     variant_closure = script_closure(changed_files, mission)
     if baseline_closure != variant_closure:
-        raise ValueError("A single-script profile unexpectedly changes script dependency closure")
+        raise ValueError("A reconstruction profile unexpectedly changes script dependency closure")
 
     members, packages = {}, []
     for mode, payload in (("baseline", files), ("variant", changed_files)):
@@ -119,7 +120,7 @@ def plan_lab(profile: dict, sources) -> tuple[dict[str, bytes], dict]:
             members[member] = raw
             mapping.append({"member": member, "proposed_relative_path": relative,
                             "source_entry": name, "size": len(raw), "sha256": digest(raw),
-                            "changed_from_commercial": mode == "variant" and name == profile["source"]})
+                            "changed_from_commercial": mode == "variant" and name in changes})
         packages.append({"mode": mode, "id": package_id, "mission_directory": directory,
                          "manifest_member": manifest_member, "files": mapping})
     report = {
@@ -207,9 +208,22 @@ def verify_bundle(path: Path) -> dict:
         if snapshots[0] != source_hashes:
             raise ValueError("The baseline is not an exact commercial copy")
         changed = [name for name in snapshots[0] if snapshots[0][name] != snapshots[1][name]]
-        if (changed != [variant["source"]] or snapshots[1][changed[0]] != variant["variant_sha256"]
-                or snapshots[0][changed[0]] != variant["source_sha256"]):
-            raise ValueError("The variant changes more than the approved script")
+        proofs = variant.get("changes", [variant])  # read the first single-script bundle format
+        expected_changes = {change["source"]: change for change in proofs}
+        if (not proofs or len(expected_changes) != len(proofs)
+                or set(changed) != set(expected_changes)
+                or variant["source"] not in expected_changes
+                or variant.get("changed_script_count", len(proofs)) != len(proofs)):
+            raise ValueError("The variant changes more than the approved script set or omits a member")
+        primary = expected_changes[variant["source"]]
+        if any(primary[key] != variant[key] for key in ("source_sha256", "variant_sha256")):
+            raise ValueError("Primary script proof differs from the atomic script set")
+        for name, proof in expected_changes.items():
+            if (not name.startswith(f"scripts/{report['source_mission']}/")
+                    or not name.endswith(".scr")
+                    or snapshots[1][name] != proof["variant_sha256"]
+                    or snapshots[0][name] != proof["source_sha256"]):
+                raise ValueError("The variant changes more than the approved script set")
         return report
 
 

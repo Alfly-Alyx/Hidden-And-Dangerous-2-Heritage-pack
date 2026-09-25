@@ -1,7 +1,8 @@
 # Variantes reproductibles
 
 État vérifié le **25 septembre 2026** sur la branche
-`codex/reconstruction-phase-1` : treize scripts dérivés ont été construits et
+`codex/reconstruction-phase-1` : quatorze profils, soit quinze scripts dérivés,
+ont été construits et
 comparés aux sources commerciales. **Aucun n'est installé ni validé en jeu.**
 
 Le [catalogue machine](../reconstruction-variants.json) contient uniquement les
@@ -27,13 +28,14 @@ modifier les archives.
 | `arctic4-guard6-cold-fallback` | Activité Cold moderne après la bouteille, délais conservés. | 1493 | [Ambiance](../ARCTIC4_AMBIENT_ANIMATIONS_AND_FLAK_EXIT/PROPOSITION.md) |
 | `sicily2-three-cleared-wave` | Au moins trois états 0 déclenchent la vague; aucune charge modifiée. | 3228 | [Déminage](../SICILY2_CHARGES_DUAL_STATE_WAVE/ETUDE.md) |
 | `czech4-pianist-signal5` | Réception moderne de l'alerte, fermeture audio/animation, proximités désarmées. | 3224 | [Pianiste](../CZECH4_MISSING_SIGNAL_HANDLERS/PROPOSITION.md) |
+| `czech6-radio-before-alarm` | Paire Base : récompense du sabotage seulement avant l'alarme. | 1156 + 2415 | [Radio](../CZECH6_RADIO_SABOTAGE_DUAL_PATH/ETUDE.md) |
 
 Le choix est **exclusif avant chargement** : une copie laboratoire emploiera soit
-le script commercial, soit le script dérivé pour le même propriétaire. Aucun
+les scripts commerciaux, soit leurs variantes pour les mêmes propriétaires. Aucun
 signal de sélection, objectif, compteur ou état de sauvegarde n'est ajouté.
 Ne pas empiler ces profils avec une autre modification du même script. La
 fabrication d'un fichier seule n'est pas la création d'une mission laboratoire
-complète. Les treize profils disposent maintenant aussi de
+complète. Les quatorze profils disposent maintenant aussi de
 [copies A/B inertes](LABORATOIRES_DESACTIVES.md), contrôlées hors jeu.
 
 ## Reproduction
@@ -52,8 +54,13 @@ la sortie doit se terminer par `.scr.disabled` et rester sous `.analysis/`.
 Un fichier existant est refusé, jamais écrasé. `--output` permet de choisir un
 nouveau nom dans cet espace. Aucune option n'installe le résultat dans le jeu.
 
+Exception volontaire à l'export d'un seul script : `czech6-radio-before-alarm`
+contient deux changements inséparables. Son contrôle simple fonctionne, mais
+`--build` dans le générateur de scripts est refusé. Employer le générateur de
+laboratoires pour cette paire; aucun composant n'est proposé isolément.
+
 Les vérifications couvrent les archives effectives Base/Patch/Sabre, les tailles
-et SHA-256 de **43 entrées commerciales distinctes**, la liaison unique du propriétaire,
+et SHA-256 de **47 entrées commerciales distinctes**, la liaison unique du propriétaire,
 sa présence sérialisée, les prérequis nommés et l'unicité de chaque modification.
 Une entrée correspondante de `PatchX01.dta` est refusée plutôt que de deviner sa
 priorité. Les fins de ligne et l'encodage commercial restent inchangés en dehors
@@ -97,11 +104,15 @@ les archives dans la première série; les deux profils Africa 1 doivent continu
 | Arctic 4, froid garde 6 | `368463f3e57880f0e41b18a65c2cd6a541996882020e4c6dde9018f5e3e86118` |
 | Sicily 2, vague après déminage | `0f0414e6432b26f2030ffb10f40713db4e51ee3ddf7acb5b84fb1b93e72caf37` |
 | Czech 4, pianiste | `d2c32f0046563682a5d9299d6eaa67d97f6b5791584908838ec0a6eaf51633e6` |
+| Czech 6, câble Base | `9d72a651971131ccf4ba40335ce0040d2c47a1ebd390b30c22665473a84db3dc` |
+| Czech 6, opérateur Base | `30ec6bfa42feaea3efdc9a5389bcb2a34b158195c46f63109464c0c9d0026359` |
 
 Les 47 tests de variantes utilisent des données inventées et ne nécessitent pas
 de jeu. Ils couvrent notamment les refus de source modifiée, liaison dupliquée,
 ressource absente, remplacement ambigu, surcharge inattendue, sortie active,
-écriture dans le jeu et écrasement d'un fichier. Les treize diff réels ont aussi
+écriture dans le jeu et écrasement d'un fichier. Quatorze autres tests couvrent
+les groupes de scripts indivisibles et les propriétaires 4DS typés. Les quinze
+diff réels ont aussi
 été inspectés. Ce ne sont ni une compilation du langage du jeu ni des essais
 de comportement de l'IA.
 
@@ -110,5 +121,5 @@ de comportement de l'IA.
 Les copies laboratoire sont générées, intégralement désactivées. Résoudre leur
 chargement réel et leur espace de scripts dans une installation de test isolée,
 puis exécuter les scénarios des études et la
-[barrière de validation](VALIDATION.md). Les treize profils restent `pending` pour
+[barrière de validation](VALIDATION.md). Les quatorze profils restent `pending` pour
 l'exécution; aucun résultat manuel n'a été converti artificiellement en succès.

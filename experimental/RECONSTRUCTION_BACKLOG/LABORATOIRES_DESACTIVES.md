@@ -9,7 +9,8 @@ commerciales. Elles ne sont **ni installées, ni lancées, ni validées en moteu
 
 - Chaque copie possède son identifiant et son dossier `H2Lab_…_B` ou `H2Lab_…_V`.
 - Géométrie, collisions, acteurs, registre et scripts locaux sont copiés depuis
-  les archives effectives. Une seule source de script diffère dans la variante.
+  les archives effectives. Seuls les scripts explicitement déclarés diffèrent
+  dans la variante : un par profil, ou la paire indivisible de la radio Czech 6.
 - Tous les fichiers de charge utile et les manifestes portent `.disabled`, y
   compris à l'intérieur du ZIP. Une extraction accidentelle ne crée pas de
   paquet scannable par le gestionnaire.
@@ -78,9 +79,17 @@ Le pianiste de Czech 4 et la vague de Sicily 2 portent le total actuel à
 **treize laboratoires et vingt-six entrées contrôlées**, catalogue combiné
 `cbbfbc5691842db62c4f1954fb1811659e202d44b3169f1ad2cbcb02d72eea7e`.
 
-Les **111 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
+La paire radio Czech 6 porte ensuite le total courant à **quatorze laboratoires,
+vingt-huit entrées et quinze scripts modifiés**, catalogue
+`b5b5964e92c1b0da06f95d588865576f995df725a5f78093b6461fd9eea01339`.
+Son emballage contient obligatoirement les deux scripts Base; un fichier manquant
+ou resté en version Patch est refusé. Les anciens ZIP à un seul script restent
+lisibles par le vérificateur.
+
+Les **125 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
 huit cas de conservation d'objectifs, quatre contrôles de lecture de catalogues,
-quatre modèles de prédicat de charges et 28 tests d'émulation du menu.
+quatre modèles de prédicat de charges, quatorze cas de groupes atomiques/4DS
+et 28 tests d'émulation du menu.
 Les auto-tests C# passent également. Le contrôle
 de dépendances distingue maintenant une désaffectation explicite
 `ScriptAssign(owner, "")` d'un nom dynamique; une concaténation de nom reste

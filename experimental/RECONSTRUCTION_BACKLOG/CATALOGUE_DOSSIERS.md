@@ -2,7 +2,7 @@
 
 Ce catalogue recense les dossiers de premier niveau présents sur la branche. Il complète le registre thématique : sa fonction est de rendre visible tout ce qui existe déjà, y compris les études qui ne demandent pas d'action immédiate.
 
-Total : **144 dossiers**.
+Total : **145 dossiers**.
 
 | Dossier | Fichiers directs | Sous-dossiers |
 |---|---|---|
@@ -122,6 +122,7 @@ Total : **144 dossiers**.
 | [CZECH4_VESTIGES_VARIANT](../CZECH4_VESTIGES_VARIANT/) | `ETUDE.md`, `PLAN_COUNTER_PLATOON07_09.md`, `PROTOTYPE_CZ4_DOG01_CONTROLLER.scr.disabled` | — |
 | [CZECH6_G11_G43_SIGNALS](../CZECH6_G11_G43_SIGNALS/) | `PROPOSITION.md` | — |
 | [CZECH6_ISU_DUAL_ROUTE](../CZECH6_ISU_DUAL_ROUTE/) | `PROPOSITION.md`, `PROTOTYPE_ROUTE_SELECTOR.scr.disabled` | — |
+| [CZECH6_RADIO_SABOTAGE_DUAL_PATH](../CZECH6_RADIO_SABOTAGE_DUAL_PATH/) | `ETUDE.md` | — |
 | [DFS230_DECOR](../DFS230_DECOR/) | `ETUDE.md`, `MANIFEST.md` | — |
 | [FA223_DECOR](../FA223_DECOR/) | `ETUDE.md`, `MANIFEST.md` | — |
 | [FG42](../FG42/) | `ETUDE.md`, `MANIFEST.md`, `RECONSTRUCTION.plan.disabled` | — |

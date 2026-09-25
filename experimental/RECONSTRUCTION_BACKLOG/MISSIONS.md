@@ -58,7 +58,7 @@ Chemins : `experimental/ARCTIC1_*` et
 | `CZECH4_DOG01_OWNERLESS` | Documenté, bloqué preuve | Script libre maître `Runner03`, sans chien ni liaison. Exiger modèle, placement et route avant activation. |
 | `CZECH4_R_CZ4_HODINY` | Faux positif | Fichier vide résiduel; rien à restaurer. |
 | `CZECH6_ISU_DUAL_ROUTE` | Prototype désactivé | Profil reproductible `czech6-isu-base-route`, 2144 octets; trajet Base à 12 et sortie Patch conservée. Quatre empreintes, conducteur, passagers, ISU et checkpoints vérifiés. Alternative fixe au sélecteur existant, pas cumulable; collisions/sortie à tester. |
-| `CZECH6_RADIO_SABOTAGE_DUAL_PATH` | À documenter | La base conditionnait l'objectif 02 au signal d'alarme 1; le patch rend l'accès immédiat. Garder l'immédiat par défaut, sans créer de nouvel objectif. |
+| `CZECH6_RADIO_SABOTAGE_DUAL_PATH` | Prototype désactivé | Paire câble/opérateur identique à la Base, 1156 + 2415 octets. Correction de sens : après alarme, la Base laisse casser le câble mais ne récompense plus le sabotage; le Patch récompense indépendamment de l'alarme. Deux propriétaires liés et câbles décodés en 4DS; export partiel interdit. |
 | `CZECH6_G40_ALERT_RECEIVERS` | À documenter | G40 envoie signal 1 à G11/G43 sans récepteur. Déduire seulement depuis `OnAlarm`; ne pas heurter le signal 2 de sabotage ni la proximité. |
 | `CZECH6_G40_G41_DIALOGUE_SYNC` | À documenter | La conversation envoyait autrefois signal 1 aux deux acteurs. Tester si un arrêt de boucle gestuelle avant parole est nécessaire; sinon classer faux positif. |
 

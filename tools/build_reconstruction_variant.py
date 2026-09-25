@@ -16,6 +16,7 @@ import re
 import sys
 
 from dta_archive import DtaArchive
+from menu_gui_audit import parse_4ds_nodes
 from script_binding_audit import parse_bindings, scene_frame_names
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -43,6 +44,42 @@ def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def change_specs(profile: dict) -> list[dict]:
+    """An atomic profile may have several bound scripts in the same mission."""
+    fields = {"source", "actor", "owner_entry", "edits"}
+    primary = {key: profile[key] for key in fields if key in profile}
+    additional = profile.get("additional_changes", [])
+    if not isinstance(additional, list):
+        raise ValueError("additional_changes must be a list")
+    result = [primary]
+    sources, actors = set(), set()
+    mission = entry_path(primary["source"]).split("/")[1]
+    for change in [primary, *additional]:
+        if not isinstance(change, dict) or set(change) - fields:
+            raise ValueError("Unexpected additional script fields")
+        if not {"source", "actor", "edits"}.issubset(change):
+            raise ValueError("Each changed script needs source, actor and edits")
+        source = entry_path(change["source"])
+        if (source != change["source"] or source.split("/")[1] != mission
+                or not source.startswith("scripts/") or not source.endswith(".scr")):
+            raise ValueError("A changed script must stay in the source mission")
+        if not isinstance(change["actor"], str) or not change["actor"].strip():
+            raise ValueError("Each changed script needs a named owner")
+        actor = change["actor"].casefold()
+        if source in sources or actor in actors:
+            raise ValueError("Duplicate script or owner in atomic profile")
+        sources.add(source)
+        actors.add(actor)
+    result.extend(additional)
+    return result
+
+
+def typed_names(raw: bytes, entry: str) -> set[str]:
+    if entry.endswith(".4ds"):
+        return {node["name"].casefold() for node in parse_4ds_nodes(raw)["nodes"]}
+    return scene_frame_names(raw)
+
+
 def load_catalog(path: Path = CATALOG) -> dict:
     catalog = json.loads(path.read_text(encoding="utf-8"))
     if catalog.get("schema_version") != 1:
@@ -65,12 +102,14 @@ def load_catalog(path: Path = CATALOG) -> dict:
         if profile.get("default_profile") != "commercial":
             raise ValueError("The commercial profile must remain the default")
         evidence = profile["evidence"]
-        required = {source, f"missions/{mission}/scripts.dta",
-                    f"missions/{mission}/actors.bin"}
-        owner_entry = profile.get("owner_entry", f"missions/{mission}/actors.bin")
-        if owner_entry not in (f"missions/{mission}/actors.bin", f"missions/{mission}/scene2.bin"):
-            raise ValueError("Owner evidence must be the mission actors or typed scene frames")
-        required.add(owner_entry)
+        changes = change_specs(profile)
+        required = {f"missions/{mission}/scripts.dta", f"missions/{mission}/actors.bin"}
+        for change in changes:
+            owner_entry = change.get("owner_entry", f"missions/{mission}/actors.bin")
+            if owner_entry not in tuple(f"missions/{mission}/{name}" for name in
+                                        ("actors.bin", "scene2.bin", "scene.4ds")):
+                raise ValueError("Owner evidence must be the mission actors or typed scene frames")
+            required.update((change["source"], owner_entry))
         if not required.issubset(evidence):
             raise ValueError(f"Missing script, registry or actor evidence: {identifier}")
         for name, proof in evidence.items():
@@ -82,18 +121,21 @@ def load_catalog(path: Path = CATALOG) -> dict:
         for check in profile.get("checks", []):
             if check["entry"] not in evidence:
                 raise ValueError("A prerequisite must have pinned evidence")
-            if check["kind"] not in ("frames", "nul_strings") or not check["values"]:
+            if check["kind"] not in ("frames", "4ds_frames", "nul_strings") or not check["values"]:
                 raise ValueError("Invalid prerequisite check")
-        if not profile["edits"]:
-            raise ValueError("A variant must contain at least one explicit edit")
-        for edit in profile["edits"]:
-            if not edit["before"] or edit["before"] == edit["after"]:
-                raise ValueError("Empty or ineffective edit")
-            # Edits use LF in JSON; the source's original newline style is retained.
-            if "\r" in edit["before"] + edit["after"]:
-                raise ValueError("Catalog edits must use LF newlines")
-            edit["before"].encode("cp1252")
-            edit["after"].encode("cp1252")
+            if check["kind"] == "4ds_frames" and not check["entry"].endswith(".4ds"):
+                raise ValueError("4DS prerequisites require a 4DS source")
+        for change in changes:
+            if not change["edits"]:
+                raise ValueError("A variant must contain at least one explicit edit")
+            for edit in change["edits"]:
+                if not edit["before"] or edit["before"] == edit["after"]:
+                    raise ValueError("Empty or ineffective edit")
+                # Edits use LF; the original local newline style is retained.
+                if "\r" in edit["before"] + edit["after"]:
+                    raise ValueError("Catalog edits must use LF newlines")
+                edit["before"].encode("cp1252")
+                edit["after"].encode("cp1252")
     return {profile["id"]: profile for profile in profiles}
 
 
@@ -197,6 +239,8 @@ def apply_edits(source: bytes, edits: list[dict]) -> bytes:
 
 
 def prepare(profile: dict, sources) -> tuple[bytes, dict]:
+    if profile.get("additional_changes"):
+        raise ValueError("Atomic multi-script profile requires prepare_changes / a laboratory")
     verified = {}
     for name, proof in profile["evidence"].items():
         archive, raw = sources.read(name)
@@ -212,14 +256,14 @@ def prepare(profile: dict, sources) -> tuple[bytes, dict]:
     if len(bindings) != 1 or normalized(bindings[0]) != source_name.rsplit("/", 1)[1]:
         raise ValueError(f"Missing or conflicting owner binding: {profile['actor']}")
     owner_entry = profile.get("owner_entry", f"missions/{mission}/actors.bin")
-    actor_names = scene_frame_names(verified[owner_entry])
+    actor_names = typed_names(verified[owner_entry], owner_entry)
     if profile["actor"].casefold() not in actor_names:
         raise ValueError(f"Missing serialized actor: {profile['actor']}")
     for check in profile.get("checks", []):
         raw = verified[check["entry"]]
-        names = scene_frame_names(raw) if check["kind"] == "frames" else set()
+        names = typed_names(raw, check["entry"]) if check["kind"] in ("frames", "4ds_frames") else set()
         for value in check["values"]:
-            present = (value.casefold() in names if check["kind"] == "frames"
+            present = (value.casefold() in names if check["kind"] in ("frames", "4ds_frames")
                        else value.encode("cp1252") + b"\0" in raw)
             if not present:
                 raise ValueError(f"Missing {check['kind']} prerequisite: {value}")
@@ -246,6 +290,27 @@ def prepare(profile: dict, sources) -> tuple[bytes, dict]:
         "output": None,
     }
     return variant, report
+
+
+def prepare_changes(profile: dict, sources) -> tuple[dict[str, bytes], dict]:
+    """Validate every member before returning any portion of an atomic change."""
+    specs = change_specs(profile)
+    payload, reports = {}, []
+    for spec in specs:
+        single = {key: value for key, value in profile.items()
+                  if key not in ("additional_changes", "owner_entry")}
+        single.update(spec)
+        data, report = prepare(single, sources)
+        payload[spec["source"]] = data
+        reports.append(report)
+    report = dict(reports[0])
+    report["changed_script_count"] = len(reports)
+    report["changes"] = [{key: item[key] for key in (
+        "source", "actor", "owner_entry", "source_archive", "source_sha256",
+        "variant_sha256", "source_bytes", "variant_bytes", "edit_count")}
+        for item in reports]
+    report["edit_count"] = sum(item["edit_count"] for item in reports)
+    return payload, report
 
 
 def write_disabled(output: Path, data: bytes, game: Path,
@@ -297,12 +362,14 @@ def main(argv=None) -> int:
         with ArchiveSources(args.game, archives_only=args.archives_only) as sources:
             for profile in chosen:
                 try:
-                    variant, report = prepare(profile, sources)
+                    changes, report = prepare_changes(profile, sources)
                     if args.build:
+                        if len(changes) != 1:
+                            raise ValueError("Atomic multi-script profile: build a complete disabled laboratory")
                         output = args.output or (
                             ROOT / ".analysis/generated" / f"{profile['id']}.scr.disabled"
                         )
-                        report["output"] = str(write_disabled(output, variant, args.game))
+                        report["output"] = str(write_disabled(output, next(iter(changes.values())), args.game))
                     reports.append(report)
                 except (OSError, ValueError) as error:
                     reports.append({"profile": profile["id"], "static_status": "failed",

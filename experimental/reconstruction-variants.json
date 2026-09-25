@@ -3,6 +3,38 @@
   "reference_edition": "GOG English Sabre Squadron 1.12",
   "profiles": [
     {
+      "id": "czech6-radio-before-alarm",
+      "title": "Czech 6 — sabotage récompensé seulement avant l'alarme, paire Base",
+      "source": "scripts/czech6/c5_obj02.scr",
+      "actor": "1cable_ok",
+      "owner_entry": "missions/czech6/scene.4ds",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/czech6/c5_obj02.scr": {"archive": "Patch.dta", "size": 938, "sha256": "a8e9d0550413736782f36e7d1c473b713681f582fdad374bccbe724817029ca7"},
+        "scripts/czech6/c5_g11.scr": {"archive": "Patch.dta", "size": 2393, "sha256": "2dd6a4a65509dd92885fbc26d8379824e5da018ca7a2b221d25364c4779bf62e"},
+        "missions/czech6/scripts.dta": {"archive": "missions.dta", "size": 3305, "sha256": "b1fde6adb1eacd6b95191152e6a08c47d38db4b85bfb7f0c2bf6f8a983c070d7"},
+        "missions/czech6/actors.bin": {"archive": "Patch.dta", "size": 29884, "sha256": "419eec3faf91c031ed7e6819e274ab7137992a31c46020caf38cd5b99f3b8cda"},
+        "missions/czech6/scene.4ds": {"archive": "missions.dta", "size": 3343356, "sha256": "45eed5501fc7babe137b102c092919f5b92830eaededf0a967781924d25d1d8d"},
+        "missions/czech6/scene2.bin": {"archive": "missions.dta", "size": 11930538, "sha256": "3cc677cdde13862a1f0ef2748d51dfaa164e1c411a25b4392f3942cb28d9ea99"}
+      },
+      "checks": [
+        {"kind": "4ds_frames", "entry": "missions/czech6/scene.4ds", "values": ["1cable_ok", "2cable_broken"]},
+        {"kind": "frames", "entry": "missions/czech6/actors.bin", "values": ["C5_G11"]},
+        {"kind": "frames", "entry": "missions/czech6/scene2.bin", "values": ["C5_objective"]}
+      ],
+      "edits": [
+        {"before": "Integer firstuse;\n\tfirstuse=0;\n}", "after": "Integer firstuse;\n\tfirstuse=0;\nInteger alarmed;\n\talarmed=0;\n}"},
+        {"before": "\tIf(firstuse==1)\t{\tGoTo end;\t}\n", "after": "\tIf(firstuse==1)\t{\tGoTo end;\t}\n\tIf(alarmed==1)\n\t{\n\t\tBlock\n\t\t{\n\t\t\tfirstuse=1;\n\t\tFRM_SetOn(stateok, false);\n\t\tFRM_SetOn(statebroken, true);\n\t\t}\n\tGoTo end;\n\t}\n"},
+        {"before": "}\n// -------------------------------------------------------------------------------------------------------------\nFRM_SetOn(statebroken, false);", "after": "}\n\nOnSignal(1)\t// received from C5_G11\n{\n\talarmed=1;\n\tGoTo end;\n}\n// -------------------------------------------------------------------------------------------------------------\nFRM_SetOn(statebroken, false);"}
+      ],
+      "additional_changes": [
+        {"source": "scripts/czech6/c5_g11.scr", "actor": "C5_G11", "edits": [
+          {"before": "\tBlock\n\t{\n\tHUMAN_SETMODE_Run();", "after": "\tBlock\n\t{\n\tSendSignal(obj, 1);\n\tHUMAN_SETMODE_Run();"}
+        ]}
+      ]
+    },
+    {
       "id": "czech4-pianist-signal5",
       "title": "Czech 4 — réaction moderne du pianiste au signal 5",
       "classification": "MODERNE",
