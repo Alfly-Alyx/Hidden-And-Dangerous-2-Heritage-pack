@@ -222,5 +222,33 @@ class FormationCleanupContractTests(unittest.TestCase):
             self.assertEqual(destroys, expected, sequence)
 
 
+class DepotGuardDeathContractTests(unittest.TestCase):
+    def setUp(self):
+        self.profile = load_catalog()['burgundy3-cutscene-nearby-guard-deaths']
+        self.edit, = self.profile['edits']
+
+    def test_only_eight_historical_comment_prefixes_are_removed(self):
+        self.assertEqual(len(self.edit['before'].splitlines()), 8)
+        self.assertTrue(all(line.startswith('//') for line in self.edit['before'].splitlines()))
+        self.assertEqual(self.edit['after'], '\n'.join(line[2:] for line in self.edit['before'].splitlines()))
+        self.assertEqual(re.findall(r'HUMAN_Kill\((\w+)\)', self.edit['after']), ['en22', 'en23'])
+
+    def test_both_guards_keep_the_strict_fifteen_unit_filter(self):
+        self.assertEqual(re.findall(r'_FrameInRange\((\w+)\) < (\d+)', self.edit['after']),
+                         [('en22', '15'), ('en23', '15')])
+        self.assertEqual([distance < 15 for distance in (0, 14.999, 15, 15.001)],
+                         [True, True, False, False])
+
+    def test_direct_explosion_route_and_sound_protocol_are_not_changed(self):
+        suffix = (b'\r\nMakeExplosion(expl, 5000000, 12000);\r\n}\r\n'
+                  b'Label DESTROY_DMG:\r\nSendSignal(snd_strom, 10);\r\n'
+                  b'if(_FrameInRange(en22) < 15) { HUMAN_Kill(en22); }\r\n')
+        source = b'OnCutscene(4) {\r\n' + self.edit['before'].replace('\n', '\r\n').encode('ascii') + suffix
+        result = apply_edits(source, [self.edit])
+        self.assertTrue(result.endswith(suffix))
+        self.assertNotIn(b'SendSignal(snd_strom, 11)', result)
+        self.assertEqual(len(source) - len(result), 16)
+
+
 if __name__ == "__main__":
     unittest.main()

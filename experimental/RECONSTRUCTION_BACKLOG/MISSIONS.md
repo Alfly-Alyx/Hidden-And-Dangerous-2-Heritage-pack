@@ -109,7 +109,7 @@ Chemins : `experimental/ARCTIC1_*` et
 | `BURGUNDY3_INTERROGATION_GESTURES` | Documenté | Le contrôleur envoie 10..17 en alternance; les 19 répliques fonctionnent, mais les gestes manquent. N'utiliser que des animations commerciales prouvées et interrompables sur alarme. |
 | `BURGUNDY3_JEEP_24_REPLACED_BRANCH` | Documenté, bloqué preuve | Branche véhicule commentée, `car05` absent; la version commerciale joue l'animation de bureau et la coop `nuda`. Reconstituer le chemin avant sélecteur. |
 | `BURGUNDY3_EXPLOSION_SOUND_DUAL_TRIGGER` | Prototype désactivé | Étude BURGUNDY3_DEPOT_EXPLOSION_SOUND : paire complète 3348 + 1239 octets. Nouveau signal moderne 11 seulement sur destruction directe, réception désarmée avant le son; cinématique et anciens signaux 10 inchangés. Neuf frames vérifiées; mix et courses à tester. |
-| `BURGUNDY3_EN22_EN23_END_STATE` | À documenter | La branche directe tue sous distance <15; la cutscene applique de gros dégâts, avec anciens `Kill` commentés. Comparer dégâts seuls et mort explicite sous le même filtre. |
+| [BURGUNDY3_EN22_EN23_END_STATE](../BURGUNDY3_EN22_EN23_END_STATE/ETUDE.md) | Prototype désactivé | Huit préfixes commentés retirés seulement dans la cinématique; filtre strict <15 conservé. Laboratoire A/B inerte, neuf objectifs identiques. Comparaison dégâts/mort en jeu requise; profil exclusif du son direct. |
 | `CO_BURGUNDY3_CLOSURE` | À fermer | Dix porteurs ambiants absents; Maquis signal1 sans émetteur mais déjà détruit sur alarme; frames manquantes = sous-nœuds, pas routes. |
 | `CO_BURGUNDY1_CLOSURE` | À fermer | Douze contrôleurs oiseaux/portes sans `dummy_snd1..12`; JohnAshley et chien absents; explosion 05 déjà liée à objectif02; commentaires LookAround identiques solo/coop. |
 

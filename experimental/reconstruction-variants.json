@@ -3,6 +3,47 @@
   "reference_edition": "GOG English Sabre Squadron 1.12",
   "profiles": [
     {
+      "id": "burgundy3-cutscene-nearby-guard-deaths",
+      "title": "Burgundy 3 — morts historiques des gardes proches pendant la cinématique",
+      "source": "scripts/burgundy3/bur3_vybuch.scr",
+      "actor": "la_bu3_FuelStorage_01",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/burgundy3/bur3_vybuch.scr": {
+          "archive": "SabreSquadron.dta",
+          "size": 3316,
+          "sha256": "c5fd6d7c3d30f84dd193209d5615b85cb443be2f06a995ed089e9fc9d48b71ba"
+        },
+        "missions/burgundy3/scripts.dta": {
+          "archive": "SabreSquadron.dta",
+          "size": 3421,
+          "sha256": "606d7a312b600d9e3b15060d3faa32c27ef6ebe73c1ca38c0f78f899b4b98ac5"
+        },
+        "missions/burgundy3/actors.bin": {
+          "archive": "SabreSquadron.dta",
+          "size": 22645,
+          "sha256": "669dbf9a0902601e9e8e2a1b832f27dfbe300578750d8879655061a61c67bcae"
+        }
+      },
+      "checks": [
+        {
+          "kind": "frames",
+          "entry": "missions/burgundy3/actors.bin",
+          "values": [
+            "bur03_22",
+            "bur03_23"
+          ]
+        }
+      ],
+      "edits": [
+        {
+          "before": "//    if(_FrameInRange(en22) < 15)\n//    {\n//      HUMAN_Kill(en22);\n//    }\n//    if(_FrameInRange(en23) < 15)\n//    {\n//      HUMAN_Kill(en23);\n//    }",
+          "after": "    if(_FrameInRange(en22) < 15)\n    {\n      HUMAN_Kill(en22);\n    }\n    if(_FrameInRange(en23) < 15)\n    {\n      HUMAN_Kill(en23);\n    }"
+        }
+      ]
+    },
+    {
       "id": "czech3-leader-formation-cleanup",
       "title": "Czech 3 — dissolution conditionnelle unique de la formation à l'alarme du chef",
       "classification": "MODERNE",

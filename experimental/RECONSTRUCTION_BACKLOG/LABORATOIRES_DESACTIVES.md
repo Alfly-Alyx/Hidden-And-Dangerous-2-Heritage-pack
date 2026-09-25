@@ -117,10 +117,17 @@ catalogue `0b8c5c4187b6d2a844a97c4f0747a16f47aa1b624974750ae92c04c025f8bfb1`.
 Avec les trois scripts seuls Africa 5, le catalogue de profils contient 22
 variantes et 25 scripts dérivés. Les trois laboratoires Africa 5 restent bloqués.
 
-Les **150 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
+La variante des gardes 22/23 Burgundy 3 porte le total à **vingt laboratoires,
+quarante entrées et vingt-trois scripts modifiés en laboratoire**, catalogue
+`caf34f3b6b5b4c62131c49792e3ff232a40a8d324f3285633909f622570e27cb`.
+Les neuf missions Sabre restent identiques. Avec Africa 5 : 23 profils et
+26 scripts dérivés, dont trois sans laboratoire. Les deux profils Burgundy 3
+restent exclusifs, pas fusionnés.
+
+Les **153 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
 huit cas de conservation d'objectifs, quatre contrôles de lecture de catalogues,
-vingt-deux modèles/contrats de charges, assise, proximité, son, conduite, filtres et formation,
-quatorze cas de groupes atomiques/4DS
+vingt-cinq modèles/contrats de charges, assise, proximité, son, conduite, filtres, formation et mort,
+quatorze cas de groupes atomiques/4DS,
 28 tests d'émulation du menu et sept contrôles de la chaîne Norway dormante.
 Les auto-tests C# passent également. Le contrôle
 de dépendances distingue maintenant une désaffectation explicite

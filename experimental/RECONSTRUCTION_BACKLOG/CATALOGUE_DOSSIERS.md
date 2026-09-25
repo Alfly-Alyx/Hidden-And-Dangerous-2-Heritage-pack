@@ -2,7 +2,7 @@
 
 Ce catalogue recense les dossiers de premier niveau présents sur la branche. Il complète le registre thématique : sa fonction est de rendre visible tout ce qui existe déjà, y compris les études qui ne demandent pas d'action immédiate.
 
-Total : **154 dossiers**.
+Total : **155 dossiers**.
 
 | Dossier | Fichiers directs | Sous-dossiers |
 |---|---|---|
@@ -100,6 +100,7 @@ Total : **154 dossiers**.
 | [BURGUNDY2_COOP_GUARD_TO_SOLO](../BURGUNDY2_COOP_GUARD_TO_SOLO/) | `ETUDE.md` | — |
 | [BURGUNDY2_DILNA_POLISHING](../BURGUNDY2_DILNA_POLISHING/) | `PROPOSITION.md` | — |
 | [BURGUNDY3_DEPOT_EXPLOSION_SOUND](../BURGUNDY3_DEPOT_EXPLOSION_SOUND/) | `ETUDE.md`, `PROTOTYPE_ADDITIF_DIRECT_SIGNAL11.scr.disabled` | — |
+| [BURGUNDY3_EN22_EN23_END_STATE](../BURGUNDY3_EN22_EN23_END_STATE/) | `ETUDE.md` | — |
 | [BURGUNDY3_GUARD24_JEEP](../BURGUNDY3_GUARD24_JEEP/) | `PROPOSITION.md`, `VARIANTS.plan.disabled` | — |
 | [BURGUNDY3_INTERROGATION_ANIMATIONS](../BURGUNDY3_INTERROGATION_ANIMATIONS/) | `PROPOSITION.md` | — |
 | [BURMA1_BRIDGE_LEGACY_TRIGGER](../BURMA1_BRIDGE_LEGACY_TRIGGER/) | `ETUDE.md` | — |
