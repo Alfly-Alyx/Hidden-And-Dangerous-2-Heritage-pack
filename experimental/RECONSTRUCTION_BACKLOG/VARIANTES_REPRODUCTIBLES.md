@@ -1,0 +1,96 @@
+# Variantes reproductibles — première série
+
+État vérifié le **25 septembre 2026** sur la branche
+`codex/reconstruction-phase-1` : six scripts dérivés ont été construits et
+comparés aux sources commerciales. **Aucun n'est installé ni validé en jeu.**
+
+Le [catalogue machine](../reconstruction-variants.json) contient uniquement les
+empreintes, les prérequis et les modifications minimales. Les scripts commerciaux
+complets restent dans l'installation légitime et dans `.analysis/`, ignoré par
+Git. Le [générateur](../../tools/build_reconstruction_variant.py) les lit sans
+modifier les archives.
+
+## Résultat de la série
+
+| Profil | Modification | Octets générés | Étude |
+|---|---|---:|---|
+| `arctic4-guard3-alarm-post` | Un déplacement réactivé à l'alarme. | 2506 | [Garde 3](../ARCTIC4_STATIC_GUARD3_ALARM_POST_ADDITIVE/ETUDE.md) |
+| `czech2-ger12-lie` | Posture couchée avant l'animation de mort existante. | 380 | [Ger12](../CZECH2_GER12_DEATH_STAGING/ETUDE.md) |
+| `sicily1-it40-open-doors` | Deux changements d'état après les déverrouillages existants. | 2464 | [Portes](../SICILY1_IT40_DUAL_DOOR_BEHAVIOR/ETUDE.md) |
+| `africa1-officer21-cutscene-move` | Déplacement au point existant pendant la cinématique 10. | 3369 | [Officier](../AFRICA1_OFFICER_21_CUTSCENE_MOVE/ETUDE.md) |
+| `czech6-isu-base-route` | Route de trois points à 12; sortie Patch conservée. | 2144 | [ISU](../CZECH6_ISU_DUAL_ROUTE/PROPOSITION.md) |
+| `libye3-german15-move-to-alarm` | Déplacement vers l'alarme avant les réglages de combat. | 1342 | [German15](../LIBYE3_GERMAN15_ALARM_DUAL_BEHAVIOR/ETUDE.md) |
+
+Le choix est **exclusif avant chargement** : une copie laboratoire emploiera soit
+le script commercial, soit le script dérivé pour le même propriétaire. Aucun
+signal de sélection, objectif, compteur ou état de sauvegarde n'est ajouté.
+Ne pas empiler ces profils avec une autre modification du même script. La
+fabrication d'un fichier n'est pas la création d'une mission laboratoire complète.
+
+## Reproduction
+
+Depuis la racine du dépôt, sans lancer le jeu :
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s tests -p test_reconstruction_variants.py
+.\.venv\Scripts\python.exe tools\build_reconstruction_variant.py --list
+.\.venv\Scripts\python.exe tools\build_reconstruction_variant.py --game "D:\Games\Hidden and Dangerous 2" --check-all
+.\.venv\Scripts\python.exe tools\build_reconstruction_variant.py --game "D:\Games\Hidden and Dangerous 2" --profile czech2-ger12-lie --build
+```
+
+Les contrôles sont en lecture seule par défaut. `--build` exige un seul profil;
+la sortie doit se terminer par `.scr.disabled` et rester sous `.analysis/`.
+Un fichier existant est refusé, jamais écrasé. `--output` permet de choisir un
+nouveau nom dans cet espace. Aucune option n'installe le résultat dans le jeu.
+
+Les vérifications couvrent les archives effectives Base/Patch/Sabre, les tailles
+et SHA-256 de **25 entrées commerciales**, la liaison unique du propriétaire,
+sa présence sérialisée, les prérequis nommés et l'unicité de chaque modification.
+Une entrée correspondante de `PatchX01.dta` est refusée plutôt que de deviner sa
+priorité. Les fins de ligne et l'encodage commercial restent inchangés en dehors
+des modifications explicites, y compris lorsque le script mélange CRLF et LF.
+
+### Installation déjà modifiée
+
+Le contrôle par défaut refuse les surcharges libres pertinentes. Sur cette
+machine, `Missions/africa1/Scripts.dta` fait 4663 octets, SHA-256
+`fba2f1a04084c6cbe22f064aebe43721c044a8e0765649d20fec7b99a6788b6c`, contre
+4622 octets dans l'archive. La liaison AF1_21 reste présente, mais cela ne prouve
+pas la compatibilité de toute la mission modifiée.
+
+Pour reconstruire **explicitement la seule référence commerciale** :
+
+```powershell
+.\.venv\Scripts\python.exe tools\build_reconstruction_variant.py --game "D:\Games\Hidden and Dangerous 2" --archives-only --check-all
+.\.venv\Scripts\python.exe tools\build_reconstruction_variant.py --game "D:\Games\Hidden and Dangerous 2" --archives-only --profile africa1-officer21-cutscene-move --build
+```
+
+Cette option n'efface ni ne remplace la surcharge. Le rapport enregistre son
+empreinte sous `excluded_loose_overrides` et conserve
+`installed_game_compatibility: not_tested`. Les six contrôles réussissent contre
+les archives; le contrôle strict d'Africa 1 doit continuer à refuser la surcharge.
+
+## Empreintes des sorties vérifiées
+
+| Profil | SHA-256 |
+|---|---|
+| Arctic 4 | `6e1a366e75794249aa437b3577b50c45c32376409ddde197f9b57a306c17817c` |
+| Czech 2 | `837c589b309fb8e1d6d48196c64ab370cb988fbe88e61e12f52b12b8fa0e4164` |
+| Sicily 1 | `2c72cb89285b4d7cb7d8a4e79448f30554ce4e645f84aac4aa86412d746d1342` |
+| Africa 1 | `92e3656a2cc5f73be16a2e1069d79b0e87a404d459f4875c41534ebd96498024` |
+| Czech 6 | `19b0274ca5efce004f0933b9ef74d25d9020b1055728b749d9a94673abebfac7` |
+| Libye 3 | `12bc58e7220307830df876f682735b1af80fcfb9e8a840bc65b1323a6699ae29` |
+
+Les 39 tests automatisés utilisent des données inventées et ne nécessitent pas
+de jeu. Ils couvrent notamment les refus de source modifiée, liaison dupliquée,
+ressource absente, remplacement ambigu, surcharge inattendue, sortie active,
+écriture dans le jeu et écrasement d'un fichier. Les six diff réels ont aussi
+été inspectés. Ce ne sont ni une compilation du langage du jeu ni des essais
+de comportement de l'IA.
+
+## Travail restant avant activation
+
+Créer des copies laboratoire réellement isolées, résoudre leur chargement et
+leur espace de scripts, puis exécuter les scénarios des études et la
+[barrière de validation](VALIDATION.md). Les six profils restent `pending` pour
+l'exécution; aucun résultat manuel n'a été converti artificiellement en succès.

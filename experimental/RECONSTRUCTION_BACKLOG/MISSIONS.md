@@ -24,18 +24,18 @@ Chemins : `experimental/ARCTIC1_*` et
 
 | Dossier | État | Informations disponibles et suite |
 |---|---|---|
-| `ARCTIC4_RADIO_DESTRUCTION_FAILURE_ADDITIVE` | À documenter | `m_AF5_stul_4.Box17` pointe vers `R_Arc3_fail.scr`. L'ancien signal 4 et l'échec objectif 6 sont commentés car la radio n'est pas destructible. Trouver une vraie radio destructible ou un proxy, jamais la table. |
+| `ARCTIC4_RADIO_DESTRUCTION_FAILURE_ADDITIVE` | Documenté, bloqué preuve | La chaîne Box17/OnHit → signal 4 → objectifs est dormante; le contrôleur est affecté dynamiquement par KRVEPROLITI. Un coup sur la table n'est pas une destruction radio. Aucun décommentage avant résolution du propriétaire destructible et de l'arbitrage succès/échec. |
 | `ARCTIC4_STATIC_GUARD3_ALARM_POST_ADDITIVE` | Prototype désactivé | Liaison et checkpoint vérifiés; le générateur local réactive seulement la ligne historique dans une copie `.scr.disabled`. Le trajet et l'interaction avec le combat exigent un essai en moteur. |
 | `ARCTIC4_KRA_NEARBY_REACTIONS` | Documenté, mesures initiales effectuées | Les positions initiales sont maintenant connues : Kra1 proche du garde 3, mais signal 1 déjà pris; Kra2 proche de Static Guard 5 déjà relié et de deux autres acteurs à étudier; Kra3 sans humain dans les 25 m initiaux. Aucun signal ajouté. |
 | `ARCTIC4_STATIC_GUARD3_SIT_SMOKE` | À documenter | Deux frames existent; séquence historique TurnAt/délai/Sit/délai/Smoke/délai/`%%kourimsed2`. Fournir une transcription désactivée et une variante moderne sans animation nommée. Séparer du poste d'alarme. |
-| Faux positifs | À fermer | Les Hunters reçoivent déjà le signal 13 par activateur; les jumelles de `sub_gunner` ont été remplacées par `Binoculars`. |
+| `ARCTIC4_FALSE_POSITIVES` | Faux positifs fermés | Émetteur et trois récepteurs 13 liés; les jumelles des deux `sub_gunner` utilisent déjà Binoculars/BinocularsEnd. Preuves et empreintes consignées, aucune modification. |
 
 ## Czech 2
 
 | Dossier | État | Informations disponibles et suite |
 |---|---|---|
 | `CZECH2_LEGACY_PLAYER_STAGING_ADDITIVE` | À documenter | Scripts libres `player1assign..4` et `startscriptengl1..4`; checkpoints `en1..4` et `Ger1_1` présents. Les frames player ne sont pas initialisées. Garder `cut2` du joueur le plus proche par défaut et empêcher tout double téléport. |
-| `CZECH2_GER12_DEATH_STAGING` | À documenter | `R_Cz2_Ger12` est lié. L'ancien `Lie` précédait `mrtvolak`; `dummy_ger12_sit` existe sans usage. Tester une posture minimale, puis un placement assis séparé uniquement si la géométrie le confirme. |
+| `CZECH2_GER12_DEATH_STAGING` | Prototype désactivé | Profil reproductible `czech2-ger12-lie`, 380 octets; seule la posture historique est réactivée. Acteur et liaison vérifiés. Le dummy assis reste hors variante; animation/mort/interruption à tester en moteur. |
 | `DOCUMENTS_LOST_MESSAGE_19993808` | Bloqué preuve | L'identifiant n'apparaît que dans quatre lignes commentées et aucun texte n'a été retrouvé dans 9 643 entrées. Le signal de perte reste actif. Une phrase moderne optionnelle doit être anti-répétition et ne jamais être présentée comme officielle. |
 
 ## Czech 3
@@ -56,7 +56,7 @@ Chemins : `experimental/ARCTIC1_*` et
 | `CZECH4_COUNTER_PLATOON07_09` | Documenté, bloqué preuve | Le compteur libre vise 06–09 après trois signaux 10, mais seul 06 possède un acteur. Déterminer renommage, suppression ou abandon. |
 | `CZECH4_DOG01_OWNERLESS` | Documenté, bloqué preuve | Script libre maître `Runner03`, sans chien ni liaison. Exiger modèle, placement et route avant activation. |
 | `CZECH4_R_CZ4_HODINY` | Faux positif | Fichier vide résiduel; rien à restaurer. |
-| `CZECH6_ISU152_DUAL_ROUTE` | Documenté | Profil historique C5_isu01→C5_tank11→C5_isu02 à 12, contre route directe à 30. Tous les checkpoints existent. Tester passagers R18–20 et collisions. |
+| `CZECH6_ISU_DUAL_ROUTE` | Prototype désactivé | Profil reproductible `czech6-isu-base-route`, 2144 octets; trajet Base à 12 et sortie Patch conservée. Quatre empreintes, conducteur, passagers, ISU et checkpoints vérifiés. Alternative fixe au sélecteur existant, pas cumulable; collisions/sortie à tester. |
 | `CZECH6_RADIO_SABOTAGE_DUAL_PATH` | À documenter | La base conditionnait l'objectif 02 au signal d'alarme 1; le patch rend l'accès immédiat. Garder l'immédiat par défaut, sans créer de nouvel objectif. |
 | `CZECH6_G40_ALERT_RECEIVERS` | À documenter | G40 envoie signal 1 à G11/G43 sans récepteur. Déduire seulement depuis `OnAlarm`; ne pas heurter le signal 2 de sabotage ni la proximité. |
 | `CZECH6_G40_G41_DIALOGUE_SYNC` | À documenter | La conversation envoyait autrefois signal 1 aux deux acteurs. Tester si un arrêt de boucle gestuelle avant parole est nécessaire; sinon classer faux positif. |
@@ -95,7 +95,7 @@ Chemins : `experimental/ARCTIC1_*` et
 
 | Dossier | État | Informations disponibles et suite |
 |---|---|---|
-| `SICILY1_IT40_DUAL_DOOR_BEHAVIOR` | À documenter | La version commerciale déverrouille deux portes; l'ouverture automatique est commentée. Offrir `unlock-only` par défaut et `unlock+open` historique. |
+| `SICILY1_IT40_DUAL_DOOR_BEHAVIOR` | Prototype désactivé | Profil reproductible `sicily1-it40-open-doors`, 2464 octets; deux appels réactivés. Portes retrouvées dans scene.4ds/scene2.bin, pas dans les frames humaines; verrou commercial inchangé. Solo uniquement, coop non transposable sans étude. |
 | `SICILY2_CHARGES_DUAL_STATE_WAVE` | À documenter | Six charges avaient une transition 0→3 commentée. L'activateur de vague met exactement trois charges à l'état 3; l'objectif exige les six à l'état 0. Compter les charges retirées/désamorcées sans casser l'objectif. |
 
 ## Burgundy et Co-Burgundy
@@ -123,7 +123,7 @@ Chemins : `experimental/ARCTIC1_*` et
 | `CO_LIBYE3_HALFTRACK_ROUTES` | À documenter | `Hammer1_SMG_3`/`LMG_1` manquent GO4_1/GO5_1, alors que le départ actif utilise `_2`. Recréer les points et conserver le départ direct en alternative. |
 | `CO_LIBYE1_AF1_23_24_DIALOGUE` | À documenter | Douze lignes coop sont commentées. AF1_23 envoie une synchronisation, AF1_24 aucune; le coordinateur attend deux signaux et les fins signal2 existent. Exiger audio et lipsync. |
 | `LIBYE2_DIALOGUE_24_25_CONDITIONAL_53990023` | À documenter | Réplique enregistrée/lipsync commentée sur le parc détruit. La déclencher seulement après destruction réelle des huit véhicules, avec gestion mort/alarme/rejeu. |
-| `LIBYE3_GERMAN15_ALARM_DUAL_BEHAVIOR` | À documenter | Ancien `MoveToAlarm` avant posture basse/course/agressif. Définir un sélecteur; checkpoints présents. |
+| `LIBYE3_GERMAN15_ALARM_DUAL_BEHAVIOR` | Prototype désactivé | Profil reproductible `libye3-german15-move-to-alarm`, 1342 octets; un appel historique réactivé, acteur/liaison/ronde vérifiés. Destination dynamique et délai avant combat à tester; aucun nouveau signal. |
 | `LIBYE3_PANZER_DRIVER_ALARM_GATE` | À documenter | Alarmes historiquement désactivées au départ puis réactivées après route. Comparer conducteurs et états du char avant option. |
 
 ## Africa 1 à 6
@@ -131,7 +131,7 @@ Chemins : `experimental/ARCTIC1_*` et
 | Dossier | État | Informations disponibles et suite |
 |---|---|---|
 | `AFRICA1_AF1_26_INCOMPLETE_START_LOOP` | À documenter | Le script actif contient `START doplnit` en boucle et y revient après alarme. Corriger la boucle sans inventer de route. |
-| `AFRICA1_OFFICER_21_CUTSCENE_MOVE` | À documenter | `Move AF1_21_01` est commenté avant cutscene10; checkpoint présent. Tester cadrage caméra et variante exclusive. |
+| `AFRICA1_OFFICER_21_CUTSCENE_MOVE` | Prototype désactivé | Profil reproductible de 3369 octets depuis les archives. L'appel se situe pendant OnCutscene(10), après caméra/voix et 2100 ms, pas avant la cinématique. Registre libre Heritage détecté et exclu explicitement; compatibilité installée, cadrage et synchronisation non validés. |
 | `AFRICA1_M_DVR_H01_LIGHTMAP_DOOR` | Bloqué preuve | Frame visuelle présente, script libre complet mais groupe lightmap absent. Retrouver un nom d'éditeur valide ou classer irréparable. |
 | `AFRICA1_PLAYER_INTRO_AND_OFFICER_REACTION_COMPOSITE` | À documenter | Les anciens player01..04 réagissent à cutscene10; les scripts actuels affectent `CUTSAS` pour intro3 puis finissent. Composer sans double affectation et garder le gestionnaire vivant. |
 | Africa1 déjà étudiés | Documenté | Ne pas dupliquer AF1_20, AF1_04, AF1_22 ni l'introduction Heritage. |

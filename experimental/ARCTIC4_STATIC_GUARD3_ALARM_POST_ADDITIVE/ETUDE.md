@@ -63,6 +63,13 @@ Exécution du 25 septembre 2026 : 2 506 octets générés, SHA-256
 Le diff avec l'extraction commerciale ne comporte que la suppression des deux
 caractères `//` devant `HUMAN_Move("StaticGuard3_5")`.
 
+Le point d'entrée historique délègue maintenant au
+[générateur commun](../RECONSTRUCTION_BACKLOG/VARIANTES_REPRODUCTIBLES.md).
+L'empreinte du résultat reste identique. Les contrôles sont renforcés : registre
+et acteurs verrouillés par empreinte, refus des liaisons ambiguës, des surcharges
+libres et d'une substitution inattendue dans PatchX01. Aucun changement de
+comportement supplémentaire n'a été ajouté au prototype.
+
 ## Contrôles encore nécessaires
 
 1. Mesurer le point 5 et les collisions autour dans un éditeur ou en moteur;

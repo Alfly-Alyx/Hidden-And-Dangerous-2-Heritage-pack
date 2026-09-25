@@ -1,8 +1,10 @@
 # Registre maître des reconstructions expérimentales
 
-État de l'inventaire : **2026-09-19**
+Inventaire initial : **2026-09-19**. Dernière mise à jour : **2026-09-25**.
 
-Branche de travail : `codex/experimental-reconstruction-inventory`
+Branche de travail actuelle : `codex/reconstruction-phase-1`.
+La préparation de `codex/experimental-reconstruction-inventory` a été intégrée
+à `master` avant la création de cette branche; sa photo historique est conservée.
 
 Ce dossier réunit l'état des connaissances disponible pour la restauration et la
 reconstruction additive de contenu de *Hidden & Dangerous 2*. La branche part de
@@ -49,6 +51,9 @@ registre complète ces fichiers sans activer de script expérimental dans le jeu
   rapports internes, sources externes et règles de conservation.
 - [État de préparation](ETAT_PREPARATION.md) : photo vérifiée de la branche et
   de l'environnement juste avant le début des travaux.
+- [Variantes reproductibles](VARIANTES_REPRODUCTIBLES.md) : six scripts
+  expérimentaux générés localement, contrôles automatisés, provenance,
+  conflit de surcharge Africa 1 et validations en moteur encore en attente.
 
 ## Travaux immédiatement recommandés
 

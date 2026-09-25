@@ -109,6 +109,24 @@ signal dupliqué, progression d’objectif différente ou route directe altéré
 
 ## Sources internes
 
+### Génération reproductible ajoutée le 25 septembre 2026
+
+Le profil `czech6-isu-base-route` du
+[générateur commun](../RECONSTRUCTION_BACKLOG/VARIANTES_REPRODUCTIBLES.md)
+produit désormais la route Base à 12 depuis le script Patch, en remplaçant
+uniquement l'appel actif de conduite par les trois appels Base. Les commentaires
+Patch, le délai de 3 secondes, le signal 2 à R18, les signaux 31 et l'ordre de
+sortie Patch sont conservés. Le résultat n'est donc **pas le script Base complet**.
+
+Cette copie fixe est une alternative au sélecteur de laboratoire ci-dessus,
+pas une extension à lui superposer. Elle choisit le trajet avant chargement et
+n'introduit aucun signal 3/4. Quatre empreintes sont verrouillées; conducteur,
+ISU, passagers et trois checkpoints sont contrôlés. Construction et diff
+réussis, 2144 octets; aucun essai en moteur. Le comportement commercial reste
+le défaut et les essais de trajet/passagers/sauvegarde restent obligatoires.
+
+### Matériaux commerciaux examinés
+
 - `.analysis/scripts/base/SCRIPTS/CZECH6/C5_R17.scr` ;
 - `.analysis/scripts/patch/SCRIPTS/CZECH6/C5_R17.scr` ;
 - `.analysis/scripts/base/SCRIPTS/CZECH6/C5_objective.scr` ;

@@ -88,6 +88,7 @@ Commandes de départ :
 | `tools/aircraft_scenic_audit.py` | Auditer les avions utilisables comme décors. |
 | `tools/model_wireframe.py` | Rendre une vue filaire de modèle; nécessite Pillow. |
 | `tools/prototype_deployment_audit.py` | Contrôler les deux prototypes installés sans les confondre avec des missions solo validées. |
+| `tools/build_reconstruction_variant.py` | Vérifier ou générer un profil exclusif `.scr.disabled` depuis les archives légitimes, sans installation; voir [la procédure](VARIANTES_REPRODUCTIBLES.md). |
 
 Avant toute attribution d'ID :
 
@@ -164,7 +165,7 @@ la construction tant que le travail porte seulement sur une étude `.disabled`.
 
 ## Checklist avant la première modification
 
-- [ ] Se placer sur `codex/experimental-reconstruction-inventory`.
+- [ ] Se placer sur `codex/reconstruction-phase-1` (la préparation initiale a été intégrée à master).
 - [ ] Vérifier que les travaux locaux non liés ne seront ni ajoutés ni écrasés.
 - [ ] Exécuter `tools/PreparerEnvironnement.ps1`.
 - [ ] Lire `README.md`, `MISSIONS.md`, `SYSTEMES_ET_ASSETS.md`, `VALIDATION.md`

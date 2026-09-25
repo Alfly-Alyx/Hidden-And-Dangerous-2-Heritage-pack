@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "reference_edition": "GOG English Sabre Squadron 1.12",
+  "profiles": [
+    {
+      "id": "arctic4-guard3-alarm-post",
+      "title": "Arctic 4 — poste d'alarme historique du garde 3",
+      "source": "scripts/arctic4/r_arc3_static_guard_3.scr",
+      "actor": "Static_Guard_3",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/arctic4/r_arc3_static_guard_3.scr": {"archive": "Scripts.dta", "size": 2508, "sha256": "73e72535024bedf65787ae3fda305724ab1386c6941c9809ea786fbe9a41208b"},
+        "missions/arctic4/scripts.dta": {"archive": "missions.dta", "size": 6073, "sha256": "618dbf08b27f3d58ffe5b67b6f515da3f3c17672a8d42ffa1e0f6f2396d64d57"},
+        "missions/arctic4/actors.bin": {"archive": "missions.dta", "size": 16359, "sha256": "280aa09645a1610db10c2708263f4d1dc7b35694f99d48872388039c7f77fdfb"},
+        "missions/arctic4/check2.bin": {"archive": "missions.dta", "size": 138281, "sha256": "8fae6ee23121e58f8cb95628f6a20069e7243488a0ef9b6f4484eaf937b4da9f"}
+      },
+      "checks": [{"kind": "nul_strings", "entry": "missions/arctic4/check2.bin", "values": ["StaticGuard3_5"]}],
+      "edits": [{"before": "//  HUMAN_Move(\"StaticGuard3_5\");", "after": "  HUMAN_Move(\"StaticGuard3_5\");"}]
+    },
+    {
+      "id": "czech2-ger12-lie",
+      "title": "Czech 2 — posture couchée avant la mort de Ger12",
+      "source": "scripts/czech2/r_cz2_ger12.scr",
+      "actor": "Ger_12",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/czech2/r_cz2_ger12.scr": {"archive": "Scripts.dta", "size": 382, "sha256": "4e63b84e76dad9aab75137ac2adb86487b808ab7877eb73b275425e80d7e3a7b"},
+        "missions/czech2/scripts.dta": {"archive": "missions.dta", "size": 3315, "sha256": "5ba240deb0a8e2fcad1a85b88edb10deb3d14d50c5a4f4be96f8053d87b1e915"},
+        "missions/czech2/actors.bin": {"archive": "Patch.dta", "size": 19277, "sha256": "ce91b950736e0d69c928ebe6f1ae0a60888df496aaeb0d11202f028f23bb74cb"}
+      },
+      "checks": [],
+      "edits": [{"before": "//HUMAN_SETMODE_Lie();", "after": "HUMAN_SETMODE_Lie();"}]
+    },
+    {
+      "id": "sicily1-it40-open-doors",
+      "title": "Sicily 1 — déverrouillage et ouverture des deux portes",
+      "source": "scripts/sicily1/sic1_it_40.scr",
+      "actor": "IT_40",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/sicily1/sic1_it_40.scr": {"archive": "SabreSquadron.dta", "size": 2468, "sha256": "00a1f43e9f9222bd5ffad57c90378a3b0fa1e1b7b1a99dc60d3af30f8613e27e"},
+        "missions/sicily1/scripts.dta": {"archive": "SabreSquadron.dta", "size": 3232, "sha256": "7e044b3030b7940ec636845424d5ae85f83bc0f0c203f15fb9a7f6c176a7d76c"},
+        "missions/sicily1/actors.bin": {"archive": "SabreSquadron.dta", "size": 30206, "sha256": "faa6b325d019c97b51cfb7735a56909cccc99a2a9e0cbb975dba1d5ce6b6c7a1"},
+        "missions/sicily1/scene2.bin": {"archive": "SabreSquadron.dta", "size": 5358636, "sha256": "da90dd24cc2524f429d6c9494e7547518b85f6a4e3c13ef6f1571f0375e8155a"},
+        "missions/sicily1/scene.4ds": {"archive": "SabreSquadron.dta", "size": 2156954, "sha256": "b22fc75ddf21af3ddc16f612dd6f5e441da7125184401ccf8dd53b2b8983c908"}
+      },
+      "checks": [
+        {"kind": "nul_strings", "entry": "missions/sicily1/scene2.bin", "values": ["d_dvere_10", "d_dvere_09"]},
+        {"kind": "nul_strings", "entry": "missions/sicily1/scene.4ds", "values": ["d_dvere_10", "d_dvere_09"]}
+      ],
+      "edits": [
+        {"before": "//    SetActorState(dvere1, 1);", "after": "    SetActorState(dvere1, 1);"},
+        {"before": "//    SetActorState(dvere2, 1);", "after": "    SetActorState(dvere2, 1);"}
+      ]
+    },
+    {
+      "id": "africa1-officer21-cutscene-move",
+      "title": "Africa 1 — déplacement de l'officier pendant la cinématique 10",
+      "source": "scripts/africa1/af1_21.scr",
+      "actor": "AF1_21",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/africa1/af1_21.scr": {"archive": "Patch.dta", "size": 3371, "sha256": "6e8e8778812a8e774f0f50299bff568bebb7e61fa84102f628de9977b67dd9a2"},
+        "missions/africa1/scripts.dta": {"archive": "missions.dta", "size": 4622, "sha256": "d37bd79e7d779407884d9cc3329432c0e01f80abb6cf3c1baa6fb8f8293a1d39"},
+        "missions/africa1/actors.bin": {"archive": "Patch.dta", "size": 77797, "sha256": "3eb5c28c0e091b50b3550cb295c71e08ce025291917dfa5bf0d0d4b37513b7a5"},
+        "missions/africa1/check2.bin": {"archive": "Patch.dta", "size": 219669, "sha256": "47a07a5b0aadb005e0dafb937eb4ef90a7e96053ab1af08f83dfce894d100e9e"},
+        "missions/africa1/scene2.bin": {"archive": "missions.dta", "size": 5389638, "sha256": "e0b92d3f2ad10504717e49bb3ab2adcec32372a0ac9fbd9e132b04c904b4f007"}
+      },
+      "checks": [
+        {"kind": "nul_strings", "entry": "missions/africa1/check2.bin", "values": ["AF1_21_01"]},
+        {"kind": "frames", "entry": "missions/africa1/scene2.bin", "values": ["camera_officer"]}
+      ],
+      "edits": [{"before": "//  HUMAN_Move(\"AF1_21_01\");", "after": "  HUMAN_Move(\"AF1_21_01\");"}]
+    },
+    {
+      "id": "czech6-isu-base-route",
+      "title": "Czech 6 — trajet Base à 12, sortie de véhicule conservée du Patch",
+      "source": "scripts/czech6/c5_r17.scr",
+      "actor": "C5_R17",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/czech6/c5_r17.scr": {"archive": "Patch.dta", "size": 2081, "sha256": "802a026212572c6d1b48d00876da7881e961b1740f2b72eb4ab25422c14750ed"},
+        "missions/czech6/scripts.dta": {"archive": "missions.dta", "size": 3305, "sha256": "b1fde6adb1eacd6b95191152e6a08c47d38db4b85bfb7f0c2bf6f8a983c070d7"},
+        "missions/czech6/actors.bin": {"archive": "Patch.dta", "size": 29884, "sha256": "419eec3faf91c031ed7e6819e274ab7137992a31c46020caf38cd5b99f3b8cda"},
+        "missions/czech6/check2.bin": {"archive": "missions.dta", "size": 226307, "sha256": "7ebd9a61dc4d71adcb3229e9a5684eb6de773562bfae2b50107e2fc314f4e56f"}
+      },
+      "checks": [
+        {"kind": "nul_strings", "entry": "missions/czech6/check2.bin", "values": ["C5_isu01", "C5_tank11", "C5_isu02"]},
+        {"kind": "frames", "entry": "missions/czech6/actors.bin", "values": ["Isu152", "C5_R18", "C5_R19", "C5_R20"]}
+      ],
+      "edits": [{"before": "\tHUMAN_Drive(\"C5_isu02\", 30);", "after": "\tHUMAN_Drive(\"C5_isu01\", 12);\n\tHUMAN_Drive(\"C5_tank11\", 12);\n\tHUMAN_Drive(\"C5_isu02\", 12);"}]
+    },
+    {
+      "id": "libye3-german15-move-to-alarm",
+      "title": "Libye 3 — déplacement vers l'alarme avant le combat",
+      "source": "scripts/libye3/li3_german_15.scr",
+      "actor": "Li3_German_15",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/libye3/li3_german_15.scr": {"archive": "SabreSquadron.dta", "size": 1344, "sha256": "c12df00adbe78d9204d8f47fa85d4a024622873f6d8d0c3c96b9012c84dc7aeb"},
+        "missions/libye3/scripts.dta": {"archive": "SabreSquadron.dta", "size": 3324, "sha256": "37097f1d7aa9f17bb5ebc73935acb6fce7e0b67620f446db5fc611e0a26b11a1"},
+        "missions/libye3/actors.bin": {"archive": "SabreSquadron.dta", "size": 44396, "sha256": "ad884ff97c63894a3c5cdc5c30ed5c2aa9e2598dd8e426096739a2f352a88e2f"},
+        "missions/libye3/check2.bin": {"archive": "SabreSquadron.dta", "size": 356562, "sha256": "7528263f7464187776d57a5685e6cbc448e1f691060fbb07dfc5a70530098a50"}
+      },
+      "checks": [{"kind": "nul_strings", "entry": "missions/libye3/check2.bin", "values": ["Ge15_x1", "Ge15_x2"]}],
+      "edits": [{"before": "\t//HUMAN_MoveToAlarm();", "after": "\tHUMAN_MoveToAlarm();"}]
+    }
+  ]
+}

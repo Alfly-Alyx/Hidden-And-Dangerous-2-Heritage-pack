@@ -1,0 +1,306 @@
+#!/usr/bin/env python3
+"""Check or build one disabled experimental script from licensed HD2 archives.
+
+No commercial script is bundled, no source archive is changed, and nothing is
+installed. The default action is a read-only check. A build requires an explicit
+profile and writes exclusively below the repository's ignored .analysis folder.
+"""
+from __future__ import annotations
+
+import argparse
+from contextlib import ExitStack
+import hashlib
+import json
+from pathlib import Path, PurePosixPath
+import re
+import sys
+
+from dta_archive import DtaArchive
+from script_binding_audit import parse_bindings, scene_frame_names
+
+ROOT = Path(__file__).resolve().parents[1]
+CATALOG = ROOT / "experimental/reconstruction-variants.json"
+ARCHIVES = ("missions.dta", "Scripts.dta", "Patch.dta", "SabreSquadron.dta")
+ID_PATTERN = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*\Z")
+SHA_PATTERN = re.compile(r"[0-9a-f]{64}\Z")
+
+
+def normalized(value: str) -> str:
+    return value.replace("\\", "/").casefold()
+
+
+def entry_path(value: str) -> str:
+    name = normalized(value)
+    parts = name.split("/")
+    if (len(parts) != 3 or parts[0] not in ("scripts", "missions")
+            or any(part in ("", ".", "..") for part in parts)
+            or ":" in name):
+        raise ValueError(f"Invalid mission entry path: {value}")
+    return name
+
+
+def digest(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def load_catalog(path: Path = CATALOG) -> dict:
+    catalog = json.loads(path.read_text(encoding="utf-8"))
+    if catalog.get("schema_version") != 1:
+        raise ValueError("Unsupported reconstruction catalog version")
+    profiles = catalog.get("profiles")
+    if not isinstance(profiles, list) or not profiles:
+        raise ValueError("Catalog must contain profiles")
+    ids = set()
+    for profile in profiles:
+        identifier = profile["id"]
+        if not ID_PATTERN.fullmatch(identifier) or identifier in ids:
+            raise ValueError(f"Invalid or duplicate profile id: {identifier}")
+        ids.add(identifier)
+        source = entry_path(profile["source"])
+        mission = source.split("/")[1]
+        if not source.startswith("scripts/") or not source.endswith(".scr"):
+            raise ValueError(f"Profile source is not a script: {identifier}")
+        if profile.get("runtime_status") != "pending":
+            raise ValueError("This generator only accepts pending prototypes")
+        if profile.get("default_profile") != "commercial":
+            raise ValueError("The commercial profile must remain the default")
+        evidence = profile["evidence"]
+        required = {source, f"missions/{mission}/scripts.dta",
+                    f"missions/{mission}/actors.bin"}
+        if not required.issubset(evidence):
+            raise ValueError(f"Missing script, registry or actor evidence: {identifier}")
+        for name, proof in evidence.items():
+            if entry_path(name) != name or name.split("/")[1] != mission:
+                raise ValueError(f"Evidence outside the selected mission: {name}")
+            if (proof["archive"] not in ARCHIVES or proof["size"] <= 0
+                    or not SHA_PATTERN.fullmatch(proof["sha256"])):
+                raise ValueError(f"Invalid evidence fingerprint: {name}")
+        for check in profile.get("checks", []):
+            if check["entry"] not in evidence:
+                raise ValueError("A prerequisite must have pinned evidence")
+            if check["kind"] not in ("frames", "nul_strings") or not check["values"]:
+                raise ValueError("Invalid prerequisite check")
+        if not profile["edits"]:
+            raise ValueError("A variant must contain at least one explicit edit")
+        for edit in profile["edits"]:
+            if not edit["before"] or edit["before"] == edit["after"]:
+                raise ValueError("Empty or ineffective edit")
+            # Edits use LF in JSON; the source's original newline style is retained.
+            if "\r" in edit["before"] + edit["after"]:
+                raise ValueError("Catalog edits must use LF newlines")
+            edit["before"].encode("cp1252")
+            edit["after"].encode("cp1252")
+    return {profile["id"]: profile for profile in profiles}
+
+
+class ArchiveSources:
+    """Indexed, read-only archive reader with explicit effective-file provenance."""
+
+    def __init__(self, game: Path, archives_only: bool = False):
+        self.game = game.resolve()
+        self.archives_only = archives_only
+        self.excluded_loose_overrides = {}
+        self.stack = ExitStack()
+        self.index = {}
+        self.cache = {}
+
+    def __enter__(self):
+        try:
+            for name in (*ARCHIVES, "PatchX01.dta"):
+                path = self.game / name
+                if name == "PatchX01.dta" and not path.exists():
+                    continue
+                archive = self.stack.enter_context(DtaArchive(path))
+                entries = {}
+                for entry in archive.entries:
+                    key = normalized(entry.name)
+                    entries.setdefault(key, []).append(entry)
+                self.index[name] = (archive, entries)
+        except Exception:
+            self.stack.close()
+            raise
+        return self
+
+    def __exit__(self, *args):
+        return self.stack.__exit__(*args)
+
+    def read(self, name: str) -> tuple[str, bytes]:
+        name = entry_path(name)
+        # Loose overrides are deliberately not used as an unverified baseline.
+        loose = self.game.joinpath(*PurePosixPath(name).parts)
+        if loose.exists():
+            if not self.archives_only:
+                raise ValueError(f"Loose override must be reviewed separately: {name}")
+            raw = loose.read_bytes()
+            self.excluded_loose_overrides[name] = {
+                "size": len(raw), "sha256": digest(raw),
+            }
+        if name in self.cache:
+            return self.cache[name]
+        if "PatchX01.dta" in self.index and name in self.index["PatchX01.dta"][1]:
+            raise ValueError(f"Unreviewed PatchX01 override: {name}")
+        found = None
+        for archive_name in ARCHIVES:
+            archive, entries = self.index[archive_name]
+            matches = entries.get(name, [])
+            if len(matches) > 1:
+                raise ValueError(f"Ambiguous archive entry: {archive_name}::{name}")
+            if matches:
+                found = (archive_name, archive, matches[0])
+        if found is None:
+            raise ValueError(f"Missing commercial entry: {name}")
+        archive_name, archive, entry = found
+        result = (archive_name, archive.read(entry))
+        self.cache[name] = result
+        return result
+
+
+def apply_edits(source: bytes, edits: list[dict]) -> bytes:
+    # Some shipped scripts mix CRLF and LF. Match the local anchor's newline
+    # style; never normalize the complete script to make an edit fit.
+    variant = source
+    for edit in edits:
+        before = edit["before"].encode("cp1252")
+        after = edit["after"].encode("cp1252")
+        if not before or before == after:
+            raise ValueError("Each edit must match exactly once and change bytes")
+        if b"\n" in before:
+            candidates = [(before.replace(b"\n", newline), newline)
+                          for newline in (b"\r\n", b"\n", b"\r")]
+            if sum(variant.count(anchor) for anchor, _ in candidates) != 1:
+                raise ValueError("Each edit must match exactly once and change bytes")
+            before, newline = next((a, n) for a, n in candidates if a in variant)
+        else:
+            if variant.count(before) != 1:
+                raise ValueError("Each edit must match exactly once and change bytes")
+            position = variant.index(before)
+            following = re.search(rb"\r\n|\r|\n", variant[position + len(before):])
+            preceding = list(re.finditer(rb"\r\n|\r|\n", variant[:position]))
+            newline = (following.group() if following else
+                       preceding[-1].group() if preceding else b"\n")
+        after = after.replace(b"\n", newline)
+        variant = variant.replace(before, after, 1)
+    if variant == source:
+        raise ValueError("The profile does not change its source")
+    return variant
+
+
+def prepare(profile: dict, sources) -> tuple[bytes, dict]:
+    verified = {}
+    for name, proof in profile["evidence"].items():
+        archive, raw = sources.read(name)
+        if (archive != proof["archive"] or len(raw) != proof["size"]
+                or digest(raw) != proof["sha256"]):
+            raise ValueError(f"Commercial source changed: {name} ({archive})")
+        verified[name] = raw
+    source_name = profile["source"]
+    mission = source_name.split("/")[1]
+    registry = verified[f"missions/{mission}/scripts.dta"]
+    bindings = [script for actor, script in parse_bindings(registry)
+                if actor.casefold() == profile["actor"].casefold()]
+    if len(bindings) != 1 or normalized(bindings[0]) != source_name.rsplit("/", 1)[1]:
+        raise ValueError(f"Missing or conflicting owner binding: {profile['actor']}")
+    actor_names = scene_frame_names(verified[f"missions/{mission}/actors.bin"])
+    if profile["actor"].casefold() not in actor_names:
+        raise ValueError(f"Missing serialized actor: {profile['actor']}")
+    for check in profile.get("checks", []):
+        raw = verified[check["entry"]]
+        names = scene_frame_names(raw) if check["kind"] == "frames" else set()
+        for value in check["values"]:
+            present = (value.casefold() in names if check["kind"] == "frames"
+                       else value.encode("cp1252") + b"\0" in raw)
+            if not present:
+                raise ValueError(f"Missing {check['kind']} prerequisite: {value}")
+    source = verified[source_name]
+    variant = apply_edits(source, profile["edits"])
+    report = {
+        "profile": profile["id"], "mission": mission, "actor": profile["actor"],
+        "source": source_name,
+        "source_archive": profile["evidence"][source_name]["archive"],
+        "source_sha256": digest(source), "variant_sha256": digest(variant),
+        "source_bytes": len(source), "variant_bytes": len(variant),
+        "edit_count": len(profile["edits"]),
+        "verified_evidence_count": len(verified),
+        "default_profile": "commercial", "static_status": "passed",
+        "runtime_status": "pending", "installed_into_game": False,
+        "source_mode": ("commercial_archives_only" if getattr(sources, "archives_only", False)
+                        else "commercial_archives_without_relevant_loose_overrides"),
+        "excluded_loose_overrides": {
+            name: details for name, details in
+            getattr(sources, "excluded_loose_overrides", {}).items() if name in verified
+        },
+        "installed_game_compatibility": "not_tested",
+        "output": None,
+    }
+    return variant, report
+
+
+def write_disabled(output: Path, data: bytes, game: Path,
+                   root: Path = ROOT) -> Path:
+    ignored_root = root.resolve() / ".analysis"
+    output = output.resolve()
+    if not output.is_relative_to(ignored_root):
+        raise ValueError("Output must stay inside the ignored .analysis directory")
+    if output.is_relative_to(game.resolve()):
+        raise ValueError("Output must never be written into the game installation")
+    if not output.name.endswith(".scr.disabled"):
+        raise ValueError("Output must end in .scr.disabled")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with output.open("xb") as stream:
+        stream.write(data)
+    return output
+
+
+def main(argv=None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    selection = parser.add_mutually_exclusive_group(required=True)
+    selection.add_argument("--list", action="store_true")
+    selection.add_argument("--profile")
+    selection.add_argument("--check-all", action="store_true")
+    parser.add_argument("--game", type=Path)
+    parser.add_argument("--build", action="store_true")
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--archives-only", action="store_true",
+                        help="Explicitly exclude loose mod files; report their fingerprints")
+    args = parser.parse_args(argv)
+    if args.build and not args.profile:
+        parser.error("--build requires one explicit --profile")
+    if args.output and not args.build:
+        parser.error("--output requires --build")
+    if not args.list and not args.game:
+        parser.error("--game is required for checks and builds")
+    try:
+        profiles = load_catalog()
+        if args.list:
+            print(json.dumps([
+                {key: p[key] for key in ("id", "title", "source", "runtime_status")}
+                for p in profiles.values()
+            ], ensure_ascii=False, indent=2))
+            return 0
+        if args.profile and args.profile not in profiles:
+            raise ValueError(f"Unknown profile: {args.profile}")
+        chosen = [profiles[args.profile]] if args.profile else list(profiles.values())
+        reports = []
+        with ArchiveSources(args.game, archives_only=args.archives_only) as sources:
+            for profile in chosen:
+                try:
+                    variant, report = prepare(profile, sources)
+                    if args.build:
+                        output = args.output or (
+                            ROOT / ".analysis/generated" / f"{profile['id']}.scr.disabled"
+                        )
+                        report["output"] = str(write_disabled(output, variant, args.game))
+                    reports.append(report)
+                except (OSError, ValueError) as error:
+                    reports.append({"profile": profile["id"], "static_status": "failed",
+                                    "error": str(error), "runtime_status": "pending",
+                                    "installed_into_game": False, "output": None})
+        print(json.dumps(reports, ensure_ascii=False, indent=2))
+        return 0 if all(r["static_status"] == "passed" for r in reports) else 1
+    except (OSError, ValueError, KeyError, TypeError) as error:
+        print(f"Variant not built: {error}", file=sys.stderr)
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
