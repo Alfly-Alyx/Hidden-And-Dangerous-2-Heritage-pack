@@ -25,8 +25,8 @@ Chemins : `experimental/ARCTIC1_*` et
 | Dossier | État | Informations disponibles et suite |
 |---|---|---|
 | `ARCTIC4_RADIO_DESTRUCTION_FAILURE_ADDITIVE` | À documenter | `m_AF5_stul_4.Box17` pointe vers `R_Arc3_fail.scr`. L'ancien signal 4 et l'échec objectif 6 sont commentés car la radio n'est pas destructible. Trouver une vraie radio destructible ou un proxy, jamais la table. |
-| `ARCTIC4_STATIC_GUARD3_ALARM_POST_ADDITIVE` | À documenter | Le mouvement vers `StaticGuard3_5` est commenté, mais le checkpoint existe. Étudier deux profils exclusifs : combat libre et poste fixe. |
-| `ARCTIC4_KRA_NEARBY_REACTIONS` | Documenté, à enrichir | Réexaminer l'étude avec les binaires complets présents sous `.analysis/arctic4-full/`, puis extraire positions et distances si elles sont résolubles. |
+| `ARCTIC4_STATIC_GUARD3_ALARM_POST_ADDITIVE` | Prototype désactivé | Liaison et checkpoint vérifiés; le générateur local réactive seulement la ligne historique dans une copie `.scr.disabled`. Le trajet et l'interaction avec le combat exigent un essai en moteur. |
+| `ARCTIC4_KRA_NEARBY_REACTIONS` | Documenté, mesures initiales effectuées | Les positions initiales sont maintenant connues : Kra1 proche du garde 3, mais signal 1 déjà pris; Kra2 proche de Static Guard 5 déjà relié et de deux autres acteurs à étudier; Kra3 sans humain dans les 25 m initiaux. Aucun signal ajouté. |
 | `ARCTIC4_STATIC_GUARD3_SIT_SMOKE` | À documenter | Deux frames existent; séquence historique TurnAt/délai/Sit/délai/Smoke/délai/`%%kourimsed2`. Fournir une transcription désactivée et une variante moderne sans animation nommée. Séparer du poste d'alarme. |
 | Faux positifs | À fermer | Les Hunters reçoivent déjà le signal 13 par activateur; les jumelles de `sub_gunner` ont été remplacées par `Binoculars`. |
 

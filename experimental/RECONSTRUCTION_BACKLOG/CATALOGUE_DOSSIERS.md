@@ -2,7 +2,7 @@
 
 Ce catalogue recense les dossiers de premier niveau présents sur la branche. Il complète le registre thématique : sa fonction est de rendre visible tout ce qui existe déjà, y compris les études qui ne demandent pas d'action immédiate.
 
-Total : **134 dossiers**.
+Total : **135 dossiers**.
 
 | Dossier | Fichiers directs | Sous-dossiers |
 |---|---|---|
@@ -81,6 +81,7 @@ Total : **134 dossiers**.
 | [ARCTIC4_AMBIENT_ANIMATIONS_AND_FLAK_EXIT](../ARCTIC4_AMBIENT_ANIMATIONS_AND_FLAK_EXIT/) | `PROPOSITION.md`, `PROTOTYPE_COLD_FALLBACKS.scr.disabled`, `PROTOTYPE_GUNNER1_FLAK_EXIT.scr.disabled` | — |
 | [ARCTIC4_DOG_OWNER_BARK](../ARCTIC4_DOG_OWNER_BARK/) | `PROPOSITION.md`, `PROTOTYPE_HAFHAF_EXACT.scr.disabled`, `PROTOTYPE_HAFHAF_GUARDED.scr.disabled`, `PROTOTYPE_S_HAF_IMPORT.plan.disabled` | — |
 | [ARCTIC4_KRA_NEARBY_REACTIONS](../ARCTIC4_KRA_NEARBY_REACTIONS/) | `PROPOSITION.md`, `REACTION_MATRIX.plan.disabled` | — |
+| [ARCTIC4_STATIC_GUARD3_ALARM_POST_ADDITIVE](../ARCTIC4_STATIC_GUARD3_ALARM_POST_ADDITIVE/) | `ETUDE.md`, `PROFILE_SELECTOR.plan.disabled`, `build_variant.py` | — |
 | [ARDENS1_OBJ_LEGACY_ROSTER](../ARDENS1_OBJ_LEGACY_ROSTER/) | `ELEMENTS_A_CREER_OU_VALIDER.md`, `ETUDE.md`, `VARIANTE_SOLO_RECONSTRUCTION.md` | — |
 | [BENELLI_M4_ADDITIVE](../BENELLI_M4_ADDITIVE/) | `ETUDE.md`, `MANIFEST.md`, `ROADMAP.plan.disabled` | — |
 | [BENELLI_M4_PARTIAL_WEAPON](../BENELLI_M4_PARTIAL_WEAPON/) | `PROPOSITION.md`, `PROTOTYPE_VISUAL_FPV.plan.disabled` | — |

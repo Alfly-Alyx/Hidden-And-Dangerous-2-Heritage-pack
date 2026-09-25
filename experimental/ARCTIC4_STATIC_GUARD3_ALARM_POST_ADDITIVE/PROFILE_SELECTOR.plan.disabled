@@ -1,0 +1,24 @@
+CASE=ARCTIC4_STATIC_GUARD3_ALARM_POST_ADDITIVE
+DEFAULT=release_free_combat
+ALTERNATIVE=legacy_alarm_destination
+EXCLUSIVE_SELECTION=one mission script copy, one Static_Guard_3 binding
+
+RELEASE:
+- use the unmodified commercial R_Arc3_static_guard_3.scr
+
+LEGACY:
+- verify SHA-256 73e72535024bedf65787ae3fda305724ab1386c6941c9809ea786fbe9a41208b
+- replace exactly one '//  HUMAN_Move("StaticGuard3_5");'
+  with '  HUMAN_Move("StaticGuard3_5");'
+- preserve every other byte of the script
+- generate only a .scr.disabled local review artifact
+
+BLOCKERS_TO_PROMOTION:
+- checkpoint 5 geometry and path collision not yet observed in the engine
+- alarm/conversation/death timing and save restore untested
+- applicability outside solo not established
+
+NO_INSTALLER_WIRING=true
+NO_GAME_INSTALLATION=true
+NO_SECOND_ACTOR=true
+NO_NEW_SIGNAL=true

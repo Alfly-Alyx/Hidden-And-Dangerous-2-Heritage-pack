@@ -1,5 +1,5 @@
 CASE=ARCTIC4_KRA_NEARBY_REACTIONS
-STATUS=SPECULATIVE_SPATIAL_DATA_MISSING
+STATUS=INITIAL_POSITIONS_MEASURED_DYNAMIC_REACTION_UNPROVEN
 
 ATTESTED:
 KRA1 -> Kra_1 signal 1
@@ -7,13 +7,20 @@ KRA2 -> Kra_2 signal 1
 KRA2 -> Static_Guard_5 signal 1
 KRA3 -> Kra_3 signal 1
 
-UNASSIGNED_CANDIDATE_CLASSES:
-- Static_Guard_1..6
-- Walking_Guard_1..3
-- other human actors found spatially in editor
+INITIAL_DISTANCE_FROM_DETECTOR:
+KRA1: Static_Guard_3=32.07m; Static_Guard_2=47.37m; Static_Guard_4=50.34m
+KRA2: Static_Guard_5=18.45m; Meteorolog=24.28m; Walking_Guard_1=38.96m; Sniper_2=48.40m
+KRA3: AntiSniper_1=37.07m; AntiSniper_2=37.69m; AntiSniper_3=38.24m
+
+KNOWN_CONTRACTS:
+- Kra1 Static_Guard_3 already consumes signal 1 for the guard conversation
+- Kra2 Static_Guard_5 already consumes signal 1 for the ice-fall reaction
+- Kra2 Meteorolog carries a box; Walking_Guard_1 patrols; neither has a Kra receiver
+- Kra3 has no linked human inside 25m at initial placement
+- Kra parent frame coordinates are local zero; use detector/effect anchors
 
 FOR_EACH_CANDIDATE_CAPTURE:
-- actor position and distance to Kra/detector
+- actor position at trigger time and distance to physical ice-fall effect
 - current script binding
 - all existing OnSignal/Whenever signal contracts
 - compatible commercial reaction animation
@@ -27,4 +34,3 @@ REJECT_IF:
 - no alarm/death/save recovery path exists
 
 NO_SCRIPT_DELTA_UNTIL_MATRIX_COMPLETE=true
-
