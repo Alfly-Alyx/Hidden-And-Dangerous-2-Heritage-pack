@@ -1,7 +1,7 @@
 # Variantes reproductibles
 
 État vérifié le **25 septembre 2026** sur la branche
-`codex/reconstruction-phase-1` : dix-sept profils, soit vingt scripts dérivés,
+`codex/reconstruction-phase-1` : dix-huit profils, soit vingt et un scripts dérivés,
 ont été construits et
 comparés aux sources commerciales. **Aucun n'est installé ni validé en jeu.**
 
@@ -32,6 +32,7 @@ modifier les archives.
 | `arctic4-guard3-sit-smoke` | Assise/cigarette génériques et sorties protégées, sans animation incertaine. | 3049 | [Assise](../ARCTIC4_STATIC_GUARD3_SIT_SMOKE/ETUDE.md) |
 | `normandy-inner-guards-proximity` | Paire N24/N25 : détecteur 30 m activé, routes commerciales inchangées. | 1857 + 1915 | [Gardes](../NORMANDY1_LEGACY_ACTIVATORS/ETUDE.md) |
 | `burgundy3-direct-explosion-sound` | Paire destruction/son : signal moderne 11 sur la branche directe seulement. | 3348 + 1239 | [Dépôt](../BURGUNDY3_DEPOT_EXPLOSION_SOUND/ETUDE.md) |
+| `libye3-panzer-driver-alarm-gate` | Masque historique des alarmes du conducteur jusqu'à l'arrêt, trajet inchangé. | 1121 | [Panzer](../LIBYE3_PANZER_DRIVER_ALARM_GATE/ETUDE.md) |
 
 Le choix est **exclusif avant chargement** : une copie laboratoire emploiera soit
 les scripts commerciaux, soit leurs variantes pour les mêmes propriétaires. Aucun
@@ -40,7 +41,7 @@ Burgundy 3 ajoute toutefois un signal de comportement 11, explicitement moderne
 et limité au récepteur sonore; ce n'est pas un sélecteur de variante.
 Ne pas empiler ces profils avec une autre modification du même script. La
 fabrication d'un fichier seule n'est pas la création d'une mission laboratoire
-complète. Les dix-sept profils disposent maintenant aussi de
+complète. Les dix-huit profils disposent maintenant aussi de
 [copies A/B inertes](LABORATOIRES_DESACTIVES.md), contrôlées hors jeu.
 
 ## Reproduction
@@ -67,7 +68,7 @@ le générateur de laboratoires pour ces paires; aucun composant n'est proposé
 isolément.
 
 Les vérifications couvrent les archives effectives Base/Patch/Sabre, les tailles
-et SHA-256 de **61 entrées commerciales distinctes**, la liaison unique du propriétaire,
+et SHA-256 de **65 entrées commerciales distinctes**, la liaison unique du propriétaire,
 sa présence sérialisée, les prérequis nommés et l'unicité de chaque modification.
 Une entrée correspondante de `PatchX01.dta` est refusée plutôt que de deviner sa
 priorité. Les fins de ligne et l'encodage commercial restent inchangés en dehors
@@ -118,12 +119,13 @@ les archives dans la première série; les deux profils Africa 1 doivent continu
 | Normandy 1, N25 | `f89dcd7e860f8986cf1793280131e89cf1fa2350b477f6a5f472bcbc3b566252` |
 | Burgundy 3, destruction | `f764069924bdc930c04cc8b6b299c4813dbd966a2e7c04f393b11c6d099dab8d` |
 | Burgundy 3, son | `e5b83bd4a6e590c11eb0d5126aadfcb72d2d28acb11fc4f5e02ff2aec835e294` |
+| Libye 3, conducteur du Panzer | `7e3ddec85b59630239f97f1edfcc28d250e457c04f92a5c7564c97a2cd6ac21c` |
 
 Les 47 tests de variantes utilisent des données inventées et ne nécessitent pas
 de jeu. Ils couvrent notamment les refus de source modifiée, liaison dupliquée,
 ressource absente, remplacement ambigu, surcharge inattendue, sortie active,
 écriture dans le jeu et écrasement d'un fichier. Quatorze autres tests couvrent
-les groupes de scripts indivisibles et les propriétaires 4DS typés. Les vingt
+les groupes de scripts indivisibles et les propriétaires 4DS typés. Les vingt et un
 diff réels ont aussi
 été inspectés. Ce ne sont ni une compilation du langage du jeu ni des essais
 de comportement de l'IA.
@@ -133,5 +135,5 @@ de comportement de l'IA.
 Les copies laboratoire sont générées, intégralement désactivées. Résoudre leur
 chargement réel et leur espace de scripts dans une installation de test isolée,
 puis exécuter les scénarios des études et la
-[barrière de validation](VALIDATION.md). Les dix-sept profils restent `pending` pour
+[barrière de validation](VALIDATION.md). Les dix-huit profils restent `pending` pour
 l'exécution; aucun résultat manuel n'a été converti artificiellement en succès.

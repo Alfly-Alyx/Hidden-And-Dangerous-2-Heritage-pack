@@ -3,6 +3,31 @@
   "reference_edition": "GOG English Sabre Squadron 1.12",
   "profiles": [
     {
+      "id": "libye3-panzer-driver-alarm-gate",
+      "title": "Libye 3 — masque historique des alarmes jusqu'à la fin du trajet du char",
+      "source": "scripts/libye3/li3_german_con_1.scr",
+      "actor": "Li3_German_Con_1",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/libye3/li3_german_con_1.scr": {"archive": "SabreSquadron.dta", "size": 1125, "sha256": "c4eddcfab4deb0fd26cd2320e3440746b5e97734e405169564541f297f3f9e48"},
+        "scripts/libye3/li3_german_con_2.scr": {"archive": "SabreSquadron.dta", "size": 893, "sha256": "539940ad6b841930667ce653e3adcd5bd5093c91b6445acf93d6f11f1c79e5b3"},
+        "scripts/libye3/li3_german_con_5.scr": {"archive": "SabreSquadron.dta", "size": 895, "sha256": "e8a7eb567de70f34643e789aea6646f95d33d2d5be577e6df293f9d1d710ad14"},
+        "scripts/libye3/li3_cargo.scr": {"archive": "SabreSquadron.dta", "size": 1189, "sha256": "a20b72cedcff2ac8a1a665f9a1cbfcaa0b10ef28ca1bc3264ec1bd3f9f5122cd"},
+        "missions/libye3/scripts.dta": {"archive": "SabreSquadron.dta", "size": 3324, "sha256": "37097f1d7aa9f17bb5ebc73935acb6fce7e0b67620f446db5fc611e0a26b11a1"},
+        "missions/libye3/actors.bin": {"archive": "SabreSquadron.dta", "size": 44396, "sha256": "ad884ff97c63894a3c5cdc5c30ed5c2aa9e2598dd8e426096739a2f352a88e2f"},
+        "missions/libye3/check2.bin": {"archive": "SabreSquadron.dta", "size": 356562, "sha256": "7528263f7464187776d57a5685e6cbc448e1f691060fbb07dfc5a70530098a50"}
+      },
+      "checks": [
+        {"kind": "frames", "entry": "missions/libye3/actors.bin", "values": ["la_Panzer IIIAf_1", "Li3_German_Con_1", "Li3_German_Con_2", "Li3_German_Con_5", "w_explosive_2"]},
+        {"kind": "nul_strings", "entry": "missions/libye3/check2.bin", "values": ["CON_4", "CON_5", "CON_107", "CON_108"]}
+      ],
+      "edits": [
+        {"before": "//SetAlarmType(1023, false);", "after": "SetAlarmType(1023, false);"},
+        {"before": "//\tSetAlarmType(1023, true);", "after": "\tSetAlarmType(1023, true);"}
+      ]
+    },
+    {
       "id": "normandy-inner-guards-proximity",
       "title": "Normandy 1 — réveil de proximité N24/N25, routes d'alarme conservées",
       "classification": "MODERNE",

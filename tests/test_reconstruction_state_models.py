@@ -143,5 +143,26 @@ class DepotSoundContractTests(unittest.TestCase):
         self.assertEqual(inserted, fragment)
 
 
+class PanzerDriverContractTests(unittest.TestCase):
+    def test_only_two_historical_alarm_masks_are_uncommented(self):
+        p = load_catalog()['libye3-panzer-driver-alarm-gate']
+        self.assertEqual(len(change_specs(p)), 1)
+        self.assertEqual(p['actor'], 'Li3_German_Con_1')
+        self.assertEqual(p['edits'], [
+            {'before': '//SetAlarmType(1023, false);', 'after': 'SetAlarmType(1023, false);'},
+            {'before': '//\tSetAlarmType(1023, true);', 'after': '\tSetAlarmType(1023, true);'},
+        ])
+
+    def test_alarm_reenable_stays_after_stop_without_changing_the_drive_calls(self):
+        p = load_catalog()['libye3-panzer-driver-alarm-gate']
+        route = (b'HUMAN_Drive("CON_4", 40);\r\nHUMAN_Drive("CON_5", 50);\r\n'
+                 b'HUMAN_Drive("CON_107", 50);\r\nHUMAN_Drive("CON_108", 50);\r\n'
+                 b'HUMAN_Drive("", 0);\r\n')
+        source = b'//SetAlarmType(1023, false);\r\n' + route + b'//\tSetAlarmType(1023, true);'
+        result = apply_edits(source, p['edits'])
+        self.assertEqual(result, b'SetAlarmType(1023, false);\r\n' + route + b'\tSetAlarmType(1023, true);')
+        self.assertNotIn(b'SendSignal', result)
+
+
 if __name__ == "__main__":
     unittest.main()

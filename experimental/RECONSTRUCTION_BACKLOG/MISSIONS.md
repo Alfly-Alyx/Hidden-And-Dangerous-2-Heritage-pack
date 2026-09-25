@@ -125,7 +125,7 @@ Chemins : `experimental/ARCTIC1_*` et
 | `CO_LIBYE1_AF1_23_24_DIALOGUE` | À documenter | Douze lignes coop sont commentées. AF1_23 envoie une synchronisation, AF1_24 aucune; le coordinateur attend deux signaux et les fins signal2 existent. Exiger audio et lipsync. |
 | `LIBYE2_DIALOGUE_24_25_CONDITIONAL_53990023` | À documenter | Réplique enregistrée/lipsync commentée sur le parc détruit. La déclencher seulement après destruction réelle des huit véhicules, avec gestion mort/alarme/rejeu. |
 | `LIBYE3_GERMAN15_ALARM_DUAL_BEHAVIOR` | Prototype désactivé | Profil reproductible `libye3-german15-move-to-alarm`, 1342 octets; un appel historique réactivé, acteur/liaison/ronde vérifiés. Destination dynamique et délai avant combat à tester; aucun nouveau signal. |
-| `LIBYE3_PANZER_DRIVER_ALARM_GATE` | À documenter | Alarmes historiquement désactivées au départ puis réactivées après route. Comparer conducteurs et états du char avant option. |
+| `LIBYE3_PANZER_DRIVER_ALARM_GATE` | Prototype désactivé | Deux lignes historiques réactivées chez Con_1 seulement, 1121 octets. Cargo, véhicule, équipage et quatre checkpoints vérifiés; opérateurs 2/5 inchangés. Masque réactivé après l'arrêt : route bloquée et absence de signal restent des risques à tester. |
 
 ## Africa 1 à 6
 

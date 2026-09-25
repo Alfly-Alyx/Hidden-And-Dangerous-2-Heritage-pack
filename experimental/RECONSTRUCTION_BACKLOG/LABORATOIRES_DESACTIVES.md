@@ -101,9 +101,13 @@ trente-quatre entrées et vingt scripts modifiés**, catalogue
 `9a9862e763d141f1c49fd302780a3c9fd8860dee363c621ac603c7ebcb273e28`.
 Les neuf missions Sabre d'origine restent identiques, objectifs inclus.
 
-Les **142 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
+Le conducteur du Panzer Libye 3 porte le total à **dix-huit laboratoires,
+trente-six entrées et vingt et un scripts modifiés**, catalogue
+`54ec1ed7aed8f0a435327279eed8fe8f079199a887764c528c49d0e637a75bb3`.
+
+Les **144 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
 huit cas de conservation d'objectifs, quatre contrôles de lecture de catalogues,
-quatorze modèles/contrats de charges, assise, proximité et son,
+seize modèles/contrats de charges, assise, proximité, son et conduite,
 quatorze cas de groupes atomiques/4DS
 28 tests d'émulation du menu et sept contrôles de la chaîne Norway dormante.
 Les auto-tests C# passent également. Le contrôle

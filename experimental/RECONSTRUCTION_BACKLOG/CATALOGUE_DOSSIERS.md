@@ -2,7 +2,7 @@
 
 Ce catalogue recense les dossiers de premier niveau présents sur la branche. Il complète le registre thématique : sa fonction est de rendre visible tout ce qui existe déjà, y compris les études qui ne demandent pas d'action immédiate.
 
-Total : **147 dossiers**.
+Total : **148 dossiers**.
 
 | Dossier | Fichiers directs | Sous-dossiers |
 |---|---|---|
@@ -135,6 +135,7 @@ Total : **147 dossiers**.
 | [LI2_DECOR](../LI2_DECOR/) | `ETUDE.md`, `MANIFEST.md` | — |
 | [LIBYE3_OBJECTIVES4_6](../LIBYE3_OBJECTIVES4_6/) | `ETUDE.md`, `PROTOTYPE_OBJECTIVE4_SURVIVAL.scr.disabled` | — |
 | [LIBYE3_GERMAN15_ALARM_DUAL_BEHAVIOR](../LIBYE3_GERMAN15_ALARM_DUAL_BEHAVIOR/) | `ETUDE.md` | — |
+| [LIBYE3_PANZER_DRIVER_ALARM_GATE](../LIBYE3_PANZER_DRIVER_ALARM_GATE/) | `ETUDE.md` | — |
 | [ME323_DECOR](../ME323_DECOR/) | `ETUDE.md`, `MANIFEST.md` | — |
 | [MG34_PORTABLE](../MG34_PORTABLE/) | `ETUDE.md`, `MANIFEST.md`, `RECONSTRUCTION.plan.disabled` | — |
 | [MP_ONLY_TO_SOLO_MATRIX](../MP_ONLY_TO_SOLO_MATRIX/) | `METHODE_WRAPPER_SOLO.md`, `README.md`, `REGISTRE_CONCEPTS_INCOMPLETS.md` | `AFRIKA5_MP`, `ALPS3_MP_ZONE`, `ALPS3_OBJ`, `ARDENS1_OBJ`, `ARDENS2_MP_ZONE`, `LONDON_MP`, `NORMANDY2B_MP_ZONE`, `NORMANDY3_MP`, `NORMANDY3_MP_ZONE`, `NORMANDY4_MP_ZONE` |
