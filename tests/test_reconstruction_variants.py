@@ -281,7 +281,31 @@ class CatalogTests(unittest.TestCase):
 
     def test_shipped_catalog_loads(self):
         profiles = builder.load_catalog()
-        self.assertEqual(len(profiles), 7)
+        self.assertEqual(len(profiles), 11)
+
+    def test_nosic2_pause_replaces_instead_of_stacking_delays(self):
+        profile = builder.load_catalog()["czech3-nosic2-long-smoke"]
+        source = (b'Smoke(true);\r\n//HUMAN_TurnAt(smoker_eyeball_point);\r\n'
+                  b'//delay(42000);\r\ndelay(5000);\r\nSmoke(false);')
+        result = builder.apply_edits(source, profile["edits"])
+        self.assertEqual(result, b'Smoke(true);\r\nHUMAN_TurnAt(smoker_eyeball_point);\r\n'
+                         b'delay(42000);\r\nSmoke(false);')
+
+    def test_flak_exit_does_not_activate_boarding_or_change_death(self):
+        profile = builder.load_catalog()["arctic4-gunner1-flak-exit"]
+        source = (b'//HUMAN_BoardVehicle("flak", true, 0);\r\nOnAlarmDone()\r\n{\r\n'
+                  b'Move();\r\n}\r\nOnDeath(){HUMAN_BoardVehicle("", False, 0);}')
+        result = builder.apply_edits(source, profile["edits"])
+        self.assertEqual(result, source.replace(b'OnAlarmDone()\r\n{',
+                         b'OnAlarmDone()\r\n{\r\n  HUMAN_BoardVehicle("", False, 0);'))
+
+    def test_cold_fallbacks_are_single_modern_insertions(self):
+        for name in ("arctic4-guard2-cold-fallback", "arctic4-guard6-cold-fallback"):
+            profile = builder.load_catalog()[name]
+            self.assertEqual(profile["classification"], "MODERNE")
+            edit, = profile["edits"]
+            self.assertEqual(edit["after"].splitlines()[0], edit["before"])
+            self.assertEqual(edit["after"].splitlines()[1].strip(), "HUMAN_ACTIVITY_Cold();")
 
     def test_af126_modern_fix_removes_only_the_empty_back_edge(self):
         profile = builder.load_catalog()["africa1-af126-safe-idle"]

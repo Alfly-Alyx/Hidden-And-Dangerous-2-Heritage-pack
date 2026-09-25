@@ -117,6 +117,23 @@ class LabTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Non-literal"):
             self.plan()
 
+    def test_empty_literal_script_detachment_is_not_a_missing_dependency(self):
+        key = self.profile["source"]
+        raw = self.files[key][1] + b'\r\nScriptAssign(owner, "");'
+        self.files[key] = ("Scripts.dta", raw)
+        self.profile["evidence"][key].update(size=len(raw), sha256=lab.digest(raw))
+        _, report = self.plan()
+        self.assertEqual(report["script_closure"]["reachable_scripts"], 1)
+
+    def test_concatenated_script_name_is_not_mistaken_for_a_literal(self):
+        key = self.profile["source"]
+        raw = self.files[key][1] + b'\r\nScriptAssign(owner, "helper" + variable);'
+        self.files[key] = ("Scripts.dta", raw)
+        self.files["scripts/example/helper.scr"] = ("Scripts.dta", b"End();")
+        self.profile["evidence"][key].update(size=len(raw), sha256=lab.digest(raw))
+        with self.assertRaisesRegex(ValueError, "Non-literal"):
+            self.plan()
+
     def test_hardcoded_original_path_refused(self):
         self.files["missions/example/tree.klz"] = ("missions.dta", b"Missions\\Example\\collision.bin")
         with self.assertRaisesRegex(ValueError, "Hard-coded original"):

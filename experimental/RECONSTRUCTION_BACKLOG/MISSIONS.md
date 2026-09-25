@@ -28,6 +28,7 @@ Chemins : `experimental/ARCTIC1_*` et
 | `ARCTIC4_STATIC_GUARD3_ALARM_POST_ADDITIVE` | Prototype désactivé | Liaison et checkpoint vérifiés; le générateur local réactive seulement la ligne historique dans une copie `.scr.disabled`. Le trajet et l'interaction avec le combat exigent un essai en moteur. |
 | `ARCTIC4_KRA_NEARBY_REACTIONS` | Documenté, mesures initiales effectuées | Les positions initiales sont maintenant connues : Kra1 proche du garde 3, mais signal 1 déjà pris; Kra2 proche de Static Guard 5 déjà relié et de deux autres acteurs à étudier; Kra3 sans humain dans les 25 m initiaux. Aucun signal ajouté. |
 | `ARCTIC4_STATIC_GUARD3_SIT_SMOKE` | À documenter | Deux frames existent; séquence historique TurnAt/délai/Sit/délai/Smoke/délai/`%%kourimsed2`. Fournir une transcription désactivée et une variante moderne sans animation nommée. Séparer du poste d'alarme. |
+| `ARCTIC4_AMBIENT_ANIMATIONS_AND_FLAK_EXIT` | Prototypes désactivés | Trois profils complets et laboratoires A/B : Cold pour gardes 2/6, sortie du Flak pour Gunner 1. Replis modernes, aucun embarquement forcé ni modification de Gunner 2; interruptions et sièges à tester. |
 | `ARCTIC4_FALSE_POSITIVES` | Faux positifs fermés | Émetteur et trois récepteurs 13 liés; les jumelles des deux `sub_gunner` utilisent déjà Binoculars/BinocularsEnd. Preuves et empreintes consignées, aucune modification. |
 
 ## Czech 2
@@ -43,7 +44,7 @@ Chemins : `experimental/ARCTIC1_*` et
 | Dossier | État | Informations disponibles et suite |
 |---|---|---|
 | `CZECH3_END_CUTSCENE_PLAYER_VISIBILITY` | À documenter | Les doubles sont créés et les joueurs réels téléportés vers `Com1..4`. Masquer un joueur seulement si son double existe et garantir le rétablissement même en cas d'interruption. |
-| `CZECH3_NOSIC2_SMOKE_IDLE_VARIANT` | À documenter | Ancienne pause/rotation vers `ja_patnik17` contre délai commercial de 5 s. Variante sélectionnable qui ne doit pas bloquer objectifs ou partie de cartes. |
+| `CZECH3_NOSIC2_SMOKE_IDLE_VARIANT` | Prototype désactivé | Profil de 8358 octets : rotation vers `ja_patnik17` et 42 s remplacent les 5 s sans cumul. Acteur, frame et liaison vérifiés; laboratoire de 99 fichiers, 76 scripts accessibles, quatre objectifs conservés. Partie de cartes et interruptions à tester. |
 | `CZECH3_FORMATION_CLEANUP_DUAL_PATH` | À documenter | `zlesa1` contenait nettoyage global et `Formation_Destroy`; `zlesa_zrusformaci` reste lié; `zlesa2` retire individuellement. Décider entre superviseur one-shot et faux positif. |
 | `CZECH3_OBJ_RADIO` | Bloqué preuve | `czech3_obj` n'a que la liaison Box29. Le script libre vise `l_a1ra_`, absent; la scène contient `la_b1_radio_` et son enfant. Reconstituer hiérarchie, propriétaire et son avant toute substitution. |
 

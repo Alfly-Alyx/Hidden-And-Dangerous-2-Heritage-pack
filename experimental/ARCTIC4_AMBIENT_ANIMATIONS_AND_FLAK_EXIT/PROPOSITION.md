@@ -1,8 +1,7 @@
 # Arctic 4 — animations ambiantes et sortie du Flak
 
-État : **replis attestés seulement**, 14 septembre 2026. Deux fragments sont
-désactivés ; aucune animation au nom supposé n’est créée et aucune mission n’a
-été compilée ou installée.
+État : **trois profils reproductibles désactivés**, 25 septembre 2026. Aucune
+animation au nom supposé n’est créée; aucun essai moteur ni installation.
 
 ## Verdict
 
@@ -59,12 +58,15 @@ les sources effectives.
 
 ## Prototypes isolés
 
-`PROTOTYPE_COLD_FALLBACKS.scr.disabled` contient deux fragments indépendants :
-un pour la branche aléatoire de Guard 2 et un pour la boucle de Guard 6. Ils ne
+Le [catalogue de variantes](../reconstruction-variants.json) contient deux
+profils indépendants `arctic4-guard2-cold-fallback` et
+`arctic4-guard6-cold-fallback`, un pour la branche aléatoire de Guard 2 et un pour
+la boucle de Guard 6. Ils ajoutent chacun uniquement `HUMAN_ACTIVITY_Cold()` à
+l'emplacement du commentaire; tous les délais existants sont conservés. Ils ne
 touchent pas à `OnAlarm()` ; l’arrêt d’animation, le déplacement et la visée
 gardent donc leur priorité release.
 
-`PROTOTYPE_GUNNER1_FLAK_EXIT.scr.disabled` ajoute une seule sortie au début de
+Le profil `arctic4-gunner1-flak-exit` ajoute une seule sortie au début de
 `OnAlarmDone()` de Gunner 1. Gunner 2 reste inchangé, puisque sa ligne de sortie
 est déjà présente et active.
 
@@ -76,7 +78,7 @@ absence est volontaire : l’inventaire ne fournit pas d’asset compatible.
 1. Dupliquer Arctic 4 et copier le script Base correspondant.
 2. Pour `Cold`, tester Guard 2 et Guard 6 séparément avant de les combiner.
 3. Pour le Flak, modifier seulement Gunner 1 ; ne pas dupliquer la ligne déjà
-   active de Gunner 2.
+active de Gunner 2.
 4. Ne jamais décommenter l’embarquement au Flak en même temps que le test de
    sortie : il faut d’abord observer si l’IA monte automatiquement.
 5. Désactivation : restaurer les scripts Base originaux. Aucun binding, frame ou

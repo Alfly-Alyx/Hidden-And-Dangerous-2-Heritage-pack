@@ -3,6 +3,74 @@
   "reference_edition": "GOG English Sabre Squadron 1.12",
   "profiles": [
     {
+      "id": "czech3-nosic2-long-smoke",
+      "title": "Czech 3 — ancienne pause fumée de 42 secondes",
+      "source": "scripts/czech3/r_cz3_nosic2.scr",
+      "actor": "nosic2",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/czech3/r_cz3_nosic2.scr": {"archive": "Patch.dta", "size": 8376, "sha256": "21acdd547b2eb96fa5c20b7759e530e553064b83e11386482b4f5b3b948d7b50"},
+        "missions/czech3/scripts.dta": {"archive": "missions.dta", "size": 2794, "sha256": "039062bd25dec502eb6b7d3326682a2925cca990479e1990d720b13ad8e081c3"},
+        "missions/czech3/actors.bin": {"archive": "Patch.dta", "size": 22454, "sha256": "e880628aff808109db1a9ddfb5d4b9d1340f459b2e7c713395c16decfc5bc005"},
+        "missions/czech3/scene2.bin": {"archive": "missions.dta", "size": 5131456, "sha256": "19fe5ca4f39329df25113f38341ce0220450d9cd201a199a094ca6aa40acaf19"}
+      },
+      "checks": [{"kind": "frames", "entry": "missions/czech3/scene2.bin", "values": ["ja_patnik17"]}],
+      "edits": [{"before": "//HUMAN_TurnAt(smoker_eyeball_point);\n//delay(42000);\ndelay(5000);", "after": "HUMAN_TurnAt(smoker_eyeball_point);\ndelay(42000);"}]
+    },
+    {
+      "id": "arctic4-gunner1-flak-exit",
+      "title": "Arctic 4 — sortie moderne du Flak avant retour au poste",
+      "classification": "MODERNE",
+      "source": "scripts/arctic4/r_arc3_sub_gunner_1.scr",
+      "actor": "sub_gunner_1",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/arctic4/r_arc3_sub_gunner_1.scr": {"archive": "Scripts.dta", "size": 1599, "sha256": "190c926ac786b09904f2c9270e5be7b32790c2df4e8eaffe3ea8e384b7bb78fa"},
+        "missions/arctic4/scripts.dta": {"archive": "missions.dta", "size": 6073, "sha256": "618dbf08b27f3d58ffe5b67b6f515da3f3c17672a8d42ffa1e0f6f2396d64d57"},
+        "missions/arctic4/actors.bin": {"archive": "missions.dta", "size": 16359, "sha256": "280aa09645a1610db10c2708263f4d1dc7b35694f99d48872388039c7f77fdfb"},
+        "missions/arctic4/check2.bin": {"archive": "missions.dta", "size": 138281, "sha256": "8fae6ee23121e58f8cb95628f6a20069e7243488a0ef9b6f4484eaf937b4da9f"}
+      },
+      "checks": [
+        {"kind": "frames", "entry": "missions/arctic4/actors.bin", "values": ["la_flak4x38", "sub_gunner_2"]},
+        {"kind": "nul_strings", "entry": "missions/arctic4/check2.bin", "values": ["SG1_see", "flak"]}
+      ],
+      "edits": [{"before": "OnAlarmDone()\n{", "after": "OnAlarmDone()\n{\n  HUMAN_BoardVehicle(\"\", False, 0);"}]
+    },
+    {
+      "id": "arctic4-guard2-cold-fallback",
+      "title": "Arctic 4 — activité de froid moderne du garde 2",
+      "classification": "MODERNE",
+      "source": "scripts/arctic4/r_arc3_static_guard_2.scr",
+      "actor": "Static_Guard_2",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/arctic4/r_arc3_static_guard_2.scr": {"archive": "Scripts.dta", "size": 3644, "sha256": "ace13d3e94a25272b2a6f7017b2e50e0fbde51ad94c61a0e26ee6004be9d81f1"},
+        "missions/arctic4/scripts.dta": {"archive": "missions.dta", "size": 6073, "sha256": "618dbf08b27f3d58ffe5b67b6f515da3f3c17672a8d42ffa1e0f6f2396d64d57"},
+        "missions/arctic4/actors.bin": {"archive": "missions.dta", "size": 16359, "sha256": "280aa09645a1610db10c2708263f4d1dc7b35694f99d48872388039c7f77fdfb"}
+      },
+      "checks": [],
+      "edits": [{"before": "       // DOPLNIT AZ BUDE ANIMACE POKOPAVANI SI NOHOU DO SNEHU", "after": "       // DOPLNIT AZ BUDE ANIMACE POKOPAVANI SI NOHOU DO SNEHU\n       HUMAN_ACTIVITY_Cold();"}]
+    },
+    {
+      "id": "arctic4-guard6-cold-fallback",
+      "title": "Arctic 4 — activité de froid moderne après la bouteille",
+      "classification": "MODERNE",
+      "source": "scripts/arctic4/r_arc3_static_guard_6.scr",
+      "actor": "Static_Guard_6",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/arctic4/r_arc3_static_guard_6.scr": {"archive": "Scripts.dta", "size": 1468, "sha256": "78a59e035fdb6e212d00dfebdbf8591b38ad251b4b381955b27f7ef01711d2e6"},
+        "missions/arctic4/scripts.dta": {"archive": "missions.dta", "size": 6073, "sha256": "618dbf08b27f3d58ffe5b67b6f515da3f3c17672a8d42ffa1e0f6f2396d64d57"},
+        "missions/arctic4/actors.bin": {"archive": "missions.dta", "size": 16359, "sha256": "280aa09645a1610db10c2708263f4d1dc7b35694f99d48872388039c7f77fdfb"}
+      },
+      "checks": [],
+      "edits": [{"before": "  // DOPLNIT animacku pokopavani si nohou ve snehu", "after": "  // DOPLNIT animacku pokopavani si nohou ve snehu\n  HUMAN_ACTIVITY_Cold();"}]
+    },
+    {
       "id": "africa1-af126-safe-idle",
       "title": "Africa 1 — sortie moderne de la boucle incomplète AF1_26",
       "classification": "MODERNE",

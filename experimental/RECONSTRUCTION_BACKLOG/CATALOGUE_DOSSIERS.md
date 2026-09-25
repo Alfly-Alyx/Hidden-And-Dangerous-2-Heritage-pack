@@ -2,7 +2,7 @@
 
 Ce catalogue recense les dossiers de premier niveau présents sur la branche. Il complète le registre thématique : sa fonction est de rendre visible tout ce qui existe déjà, y compris les études qui ne demandent pas d'action immédiate.
 
-Total : **142 dossiers**.
+Total : **143 dossiers**.
 
 | Dossier | Fichiers directs | Sous-dossiers |
 |---|---|---|
@@ -13,6 +13,7 @@ Total : **142 dossiers**.
 | [AFRICA1_AF1_20_MISSING_LOOP_POINT](../AFRICA1_AF1_20_MISSING_LOOP_POINT/) | `PROPOSITION.md`, `VARIANT_SELECTOR.scr.disabled` | — |
 | [AFRICA1_AF1_22_MISSING_SIT_POINT](../AFRICA1_AF1_22_MISSING_SIT_POINT/) | `CHECK2_RECONSTRUCTION.plan.disabled`, `PROPOSITION.md` | — |
 | [AFRICA1_AF1_26_INCOMPLETE_START_LOOP](../AFRICA1_AF1_26_INCOMPLETE_START_LOOP/) | `ETUDE.md` | — |
+| [CZECH3_NOSIC2_SMOKE_IDLE_VARIANT](../CZECH3_NOSIC2_SMOKE_IDLE_VARIANT/) | `ETUDE.md` | — |
 | [AFRICA1_CARD_PLAYERS_24_25](../AFRICA1_CARD_PLAYERS_24_25/) | `PROPOSITION.md`, `PROTOTYPE_SAFE_CARD_PAIR.scr.disabled` | — |
 | [AFRICA1_HERITAGE_INTRO_AND_ORPHAN_DETECTORS](../AFRICA1_HERITAGE_INTRO_AND_ORPHAN_DETECTORS/) | `ETUDE.md`, `PROTOTYPE_INTRO_HERITAGE_EXCLUSIVE.scr.disabled`, `PROTOTYPE_PRELET_TYCR_FIX.scr.disabled` | — |
 | [AFRICA1_OBJ_MULTI_AIRCRAFT_VARIANT](../AFRICA1_OBJ_MULTI_AIRCRAFT_VARIANT/) | `ETUDE.md`, `VARIANTE_SOLO_RECONSTRUCTION.md` | — |

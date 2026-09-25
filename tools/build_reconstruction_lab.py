@@ -17,13 +17,18 @@ import zipfile
 from build_reconstruction_variant import (
     ROOT, ArchiveSources, digest, entry_path, load_catalog, prepare,
 )
-from mission_closure_audit import INCLUDE_RE, ASSIGN_RE, transitive_scripts
+from mission_closure_audit import INCLUDE_RE, transitive_scripts
 from objective_audit import split_comments
 from script_binding_audit import normalize_script_name, parse_bindings
 
 REQUIRED_MISSION_FILES = {
     "tree.klz", "scene.4ds", "scene2.bin", "actors.bin", "scripts.dta", "check2.bin",
 }
+# Empty names explicitly detach a script. They are literals, not dependencies.
+# Require the closing parenthesis so "prefix" + variable is not mistaken for
+# a complete literal name by the broader discovery regex in the shared audit.
+LITERAL_ASSIGN_RE = re.compile(
+    r'\bScriptAssign\s*\(\s*[^,\r\n]+\s*,\s*"([^"]*)"\s*\)', re.I)
 
 
 def lab_names(profile: dict, mode: str) -> tuple[str, str]:
@@ -53,7 +58,7 @@ def script_closure(files: dict[str, bytes], mission: str) -> dict:
         raise ValueError("Missing script dependencies: " + ", ".join(sorted(missing)))
     for name in sorted(used):
         text = texts[name]
-        includes, assignments = INCLUDE_RE.findall(text), ASSIGN_RE.findall(text)
+        includes, assignments = INCLUDE_RE.findall(text), LITERAL_ASSIGN_RE.findall(text)
         if (len(assignments) != len(re.findall(r"\bScriptAssign\s*\(", text, re.I))
                 or len(includes) != len(re.findall(r"^\s*#include\b", text, re.I | re.M))):
             raise ValueError(f"Non-literal script dependency requires review: {name}")

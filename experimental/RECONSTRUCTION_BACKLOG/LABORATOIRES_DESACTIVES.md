@@ -63,13 +63,21 @@ catalogue temporaire sont ensuite retirés. Ce n'est pas un test du jeu.
 | Africa 1 | 156 | 114 | 10 |
 | Czech 6 | 109 | 95 | 6 |
 | Libye 3 | 85 | 73 | 6 |
+| Czech 3 | 99 | 76 | 4 |
 
 Les douze entrées témoin/variante de cette série ont passé l'audit de catalogue.
 Le profil supplémentaire AF1_26 emploie les mêmes 156 sources Africa 1 et conserve
 les dix objectifs; le contrôle a également réussi avec les quatorze entrées.
-Les tests automatisés couvrent 41 cas de variantes, 18 cas de laboratoires et
-huit cas de conservation d'objectifs, plus les auto-tests C# et les 28 tests
-d'émulation du menu. Ces nombres ne comptent aucun essai moteur.
+Les trois profils supplémentaires Arctic 4 et le profil Czech 3 portent ensuite
+le total à **onze laboratoires, vingt-deux entrées contrôlées**. Le catalogue
+combiné a l'empreinte `5107b3803e0dacdc93698c7cdbda7d0a8391f84a80afe44dd09b0b8a9c2cb234`.
+
+Les **104 tests Python** couvrent 44 cas de variantes, 20 cas de laboratoires,
+huit cas de conservation d'objectifs, quatre contrôles de lecture de catalogues
+et 28 tests d'émulation du menu. Les auto-tests C# passent également. Le contrôle
+de dépendances distingue maintenant une désaffectation explicite
+`ScriptAssign(owner, "")` d'un nom dynamique; une concaténation de nom reste
+refusée. Ces nombres ne comptent aucun essai moteur.
 Restent obligatoires : installation dans une copie de test explicitement isolée,
 apparition dans le menu, chargement, résolution locale des scripts, interruptions,
 sauvegarde/reprise, objectifs et fin de mission comparés au témoin. Aucun retrait
