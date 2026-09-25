@@ -93,6 +93,9 @@ restent à préparer dans une copie de test explicitement isolée.
 Quinze tests sur des données inventées couvrent copie exacte, collisions,
 réapplication, structure, parent/transform, registre tronqué, paire manquante,
 empreinte incorrecte, extension active, écriture dans le jeu et écrasement.
+Quatre tests de recettes portent ensuite le total commun à 19 : l'ajout de
+Burgundy 2 ne relâche ni l'identité des dix scripts ni celle du fichier sonore
+de Burgundy 3. Les deux sorties binaires Burgundy 3 restent byte-identiques.
 Les deux surcharges locales préexistantes `bur3_obj3.scr` et `bur3_objectives.scr`
 sont refusées en mode strict; `--archives-only` les exclut et consigne leurs
 empreintes, sans les modifier ni valider leur compatibilité.

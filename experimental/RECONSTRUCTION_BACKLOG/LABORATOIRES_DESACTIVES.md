@@ -128,14 +128,16 @@ Le départ aléatoire de palette Africa 5 ajoute un quatrième script seul, sans
 laboratoire pour la même dépendance de piste manquante. Total courant :
 **24 profils, 27 scripts dérivés, 20 laboratoires et 40 entrées**.
 
-Les **172 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
+Les **176 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
 huit cas de conservation d'objectifs, quatre contrôles de lecture de catalogues,
 vingt-neuf modèles/contrats de charges, assise, proximité, son, conduite, filtres, formation, mort et visages,
 quatorze cas de groupes atomiques/4DS,
 28 tests d'émulation du menu, sept contrôles de la chaîne Norway dormante et
-quinze tests de la comparaison scène/registre Co_Burgundy3.
-Cette [comparaison binaire](../CO_BURGUNDY3_REMOVED_AMBIENT_CONTROLLERS/ETUDE.md)
-n'est pas un laboratoire complet : aucun manifeste activable ni entrée de menu.
+dix-neuf tests des comparaisons scène/registre Co_Burgundy2/3.
+Ces comparaisons binaires
+[Burgundy 2](../CO_BURGUNDY2_ANIMAL_AMBIENCE/ETUDE.md) et
+[Burgundy 3](../CO_BURGUNDY3_REMOVED_AMBIENT_CONTROLLERS/ETUDE.md)
+ne sont pas des laboratoires complets : aucun manifeste activable ni entrée de menu.
 Les auto-tests C# passent également. Le contrôle
 de dépendances distingue maintenant une désaffectation explicite
 `ScriptAssign(owner, "")` d'un nom dynamique; une concaténation de nom reste

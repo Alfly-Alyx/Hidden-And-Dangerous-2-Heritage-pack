@@ -8,7 +8,7 @@ import zipfile
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
 from build_burgundy_ambient_patch import (
-    MEMBERS, append_bindings, append_owners, record_name, registry_pairs,
+    MEMBERS, RECIPES, append_bindings, append_owners, check_script_pair, record_name, registry_pairs,
     scene_group, write_comparison,
 )
 from build_reconstruction_variant import digest
@@ -111,6 +111,35 @@ class AmbientRegistryTests(unittest.TestCase):
         for raw in [self.coop[:-1], self.coop[:2] + b'\0'*4 + self.coop[6:], registry([('a\0b', 'x.scr')])]:
             with self.assertRaises(ValueError):
                 registry_pairs(raw)
+
+
+class AmbientRecipeTests(unittest.TestCase):
+    def test_identical_scripts_need_no_exception(self):
+        self.assertEqual(check_script_pair(b'unchanged', b'unchanged', 'test.scr', {}), 'identical')
+
+    def test_exception_requires_both_exact_hashes_and_filename(self):
+        allowed = {'horse.scr': (digest(b'solo'), digest(b'coop'))}
+        self.assertEqual(check_script_pair(b'solo', b'coop', 'horse.scr', allowed),
+                         'reviewed_difference_coop_preserved')
+        for solo, coop, name in [(b'changed', b'coop', 'horse.scr'),
+                                 (b'solo', b'changed', 'horse.scr'),
+                                 (b'solo', b'coop', 'other.scr')]:
+            with self.assertRaises(ValueError):
+                check_script_pair(solo, coop, name, allowed)
+
+    def test_burgundy_two_has_two_dummy_owners_not_a_horse_actor(self):
+        recipe = RECIPES['co-burgundy2-animal-ambience']
+        self.assertEqual(set(recipe['owners']), {'zwukkun', 'zwukprase'})
+        self.assertEqual(recipe['sound_count'], 3)
+        self.assertEqual(set(recipe['reviewed_script_differences']), {'br2_snd_kun.scr'})
+        self.assertFalse(recipe['sounds_identical'])
+
+    def test_burgundy_three_still_requires_ten_identical_scripts_and_sound_file(self):
+        recipe = RECIPES['co-burgundy3-ambience']
+        self.assertEqual(len(recipe['owners']), 10)
+        self.assertEqual(recipe['sound_count'], 24)
+        self.assertEqual(recipe['reviewed_script_differences'], {})
+        self.assertTrue(recipe['sounds_identical'])
 
 
 class AmbientOutputTests(unittest.TestCase):
