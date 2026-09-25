@@ -192,5 +192,35 @@ class StorageAlarmFilterTests(unittest.TestCase):
         self.assertEqual(guard03, 1023)
 
 
+class FormationCleanupContractTests(unittest.TestCase):
+    def setUp(self):
+        self.profile = load_catalog()['czech3-leader-formation-cleanup']
+
+    def test_guard_is_armed_only_after_formation_setup(self):
+        edit = self.profile['edits'][0]
+        self.assertEqual(edit['before'], 'FORMATION_SetTypeLine(me);')
+        self.assertEqual(edit['after'], edit['before'] + '\nform=1;')
+
+    def test_alarm_cleanup_clears_guard_before_destroy_without_second_sender(self):
+        edit = self.profile['edits'][1]
+        self.assertEqual(edit['before'], '//FORMATION_Destroy(me);')
+        self.assertTrue(edit['after'].startswith('if (form == 1)'))
+        self.assertLess(edit['after'].index('form=0;'), edit['after'].index('FORMATION_Destroy'))
+        self.assertNotIn('SendSignal', edit['after'])
+        self.assertEqual(len(change_specs(self.profile)), 1)
+
+    def test_repeated_alarm_model_never_destroys_without_prior_creation(self):
+        # Model of the added local guard only, not engine formation lifetime.
+        for sequence, expected in [('AAAA', 0), ('CAAAA', 1), ('AACAA', 1), ('CCAA', 1)]:
+            form, destroys = 0, 0
+            for event in sequence:
+                if event == 'C':
+                    form = 1
+                elif form == 1:
+                    form = 0
+                    destroys += 1
+            self.assertEqual(destroys, expected, sequence)
+
+
 if __name__ == "__main__":
     unittest.main()

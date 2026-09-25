@@ -2,7 +2,7 @@
 
 Ce catalogue recense les dossiers de premier niveau présents sur la branche. Il complète le registre thématique : sa fonction est de rendre visible tout ce qui existe déjà, y compris les études qui ne demandent pas d'action immédiate.
 
-Total : **149 dossiers**.
+Total : **150 dossiers**.
 
 | Dossier | Fichiers directs | Sous-dossiers |
 |---|---|---|
@@ -119,6 +119,7 @@ Total : **149 dossiers**.
 | [CZECH3_CARNAGE_OBJECTIVE4](../CZECH3_CARNAGE_OBJECTIVE4/) | `ETUDE.md`, `PROTOTYPE_OBJECTIVE4_EXCLUSIVE.scr.disabled` | — |
 | [CZECH3_DUMMY_ALARM_COMMANDER_SIGNAL2](../CZECH3_DUMMY_ALARM_COMMANDER_SIGNAL2/) | `ETUDE.md`, `PROTOTYPE_ONSIGNAL2.scr.disabled` | — |
 | [CZECH3_NOSIC2_SMOKE_IDLE_VARIANT](../CZECH3_NOSIC2_SMOKE_IDLE_VARIANT/) | `ETUDE.md` | — |
+| [CZECH3_FORMATION_CLEANUP_DUAL_PATH](../CZECH3_FORMATION_CLEANUP_DUAL_PATH/) | `ETUDE.md` | — |
 | [CZECH3_REMOVED_VILLA_ACTORS](../CZECH3_REMOVED_VILLA_ACTORS/) | `ELEMENTS_A_RECREER_OU_SPECULATIFS.md`, `ETUDE.md` | — |
 | [CZECH4_MISSING_SIGNAL_HANDLERS](../CZECH4_MISSING_SIGNAL_HANDLERS/) | `PROPOSITION.md`, `PROTOTYPE_CZ4_PLATOON04_SIGNAL5.scr.disabled` | — |
 | [CZECH4_VESTIGES_VARIANT](../CZECH4_VESTIGES_VARIANT/) | `ETUDE.md`, `PLAN_COUNTER_PLATOON07_09.md`, `PROTOTYPE_CZ4_DOG01_CONTROLLER.scr.disabled` | — |

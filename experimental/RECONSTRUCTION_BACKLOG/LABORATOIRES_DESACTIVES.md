@@ -111,9 +111,15 @@ scripts générés, **mais pas de laboratoire** : le registre commercial référ
 binding ni inventer un remplacement. Le total reste donc 18 laboratoires pour
 21 profils; les 36 entrées du catalogue ne comprennent aucun profil Africa 5.
 
-Les **147 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
+La dissolution conditionnelle Czech 3 porte ensuite le total à **dix-neuf
+laboratoires, trente-huit entrées et vingt-deux scripts modifiés en laboratoire**,
+catalogue `0b8c5c4187b6d2a844a97c4f0747a16f47aa1b624974750ae92c04c025f8bfb1`.
+Avec les trois scripts seuls Africa 5, le catalogue de profils contient 22
+variantes et 25 scripts dérivés. Les trois laboratoires Africa 5 restent bloqués.
+
+Les **150 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
 huit cas de conservation d'objectifs, quatre contrôles de lecture de catalogues,
-dix-neuf modèles/contrats de charges, assise, proximité, son, conduite et filtres,
+vingt-deux modèles/contrats de charges, assise, proximité, son, conduite, filtres et formation,
 quatorze cas de groupes atomiques/4DS
 28 tests d'émulation du menu et sept contrôles de la chaîne Norway dormante.
 Les auto-tests C# passent également. Le contrôle

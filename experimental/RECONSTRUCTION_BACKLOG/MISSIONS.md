@@ -45,7 +45,7 @@ Chemins : `experimental/ARCTIC1_*` et
 |---|---|---|
 | `CZECH3_END_CUTSCENE_PLAYER_VISIBILITY` | À documenter | Les doubles sont créés et les joueurs réels téléportés vers `Com1..4`. Masquer un joueur seulement si son double existe et garantir le rétablissement même en cas d'interruption. |
 | `CZECH3_NOSIC2_SMOKE_IDLE_VARIANT` | Prototype désactivé | Profil de 8358 octets : rotation vers `ja_patnik17` et 42 s remplacent les 5 s sans cumul. Acteur, frame et liaison vérifiés; laboratoire de 99 fichiers, 76 scripts accessibles, quatre objectifs conservés. Partie de cartes et interruptions à tester. |
-| `CZECH3_FORMATION_CLEANUP_DUAL_PATH` | À documenter | `zlesa1` contenait nettoyage global et `Formation_Destroy`; `zlesa_zrusformaci` reste lié; `zlesa2` retire individuellement. Décider entre superviseur one-shot et faux positif. |
+| `CZECH3_FORMATION_CLEANUP_DUAL_PATH` | Prototype désactivé | Profil moderne conditionnel chez le chef seul, 2817 octets : état local armé après création, effacé avant Destroy à l'alarme. Aucun second signal vers le coordinateur, retrait individuel inchangé. Nécessité réelle, morts et courses à comparer au témoin. |
 | `CZECH3_OBJ_RADIO` | Bloqué preuve | `czech3_obj` n'a que la liaison Box29. Le script libre vise `l_a1ra_`, absent; la scène contient `la_b1_radio_` et son enfant. Reconstituer hiérarchie, propriétaire et son avant toute substitution. |
 
 ## Czech 4 et 6

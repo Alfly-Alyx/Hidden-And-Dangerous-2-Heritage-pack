@@ -3,6 +3,103 @@
   "reference_edition": "GOG English Sabre Squadron 1.12",
   "profiles": [
     {
+      "id": "czech3-leader-formation-cleanup",
+      "title": "Czech 3 — dissolution conditionnelle unique de la formation à l'alarme du chef",
+      "classification": "MODERNE",
+      "source": "scripts/czech3/zlesa1.scr",
+      "actor": "zlesa1",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/czech3/zlesa1.scr": {
+          "archive": "Scripts.dta",
+          "size": 2775,
+          "sha256": "5d13ac28fb56796d48467853ac3a312b99f945bc6afcc865313bd70de9b08be7"
+        },
+        "scripts/czech3/zlesa2.scr": {
+          "archive": "Scripts.dta",
+          "size": 1918,
+          "sha256": "aaae741290c3b2d2bff36916c54e1398ac3a5670b10cfeb3a17a8e7f1ba456cf"
+        },
+        "scripts/czech3/zlesa_zrusformaci.scr": {
+          "archive": "Scripts.dta",
+          "size": 142,
+          "sha256": "2650a6098583e834e25837d8acbaf0dcb727a18b95d1dd2ad44817e7982be374"
+        },
+        "scripts/czech3/detector_zlesa1.scr": {
+          "archive": "Scripts.dta",
+          "size": 131,
+          "sha256": "c8a20e6402c686cb0f1f02e63072af287fca8773cfd16b2d4c249a1291569d5d"
+        },
+        "missions/czech3/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 2794,
+          "sha256": "039062bd25dec502eb6b7d3326682a2925cca990479e1990d720b13ad8e081c3"
+        },
+        "missions/czech3/actors.bin": {
+          "archive": "Patch.dta",
+          "size": 22454,
+          "sha256": "e880628aff808109db1a9ddfb5d4b9d1340f459b2e7c713395c16decfc5bc005"
+        },
+        "missions/czech3/scene2.bin": {
+          "archive": "missions.dta",
+          "size": 5131456,
+          "sha256": "19fe5ca4f39329df25113f38341ce0220450d9cd201a199a094ca6aa40acaf19"
+        },
+        "missions/czech3/check2.bin": {
+          "archive": "missions.dta",
+          "size": 164478,
+          "sha256": "a0b6db1acaf50dbfba19e90933d322dccbda186d18d68f5a9de70ca4d1894cba"
+        }
+      },
+      "checks": [
+        {
+          "kind": "frames",
+          "entry": "missions/czech3/actors.bin",
+          "values": [
+            "zlesa1",
+            "zlesa2"
+          ]
+        },
+        {
+          "kind": "frames",
+          "entry": "missions/czech3/scene2.bin",
+          "values": [
+            "zlesa_zrusformaci",
+            "detector_zlesa_1",
+            "detector_zlesa_2"
+          ]
+        },
+        {
+          "kind": "nul_strings",
+          "entry": "missions/czech3/check2.bin",
+          "values": [
+            "Zlesa_01",
+            "Zlesa_02",
+            "Zlesa_03",
+            "Zlesa_04",
+            "Zlesa_05",
+            "Zlesa_06",
+            "Zlesa_07",
+            "Zlesa_08",
+            "Zlesa_09",
+            "Zlesa_10",
+            "Zlesa_11"
+          ]
+        }
+      ],
+      "edits": [
+        {
+          "before": "FORMATION_SetTypeLine(me);",
+          "after": "FORMATION_SetTypeLine(me);\nform=1;"
+        },
+        {
+          "before": "//FORMATION_Destroy(me);",
+          "after": "if (form == 1)\n{\n  form=0;\n  FORMATION_Destroy(me);\n}"
+        }
+      ]
+    },
+    {
       "id": "africa5-storage01-alarm-filter",
       "title": "Africa 5 — filtre historique 4 du garde de magasin 01",
       "source": "scripts/africa5/af4_sklad01.scr",
