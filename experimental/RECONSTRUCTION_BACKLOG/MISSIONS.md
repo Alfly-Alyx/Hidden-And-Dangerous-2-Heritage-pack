@@ -141,8 +141,8 @@ Chemins : `experimental/ARCTIC1_*` et
 | `AFRICA2_CAMP_AMBIENT_VOICES` | À documenter | Sept scripts orphelins pilotent 17 frames sonores existantes. Concevoir des contrôleurs non concurrents et éviter le déclenchement simultané. |
 | `AFRICA2_REINFORCEMENT_POST_ARRIVAL_ACTIVITY` | À documenter | Quatre scripts de renfort finissent sur `ACTIVITY doplnit`. Ajouter des activités seulement; ne pas rétablir le trajet de camion explicitement retiré. |
 | `AFRICA3_OPEL_ENGINE_SMOKE_ADDITIVE` | Bloqué preuve | Script orphelin attend signal1 et crée Particle21; aucun émetteur et ancre apparente absente. Le contrôleur racine existant reste intact. |
-| `AFRICA4_PASSENGER09_ORIENTATION` | À documenter | `TurnAt` commenté sans déclaration/target, contrairement aux passagers 06–10. N'utiliser qu'une cible attestée ou explicitement moderne. |
-| `AFRICA4_LEADER11_CHANGEPOS` | À documenter | Sous-routine entièrement commentée et jamais appelée; comparer leaders 16–25/31–33 et les appels stables 27–30 avant de choisir un moment. |
+| `AFRICA4_PASSENGER09_ORIENTATION` | Documenté, bloqué cible | Les voisins 06/07/08/10 utilisent quatre cibles différentes; aucune chez 09. Acteur, siège et route présents, LookAround déjà actif. Pas de TurnAt avant source historique ou choix moderne fondé sur la géométrie finale. |
+| `AFRICA4_LEADER11_CHANGEPOS` | Documenté, appel non attesté | Comparaison de 18 scripts : corps 11 commenté sans appel; corps 16–25/31–33 actifs mais non appelés. 27–30 possèdent les sites historiques déjà traités par Heritage. Aucun moment de posture inventé dans la formation du chef. |
 | `AFRICA4_INVASION_TRANSITION_VARIANT` | À documenter | Ancien fondu radio et délai 20 s avant Opel. Variante de rythme compatible avec la conséquence radio stable, sans délai doublé. |
 | Africa4 déjà étudiés | Documenté | Ne pas dupliquer les dossiers d'introduction, compteur, proximité et autres études existantes. |
 | `AFRICA5_PALM14_AMBIENT_SOUND` | À documenter | Contrôleur présent mais non lié; source `S_vrzplm14` absente, chaînes 1..13/15 complètes. Déduire la source 14 depuis les voisines et la transformation du contrôleur. |
@@ -157,6 +157,6 @@ Chemins : `experimental/ARCTIC1_*` et
 
 | Dossier | État | Informations disponibles et suite |
 |---|---|---|
-| `BU1-BRIDGE` | À documenter | Script libre : détecteur 7 m puis signal1 vers 32/33/34, sans gestionnaires; les acteurs se réveillent déjà à 60 m. Propriétaire, transformation et contrat manquent. |
+| `BU1-BRIDGE` | Documenté, bloqué porteur/protocole | Étude BURMA1_BRIDGE_LEGACY_TRIGGER : script non lié/non accessible, signal1 sans handlers. Réveil 60 m déjà actif, avec embarquement Type97 pour 32 et routes distinctes pour 33/34. Centre du rayon 7 m inconnu : pas de doublon déclaré ni de trigger inventé. |
 | `TUTORIAL_EASTER_EGG_ACCESS_112` | Documenté | Chaîne de jeu complète; seul l'accès physique est cassé par la désactivation de l'escalade véhicule. Ajouter un appui/échelle existant, sans téléport ni rollback moteur. Bedford (-17.804197,-1.512808,80.766449), bouton modèle (-52.354725,1.906093,-2.890001), activateur (57.962864,1.353687,41.821579). |
 | `TUTORIAL_SW2_THREE_ACTION_VARIANT` | À documenter | `dummy_SW2` libre envoie signal2; SW1/SW3 liés envoient 1/3; compteur ne traite que 1/3. Le chemin commercial 1+3 reste suffisant; la variante 1+2+3 ne doit jamais bloquer. |

@@ -89,6 +89,20 @@ machine, `Missions/africa1/Scripts.dta` fait 4663 octets, SHA-256
 4622 octets dans l'archive. La liaison AF1_21 reste présente, mais cela ne prouve
 pas la compatibilité de toute la mission modifiée.
 
+Le contrôle des 22 profils relève aussi deux autres surcharges pertinentes :
+
+| Fichier libre préexistant | Octets | SHA-256 |
+|---|---:|---|
+| `Missions/normandy/Scripts.dta` | 9007 | `0f5d7f32b0a21c92253dfaa89671c1e1fd94665ca693992aa6590e06b0a0533e` |
+| `Scripts/africa5/AF4_sklad01.scr` | 1806 | `3c4c4295c2f627490ebb63bdb2e3a9e77d2cf6d5dfab51107b416231a25cb138` |
+
+Le registre Normandy commercial fait 8963 octets, le script Africa 5 Patch
+1735. Les quatre profils refusés en mode strict sont donc la paire Normandy,
+le filtre Africa 5 garde 01 et les deux variantes Africa 1. Ces fichiers libres
+ne sont ni remplacés ni réputés compatibles; leur exclusion explicite est
+consignée dans les rapports. Un contrôle de profil ne vérifie que ses sources
+épinglées; un laboratoire inspecte en plus tous les fichiers copiés de sa mission.
+
 Pour reconstruire **explicitement la seule référence commerciale** :
 
 ```powershell

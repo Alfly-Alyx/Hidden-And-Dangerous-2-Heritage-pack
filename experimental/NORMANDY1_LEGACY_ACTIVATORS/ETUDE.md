@@ -121,6 +121,12 @@ Espaces : `H2Lab_normandy_f5adb4591fd1_B` et `_V`. Deux tests de contrat et
 l'inspection des deux diff confirment que les routes et les gestionnaires ne
 changent pas; ils ne démontrent pas l'ordonnancement des événements en moteur.
 
+Le registre libre installé est différent (9007 octets contre 8963 dans
+l'archive). Le contrôle strict refuse donc ce profil sur l'installation
+actuelle. Le laboratoire a été créé avec exclusion explicite des surcharges,
+dont les empreintes sont conservées dans son rapport; aucune compatibilité avec
+la mission installée n'est revendiquée.
+
 ### Validation moteur — toujours en attente
 
 La proximité 30 m et le signal N01 peuvent se produire dans le même instant.

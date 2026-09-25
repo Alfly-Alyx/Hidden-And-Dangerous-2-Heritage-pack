@@ -42,6 +42,13 @@ Ces scripts sont construits par le
 `.analysis/generated/`. Trois tests contrôlent les deltas et les masques
 binaires; ce n'est pas une validation du moteur.
 
+Le garde 01 possède aussi un script libre déjà modifié dans l'installation :
+1806 octets, SHA-256
+`3c4c4295c2f627490ebb63bdb2e3a9e77d2cf6d5dfab51107b416231a25cb138`.
+Le contrôle strict le refuse; la sortie ci-dessus vient exclusivement du Patch
+commercial de 1735 octets. Cette surcharge est laissée intacte et enregistrée
+comme exclue. Ce conflit est distinct du détecteur de piste absent.
+
 ## Pourquoi aucune mission complète n'est fabriquée
 
 La tentative de laboratoire échoue pour chacun des trois profils avec

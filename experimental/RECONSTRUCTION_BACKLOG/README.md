@@ -26,6 +26,24 @@ registre complète ces fichiers sans activer de script expérimental dans le jeu
 
 ## Légende d'état
 
+### Avancement vérifié le 25 septembre 2026
+
+- **22 profils / 25 scripts dérivés** reconstruits depuis les archives, avec
+  76 sources épinglées; tous restent désactivés et non validés en jeu.
+- **19 laboratoires A/B / 38 entrées** contrôlés hors moteur, objectifs
+  commerciaux conservés. Trois profils Africa 5 restent des scripts seuls :
+  leur détecteur de piste commercial absent empêche la copie complète.
+- **150 tests Python**, compilation console et auto-tests de sécurité C# réussis.
+- **154 dossiers** recensés. Les études continuent : certains vestiges exigent
+  encore une cible, un propriétaire, une ressource ou une observation préalable.
+- L'installation actuelle n'est pas modifiée. Quatre profils refusent ses
+  surcharges pertinentes en mode strict; les exclusions et empreintes sont
+  consignées pour Africa 1, Normandy 1 et Africa 5.
+
+Ces nombres ne signifient pas que la reconstruction globale est terminée :
+le registre d'essais moteur reste à **56 cas pending**, et les 21 candidates
+multijoueur vers solo n'ont toujours aucune validation de jeu.
+
 | État | Sens |
 |---|---|
 | Documenté | Une étude existe déjà dans `experimental/`. |
