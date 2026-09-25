@@ -67,6 +67,7 @@ dossier suivi par Git. `.analysis/` et `.research/` sont volontairement ignorés
 | `tools/objective_audit.py` | Examiner déclarations, activations, validations et échecs d'objectifs. |
 | `tools/scene_frame_position_audit.py` | Résoudre les positions de frames et chercher les voisins. |
 | `tools/mission_closure_audit.py` | Vérifier les scripts libres et la fermeture structurelle d'une mission. |
+| `tools/audit_norway_guard_chain.py` | Contrôler en lecture seule les 18 gardes, les checkpoints et le sender dormant; distingue attente initiale et attente réellement appelée dans la boucle. |
 | `tools/boundary_label_audit.py` | Auditer les drapeaux de zone et objets `border`. |
 | `tools/tree_klz.py` | Lire et transformer les collisions avec conservation de structure. |
 

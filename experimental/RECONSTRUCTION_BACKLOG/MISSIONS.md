@@ -88,9 +88,9 @@ Chemins : `experimental/ARCTIC1_*` et
 
 | Dossier | État | Informations disponibles et suite |
 |---|---|---|
-| `NORWAY_MISSING_TIRPITZ_GUARDS_1_2_6_7_12_13_16` | Documenté, à corriger | Les checkpoints des gardes retirés existent. Acteurs/liaisons manquants : 1,2,6,7,10,12,13,16,17. `Dummy_see1/2` et les scripts survivent. Rechercher surtout identité, équipement et positions des gardes 10/17. |
+| `NORWAY_MISSING_TIRPITZ_GUARDS_1_2_6_7_12_13_16` | Corrigé, bloqué placement/activation | Audit reproductible : checkpoints et deux regards présents, neuf acteurs/liaisons absents dont 10/17. Identités et transformations initiales non établies. Sender non lié/non accessible, attente calculée mais non appliquée dans sa boucle; aucune activation brute. |
 | Émetteur commercial | Information stable | Les gardes 4,5,8,9,11,14,15,18 sont complets et ne doivent pas être dupliqués. |
-| `NORWAY_TIRPITZ_GUARD3_AMBIENCE_HANDLERS` | À documenter | Acteur, liaison et checkpoints du garde 3 existent, mais ses gestionnaires 1..4 manquent alors que l'émetteur le vise. Comparer chapeau, bouteille, froid et regard des gardes voisins. |
+| `NORWAY_TIRPITZ_GUARD3_AMBIENCE_HANDLERS` | Documenté, bloqué chaîne dormante | Acteur/liaison/routes présents, aucun handler 1..4; émetteur non lié et sans attente de boucle. Différences de compteur et d'alarmes interdisent une copie brute du garde 4. Baseline, propriétaire unique et cadence à résoudre avant prototype. |
 
 ## Sicily
 

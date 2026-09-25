@@ -1,5 +1,8 @@
 // FRAGMENT DESACTIVE a fusionner dans l'UNIQUE R_Nor_action_Sender de la copie.
 // Ne contient ni nouveau RandomInt ni seconde boucle temporelle.
+// BLOCAGE CONFIRME 25/09/2026 : sender non lie et non accessible depuis le
+// registre. La boucle calcule waiter sans Delay(waiter); ne pas l'activer brute.
+// Les branches 10/17 ne figurent pas dans ce fragment historique a sept gardes.
 
 // Declarations a retablir dans le block commercial :
 // frame T1;  FRM_FindFrame(T1,  "tirpic_guard_1");
@@ -21,4 +24,5 @@
 // If (what_soldier==16) { SendSignal(T16, what_signal); }
 
 // PRECONDITION : sept acteurs, bindings, routes et regards valides.
+// PRECONDITION : delai de boucle et recepteurs du garde 3 resolus et testes.
 // INTERDIT : lancer ce fragment dans un second sender.

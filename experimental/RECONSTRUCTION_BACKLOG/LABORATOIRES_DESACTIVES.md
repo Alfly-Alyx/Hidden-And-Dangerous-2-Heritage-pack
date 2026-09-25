@@ -101,11 +101,11 @@ trente-quatre entrées et vingt scripts modifiés**, catalogue
 `9a9862e763d141f1c49fd302780a3c9fd8860dee363c621ac603c7ebcb273e28`.
 Les neuf missions Sabre d'origine restent identiques, objectifs inclus.
 
-Les **135 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
+Les **142 tests Python** couvrent 47 cas de variantes, 20 cas de laboratoires,
 huit cas de conservation d'objectifs, quatre contrôles de lecture de catalogues,
 quatorze modèles/contrats de charges, assise, proximité et son,
 quatorze cas de groupes atomiques/4DS
-et 28 tests d'émulation du menu.
+28 tests d'émulation du menu et sept contrôles de la chaîne Norway dormante.
 Les auto-tests C# passent également. Le contrôle
 de dépendances distingue maintenant une désaffectation explicite
 `ScriptAssign(owner, "")` d'un nom dynamique; une concaténation de nom reste

@@ -2,7 +2,7 @@
 
 Ce catalogue recense les dossiers de premier niveau présents sur la branche. Il complète le registre thématique : sa fonction est de rendre visible tout ce qui existe déjà, y compris les études qui ne demandent pas d'action immédiate.
 
-Total : **146 dossiers**.
+Total : **147 dossiers**.
 
 | Dossier | Fichiers directs | Sous-dossiers |
 |---|---|---|
@@ -143,6 +143,7 @@ Total : **146 dossiers**.
 | [NORMANDY2_REMOVED_DEFENDERS](../NORMANDY2_REMOVED_DEFENDERS/) | `ETUDE.md`, `MATRICE_ACTEURS.md` | — |
 | [NORMANDY2_RETURN_DETECTORS](../NORMANDY2_RETURN_DETECTORS/) | `ETUDE.md` | — |
 | [NORWAY_MISSING_TIRPITZ_GUARDS_1_2_6_7_12_13_16](../NORWAY_MISSING_TIRPITZ_GUARDS_1_2_6_7_12_13_16/) | `ETUDE.md`, `PLACEMENTS.plan.disabled`, `PROTOTYPE_SINGLE_SENDER_EXTENSION.scr.disabled`, `SCRIPTS_SURVIVANTS.md` | — |
+| [NORWAY_TIRPITZ_GUARD3_AMBIENCE_HANDLERS](../NORWAY_TIRPITZ_GUARD3_AMBIENCE_HANDLERS/) | `ETUDE.md` | — |
 | [RECONSTRUCTION_BACKLOG](./) | `CATALOGUE_DOSSIERS.md`, `ETAT_PREPARATION.md`, `LABORATOIRES_DESACTIVES.md`, `MISSIONS.md`, `OUTILS_ET_DEMARRAGE.md`, `README.md`, `REFERENCES.md`, `SYSTEMES_ET_ASSETS.md`, `VALIDATION.md`, `VARIANTES_REPRODUCTIBLES.md` | — |
 | [SICILY1_IT40_DUAL_DOOR_BEHAVIOR](../SICILY1_IT40_DUAL_DOOR_BEHAVIOR/) | `ETUDE.md` | — |
 | [SICILY2_CHARGES_DUAL_STATE_WAVE](../SICILY2_CHARGES_DUAL_STATE_WAVE/) | `ETUDE.md` | — |
