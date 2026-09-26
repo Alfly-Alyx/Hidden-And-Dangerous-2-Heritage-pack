@@ -44,25 +44,25 @@ namespace HD2CommunityInstaller
             new EmbeddedFile {
                 ResourceName = "HD2CommunityInstaller.CustomMissions.Readme",
                 RelativePath = "CustomMissions/README.md",
-                Sha256 = "A3512B29BE69DD8317274DF81F1745E07CF3F2D88942CC17E76391F5B2D448B5",
+                Sha256 = "94A0599EB190D06794AF7C78F4FB6DBE58E4C374A2ACEAE1615F8BB44E984894",
                 PreserveExisting = true
             },
             new EmbeddedFile {
                 ResourceName = "HD2CommunityInstaller.CustomMissions.Schema",
                 RelativePath = "CustomMissions/mission.schema.json",
-                Sha256 = "C53CDD71AAB058D3B8E4E94B6A1140663B7D9A0B577B040FFD6850CA3EDE9D75",
+                Sha256 = "C27F658AFF5501C0E843E037768840D9B7E4C473CF242D3938E36180A4460EC1",
                 PreserveExisting = true
             },
             new EmbeddedFile {
                 ResourceName = "HD2CommunityInstaller.CustomMissions.TemplateManifest",
                 RelativePath = "CustomMissions/_modele/mission.json",
-                Sha256 = "9439500FB79D571160E22B2884DE1662E73ED779641329A3C7AA5E737DA5946F",
+                Sha256 = "1AA70733B91A47716ECE413336291A2F7B0B82C4B1AD8028B21657EDB85981F4",
                 PreserveExisting = true
             },
             new EmbeddedFile {
                 ResourceName = "HD2CommunityInstaller.CustomMissions.TemplateReadme",
                 RelativePath = "CustomMissions/_modele/payload/Missions/MaMission/LISEZ_MOI.txt",
-                Sha256 = "A48C1FFE82BDD37BD943CF259B7468AD4DF5D65F96096A6C5CD3269BAE834A03",
+                Sha256 = "EB83C61BEBFE1C36854282C331EDA1AD2F40A78BCB3818ECFCA026F92AD621F5",
                 PreserveExisting = true
             }
         };

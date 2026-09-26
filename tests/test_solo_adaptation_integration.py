@@ -1,5 +1,6 @@
 """Wiring checks for the eleven Heritage Pack solo adaptations."""
 from pathlib import Path
+import hashlib
 import re
 import unittest
 
@@ -44,6 +45,28 @@ class SoloAdaptationIntegrationTests(unittest.TestCase):
             encoding="utf-8")
         self.assertIn("MissionTemplates(source, originalSource)", core)
         self.assertIn('ReadArchiveEntry(originalGame, "GameData\\\\Gamedata00.gdt")', core)
+
+    def test_embedded_custom_mission_resource_hashes_match_source_files(self):
+        installer = (ROOT / "installer/CustomMissionManagerInstaller.cs").read_text(
+            encoding="utf-8")
+        resources = (
+            "README.md",
+            "mission.schema.json",
+            "_modele/mission.json",
+            "_modele/payload/Missions/MaMission/LISEZ_MOI.txt",
+        )
+        for relative_path in resources:
+            with self.subTest(relative_path=relative_path):
+                entry = re.search(
+                    rf'RelativePath = "CustomMissions/{re.escape(relative_path)}",\s*'
+                    r'Sha256 = "([0-9A-F]{64})"',
+                    installer,
+                )
+                self.assertIsNotNone(entry)
+                actual = hashlib.sha256(
+                    (ROOT / "custom-missions" / relative_path).read_bytes()
+                ).hexdigest().upper()
+                self.assertEqual(entry.group(1), actual)
 
 
 if __name__ == "__main__":
