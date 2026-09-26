@@ -6,6 +6,8 @@
 - icônes et sons MG34 présents dans les archives ;
 - objet 211 : `Ammunition - MG 34 - tank version` ;
 - MG34 monté/TANK actif, à préserver comme chaîne distincte.
+- ligne 32 de `item_shoot.tbl`, 135 octets aux offsets 4656–4791 ;
+  sémantique de tir encore non qualifiée, slot natif 32 réutilisé par un casque.
 
 ## DÉRIVÉ / INFÉRÉ
 

@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **457 tests Python réussis sur 458 dans la copie de publication**; un test de lien symbolique non exécuté
+- **468 tests Python réussis sur 469 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -62,6 +62,11 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   identifiants supérieurs à 255 conservés. Quatorze tests supplémentaires ;
   deux tags communs écrits mais ignorés par le lecteur natif sont explicités.
   Pas de migration ni de compatibilité de sauvegarde complète annoncée.
+- [Tables d'éditeur](TABLES_EDITEUR.md) : 755 lignes et leurs colonnes décodées.
+  Onze tests synthétiques supplémentaires empêchent les anciennes fenêtres de
+  recherche d'empiéter sur une fiche voisine. Preuves Benelli, FG42, MG34 et
+  lance-flammes recalées ; banc privé BenelliFPV_v5 reconstruit sans changer
+  les géométries. Aucune arme activée.
 - Trois comparaisons binaires Co_Burgundy1/2/3 supplémentaires reconstruisent
   respectivement douze/deux/dix porteurs et leurs liaisons sans modifier les scripts
   ou sons. Elles restent inertes, hors compte des laboratoires de mission.

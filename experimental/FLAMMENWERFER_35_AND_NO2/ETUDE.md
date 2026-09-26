@@ -4,6 +4,12 @@
 ressources commerciales partielles sont des références, pas des armes à
 réactiver. Aucun asset n'est recopié et rien n'est compilé.
 
+Contrôle complémentaire du **26 septembre 2026** : le [parseur des tables](../RECONSTRUCTION_BACKLOG/TABLES_EDITEUR.md)
+délimite la ligne allemande 44 à **6140–6273** (133 octets, indicateur nul)
+et la ligne réemployée 45 à **6273–6406** (`Flak TMP`). Les slots de munition
+207/208 sont lus par le parseur natif, sans fenêtres décalées. Les empreintes
+et contrôles de l'audit ont été renouvelés, sans toucher aux fichiers du jeu.
+
 ## Décision
 
 Les deux identités, leurs icônes et munitions subsistent. L'effet 25

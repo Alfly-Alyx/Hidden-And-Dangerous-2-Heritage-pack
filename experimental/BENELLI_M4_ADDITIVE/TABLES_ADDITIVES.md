@@ -102,7 +102,8 @@ Les deux copies sont `.4ds.disabled`, leurs octets restent identiques aux
 modèles déjà contrôlés. Le manifeste inscrit séparément leur provenance et
 leur champ nominal de vingt octets. Ces alias courts sont une exception
 documentée au préfixe descriptif `PROTOTYPE_HERITAGE_`, pas un contenu officiel.
-Le lot privé **BenelliFPV_v4** contient les deux alias et l'inspecteur local.
+Le lot privé **BenelliFPV_v5** contient les deux alias et l'inspecteur local,
+avec la [preuve de ligne TBL corrigée](../RECONSTRUCTION_BACKLOG/TABLES_EDITEUR.md).
 
 ## Reproduire les lectures
 

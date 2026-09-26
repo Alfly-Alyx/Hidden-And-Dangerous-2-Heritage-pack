@@ -23,7 +23,7 @@ from menu_gui_audit import parse_4ds_nodes, FourDsReader
 from five_ds import parse_5ds
 from model_transform import world_transforms
 from benelli_fpv_static import derive, geometry, NAMES
-from asset_presence_audit import benelli_shoot_evidence
+from asset_presence_audit import benelli_shoot_evidence, BENELLI_SHOOT_SHA256
 
 ROOT=Path(__file__).resolve().parents[1]
 MANIFEST=ROOT/'experimental/BENELLI_M4_ADDITIVE/fpv-sources.json'
@@ -173,7 +173,7 @@ def audit(data,manifest,excluded):
             or root['scale']!=[1,1,1] or rotation not in ((0,0,0,1),(0,0,0,-1))):
         raise ValueError('Static reference no longer has the reviewed neutral weapon root')
     shoot=benelli_shoot_evidence(data['tables/item_shoot.tbl'])
-    if not shoot['header_ok'] or shoot['sha256']!='56A60C8F6846A86E24137BAE21877935EA4F0D113F94F73B0CE6750F951ED7E7':
+    if not shoot['header_ok'] or shoot['sha256']!=BENELLI_SHOOT_SHA256:
         raise ValueError('Historical Benelli shoot record changed')
     references=sound_references(data['tables/ingamesounds.def'])
     audio={name:audio_metadata(data['sounds/'+name]) for name in SOUNDS.values()}

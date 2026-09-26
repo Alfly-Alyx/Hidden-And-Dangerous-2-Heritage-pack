@@ -17,6 +17,7 @@ from test_benelli_fpv_static import source,anchor
 from test_model_instance import model,mesh
 from test_five_ds import invented_clip
 from menu_gui_audit import parse_4ds_nodes
+from asset_presence_audit import BENELLI_SHOOT_SHA256
 
 
 def sound_definitions():
@@ -160,7 +161,7 @@ class FpvLabTests(unittest.TestCase):
 
     def test_audit_rejects_wrong_reference_rotation_or_changed_table_names(self):
         data=self.audit_fixture()
-        evidence={'header_ok':True,'sha256':'56A60C8F6846A86E24137BAE21877935EA4F0D113F94F73B0CE6750F951ED7E7'}
+        evidence={'header_ok':True,'sha256':BENELLI_SHOOT_SHA256}
         with patch.object(lab,'benelli_shoot_evidence',return_value=evidence):
             report=lab.audit(data,{'sources':{}},{})
             self.assertEqual(len(report['pairs']),9); self.assertEqual(len(report['audio']),2)

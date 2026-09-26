@@ -81,8 +81,11 @@ qualifient aucun déclencheur ni timing d'animation. Une écoute arrête l'autre
 changer de pose arrête les deux. Aucun son ne démarre automatiquement.
 
 Correction de l'étude initiale : le record `Benelli` de **135 octets** existe
-bien dans `others.DTA::TABLES/item_shoot.tbl`, offsets 1547–1682, SHA-256
-`56a60c8f6846a86e24137bae21877935ea4f0d113f94f73b0ce6750f951ed7e7`.
+bien dans `others.DTA::TABLES/item_shoot.tbl`, offsets **1551–1686**, SHA-256
+`ce461707bb7551abdb45e165222582201dc90c292d2ff781f684540e38e47fef`.
+La [lecture complète du schéma](../RECONSTRUCTION_BACKLOG/TABLES_EDITEUR.md)
+corrige l'ancienne fenêtre décalée de quatre octets. Le banc privé `BenelliFPV_v5`
+reprend cette preuve sans modifier les géométries ni l'inspecteur.
 Sa présence est prouvée, **la signification fonctionnelle de ses champs ne
 l'est pas**. Les valeurs brutes 0,3 et 1500 ne sont pas étiquetées cadence ou
 dégâts. L'enregistrement actuel de la boussole ne sert jamais de réglage d'arme.
