@@ -1,8 +1,9 @@
 # Flammenwerfer 35 et Flamethrower Portable No. 2
 
-État : **deux reconstructions modernes lourdes**, 15 septembre 2026. Les
-ressources commerciales partielles sont des références, pas des armes à
-réactiver. Aucun asset n'est recopié et rien n'est compilé.
+État au **26 septembre 2026** : deux [ensembles extérieurs modernes](MODELES_MODERNES.md)
+fabriqués, statiques et désactivés ; FPV, animations et comportements restent
+à réaliser. Les ressources commerciales partielles sont des références, pas
+des armes à réactiver. Aucun asset commercial n'est recopié.
 
 Contrôle complémentaire du **26 septembre 2026** : le [parseur des tables](../RECONSTRUCTION_BACKLOG/TABLES_EDITEUR.md)
 délimite la ligne allemande 44 à **6140–6273** (133 octets, indicateur nul)
@@ -18,8 +19,9 @@ seul nœud `fire01`, est une amorce d'effet : ce n'est ni un modèle tenu, ni un
 modèle posé, ni un réservoir.
 
 Les voix conservées prouvent un contexte narratif autour des lance-flammes,
-pas des sons de fonctionnement. Modèles, animations, carburant, jet physique,
-dégâts et comportement complet doivent être recréés. Le résultat restera nommé
+pas des sons de fonctionnement. Les extérieurs sont maintenant créés ; modèles
+FPV, animations, carburant, jet physique, dégâts et comportement complet
+doivent encore être recréés. Le résultat restera nommé
 « reconstruction moderne expérimentale ».
 
 ## Chemin borné

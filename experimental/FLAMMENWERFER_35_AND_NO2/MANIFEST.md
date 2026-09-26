@@ -21,7 +21,10 @@
 
 ## CRÉATION MODERNE REQUISE POUR CHAQUE ARME
 
-- modèles FPV, third-person, monde/sol et réservoir ;
+- [Ensembles monde/sol et volumes dorsaux réalisés](MODELES_MODERNES.md) :
+  recettes originales distinctes, deux LOD, cinq matériaux ; statiques et
+  désactivés, sans origine commerciale ni validation moteur ;
+- modèles FPV et rattachements third-person à réaliser ;
 - animations joueur et IA ;
 - allumage, son continu, extinction et sécurité ;
 - jauge/consommation, recharge, jet, collision, occultation et dégâts ;
@@ -30,5 +33,5 @@
 
 ## ABSENT / NON PROUVÉ
 
-- entrée Weapon exploitable ; modèle d'arme complet ; sons mécaniques ;
+- entrée Weapon exploitable ; modèle animé/tenu complet ; sons mécaniques ;
 - comportement du carburant ; primitives de dégâts continues historiques.

@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **476 tests Python réussis sur 477 dans la copie de publication**; un test de lien symbolique non exécuté
+- **484 tests Python réussis sur 485 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -72,6 +72,10 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   [MG34 portative](../MG34_PORTABLE/MODELE_MODERNE.md), 1536/960 triangles.
   Géométrie, LOD et trois vues contrôlés ; huit tests nouveaux. Ce sont des
   créations modernes statiques, muettes, sans slot alloué ni validation moteur.
+- [Flammenwerfer 35 et No. 2](../FLAMMENWERFER_35_AND_NO2/MODELES_MODERNES.md) :
+  deux ensembles extérieurs originaux fabriqués, sacs et tuyaux compris,
+  21/19 pièces et deux LOD chacun. Huit tests supplémentaires et trois vues
+  contrôlées ; ni animation, effet, son, comportement ou tenue en jeu validée.
 - Trois comparaisons binaires Co_Burgundy1/2/3 supplémentaires reconstruisent
   respectivement douze/deux/dix porteurs et leurs liaisons sans modifier les scripts
   ou sons. Elles restent inertes, hors compte des laboratoires de mission.
