@@ -1,7 +1,7 @@
 # Variantes reproductibles
 
 État vérifié le **26 septembre 2026** sur la branche
-`codex/reconstruction-phase-1` : quarante-trois profils, soit cinquante-et-un scripts dérivés,
+`codex/reconstruction-phase-1` : quarante-six profils, soit cinquante-quatre scripts dérivés,
 ont été construits et
 comparés aux sources commerciales. **Aucun n'est installé ni validé en jeu.**
 
@@ -13,14 +13,20 @@ modifier les archives.
 
 ## Résultat de la série
 
-Cinq ajouts suivants portent le total à 43 : allure de l'agent Alps 2, gestes
+Une deuxième série de cinq profils traite l'allure de l'agent Alps 2, les gestes
 d'interrogatoire Burgundy 3 solo et coop (deux triplets distincts), et deux
 ordres d'assise/fumée Arctic 1 Carnage. Leurs 143/105/80/105 fichiers de mission
-sont résolus en mémoire, sans dépendance de script absente. Ils ne sont pas
-encore préparés dans les copies : un client externe ouvert bloque volontairement
-les écritures. La fabrication de leurs sources est vérifiée; leur pose/retrait
-reste à répéter après fermeture. L'ensemble des recettes épingle 126 sources
-de mission distinctes, plus les deux ressources de dialogue Libye 2.
+sont résolus en mémoire, sans dépendance de script absente. Une troisième série
+ajoute les deux déclencheurs exclusifs du ventilateur et la lecture AF4_19
+d'Africa 5 : 194 fichiers par paire, détecteur commercial absent conservé.
+L'ensemble des recettes épingle 129 sources de mission distinctes, les deux
+ressources de dialogue Libye 2 et trois modèles d'accessoires Africa 5.
+
+La propriété des accessoires est désormais contrôlée par décodage de l'instance
+de scène, référence de modèle prioritaire, nœud racine unique, géométrie et
+transformations finies. Ce contrôle ne prouve ni collision ni prise en main.
+Voir les qualifications du [ventilateur](../AFRICA5_PHYSICAL_FAN/QUALIFICATION.md)
+et du [garde lecteur](../AFRICA5_READING_GUARD_19/QUALIFICATION.md).
 
 La qualification de mode est désormais explicite. Les profils Carnage utilisent
 le registre solo natif; le profil coop utilise exclusivement `mpscripts.dta` et
@@ -32,7 +38,7 @@ profils au lieu de les transformer implicitement en solo.
 Les vingt-quatre premières variantes détaillées ci-dessous ont été complétées
 par quatorze profils : neuf postures/déplacements Alps 1, deux effets isolés de
 citerne Arctic 1, la transition d'invasion Africa 4, la paire de joueurs de cartes
-Africa 1 et le dialogue conditionnel Libye 2. Le catalogue contient maintenant
+Africa 1 et le dialogue conditionnel Libye 2. Cette première extension épinglait
 105 sources de mission distinctes et deux ressources de dialogue épinglées.
 Les quatorze ajouts ont été reconstruits dans chacune des trois copies natives;
 leurs 28 cycles témoin/variante de pose, relecture et retrait sont réussis.

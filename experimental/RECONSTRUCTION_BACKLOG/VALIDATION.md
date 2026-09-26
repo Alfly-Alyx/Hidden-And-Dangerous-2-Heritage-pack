@@ -3,9 +3,9 @@
 ## Registres distincts et preuves
 
 Le paquet stable possède 56 essais dans `validation/runtime-validation.json`;
-ce nombre ne couvre pas les nouvelles reconstructions. Les 43 profils de scripts
+ce nombre ne couvre pas les nouvelles reconstructions. Les 46 profils de scripts
 et trois comparaisons binaires ont désormais leur propre
-[registre expérimental](../../validation/RECONSTRUCTION.md) : 280 contrôles encore
+[registre expérimental](../../validation/RECONSTRUCTION.md) : 298 contrôles encore
 en attente, étapes propres à chaque profil et empreintes des définitions.
 L'audit refuse les résultats réussis sans preuve locale vérifiable ou provenant
 d'un autre protocole. Il ne lance pas le jeu et n'autorise aucune activation.

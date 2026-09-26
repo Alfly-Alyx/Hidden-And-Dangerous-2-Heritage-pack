@@ -1,6 +1,6 @@
 # Essais natifs dans des copies indépendantes
 
-Cette procédure couvre les **46 reconstructions déjà définies**, pas l'ensemble
+Cette procédure couvre les **49 reconstructions déjà définies**, pas l'ensemble
 des 180 dossiers de recherche. Elle n'active aucune option de l'installateur
 public et ne transforme pas un prototype en contenu validé.
 
@@ -9,10 +9,10 @@ public et ne transforme pas un prototype en contenu validé.
 Les 20 laboratoires désactivés utilisent des noms de mission distincts et restent
 disponibles. La nouvelle voie d'essai utilise les **missions d'origine** dans une
 copie privée du jeu : aucun remappage de nom, menu expérimental supplémentaire ou
-gestionnaire à lancer. Elle prend en charge les 43 profils de scripts et les trois
-comparaisons de scène coop, soit 46 paires de fichiers témoin/variante. À ce
-point d'étape, 41 paires sont préparées dans les trois copies; les cinq derniers
-ajouts attendent la fermeture d'un client avant l'extension.
+gestionnaire à lancer. Elle prend en charge les 46 profils de scripts et les trois
+comparaisons de scène coop, soit 49 paires de fichiers témoin/variante. À ce
+point d'étape, les 49 paires sont préparées dans les trois copies, y compris les
+huit derniers ajouts après fermeture indépendante du client externe.
 
 Chaque paire comprend les fichiers de la mission et ses scripts commerciaux
 effectifs, issus des archives. La variante ne change que les scripts de sa recette
@@ -98,11 +98,11 @@ un mélange de fichiers encore initiaux et déjà déployés. Un verrou de proce
 interrompu n'est jamais retiré automatiquement : vérifier d'abord que l'opération
 est réellement terminée et identifier ce verrou précis avant toute reprise.
 
-## Cinq témoins à observer avant leur variante
+## Huit témoins à observer avant leur variante
 
 Deux missions commerciales présentent des références à des scripts absents :
 
-- Africa 5 : `af4_runway01_detector.scr`, pour ses quatre profils;
+- Africa 5 : `af4_runway01_detector.scr`, pour ses sept profils;
 - Co-Burgundy 1 : `bu1_diary.scr` et `bur1_obj_carnage.scr`, pour l'ambiance coop.
 
 Les configurations **conservent ces absences et les liaisons commerciales** dans
@@ -116,7 +116,7 @@ pendant l'essai, puis restauré. Sa présence ne masque donc pas l'état commerc
 que le témoin doit observer. L'installation personnelle reste intacte.
 
 Les témoins peuvent être préparés pour observer le comportement réellement livré.
-Les cinq variantes restent verrouillées jusqu'à un résultat `baseline` réel,
+Les huit variantes restent verrouillées jusqu'à un résultat `baseline` réel,
 validé par le registre de preuves, avec l'exécutable et les deux empreintes
 **natives** correspondants. Un simple drapeau de commande ne peut pas contourner
 ce contrôle. Pour Africa 5, observer le dialogue de Schumann et le contrôleur
@@ -144,10 +144,10 @@ dossier seul, font foi pour leur préparation.
 .\.venv\Scripts\python.exe tools\reconstruction_sandbox.py verify --session .analysis\reconstruction-sandboxes\native-trials-20260926
 ```
 
-Une nouvelle répétition complète déploierait, relirait et restaurerait les 46
-témoins et 41 variantes sans préalable moteur, soit **87 cycles de fichiers**.
-Seuls 77 cycles ont été effectués jusqu'ici, sur les 41 premiers profils. Elle ne
-contourne pas les cinq barrières de témoin réel. Une comparaison finale de tous
+Une nouvelle répétition complète déploierait, relirait et restaurerait les 49
+témoins et 41 variantes sans préalable moteur, soit **90 cycles de fichiers**.
+Ces 90 cycles ont été effectués en trois séries conservées. La répétition ne
+contourne pas les huit barrières de témoin réel. Une comparaison finale de tous
 les fichiers du jeu copié doit retrouver exactement le manifeste initial.
 Le rapport `OFFLINE_REHEARSAL.json` conserve les empreintes et journaux, avec
 `runtime_tests_performed: 0`. Un rapport existant n'est pas écrasé.
@@ -186,26 +186,27 @@ remplace pas la série historique et annonce explicitement sa sélection.
 
 - Trois copies indépendantes ont été créées, chacune avec 24 385 fichiers,
   6 508 813 370 octets et le même manifeste initial.
-- Les 41 configurations ont été reconstruites dans chacune des trois copies;
+- Les 49 configurations ont été reconstruites dans chacune des trois copies;
   leurs empreintes de protocole correspondent toutes au registre actuel.
-- Les **49 premiers cycles**, puis **28 cycles supplémentaires** ont été effectués
-  sur l'hôte, dans deux opérations distinctes. Tous les retours
+- Les **49 premiers cycles**, puis **28** et **13 cycles supplémentaires** ont été effectués
+  sur l'hôte, dans trois opérations distinctes. Tous les retours
   arrière ont réussi; la comparaison globale finale retrouve exactement les
   fichiers initiaux, sans ajout résiduel ni contenu changé.
-- Les rapports locaux sont `OFFLINE_REHEARSAL.json` et
-  `OFFLINE_REHEARSAL-expansion-20260926.json` dans la session hôte. Les données
+- Les rapports locaux sont `OFFLINE_REHEARSAL.json`,
+  `OFFLINE_REHEARSAL-expansion-20260926.json` et
+  `OFFLINE_REHEARSAL-props-modes-20260926.json` dans la session hôte. Les données
   commerciales, sauvegardes, fichiers écartés et journaux restent hors de Git.
-- **351 tests Python réussis sur 352 dans la copie de publication**; un test de création de lien symbolique
+- **367 tests Python réussis sur 368 dans la copie de publication**; un test de création de lien symbolique
   n'a pas pu s'exécuter sans privilège Windows. Les liens physiques, les cibles
   modifiées, les interruptions et les restaurations ont leurs tests distincts.
 - **Zéro essai moteur** et aucun lancement de jeu ou d'installateur par ces outils.
-  Les 280 résultats expérimentaux restent `pending`.
+  Les 298 résultats expérimentaux restent `pending`.
 
-Les cinq ajouts suivant l'extension à 41 ont été construits en mémoire et leur
-fermeture contrôlée. Une tentative d'extension a été refusée **avant écriture**
-car `HD2_SabreSquadron.exe` était ouvert dans une autre installation. Aucun
-processus n'a été fermé et aucune protection contournée. Reprendre `extend`
-après fermeture, puis une répétition nommée ciblant les cinq profils.
+Une première tentative d'extension a été refusée **avant écriture** car
+`HD2_SabreSquadron.exe` était ouvert dans une autre installation. Le client a
+ensuite été fermé indépendamment, permettant d'ajouter les cinq profils de modes
+et les trois profils d'accessoires Africa 5. Aucun processus n'a été fermé par
+ces outils et aucune protection contournée.
 
 ## Solo, Carnage et coopération ne sont pas interchangeables
 

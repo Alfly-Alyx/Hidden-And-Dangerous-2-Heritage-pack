@@ -17,6 +17,7 @@ import sys
 
 from dta_archive import DtaArchive
 from menu_gui_audit import parse_4ds_nodes
+from model_instance import MODEL_PATH, resolve_model_child
 from script_binding_audit import parse_bindings, scene_frame_names
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,6 +27,13 @@ ID_PATTERN = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*\Z")
 SHA_PATTERN = re.compile(r"[0-9a-f]{64}\Z")
 ASSET_PATTERN = re.compile(r"(?:sounds/[0-9]{8}\.wav|tables/dabing/[0-9]{8}\.dat)\Z")
 ASSET_ARCHIVES = ("LangEnglish.dta", "SabreSquadron.dta")
+MODEL_ARCHIVES = ("models.dta", "Patch.dta", "SabreSquadron.dta")
+
+
+def valid_asset_location(name, archive):
+    return isinstance(name, str) and (
+        (ASSET_PATTERN.fullmatch(name) and archive in ASSET_ARCHIVES)
+        or (MODEL_PATH.fullmatch(name) and archive in MODEL_ARCHIVES))
 
 
 def qualification_mode(profile: dict) -> str:
@@ -47,12 +55,11 @@ def asset_specs(profile: dict) -> list[dict]:
     seen = set()
     for spec in specs:
         if (not isinstance(spec, dict) or set(spec) != {"path", "archive", "size", "sha256"}
-                or not isinstance(spec["path"], str) or not ASSET_PATTERN.fullmatch(spec["path"])
-                or spec["archive"] not in ASSET_ARCHIVES
+                or not valid_asset_location(spec["path"], spec["archive"])
                 or type(spec["size"]) is not int or spec["size"] <= 0
                 or not isinstance(spec["sha256"], str) or not SHA_PATTERN.fullmatch(spec["sha256"])
                 or spec["path"] in seen):
-            raise ValueError("Invalid or duplicate pinned dialogue asset")
+            raise ValueError("Invalid or duplicate pinned resource")
         seen.add(spec["path"])
     return specs
 
@@ -77,7 +84,7 @@ def digest(data: bytes) -> str:
 
 def change_specs(profile: dict) -> list[dict]:
     """An atomic profile may have several bound scripts in the same mission."""
-    fields = {"source", "actor", "owner_entry", "edits"}
+    fields = {"source", "actor", "owner_entry", "owner_model", "edits"}
     primary = {key: profile[key] for key in fields if key in profile}
     additional = profile.get("additional_changes", [])
     if not isinstance(additional, list):
@@ -99,6 +106,16 @@ def change_specs(profile: dict) -> list[dict]:
         actor = change["actor"].casefold()
         if source in sources or actor in actors:
             raise ValueError("Duplicate script or owner in atomic profile")
+        if 'owner_model' in change:
+            spec = change['owner_model']
+            if (not isinstance(spec, dict) or set(spec) != {'instance','node','model_entry'}
+                    or not all(isinstance(v,str) and v for v in spec.values())
+                    or not MODEL_PATH.fullmatch(spec['model_entry'])
+                    or change.get('owner_entry') != f'missions/{mission}/scene2.bin'
+                    or '.' in spec['instance'] or '.' in spec['node']
+                    or actor != (spec['instance']+'.'+spec['node']).casefold()
+                    or spec['model_entry'] not in {a['path'] for a in asset_specs(profile)}):
+                raise ValueError('Model owner requires a pinned model and its exact scene instance')
         sources.add(source)
         actors.add(actor)
     result.extend(additional)
@@ -109,6 +126,29 @@ def typed_names(raw: bytes, entry: str) -> set[str]:
     if entry.endswith(".4ds"):
         return {node["name"].casefold() for node in parse_4ds_nodes(raw)["nodes"]}
     return scene_frame_names(raw)
+
+
+def model_checks(profile: dict) -> list[dict]:
+    """Optional typed prop proofs, separate from the actor owning the script."""
+    specs = profile.get('model_checks', [])
+    if not isinstance(specs, list):
+        raise ValueError('Model checks must be a list')
+    mission = entry_path(profile['source']).split('/')[1]
+    assets = {asset['path'] for asset in asset_specs(profile)}
+    seen = set()
+    for spec in specs:
+        if (not isinstance(spec, dict) or set(spec) != {'instance', 'node', 'model_entry'}
+                or not all(isinstance(v, str) and v for v in spec.values())
+                or not MODEL_PATH.fullmatch(spec['model_entry'])
+                or spec['model_entry'] not in assets
+                or '.' in spec['instance'] or '.' in spec['node']
+                or f'missions/{mission}/scene2.bin' not in profile['evidence']):
+            raise ValueError('Model check requires a pinned resource and typed scene')
+        key = (spec['instance'].casefold(), spec['node'].casefold())
+        if key in seen:
+            raise ValueError('Duplicate model check')
+        seen.add(key)
+    return specs
 
 
 def load_catalog(path: Path = CATALOG) -> dict:
@@ -134,6 +174,7 @@ def load_catalog(path: Path = CATALOG) -> dict:
             raise ValueError("The commercial profile must remain the default")
         evidence = profile["evidence"]
         asset_specs(profile)
+        model_checks(profile)
         changes = change_specs(profile)
         required = {f"missions/{mission}/{registry_name(profile)}", f"missions/{mission}/actors.bin"}
         for change in changes:
@@ -241,13 +282,13 @@ class ArchiveSources:
         return result
 
     def read_asset(self, name: str, archive_name: str) -> bytes:
-        """Read a named audio/lip-sync reference, never export or install it.
+        """Read a pinned dialogue or model reference, never export or install it.
 
         This pins the selected English source, not a claim about all language
         editions or runtime resource precedence.
         """
-        if not ASSET_PATTERN.fullmatch(name) or archive_name not in ASSET_ARCHIVES:
-            raise ValueError("Unsupported dialogue asset source")
+        if not valid_asset_location(name, archive_name):
+            raise ValueError("Unsupported resource source")
         loose = self.game.joinpath(*name.split('/'))
         if loose.exists():
             if not self.archives_only:
@@ -261,12 +302,20 @@ class ArchiveSources:
                 entries.setdefault(normalized(entry.name), []).append(entry)
             self.index[archive_name] = (archive, entries)
         archive, index = self.index[archive_name]
+        if MODEL_PATH.fullmatch(name):
+            # Unlike the explicitly selected language, model instance ownership
+            # must agree with effective Base/Patch/Sabre resource precedence.
+            if name in self.index.get('PatchX01.dta', (None, {}))[1]:
+                raise ValueError('Unreviewed model override in PatchX01')
+            effective = [a for a in MODEL_ARCHIVES if a in self.index and name in self.index[a][1]]
+            if not effective or effective[-1] != archive_name:
+                raise ValueError('Pinned model is shadowed by another archive')
         matches = index.get(name, [])
         if len(matches) != 1:
-            raise ValueError(f"Missing or ambiguous dialogue asset: {name}")
+            raise ValueError(f"Missing or ambiguous resource: {name}")
         raw = archive.read(matches[0])
         if loose.exists() and loose.read_bytes() != raw:
-            raise ValueError("Conflicting loose dialogue asset: " + name)
+            raise ValueError("Conflicting loose resource: " + name)
         return raw
 
 
@@ -303,11 +352,12 @@ def apply_edits(source: bytes, edits: list[dict]) -> bytes:
 def prepare(profile: dict, sources) -> tuple[bytes, dict]:
     if profile.get("additional_changes"):
         raise ValueError("Atomic multi-script profile requires prepare_changes / a laboratory")
-    verified = {}
+    verified, verified_assets = {}, {}
     for asset in asset_specs(profile):
         raw = sources.read_asset(asset["path"], asset["archive"])
         if len(raw) != asset["size"] or digest(raw) != asset["sha256"]:
-            raise ValueError("Pinned dialogue asset changed: " + asset["path"])
+            raise ValueError("Pinned asset changed: " + asset["path"])
+        verified_assets[asset['path']] = raw
     for name, proof in profile["evidence"].items():
         archive, raw = sources.read(name)
         if (archive != proof["archive"] or len(raw) != proof["size"]
@@ -316,15 +366,24 @@ def prepare(profile: dict, sources) -> tuple[bytes, dict]:
         verified[name] = raw
     source_name = profile["source"]
     mission = source_name.split("/")[1]
+    prop_proofs = [resolve_model_child(verified[f'missions/{mission}/scene2.bin'],
+                   verified_assets[spec['model_entry']], spec['instance']+'.'+spec['node'], spec)
+                   for spec in model_checks(profile)]
     registry = verified[f"missions/{mission}/{registry_name(profile)}"]
     bindings = [script for actor, script in parse_bindings(registry)
                 if actor.casefold() == profile["actor"].casefold()]
     if len(bindings) != 1 or normalized(bindings[0]) != source_name.rsplit("/", 1)[1]:
         raise ValueError(f"Missing or conflicting owner binding: {profile['actor']}")
     owner_entry = profile.get("owner_entry", f"missions/{mission}/actors.bin")
-    actor_names = typed_names(verified[owner_entry], owner_entry)
-    if profile["actor"].casefold() not in actor_names:
-        raise ValueError(f"Missing serialized actor: {profile['actor']}")
+    model_proof = None
+    if 'owner_model' in profile:
+        spec = profile['owner_model']
+        model_proof = resolve_model_child(verified[owner_entry], verified_assets[spec['model_entry']],
+                                          profile['actor'], spec)
+    else:
+        actor_names = typed_names(verified[owner_entry], owner_entry)
+        if profile["actor"].casefold() not in actor_names:
+            raise ValueError(f"Missing serialized actor: {profile['actor']}")
     for check in profile.get("checks", []):
         raw = verified[check["entry"]]
         names = typed_names(raw, check["entry"]) if check["kind"] in ("frames", "4ds_frames") else set()
@@ -355,6 +414,10 @@ def prepare(profile: dict, sources) -> tuple[bytes, dict]:
         "installed_game_compatibility": "not_tested",
         "output": None,
     }
+    if model_proof is not None:
+        report['model_owner_proof'] = model_proof
+    if prop_proofs:
+        report['model_checks'] = prop_proofs
     return variant, report
 
 
@@ -364,7 +427,7 @@ def prepare_changes(profile: dict, sources) -> tuple[dict[str, bytes], dict]:
     payload, reports = {}, []
     for spec in specs:
         single = {key: value for key, value in profile.items()
-                  if key not in ("additional_changes", "owner_entry")}
+                  if key not in ("additional_changes", "owner_entry", "owner_model")}
         single.update(spec)
         data, report = prepare(single, sources)
         payload[spec["source"]] = data
@@ -375,6 +438,9 @@ def prepare_changes(profile: dict, sources) -> tuple[dict[str, bytes], dict]:
         "source", "actor", "owner_entry", "source_archive", "source_sha256",
         "variant_sha256", "source_bytes", "variant_bytes", "edit_count")}
         for item in reports]
+    for change, item in zip(report['changes'], reports):
+        if 'model_owner_proof' in item:
+            change['model_owner_proof'] = item['model_owner_proof']
     report["edit_count"] = sum(item["edit_count"] for item in reports)
     return payload, report
 

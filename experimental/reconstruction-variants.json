@@ -3,6 +3,234 @@
   "reference_edition": "GOG English Sabre Squadron 1.12",
   "profiles": [
     {
+      "id": "africa5-fan-onuse-oneshot",
+      "title": "Africa 5 — ventilateur physique, utilisation explicite",
+      "classification": "MODERNE",
+      "source": "scripts/africa5/af4_vetrak.scr",
+      "actor": "m_AF5_vetrak.Rectangle07",
+      "owner_entry": "missions/africa5/scene2.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/africa5/af4_vetrak.scr": {
+          "archive": "Patch.dta",
+          "size": 475,
+          "sha256": "74a7fc103a3ba8682890b8400b3c858835d1a8eb1db3fbeb98ec0ea18f82caca"
+        },
+        "missions/africa5/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 7140,
+          "sha256": "c5b32bcc3d74cea53ee9b29675a6154a148ee77998d6174dce5783bb84937db6"
+        },
+        "missions/africa5/actors.bin": {
+          "archive": "missions.dta",
+          "size": 44535,
+          "sha256": "b219f2311fd3c91d3c9afa2b3e5a31510bf981fb9a7cb5eb851c0ac29f485319"
+        },
+        "missions/africa5/scene2.bin": {
+          "archive": "missions.dta",
+          "size": 6973053,
+          "sha256": "53b1e6eb9fcbb6a295ff6d8f0ec960db5ced3c92e77b25d5a1843f19ecb5ec8f"
+        },
+        "scripts/africa5/af4_vetrak02.scr": {
+          "archive": "Patch.dta",
+          "size": 386,
+          "sha256": "49a32eed0ca9940d0b0c09f53ab1d755b23ebcad734d694b3e83118a5c908806"
+        }
+      },
+      "checks": [],
+      "edits": [
+        {
+          "before": "FRAME this;\t\tFRM_GetMyFrame(this);",
+          "after": "FRAME this;\t\tFRM_GetMyFrame(this);\nINTEGER heritage_physical_created = 0;"
+        },
+        {
+          "before": "//Whenever pir (_PlayerInRange(3))\n//{\n//  FRM_CreatePhysicalObject(this, 5);\n//}",
+          "after": "// MODERNE: monostable; physical behaviour remains unqualified.\nOnUse(){\n  if ((_PlayerInRange(3)) AND (heritage_physical_created == 0)){\n    heritage_physical_created = 1;\n    FRM_CreatePhysicalObject(this, 5);\n    EndScript();\n  }\n}"
+        }
+      ],
+      "asset_evidence": [
+        {
+          "path": "models/m_af5_vetrak01.4ds",
+          "archive": "models.dta",
+          "size": 8201,
+          "sha256": "6f59be2dfa737efed850c1e16494f9288dc33b4519df9305622c882692665a63"
+        }
+      ],
+      "owner_model": {
+        "instance": "m_AF5_vetrak",
+        "node": "Rectangle07",
+        "model_entry": "models/m_af5_vetrak01.4ds"
+      }
+    },
+    {
+      "id": "africa5-fan-proximity-oneshot",
+      "title": "Africa 5 — ventilateur physique, proximité comparative",
+      "classification": "MODERNE",
+      "source": "scripts/africa5/af4_vetrak.scr",
+      "actor": "m_AF5_vetrak.Rectangle07",
+      "owner_entry": "missions/africa5/scene2.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/africa5/af4_vetrak.scr": {
+          "archive": "Patch.dta",
+          "size": 475,
+          "sha256": "74a7fc103a3ba8682890b8400b3c858835d1a8eb1db3fbeb98ec0ea18f82caca"
+        },
+        "missions/africa5/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 7140,
+          "sha256": "c5b32bcc3d74cea53ee9b29675a6154a148ee77998d6174dce5783bb84937db6"
+        },
+        "missions/africa5/actors.bin": {
+          "archive": "missions.dta",
+          "size": 44535,
+          "sha256": "b219f2311fd3c91d3c9afa2b3e5a31510bf981fb9a7cb5eb851c0ac29f485319"
+        },
+        "missions/africa5/scene2.bin": {
+          "archive": "missions.dta",
+          "size": 6973053,
+          "sha256": "53b1e6eb9fcbb6a295ff6d8f0ec960db5ced3c92e77b25d5a1843f19ecb5ec8f"
+        },
+        "scripts/africa5/af4_vetrak02.scr": {
+          "archive": "Patch.dta",
+          "size": 386,
+          "sha256": "49a32eed0ca9940d0b0c09f53ab1d755b23ebcad734d694b3e83118a5c908806"
+        }
+      },
+      "checks": [],
+      "edits": [
+        {
+          "before": "FRAME this;\t\tFRM_GetMyFrame(this);",
+          "after": "FRAME this;\t\tFRM_GetMyFrame(this);\nINTEGER heritage_physical_created = 0;"
+        },
+        {
+          "before": "//Whenever pir (_PlayerInRange(3))\n//{\n//  FRM_CreatePhysicalObject(this, 5);\n//}",
+          "after": "// MODERNE: monostable; physical behaviour remains unqualified.\nWhenever heritage_fan_pir (_PlayerInRange(3)){\n  if ((_PlayerInRange(3)) AND (heritage_physical_created == 0)){\n    SetWhenever(heritage_fan_pir, false);\n    heritage_physical_created = 1;\n    FRM_CreatePhysicalObject(this, 5);\n    EndScript();\n  }\n}"
+        }
+      ],
+      "asset_evidence": [
+        {
+          "path": "models/m_af5_vetrak01.4ds",
+          "archive": "models.dta",
+          "size": 8201,
+          "sha256": "6f59be2dfa737efed850c1e16494f9288dc33b4519df9305622c882692665a63"
+        }
+      ],
+      "owner_model": {
+        "instance": "m_AF5_vetrak",
+        "node": "Rectangle07",
+        "model_entry": "models/m_af5_vetrak01.4ds"
+      }
+    },
+    {
+      "id": "africa5-guard19-reading-interruptible",
+      "title": "Africa 5 — lecture AF4_19 avec nettoyage expérimental",
+      "classification": "MODERNE",
+      "source": "scripts/africa5/af4_19.scr",
+      "actor": "AF4_19",
+      "owner_entry": "missions/africa5/actors.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/africa5/af4_19.scr": {
+          "archive": "Patch.dta",
+          "size": 1590,
+          "sha256": "2cdac01e530ad5922cae0617f164a9feb05990d68309d263e7474734d2b8deb6"
+        },
+        "missions/africa5/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 7140,
+          "sha256": "c5b32bcc3d74cea53ee9b29675a6154a148ee77998d6174dce5783bb84937db6"
+        },
+        "missions/africa5/actors.bin": {
+          "archive": "missions.dta",
+          "size": 44535,
+          "sha256": "b219f2311fd3c91d3c9afa2b3e5a31510bf981fb9a7cb5eb851c0ac29f485319"
+        },
+        "missions/africa5/scene2.bin": {
+          "archive": "missions.dta",
+          "size": 6973053,
+          "sha256": "53b1e6eb9fcbb6a295ff6d8f0ec960db5ced3c92e77b25d5a1843f19ecb5ec8f"
+        }
+      },
+      "checks": [
+        {
+          "kind": "frames",
+          "entry": "missions/africa5/scene2.bin",
+          "values": [
+            "m_AF5_slozky01a7",
+            "m_AF5_slozky01b14"
+          ]
+        }
+      ],
+      "edits": [
+        {
+          "before": "  INTEGER Atype\t\t\t= 0;",
+          "after": "  INTEGER Atype\t\t\t= 0;\n  // MODERNE: state armed before potentially interruptible APIs.\n  INTEGER heritage_read_active = 0;\n  INTEGER heritage_book_pending = 0;\n  INTEGER heritage_cycle_running = 0;"
+        },
+        {
+          "before": "OnDeath(){",
+          "after": "OnDeath(){\n  heritage_cycle_running = 0;\n  if (heritage_read_active != 0){\n    heritage_read_active = 0;\n    HUMAN_ACTIVITY_Read(0, book);\n  }\n  if (heritage_book_pending != 0){\n    heritage_book_pending = 0;\n    HUMAN_DropObject();\n  }\n"
+        },
+        {
+          "before": "OnAlarm(){\n  HUMAN_DropObject();",
+          "after": "OnAlarm(){\n  heritage_cycle_running = 0;\n  if (heritage_read_active != 0){\n    heritage_read_active = 0;\n    HUMAN_ACTIVITY_Read(0, book);\n  }\n  heritage_book_pending = 0;\n  HUMAN_DropObject();"
+        },
+        {
+          "before": "OnSignal(1){\n  goto ACTIVATE;\n}",
+          "after": "OnSignal(1){\n  if (heritage_cycle_running == 0){\n    heritage_cycle_running = 1;\n    goto ACTIVATE;\n  }\n}"
+        },
+        {
+          "before": "OnAlarmDone(){",
+          "after": "OnAlarmDone(){\n  if (heritage_read_active != 0){\n    heritage_read_active = 0;\n    HUMAN_ACTIVITY_Read(0, book);\n  }\n  if (heritage_book_pending != 0){\n    heritage_book_pending = 0;\n    HUMAN_DropObject();\n  }\n  heritage_cycle_running = 1;"
+        },
+        {
+          "before": "  //HUMAN_PickObject(book, 1);",
+          "after": "  heritage_book_pending = 1;\n  HUMAN_PickObject(book, 1);"
+        },
+        {
+          "before": "  // HUMAN_ACTIVITY_Read(1, book);\t\t\t// doplnit az bude fungovat read",
+          "after": "  heritage_read_active = 1;\n  HUMAN_ACTIVITY_Read(1, book); // API historically unfinished; laboratory only"
+        },
+        {
+          "before": "  // HUMAN_ACTIVITY_Read(0, book);",
+          "after": "  heritage_read_active = 0;\n  HUMAN_ACTIVITY_Read(0, book);"
+        },
+        {
+          "before": "  //HUMAN_DropObject();",
+          "after": "  heritage_book_pending = 0;\n  HUMAN_DropObject();"
+        }
+      ],
+      "asset_evidence": [
+        {
+          "path": "models/m_af5_slozky01a.4ds",
+          "archive": "models.dta",
+          "size": 1309,
+          "sha256": "fe9d05b9d48b1a12d0f3790a6c6f452ea61601b564541408545785e338ee7ad4"
+        },
+        {
+          "path": "models/m_af5_slozky01b.4ds",
+          "archive": "models.dta",
+          "size": 1309,
+          "sha256": "47357a054d21b5712febe2e114a353e879881e626d016d80e825827a44bb393e"
+        }
+      ],
+      "model_checks": [
+        {
+          "instance": "m_AF5_slozky01a7",
+          "node": "Box01",
+          "model_entry": "models/m_af5_slozky01a.4ds"
+        },
+        {
+          "instance": "m_AF5_slozky01b14",
+          "node": "Box01",
+          "model_entry": "models/m_af5_slozky01b.4ds"
+        }
+      ]
+    },
+    {
       "id": "co-burgundy3-interrogation-visual-phases",
       "title": "Co-Burgundy 3 — quatre phases visuelles modernes",
       "classification": "MODERNE",

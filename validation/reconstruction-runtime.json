@@ -14,6 +14,150 @@
   },
   "profiles": [
     {
+      "id": "africa5-fan-onuse-oneshot",
+      "mission": "africa5",
+      "title": "Africa 5 — ventilateur physique, utilisation explicite",
+      "definition_sha256": "50187650ea921fb434f35d3754654b1c2a0c8b9d56417eb097d65fe17aa6b277",
+      "kind": "script",
+      "study": "experimental/AFRICA5_PHYSICAL_FAN/QUALIFICATION.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Qualifier le témoin commercial et le script absent af4_runway01_detector.scr avant toute variante; ne pas modifier son registre.",
+        "Comparer la rotation 360 du premier ventilateur et 90 du jumeau. Le nœud Rectangle07 seul est ciblé, jamais le modèle entier.",
+        "Vérifier en jeu pivot, collision, chute, plafond, rebonds, sommeil physique; les bornes du maillage ne prouvent pas une collision.",
+        "ONUSE exige utilisation à moins de trois unités; PROXIMITY se déclenche automatiquement. Ne jamais cumuler ces deux profils.",
+        "Spammer l’utilisation ou rester dans le rayon puis sortir/revenir : une seule conversion, aucun second contrôleur ni second appel.",
+        "Tester tirs, grenade, contact joueur/IA, sauvegarde/reprise et rechargement; refuser dégâts imprévus ou obstacle de navigation.",
+        "Restaurer le témoin et vérifier les deux rotations, objectifs et progression. Aucun asset commercial n’est exporté dans Git."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "africa5-fan-proximity-oneshot",
+      "mission": "africa5",
+      "title": "Africa 5 — ventilateur physique, proximité comparative",
+      "definition_sha256": "be13d793bc573ac96a0693bd78749406909ef82ac8e918bc5d390b00a7c90d08",
+      "kind": "script",
+      "study": "experimental/AFRICA5_PHYSICAL_FAN/QUALIFICATION.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Qualifier le témoin commercial et le script absent af4_runway01_detector.scr avant toute variante; ne pas modifier son registre.",
+        "Comparer la rotation 360 du premier ventilateur et 90 du jumeau. Le nœud Rectangle07 seul est ciblé, jamais le modèle entier.",
+        "Vérifier en jeu pivot, collision, chute, plafond, rebonds, sommeil physique; les bornes du maillage ne prouvent pas une collision.",
+        "ONUSE exige utilisation à moins de trois unités; PROXIMITY se déclenche automatiquement. Ne jamais cumuler ces deux profils.",
+        "Spammer l’utilisation ou rester dans le rayon puis sortir/revenir : une seule conversion, aucun second contrôleur ni second appel.",
+        "Tester tirs, grenade, contact joueur/IA, sauvegarde/reprise et rechargement; refuser dégâts imprévus ou obstacle de navigation.",
+        "Restaurer le témoin et vérifier les deux rotations, objectifs et progression. Aucun asset commercial n’est exporté dans Git."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "africa5-guard19-reading-interruptible",
+      "mission": "africa5",
+      "title": "Africa 5 — lecture AF4_19 avec nettoyage expérimental",
+      "definition_sha256": "d4ce9489963cfa8da0686d910881a08d166cecd870c644643d2e3afaac2f3f61",
+      "kind": "script",
+      "study": "experimental/AFRICA5_READING_GUARD_19/QUALIFICATION.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Qualifier d’abord le témoin Africa 5 et son script historique absent; aucun registre de contournement.",
+        "Contrôler livre et archive sur leurs instances distinctes, leur saisissabilité et absence de partage; le modèle statique ne valide pas une prise.",
+        "Charger la variante seule : toute erreur de symbole ou signature Read/PickObject impose le retour au témoin, sans substitution silencieuse.",
+        "Observer cinq cycles : inspection, prise, attente 1000, lecture debout 2000, arrêt, accroupissement et dépôt; un seul exemplaire du dossier.",
+        "Interrompre par alarme puis décès avant et pendant prise, pendant lecture, après arrêt et après dépôt. Aucun objet orphelin ni alarme retardée.",
+        "Répéter signal 1 pendant chaque étape : il ne doit pas relancer une activité en cours. Vérifier reprise commerciale OnAlarmDone et priorité réelle des handlers.",
+        "Sauvegarder/reprendre avant activation, livre en main, lecture active et après alarme; vérifier optimisation/LOD, objectifs et restauration complète."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
       "id": "co-burgundy3-interrogation-visual-phases",
       "mission": "co_burgundy3",
       "title": "Co-Burgundy 3 — quatre phases visuelles modernes",
