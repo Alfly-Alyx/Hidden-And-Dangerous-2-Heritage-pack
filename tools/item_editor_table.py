@@ -1,4 +1,4 @@
-"""Original read-only codec for the reviewed uniform-row LS3D v7 item tables.
+"""Original read-only codec for reviewed uniform-row LS3D v5/v7 item tables.
 
 Column IDs/types/offsets come from the file, not string proximity or guessed
 record boundaries. Names and gameplay meanings of numeric columns are NOT
@@ -13,10 +13,12 @@ MAGIC=0x14448408
 FIELD_SIZES={3:1,4:4,5:4,6:8,7:16,18:4}
 
 
-def parse(data):
+def parse(data,*,expected_version=7):
+    if type(expected_version) is not int or expected_version not in (5,7):
+        raise ValueError('Unreviewed requested item-editor version')
     if len(data)<24:raise ValueError('Truncated item-editor table header')
     magic,version,flags,count,data_size,reserved=struct.unpack_from('<6I',data)
-    if magic!=MAGIC or version!=7 or reserved!=0 or not 1<=count<=512:
+    if magic!=MAGIC or version!=expected_version or reserved!=0 or not 1<=count<=512:
         raise ValueError('Unreviewed item-editor table header')
     start=24+12*count
     if start+data_size!=len(data):raise ValueError('Item-editor table size mismatch')

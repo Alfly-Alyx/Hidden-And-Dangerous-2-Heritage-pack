@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **512 tests Python réussis sur 513 dans la copie de publication**; un test de lien symbolique non exécuté
+- **539 tests Python réussis sur 540 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -85,6 +85,14 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   natives de 40 armes dans quatre couches. Onze différences de paramètres
   conservées sur six fiches, deux symboles FG42 explicitement non résolus.
   Huit tests nouveaux ; aucune entrée Weapon ni allocation créée.
+- [Fiches générales d'objets](PARAMETRES_OBJETS.md) : 500 emplacements comparés
+  dans chacune des deux couches Sabre/PatchX01 ; 272 objets présents, treize
+  exceptions de munition/quantité conservées par couche. Onze tests nouveaux.
+- [Descripteur moderne Benelli](../BENELLI_M4_ADDITIVE/DESCRIPTEUR_MODERNE.md) :
+  premier record Weapon de 508 octets assemblé sans copie intégrale d'un donneur,
+  relu par les routines natives isolées, munition 179 initialisée à 7 et treize
+  liaisons FPV contrôlées. Seize tests nouveaux ; aucune insertion dans les
+  tables, texte d'inventaire non alloué et comportement moteur non validé.
 - Trois comparaisons binaires Co_Burgundy1/2/3 supplémentaires reconstruisent
   respectivement douze/deux/dix porteurs et leurs liaisons sans modifier les scripts
   ou sons. Elles restent inertes, hors compte des laboratoires de mission.
