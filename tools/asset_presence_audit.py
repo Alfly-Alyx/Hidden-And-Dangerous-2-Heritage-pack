@@ -9,6 +9,7 @@ import struct
 from pathlib import Path
 
 from dta_archive import DtaArchive
+from item_editor_table import require_row
 
 ARCHIVES = ("models.dta", "others.DTA", "Scripts.dta", "missions.dta", "Patch.dta", "SabreSquadron.dta")
 TERMS = {
@@ -102,15 +103,15 @@ EXPECTED_EXACT_MODEL_COUNTS = {
 TEXT_SUFFIXES = (
     ".scr", ".txt", ".def", ".tab", ".tbl", ".cfg", ".sav", ".dta", ".bin",
 )
-BENELLI_SHOOT_START = 1547
-BENELLI_SHOOT_END = 1682
+BENELLI_SHOOT_START = 1551
+BENELLI_SHOOT_END = 1686
 BENELLI_SHOOT_SHA256 = (
-    "56A60C8F6846A86E24137BAE21877935EA4F0D113F94F73B0CE6750F951ED7E7"
+    "CE461707BB7551ABDB45E165222582201DC90C292D2FF781F684540E38E47FEF"
 )
 BENELLI_COMPASS_START = 1485
-BENELLI_COMPASS_END = 1620
+BENELLI_COMPASS_END = 1618
 BENELLI_COMPASS_SHA256 = (
-    "3E040CBC5BFE0A4D3DBE8728F484928E4081636FBBE7A7D13DD3B15C583E115F"
+    "EE8CB099A336049848D8E7C0CE05103E4B77D7EF7C716BE117C1ECA765ABFD5F"
 )
 
 
@@ -123,6 +124,9 @@ def sha256(data: bytes) -> str:
 
 
 def benelli_shoot_evidence(data: bytes) -> dict[str, object]:
+    row = require_row(data,9,stride=135,name_column=2,name='Benelli')
+    if (row['offset'],row['size'])!=(BENELLI_SHOOT_START,135):
+        raise ValueError('Changed Benelli editor row layout')
     record = data[BENELLI_SHOOT_START:BENELLI_SHOOT_END]
     evidence: dict[str, object] = {
         "archive": "others.DTA",
@@ -132,21 +136,21 @@ def benelli_shoot_evidence(data: bytes) -> dict[str, object]:
         "size": len(record),
         "sha256": sha256(record),
         "header_ok": False,
+        "row_index": 9,
+        "boundaries_from_column_schema": True,
+        "record_type_header_present": False,
     }
     if len(record) == 135:
         evidence.update({
-            "record_type": struct.unpack_from("<I", record, 0)[0],
-            "marker": record[4],
-            "name": record[5:12].decode("ascii", errors="replace"),
-            "category": struct.unpack_from("<I", record, 13)[0],
-            "value_1": struct.unpack_from("<f", record, 17)[0],
-            "value_2": struct.unpack_from("<f", record, 21)[0],
+            "marker": row['fields'][1],
+            "name": row['fields'][2],
+            "category": row['fields'][3],
+            "value_1": row['fields'][4],
+            "value_2": row['fields'][6],
         })
         evidence["header_ok"] = (
-            evidence["record_type"] == 1
-            and evidence["marker"] == 1
+            evidence["marker"] == 1
             and evidence["name"] == "Benelli"
-            and record[12] == 0
             and evidence["category"] == 2
             and abs(float(evidence["value_1"]) - 0.3) < 0.000001
             and evidence["value_2"] == 1500.0
@@ -155,6 +159,9 @@ def benelli_shoot_evidence(data: bytes) -> dict[str, object]:
 
 
 def benelli_compass_evidence(data: bytes) -> dict[str, object]:
+    row = require_row(data,9,stride=133,name_column=2,name='KOMPAS')
+    if (row['offset'],row['size'])!=(BENELLI_COMPASS_START,133):
+        raise ValueError('Changed compass editor row layout')
     record = data[BENELLI_COMPASS_START:BENELLI_COMPASS_END]
     fragments = {
         "compass_name": data[1486:1493] == b"KOMPAS\x00",
@@ -170,6 +177,8 @@ def benelli_compass_evidence(data: bytes) -> dict[str, object]:
         "offset_end": BENELLI_COMPASS_END,
         "size": len(record),
         "sha256": sha256(record),
+        "row_index":9,
+        "boundaries_from_column_schema":True,
         "fragments": fragments,
         "fragments_ok": all(fragments.values()),
     }
@@ -320,10 +329,10 @@ def markdown(report):
         "Le Garand et le fusil juxtaposé Stevens disposent de leurs modèles monde et FPV, animations, entrées Weapon et munitions : ils sont déjà jouables. Le P08 silencieux, le G43, le MAS 36 et le Panzerschreck de Sabre Squadron sont eux aussi complets et actifs. Le Flak 38 et le canon de 17 mm sont déjà employés comme armes fixes.", "",
         "Le Vickers K n’est pas une arme portative oubliée. `w_vickerKFPV.4ds` est l’arme montée de la Jeep SAS : le modèle de Jeep conserve ses sièges, caméras et l’ancrage `BARREL01_00`, et une mission CMP relie encore exactement cet ancrage au modèle FPV. MG 15 et MG 81 n’ont pas de modèles portatifs démontrés ; leurs entrées correspondent à des armements montés.", "",
         "## Benelli M4", "",
-        "La Benelli est le candidat expérimental le mieux conservé. Neuf couples d’animation `#FPVBeneli*.4ds/.5DS`, les textures et icônes, les sons de tir et de rechargement, le bloc `FpvAnims.sav` et la munition 179 subsistent. Surtout, `others.DTA::TABLES/item_shoot.tbl` conserve un record balistique complet `Benelli` de 135 octets, aux offsets 1547–1682, dont le SHA-256 est `56A60C8F6846A86E24137BAE21877935EA4F0D113F94F73B0CE6750F951ED7E7`.", "",
-        "Le record de 135 octets occupé par la boussole dans `SabreSquadron.dta::Tables/item_base_items.tbl` conserve simultanément `M4`, `_benelliFPV` et `lli` autour de `KOMPAS` et `ii_compas`. Son empreinte exacte est `3E040CBC5BFE0A4D3DBE8728F484928E4081636FBBE7A7D13DD3B15C583E115F`. Ces fragments confirment que l’ancien emplacement Benelli a été réemployé ; les valeurs numériques actuelles appartiennent toutefois à la boussole et ne sont pas des réglages d’arme récupérables.", "",
-        "Une restauration doit donc créer une nouvelle entrée sans écraser la boussole. L’ID 359 est le premier candidat après la plage commerciale publiée et était libre dans les 80 `items.dat` commerciaux et 144 communautaires inspectés ; il reste provisoire et toute collision devra être refusée explicitement. Aucun modèle extérieur/posé complet n’est conservé, et les liaisons numériques vers `FpvAnims.sav`, le record de tir et la munition 179 doivent encore être démontrées. Le modèle monde, ces liaisons et toute valeur non prouvée restent une reconstruction moderne, hors du lot stable jusqu’aux essais solo et réseau.", "",
-        "`tools/item_id_collision_audit.py` rend cette vérification reproductible. Sur l’installation inspectée, il a décodé 149 462 enregistrements dans les 80 fichiers commerciaux et 144 missions installées, contrôlé 7 135 déclarations de `mpmaplist.txt` et n’a trouvé aucun ItemID 359. Pour les neuf fichiers anciens ou tronqués que le parseur ne peut finir, le verdict n’est accepté que si les octets candidats sont absents ou entièrement situés dans le préfixe déjà décodé ; une occurrence ambiguë ferait échouer le contrôle.", "",
+        "La Benelli est le candidat expérimental le mieux conservé. Neuf couples d’animation `#FPVBeneli*.4ds/.5DS`, les textures et icônes, les sons de tir et de rechargement, le bloc `FpvAnims.sav` et la munition 179 subsistent. La table `others.DTA::TABLES/item_shoot.tbl` conserve la ligne `Benelli` de 135 octets, aux offsets 1551–1686, dont le SHA-256 est `CE461707BB7551ABDB45E165222582201DC90C292D2FF781F684540E38E47FEF`. Les bornes proviennent du schéma TBL ; la sémantique de tir reste à qualifier.", "",
+        "La ligne de 133 octets occupée par la boussole dans `SabreSquadron.dta::Tables/item_base_items.tbl` conserve simultanément `M4`, `_benelliFPV` et `lli` après des terminateurs de chaînes. Son empreinte exacte est `EE8CB099A336049848D8E7C0CE05103E4B77D7EF7C716BE117C1ECA765ABFD5F`. Ces fragments sont des vestiges, pas des références vivantes ; les valeurs numériques actuelles appartiennent à la boussole et ne sont pas des réglages d’arme récupérables.", "",
+        "Une reconstruction doit créer une nouvelle entrée sans écraser la boussole. Le candidat 359 reste provisoire : l'absence de collision dans des missions ne qualifie pas les sauvegardes. Un modèle monde original moderne et un FPV statique dérivé sont maintenant construits séparément. Les contrôles natifs isolés établissent la liaison objet/groupe FPV et le consommateur de munition ; ils ne valident pas l'animation, le tir ou une sauvegarde complète. Consulter `experimental/BENELLI_M4_ADDITIVE/` pour ces preuves distinctes.", "",
+        "`tools/item_id_collision_audit.py` contrôle les catalogues et déclarations de mission ; `tools/benelli_table_audit.py` vérifie les tables commerciales et leurs surcharges. Leurs rapports datés font foi pour les effectifs, pas ce scan de ressources. Une occurrence ambiguë dans une zone non décodée doit faire refuser l'allocation.", "",
         "## Armes incomplètes", "",
         "Le Flammenwerfer conserve un record d'arme complet comme référence, mais ses modèles `w_flmwrFPV` et `w_flmwr` sont absents. Le record britannique a été remplacé par `Flak TMP` et ne conserve que les fragments `_FlameFPV` et `_Flame`. Les deux munitions, vingt ressources d'icônes et l'effet 25 subsistent. `flame1.4ds` ne pèse que 471 octets et contient seulement `fire01`, huit sommets et quatre faces : c'est un effet, pas une arme. Les libellés sonores retrouvés sont deux réactions vocales, pas les sons de tir ou de recharge. Aucune table de tir, animation FPV ou logique de script n'est reliée ; modèles, animations et comportement doivent donc être créés.", "",
         "`tools/flamethrower_evidence_audit.py` vérifie ces preuves et leurs empreintes exactes sans exporter les données commerciales dans le dépôt.", "",

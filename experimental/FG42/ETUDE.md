@@ -1,12 +1,15 @@
 # FG 42 — reconstruction lourde moderne
 
-État : **identité attestée, chaîne exploitable absente**, 15 septembre 2026.
+État : **fiche de tir attestée, chaîne exploitable absente**, 26 septembre 2026.
 Aucun prototype d'arme fonctionnelle n'est activé et rien n'est compilé.
 
 Le catalogue ancien marque explicitement le FG 42 `DISABLED` et la munition
-objet 196 subsiste. Aucun modèle, icône, animation FPV, son spécifique ni entrée
-Weapon exploitable n'a été identifié. Cette trace prouve un nom retiré, pas un
-prototype local récupérable.
+objet 196 subsiste. La ligne 27 de `item_shoot.tbl` conserve aussi une fiche
+de 135 octets, noms `FG 42`, `FG42_F`, `FG42_R`. Leurs présences ne prouvent
+pas les fichiers audio correspondants. Les [limites exactes](../RECONSTRUCTION_BACKLOG/TABLES_EDITEUR.md)
+sont contrôlées par le schéma, non par une fenêtre de texte. Aucun modèle,
+icône, animation FPV, son spécifique ni entrée Weapon exploitable n'est identifié.
+Le slot natif 27 est devenu un casque : il reste interdit.
 
 Toute implémentation doit créer l'ensemble visuel, audio et fonctionnel, choisir
 un slot libre et documenter chaque paramètre comme moderne. Un premier banc ne

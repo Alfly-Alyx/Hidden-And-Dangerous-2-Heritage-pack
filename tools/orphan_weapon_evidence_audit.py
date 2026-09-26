@@ -9,6 +9,8 @@ import json
 from pathlib import Path
 
 from dta_archive import DtaArchive
+from item_editor_table import parse as parse_editor_table
+from items_sav import parse as parse_items
 
 
 TABLE_HASHES = {
@@ -20,23 +22,23 @@ TABLE_HASHES = {
         "3FC663A1EEB87B9F6A7FB94297EB59ACEF20123DC589170DDBDEF5AA6F0A26EB",
 }
 RECORDS = (
-    ("fg42_shoot", "others.DTA", "TABLES/item_shoot.tbl", 3977, 4112,
-     "AA2BF65F222151A2AE0A98E34297F74FA7B40771E3EB27B9D6E110A14903B1D7",
+    ("fg42_shoot", "others.DTA", "TABLES/item_shoot.tbl", 3981, 4116,
+     "3C1C1186DBEE311E4239297A3D1B460165FC59300C706D6B1F3492E21A3BDFB5",
      (b"FG 42\x00", b"FG42_F\x00", b"FG42_R\x00")),
-    ("mg34_shoot", "others.DTA", "TABLES/item_shoot.tbl", 4652, 4787,
-     "68075F2E527B26FAA9ECCF780426AE2D1B7EDA78C9856C37E354F3D3DE28BBA8",
+    ("mg34_shoot", "others.DTA", "TABLES/item_shoot.tbl", 4656, 4791,
+     "D577C7866FA84D9DEB9F69765657D87F51278852E3D4FBFB9C09F0F9869ABBB2",
      (b"MG 34\x00",)),
-    ("mg15_2_shoot", "others.DTA", "TABLES/item_shoot.tbl", 5327, 5462,
-     "1F27387EFC9719844E62C661FA0F0EBCD89D02BFE06F422776D192529A6C63A2",
+    ("mg15_2_shoot", "others.DTA", "TABLES/item_shoot.tbl", 5331, 5466,
+     "B968CBE06617F3573BA5E1F715DCB29186F1AB4B96B84E93E098FEE63D823D04",
      (b"MG 15_2\x00",)),
-    ("mg15_1_shoot", "others.DTA", "TABLES/item_shoot.tbl", 6002, 6137,
-     "99CF6EDFC7E9B821C420F4CF2E7865F2D7C972BA79EEC4866F9210ACEA178CE2",
+    ("mg15_1_shoot", "others.DTA", "TABLES/item_shoot.tbl", 6006, 6141,
+     "353A0E335DF1BD9619B365EA6E41B2A42BAD0F7CBFB6D116917CCF0B8C5D7DE6",
      (b"MG 15 ",)),
-    ("mg81_2_shoot", "others.DTA", "TABLES/item_shoot.tbl", 6137, 6272,
-     "D9F8D72CD4AABA4743C999F342D9DD056E66D36B0136BF5B893E28AF9233AAE0",
+    ("mg81_2_shoot", "others.DTA", "TABLES/item_shoot.tbl", 6141, 6276,
+     "1C4AF111ED4FA97DB897836E2F7F0A34DAA93EC9399A92242389A8A5E7571D74",
      (b"MG 81\x00",)),
-    ("slot55_shoot_named_mg15", "others.DTA", "TABLES/item_shoot.tbl", 7757, 7892,
-     "C63C65B1BB1CB5D64288A74474CAB31151D8407F1C7A6123F5B76D73B53AA447",
+    ("slot55_shoot_named_mg15", "others.DTA", "TABLES/item_shoot.tbl", 7761, 7896,
+     "FF5FC19189FCA14B99F8263F52D3682BF2A40262AECC152AF4B5FC67C35E78D7",
      (b"MG 15\x00",)),
     ("slot27_reused_helmet", "SabreSquadron.dta", "Tables/item_base_items.tbl",
      3879, 4012,
@@ -62,24 +64,24 @@ RECORDS = (
      7603, 7736,
      "7A3CBA1274C6E3EC5061ABC614ED876EA36DF2A376463A6109189F66FA6FEB82",
      (b"MG 81_1\x00", b"wi_ge-mg81\x00")),
-    ("fg42_ammo_base", "others.DTA", "TABLES/items.sav", 96516, 97024,
-     "EAD00E75ADEAA2E1A699B44520EA0320B316ABF129583555E648E6AFFB3EF425",
+    ("fg42_ammo_base", "others.DTA", "TABLES/items.sav", 96544, 97052,
+     "1D2139CFA5AAB689D90C9F976C0C9459C7882959B35F92BB913BB865FFE8A259",
      (b"ii_ge-fg42-m\x00", b"AMMO FG 42\x00")),
-    ("fg42_ammo_sabre", "SabreSquadron.dta", "Tables/items.sav", 98040, 98548,
-     "BDC5468833F9E1FED4C57887162875DBFCB0BF096B64A202F64CB4024AC747C7",
+    ("fg42_ammo_sabre", "SabreSquadron.dta", "Tables/items.sav", 98056, 98564,
+     "5B7E3B38EB13AE12DE1D49207E0C926368C8307A99A0BDB859D10001F476C263",
      (b"ii_ge-fg42-m\x00", b"AMMO FG 42\x00")),
-    ("mg34_ammo_base", "others.DTA", "TABLES/items.sav", 99056, 99564,
-     "8CCB6ECD338BCBB2E42F4001A4FCDE7C0256A5B0ED2897C310FB82CAAB0BF772",
+    ("mg34_ammo_base", "others.DTA", "TABLES/items.sav", 99084, 99592,
+     "367F6CE2B30C555BA9D3EBCC4FDD017AE82AF602B74A2810E1D71D7883D06EF6",
      (b"ii_ge-mg34-m\x00", b"AMMO MG 34\x00")),
-    ("mg34_ammo_sabre", "SabreSquadron.dta", "Tables/items.sav", 100580, 101088,
-     "2FE94D11C87B9434093AFAF298338C346B96BB4D005657897280C5D2187DB501",
+    ("mg34_ammo_sabre", "SabreSquadron.dta", "Tables/items.sav", 100596, 101104,
+     "F6B928615353623A430AD1EF678759238E950FAC9C79C0593A096AB3DD42849B",
      (b"ii_ge-mg34-m\x00", b"AMMO MG 34\x00")),
-    ("tank_mg34_ammo_base", "others.DTA", "TABLES/items.sav", 103632, 104140,
-     "CF7139139B97825E07959AB2E4E8A24C40AD2E816217883F9D5716B361AE6A2C",
+    ("tank_mg34_ammo_base", "others.DTA", "TABLES/items.sav", 103660, 104168,
+     "15C165F0B7933BE7D07292C8E691F34D830E57F14314E326B99DA13D965ECFFF",
      (b"AMMO Tank MG 34\x00",)),
     ("tank_mg34_ammo_sabre", "SabreSquadron.dta", "Tables/items.sav",
-     105660, 106168,
-     "02F9A223A780B33D68FE211E8116895CB03B1CC3302437C57EFBD0676B047D93",
+     105676, 106184,
+     "15C165F0B7933BE7D07292C8E691F34D830E57F14314E326B99DA13D965ECFFF",
      (b"AMMO Tank MG 34\x00",)),
 )
 MODEL_RESOURCES = (
@@ -127,6 +129,15 @@ def archive_data(game: Path, archive_name: str, entry_name: str) -> bytes:
     raise FileNotFoundError(f"{archive_name}::{entry_name}")
 
 
+def table_boundaries(data,entry_name):
+    if entry_name.casefold().endswith('.tbl'):
+        entries=parse_editor_table(data)['rows']
+    elif entry_name.casefold().endswith('items.sav'):
+        entries=[slot for slot in parse_items(data)['slots'] if slot['present']]
+    else:raise ValueError('Unreviewed evidence table format')
+    return {(row['offset'],row['offset']+row['size']):row.get('index',row.get('slot')) for row in entries}
+
+
 def audit(game: Path) -> dict[str, object]:
     errors: list[str] = []
     cache: dict[tuple[str, str], bytes] = {}
@@ -137,12 +148,17 @@ def audit(game: Path) -> dict[str, object]:
             errors.append(f"{key[0]}::{key[1]} changed")
 
     records: dict[str, object] = {}
+    boundaries = {}
     for label, archive_name, entry_name, start, end, expected_hash, fragments in RECORDS:
         key = (archive_name, entry_name)
         data = cache.get(key)
         if data is None:
             data = archive_data(game, archive_name, entry_name)
             cache[key] = data
+        if key not in boundaries:
+            boundaries[key]=table_boundaries(data,entry_name)
+        if (start,end) not in boundaries[key]:
+            raise ValueError(f'{label} proof does not coincide with a parsed table row/slot')
         record = data[start:end]
         fragment_checks = {
             fragment.decode("cp1252", errors="replace").rstrip("\0"):
@@ -163,6 +179,8 @@ def audit(game: Path) -> dict[str, object]:
             "sha256": sha256(record),
             "fragments": fragment_checks,
             "expected": expected,
+            "parsed_row_or_slot": boundaries[key][start,end],
+            "boundaries_from_table_parser": True,
         }
         if not expected:
             errors.append(f"{label} record changed")

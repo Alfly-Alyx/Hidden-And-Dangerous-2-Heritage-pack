@@ -11,16 +11,18 @@ import struct
 from pathlib import Path
 
 from dta_archive import DtaArchive
+from item_editor_table import require_row
+from items_sav import parse as parse_items
 
 
-GERMAN_WEAPON_START = 6075
-BRITISH_REUSED_START = 6210
-WEAPON_RECORD_SIZE = 135
+GERMAN_WEAPON_START = 6140
+BRITISH_REUSED_START = 6273
+WEAPON_RECORD_SIZE = 133
 GERMAN_WEAPON_SHA256 = (
-    "20F4FF6FFBA1AC1FB364A11768641D628D20DF6A474611863717344A2A3E9E4C"
+    "B3D39235D832F9635F03397B3A4863DCF0BA185C59BD1E35D2FCD8CEDC134357"
 )
 BRITISH_REUSED_SHA256 = (
-    "8456DC41BA5757BE32B187AC48BF896F21A7DEB59E6FB17D4293884D3752E679"
+    "CE59F7B51606351A3BB26261D288552CDEB536DCF64CE2C87504F95A1B4E54C0"
 )
 FLAME_MODEL_SHA256 = (
     "A9285573B4FCE73631F51C2AF70431600EDC28F9C0C489B8A37511D8C79A5EF8"
@@ -31,10 +33,11 @@ EFFECT_25_SHA256 = (
 AMMO_RECORDS = (
     {
         "key": "german",
-        "base_start": 101600,
-        "sabre_start": 103616,
+        "slot":207,
+        "base_start": 101628,
+        "sabre_start": 103644,
         "sha256": (
-            "6C5120BADB8E288E6ACCC65219EB6201F10515D2B5917ED661860E9A2479DAF5"
+            "7FE33CD9D042BBA4F2D0F831D52D548DC8846837932C585130B939CECB506106"
         ),
         "icon": "ii_ge-flmwr35-m",
         "internal_name": "AMMO Flammewer",
@@ -42,10 +45,11 @@ AMMO_RECORDS = (
     },
     {
         "key": "british",
-        "base_start": 102108,
-        "sabre_start": 104124,
+        "slot":208,
+        "base_start": 102136,
+        "sabre_start": 104152,
         "sha256": (
-            "6F27AC962834C0B0150615544A1D5F5324955DC530E2370F599D86D9E91C8608"
+            "48D16AA252C8712B9DF3D1405FA8C56D36645F72E4708BBC415E53D223FCC564"
         ),
         "icon": "ii_br-flmthr2-m",
         "internal_name": "AMMO Flamethrow",
@@ -115,6 +119,10 @@ def c_string(record: bytes, offset: int, size: int) -> str:
 
 
 def weapon_table_evidence(data: bytes) -> dict[str, object]:
+    german_row=require_row(data,44,stride=133,name_column=2,name='Flammewerfer')
+    reused_row=require_row(data,45,stride=133,name_column=2,name='Flak TMP')
+    if (german_row['offset'],reused_row['offset'])!=(GERMAN_WEAPON_START,BRITISH_REUSED_START):
+        raise ValueError('Changed flamethrower editor row layout')
     german = data[
         GERMAN_WEAPON_START : GERMAN_WEAPON_START + WEAPON_RECORD_SIZE
     ]
@@ -139,6 +147,8 @@ def weapon_table_evidence(data: bytes) -> dict[str, object]:
         "archive": "SabreSquadron.dta",
         "entry": "Tables/item_base_items.tbl",
         "german_record": {
+            "row_index":44,"boundaries_from_column_schema":True,
+            "presence_flag":german_row['fields'][1],
             "offset_start": GERMAN_WEAPON_START,
             "offset_end": GERMAN_WEAPON_START + WEAPON_RECORD_SIZE,
             "size": len(german),
@@ -147,6 +157,10 @@ def weapon_table_evidence(data: bytes) -> dict[str, object]:
             "complete_reference_record": all(german_fragments.values()),
         },
         "british_reused_record": {
+            "row_index":45,"boundaries_from_column_schema":True,
+            "presence_flag":reused_row['fields'][1],
+            "live_fpv_reference":reused_row['fields'][6],
+            "live_world_reference":reused_row['fields'][10],
             "offset_start": BRITISH_REUSED_START,
             "offset_end": BRITISH_REUSED_START + WEAPON_RECORD_SIZE,
             "size": len(reused),
@@ -162,28 +176,33 @@ def ammo_record_evidence(
     start: int,
     definition: dict[str, object],
 ) -> dict[str, object]:
+    parsed=parse_items(data)
+    slot=parsed['slots'][definition['slot']]
+    if (slot['offset'],slot['size'],slot.get('kind'))!=(start,AMMO_RECORD_SIZE,0):
+        raise ValueError('Ammo proof does not coincide with its parsed native item slot')
     record = data[start : start + AMMO_RECORD_SIZE]
     return {
         "offset_start": start,
         "offset_end": start + AMMO_RECORD_SIZE,
         "size": len(record),
         "sha256": sha256(record),
-        "icon": c_string(record, 56, 20),
-        "world_model": c_string(record, 76, 20),
-        "internal_name": c_string(record, 116, 20),
-        "text_id": struct.unpack_from("<I", record, 136)[0],
-        "weight": struct.unpack_from("<f", record, 140)[0],
-        "category": struct.unpack_from("<I", record, 144)[0],
+        "slot":slot['slot'],"boundaries_from_presence_parser":True,
+        "icon": slot['icon'],
+        "world_model": slot['world_model'],
+        "internal_name": slot['internal_name'],
+        "text_id": slot['text_id'],
+        "weight": slot['weight_raw'],
+        "category": struct.unpack_from("<I", record, 116)[0],
         "expected": (
             len(record) == AMMO_RECORD_SIZE
             and sha256(record) == definition["sha256"]
-            and c_string(record, 56, 20) == definition["icon"]
-            and c_string(record, 76, 20) == "w_ammo"
-            and c_string(record, 116, 20) == definition["internal_name"]
-            and struct.unpack_from("<I", record, 136)[0]
+            and slot['icon'] == definition["icon"]
+            and slot['world_model'] == "w_ammo"
+            and slot['internal_name'] == definition["internal_name"]
+            and slot['text_id']
             == definition["text_id"]
-            and struct.unpack_from("<f", record, 140)[0] == 5.0
-            and struct.unpack_from("<I", record, 144)[0] == 2
+            and slot['weight_raw'] == 5.0
+            and struct.unpack_from("<I", record, 116)[0] == 2
         ),
     }
 
