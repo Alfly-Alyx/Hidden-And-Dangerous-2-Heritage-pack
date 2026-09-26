@@ -79,7 +79,7 @@ def output_directory(name,root=ROOT):
     return output
 
 
-def prepare(tables,sources,machine):
+def prepare(tables,sources,machine,*,inventory=None):
     from item_editor_table import require_row
     from benelli_fpv_static import derive
     from build_benelli_fpv_lab import native_assets
@@ -96,7 +96,16 @@ def prepare(tables,sources,machine):
         if (not ref['resolved'] or (ref['bank'],ref['index'],ref['label'],ref['filenames'])
                 !=(bank,index,label,[filename]) or 'sounds/'+filename not in sources):
             raise ValueError('Changed Benelli sound reference or missing source')
-    spec=specification(row['fields'],baseline);descriptor=build_weapon(spec)
+    spec=specification(row['fields'],baseline)
+    text_files={};text_report=None
+    if inventory is not None:
+        from build_modern_inventory_text_lab import prepare as prepare_texts
+        if not isinstance(inventory,dict) or set(inventory)!={'catalogue','sources','occupied_item_text_ids','mission_range'}:
+            raise ValueError('Incomplete inventory text snapshot')
+        text_files,text_report=prepare_texts(**inventory)
+        if 'benelli_m4' not in text_report['labels']:raise ValueError('Missing modern Benelli inventory label')
+        spec['text_id']=text_report['labels']['benelli_m4']['text_id']
+    descriptor=build_weapon(spec)
     native=machine.inspect_record(descriptor,SYNTHETIC_SLOT)
     ammo=[]
     for archive in ('SabreSquadron.dta','PatchX01.dta'):
@@ -115,7 +124,7 @@ def prepare(tables,sources,machine):
         if (len(raw),sha(raw))!=MODEL_PINS[name]:raise ValueError('Changed prepared model: '+name)
     group=isolated_fpv_group(tables['SabreSquadron.dta','tables/fpvanims.sav'])
     files={'PROTOTYPE_Benelli.item.disabled':descriptor,'PROTOTYPE_Benelli.fpvgroup.disabled':group,
-           **{name+'.4ds.disabled':raw for name,raw in models.items()}}
+           **{name+'.4ds.disabled':raw for name,raw in models.items()},**text_files}
     report={'schema_version':1,'scope':'private_disabled_benelli_descriptor_lab',
             'provenance':'ASSEMBLAGE_MODERNE_RESSOURCES_MIXTES',
             'source_pins':{archive+'::'+name:{'size':len(raw),'sha256':sha(raw)} for (archive,name),raw in tables.items()},
@@ -125,7 +134,8 @@ def prepare(tables,sources,machine):
                 'adopted_raw_base_members':{hex(k):v for k,v in spec['base_members_raw'].items()},
                 'adopted_weapon_members':{hex(k):v for k,v in spec['weapon_members_raw'].items()},
                 'secondary':spec['secondary'],'internal_name':spec['names']['internal'],
-                'text_id':spec['text_id'],'text_id_allocated':False,
+                'text_id':spec['text_id'],'text_id_allocated':text_report is not None,
+                'text_id_allocation_scope':'disabled_laboratory_only' if text_report else 'unresolved',
                 'opaque_bytes_policy':'modern_zero_fill_not_historical_reconstruction',
                 'historical_base_record_recovered':False,'whole_donor_record_copied':False},
             'historical_shoot_row_sha256':row['sha256'],'native_descriptor':native,
@@ -134,7 +144,10 @@ def prepare(tables,sources,machine):
             'model_references':model_report,'icon':{'stem':'wi_it-benelli','source':'maps/wi_it-benelli.bmp','sha256':sha(sources['maps/wi_it-benelli.bmp'])},
             'fpv_group':{'owner':SYNTHETIC_SLOT+100,'size':len(group),'sha256':sha(group),'commercial_group_109_preserved':True},
             'files':{name:{'size':len(raw),'sha256':sha(raw)} for name,raw in files.items()},
-            'pending_requirements':list(PENDING),'complete_binary_descriptor_built':True,
+            'inventory_texts':text_report,
+            'pending_requirements':[p for p in PENDING if p!='inventory_text_allocation' or text_report is None]
+                +(['inventory_text_rendering_and_font_tests'] if text_report else []),
+            'complete_binary_descriptor_built':True,
             'game_started':False,'game_modified':False,'central_tables_modified':False,
             'item_slot_allocated':False,'playable_weapon':False,'runtime_status':'pending',
             'full_save_compatibility_qualified':False}
@@ -151,6 +164,7 @@ def main(argv=None):
     parser.add_argument('--image',type=Path,default=ROOT/'tmp/stock-menu-analysis.bin')
     parser.add_argument('--archives-only',action='store_true')
     parser.add_argument('--output-name')
+    parser.add_argument('--inventory-texts',action='store_true',help='Include byte-preserving disabled labels from installed text snapshots')
     args=parser.parse_args(argv)
     try:
         output=output_directory(args.output_name) if args.output_name else None
@@ -159,18 +173,28 @@ def main(argv=None):
         source_manifest=json.loads(MANIFEST.read_text(encoding='utf-8'))
         sources,source_excluded=read_sources(args.game,source_manifest,archives_only=args.archives_only)
         machine=StateOracle(args.image.read_bytes())
-        files,report=prepare(tables,sources,machine)
+        inventory=None
+        if args.inventory_texts:
+            from build_modern_inventory_text_lab import read_text_sources,occupied_item_text_ids,CATALOGUE
+            from custom_mission_packages import TEXT_ID_START,TEXT_ID_END
+            inventory={'catalogue':json.loads(CATALOGUE.read_text(encoding='utf-8')),
+                       'sources':read_text_sources(args.game),
+                       'occupied_item_text_ids':occupied_item_text_ids(args.game,tables),
+                       'mission_range':(TEXT_ID_START,TEXT_ID_END)}
+        files,report=prepare(tables,sources,machine,inventory=inventory)
         report['resource_source_pins']=source_manifest['sources']
         report['excluded_loose_overrides']={**excluded,**source_excluded}
         if output:
             output.mkdir(parents=True,exist_ok=False)
             for name,raw in files.items():
-                with (output/name).open('xb') as stream:stream.write(raw)
+                target=output.joinpath(*name.split('/'));target.parent.mkdir(parents=True,exist_ok=True)
+                with target.open('xb') as stream:stream.write(raw)
             with (output/'MANIFEST.json').open('x',encoding='utf-8') as stream:
                 json.dump(report,stream,ensure_ascii=False,indent=2);stream.write('\n')
             with (output/'LIRE_AVANT_ESSAI.txt').open('x',encoding='utf-8') as stream:
                 stream.write('ASSEMBLAGE MODERNE, RESSOURCES COMMERCIALES DERIVEES: USAGE PRIVE.\n'
-                    'Ce dossier ne peut pas etre installe: libelle, contrats et integration incomplets.\n'
+                    'Ce dossier ne peut pas etre installe: contrats et integration incomplets.\n'
+                    'Le manifeste precise si les libelles additifs sont prepares.\n'
                     'Aucune entree allouee. Ni sauvegarde complete, ni comportement de jeu valide.\n'
                     'Les fichiers restent disabled. Ne pas redistribuer les modeles derives.\n')
         print(json.dumps({'output':str(output) if output else None,'files':report['files'],

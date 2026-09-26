@@ -1,4 +1,5 @@
 import copy
+import json
 from pathlib import Path
 import struct
 import sys
@@ -53,7 +54,7 @@ class Machine:
 
 
 class BenelliDescriptorLabTests(unittest.TestCase):
-    def prepare(self,tables=None,*,changed_model=False,changed_sound=False):
+    def prepare(self,tables=None,*,changed_model=False,changed_sound=False,inventory=None):
         models={'PROTOTYPE_BenFPV':b'invented fpv','PROTOTYPE_BenM4':b'invented world'}
         pins={name:(len(raw),lab.sha(raw)) for name,raw in models.items()}
         if changed_model:models['PROTOTYPE_BenFPV']+=b'changed'
@@ -67,7 +68,13 @@ class BenelliDescriptorLabTests(unittest.TestCase):
             return lab.prepare(fixture() if tables is None else tables,
                                {'models/#fpvbeneliaim.4ds':b'invented model','maps/wi_it-benelli.bmp':b'invented icon',
                                 'tables/ingamesounds.def':sounds,'sounds/f_bene_a.wav':b'invented sound',
-                                'sounds/bene_r.wav':b'invented sound'},Machine())
+                                'sounds/bene_r.wav':b'invented sound'},Machine(),inventory=inventory)
+
+    def inventory(self):
+        from build_modern_inventory_text_lab import CATALOGUE
+        return {'catalogue':json.loads(CATALOGUE.read_text(encoding='utf-8')),
+                'sources':{'Text/english/TEXTY_DD.txt':b'1 "Existing"\n','Text/french/TEXTY_DD.txt':b'1 "Existant"\n'},
+                'occupied_item_text_ids':{1009,1179},'mission_range':(22000,65000)}
 
     def test_baseline_is_individual_explicit_attributes_not_whole_record(self):
         raw=baseline();fields=weapon_spec()['primary']['editor_fields']
@@ -115,6 +122,30 @@ class BenelliDescriptorLabTests(unittest.TestCase):
 
     def test_changed_sound_reference_is_refused(self):
         with self.assertRaisesRegex(ValueError,'Changed Benelli sound reference'):self.prepare(changed_sound=True)
+
+    def test_inventory_labels_replace_only_the_unresolved_text_member(self):
+        original,_=self.prepare();files,report=self.prepare(inventory=self.inventory())
+        before=original['PROTOTYPE_Benelli.item.disabled'];after=files['PROTOTYPE_Benelli.item.disabled']
+        self.assertEqual(struct.unpack_from('<I',after,108)[0],21500)
+        self.assertEqual(before[:108]+before[112:],after[:108]+after[112:])
+        self.assertEqual(len(files),6)
+        self.assertTrue(report['modern_design_decisions']['text_id_allocated'])
+        self.assertEqual(report['modern_design_decisions']['text_id_allocation_scope'],'disabled_laboratory_only')
+        self.assertNotIn('inventory_text_allocation',report['pending_requirements'])
+        self.assertIn('inventory_text_rendering_and_font_tests',report['pending_requirements'])
+        self.assertFalse(report['inventory_texts']['native_text_loader_qualified'])
+        self.assertFalse(report['game_modified']);self.assertFalse(report['item_slot_allocated'])
+
+    def test_inventory_snapshot_collisions_fail_before_a_descriptor_bundle_is_returned(self):
+        inventory=self.inventory();inventory['occupied_item_text_ids'].add(21500)
+        with self.assertRaisesRegex(ValueError,'referenced by an item'):self.prepare(inventory=inventory)
+        inventory=self.inventory();inventory['sources']['Text/french/TEXTY_DD.txt']=b'21500 "Other owner"\n'
+        with self.assertRaisesRegex(ValueError,'already present'):self.prepare(inventory=inventory)
+
+    def test_missing_inventory_contract_or_wrong_label_owner_is_refused(self):
+        with self.assertRaisesRegex(ValueError,'Incomplete inventory'):self.prepare(inventory={})
+        inventory=self.inventory();inventory['catalogue']['labels'][0]['key']='different_owner'
+        with self.assertRaisesRegex(ValueError,'Missing modern Benelli'):self.prepare(inventory=inventory)
 
     def test_occupied_candidate_fails_in_either_layer(self):
         for archive in ('SabreSquadron.dta','PatchX01.dta'):
