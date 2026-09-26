@@ -27,7 +27,7 @@ def bundle(descriptor,fragment):
 
 
 class BenelliFullTableLabTests(unittest.TestCase):
-    def prepare(self,*,layer='PatchX01.dta',mutation=None,inventory=None,machine=None,changed_source=False):
+    def prepare(self,*,layer='PatchX01.dta',mutation=None,inventory=None,machine=None,changed_source=False,**kwargs):
         items,fpv,descriptor,fragment=fixture()
         tables={('SabreSquadron.dta','tables/items.sav'):items,
                 ('PatchX01.dta','tables/items.sav'):items,lab.FPV_SOURCE:fpv}
@@ -37,7 +37,21 @@ class BenelliFullTableLabTests(unittest.TestCase):
         if changed_source:tables[lab.FPV_SOURCE]+=b'changed'
         with patch.object(lab,'TABLE_PINS',pins),\
              patch.object(lab.descriptor_lab,'prepare',return_value=(files,report)):
-            return lab.prepare(tables,{},machine or Machine(),inventory={} if inventory is None else inventory,item_layer=layer)
+            return lab.prepare(tables,{},machine or Machine(),inventory={} if inventory is None else inventory,item_layer=layer,**kwargs)
+
+    def test_optional_native_oracles_must_verify_both_exact_tables(self):
+        from test_item_table_oracle import SyntheticMachine
+        from test_fpv_table_oracle import Machine as FpvMachine
+        files,report=self.prepare(table_machine=SyntheticMachine(),fpv_machine=FpvMachine())
+        self.assertEqual(report['native_table_traversal']['items']['table_sha256'],lab.sha(files['Tables/items.sav.disabled']))
+        self.assertEqual(report['native_table_traversal']['fpv']['table_sha256'],lab.sha(files['Tables/FpvAnims.sav.disabled']))
+        for kwargs in ({'table_machine':SyntheticMachine()},{'fpv_machine':FpvMachine()}):
+            with self.assertRaisesRegex(ValueError,'required together'):self.prepare(**kwargs)
+        for table_machine,fpv_machine in (
+                (SyntheticMachine(lambda report:report.update(native_loaded_descriptors_match=False)),FpvMachine()),
+                (SyntheticMachine(),FpvMachine(lambda report:report.update(unpopulated_cells_unchanged=False)))):
+            with self.assertRaisesRegex(ValueError,'traversal verification incomplete'):
+                self.prepare(table_machine=table_machine,fpv_machine=fpv_machine)
 
     def test_both_archive_variants_prepare_full_disabled_tables_without_claiming_installation(self):
         for layer in lab.ITEM_LAYERS:

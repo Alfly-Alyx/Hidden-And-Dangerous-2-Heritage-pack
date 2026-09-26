@@ -21,7 +21,8 @@ ITEM_LAYERS=('SabreSquadron.dta','PatchX01.dta')
 FPV_SOURCE=('SabreSquadron.dta','tables/fpvanims.sav')
 
 
-def prepare(tables,sources,machine,*,inventory,item_layer):
+def prepare(tables,sources,machine,*,inventory,item_layer,table_machine=None,fpv_machine=None):
+    if (table_machine is None)!=(fpv_machine is None):raise ValueError('Both native table oracles are required together')
     if item_layer not in ITEM_LAYERS:raise ValueError('Unreviewed item layer; Base/Patch cannot host this candidate')
     if inventory is None:raise ValueError('Prepared inventory texts are required for the full-table lab')
     item_source=(item_layer,'tables/items.sav')
@@ -46,6 +47,21 @@ def prepare(tables,sources,machine,*,inventory,item_layer):
             raise ValueError('Native descriptor verification incomplete')
         checked.append(slot['slot'])
     if descriptor_lab.SYNTHETIC_SLOT not in checked:raise ValueError('Candidate missing from full table')
+    traversal=None
+    if table_machine is not None:
+        traversal={'items':table_machine.inspect_table(current['items']),
+                   'fpv':fpv_machine.inspect_table(current['fpv'])}
+        item_check=traversal['items'];fpv_check=traversal['fpv']
+        if (item_check.get('table_sha256')!=sha(current['items'])
+                or item_check.get('native_slot_loop_matches') is not True
+                or item_check.get('native_loaded_descriptors_match') is not True
+                or item_check.get('source_read_only_unchanged') is not True
+                or fpv_check.get('table_sha256')!=sha(current['fpv'])
+                or fpv_check.get('native_nested_traversal_matches') is not True
+                or fpv_check.get('native_strings_and_values_match') is not True
+                or fpv_check.get('source_read_only_unchanged') is not True
+                or fpv_check.get('unpopulated_cells_unchanged') is not True):
+            raise ValueError('Native full-table traversal verification incomplete')
     files={**files,'Tables/items.sav.disabled':current['items'],'Tables/FpvAnims.sav.disabled':current['fpv']}
     report={'schema_version':1,'scope':'private_disabled_benelli_full_table_lab',
         'provenance':'ASSEMBLAGE_MODERNE_RESSOURCES_MIXTES',
@@ -54,6 +70,7 @@ def prepare(tables,sources,machine,*,inventory,item_layer):
         'reverse_verified_in_memory':True,
         'native_descriptor_records_checked':len(checked),'native_descriptor_slots_checked':checked,
         'native_whole_table_loader_executed':False,
+        'native_table_traversal':traversal,
         'files':{name:fingerprint(raw) for name,raw in files.items()},
         'pending_requirements':[p for p in descriptor_report['pending_requirements'] if p!='additive_table_transaction']
             +['isolated_deployment_transaction_and_override_merge','native_whole_table_loading_tests'],
@@ -110,6 +127,8 @@ def main(argv=None):
     from build_modern_inventory_text_lab import read_text_sources,occupied_item_text_ids,CATALOGUE
     from custom_mission_packages import TEXT_ID_START,TEXT_ID_END
     from item_state_oracle import StateOracle
+    from item_table_oracle import TableOracle
+    from fpv_table_oracle import FpvTableOracle
     from item_native_contract import SOURCE_SHA
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--game',required=True,type=Path)
@@ -128,14 +147,20 @@ def main(argv=None):
                    'sources':read_text_sources(args.game),
                    'occupied_item_text_ids':occupied_item_text_ids(args.game,tables),
                    'mission_range':(TEXT_ID_START,TEXT_ID_END)}
-        files,report=prepare(tables,sources,StateOracle(args.image.read_bytes()),inventory=inventory,item_layer=args.item_layer)
+        image=args.image.read_bytes()
+        files,report=prepare(tables,sources,StateOracle(image),inventory=inventory,item_layer=args.item_layer,
+                             table_machine=TableOracle(image),fpv_machine=FpvTableOracle(image))
         report['resource_source_pins']=manifest['sources']
         report['excluded_loose_overrides']={**excluded,**source_excluded}
         if output:write_lab(output,files,report)
         print(json.dumps({'output':str(output) if output else None,
             **{key:report[key] for key in ('item_source','fpv_source','native_descriptor_records_checked',
                 'reverse_verified_in_memory','installation_allowed','game_modified','pending_requirements')},
-            'transaction':report['transaction']},ensure_ascii=False,indent=2))
+            'transaction':report['transaction'],
+            'native_table_traversal':{key:{field:result[field] for field in
+                (('slots_visited','present_descriptors_checked') if key=='items' else
+                 ('groups_visited','populated_channels_checked','unpopulated_cells_unchanged'))}
+                for key,result in report['native_table_traversal'].items()}},ensure_ascii=False,indent=2))
         return 0
     except (OSError,ValueError,KeyError,ImportError) as error:
         print('Benelli full-table laboratory refused: '+str(error),file=sys.stderr);return 1
