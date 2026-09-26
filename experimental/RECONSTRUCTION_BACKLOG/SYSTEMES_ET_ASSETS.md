@@ -56,6 +56,12 @@ Cas connus :
 
 ## Politique des identifiants et des ressources
 
+Depuis le 26 septembre 2026, la création de ressources modernes manquantes est
+explicitement autorisée : [contrat de provenance](RESSOURCES_MODERNES.md).
+Le premier [modèle extérieur Benelli](../BENELLI_M4_ADDITIVE/MODELE_MODERNE.md)
+est généré et contrôlé hors moteur. Il ne résout pas encore les animations FPV,
+les tables d'arme, les sauvegardes ou les comportements de tir.
+
 1. Scanner à nouveau toutes les tables avant d'attribuer un ID additif.
 2. Refuser la construction si l'ID proposé est déjà occupé; aucun ID de repli
    silencieux.

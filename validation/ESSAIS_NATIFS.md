@@ -1,6 +1,6 @@
 # Essais natifs dans des copies indépendantes
 
-Cette procédure prépare les **27 reconstructions déjà définies**, pas l'ensemble
+Cette procédure prépare les **41 reconstructions déjà définies**, pas l'ensemble
 des 180 dossiers de recherche. Elle n'active aucune option de l'installateur
 public et ne transforme pas un prototype en contenu validé.
 
@@ -9,8 +9,8 @@ public et ne transforme pas un prototype en contenu validé.
 Les 20 laboratoires désactivés utilisent des noms de mission distincts et restent
 disponibles. La nouvelle voie d'essai utilise les **missions d'origine** dans une
 copie privée du jeu : aucun remappage de nom, menu expérimental supplémentaire ou
-gestionnaire à lancer. Elle prépare les 24 profils de scripts et les trois
-comparaisons de scène coop, soit 27 paires de fichiers témoin/variante.
+gestionnaire à lancer. Elle prépare les 38 profils de scripts et les trois
+comparaisons de scène coop, soit 41 paires de fichiers témoin/variante.
 
 Chaque paire comprend les fichiers de la mission et ses scripts commerciaux
 effectifs, issus des archives. La variante ne change que les scripts de sa recette
@@ -142,8 +142,8 @@ dossier seul, font foi pour leur préparation.
 .\.venv\Scripts\python.exe tools\reconstruction_sandbox.py verify --session .analysis\reconstruction-sandboxes\native-trials-20260926
 ```
 
-La répétition hors moteur déploie, relit et restaure les 27 témoins et les
-22 variantes sans préalable moteur, soit **49 cycles de fichiers**. Elle ne
+La répétition complète déploie, relit et restaure les 41 témoins et les
+36 variantes sans préalable moteur, soit **77 cycles de fichiers**. Elle ne
 contourne pas les cinq barrières de témoin réel. Une comparaison finale de tous
 les fichiers du jeu copié doit retrouver exactement le manifeste initial.
 Le rapport `OFFLINE_REHEARSAL.json` conserve les empreintes et journaux, avec
@@ -159,22 +159,44 @@ natifs. Ils diffèrent légitimement des empreintes des laboratoires renommés :
 utiliser les manifestes du déploiement réellement testé et les conserver avec
 les captures. La procédure de preuve reste celle de [RECONSTRUCTION.md](RECONSTRUCTION.md).
 
+## Extension sans reconstruire les copies
+
+Après restauration de toute expérience active, `extend --session ...` ajoute
+seulement les nouveaux profils. Les anciennes recettes et empreintes de
+protocole doivent être inchangées; toute différence est refusée. Les fichiers
+ajoutés sont vérifiés avant publication atomique du nouvel index `PRESETS.json`.
+L'index précédent reste dans `preset-history/`. Une interruption avant cette
+publication laisse les anciens profils utilisables et les nouveaux inertes;
+la reprise n'accepte que des fichiers strictement identiques.
+
+Une répétition ciblée exige un nom de rapport distinct, par exemple :
+
+```powershell
+.\.venv\Scripts\python.exe tools\reconstruction_trial_deploy.py extend --session .analysis\reconstruction-sandboxes\native-trials-20260926
+.\.venv\Scripts\python.exe tools\reconstruction_trial_deploy.py rehearse --session .analysis\reconstruction-sandboxes\native-trials-20260926 --select-profile arctic1-cistern1-sound --report-name son-citerne
+```
+
+`--select-profile` se répète pour plusieurs profils. Le nouveau rapport ne
+remplace pas la série historique et annonce explicitement sa sélection.
+
 ## Préparation effectivement vérifiée le 26 septembre 2026
 
 - Trois copies indépendantes ont été créées, chacune avec 24 385 fichiers,
   6 508 813 370 octets et le même manifeste initial.
-- Les 27 configurations ont été reconstruites dans chacune des trois copies;
+- Les 41 configurations ont été reconstruites dans chacune des trois copies;
   leurs empreintes de protocole correspondent toutes au registre actuel.
-- Les **49 cycles de fichiers** ont été effectués sur l'hôte. Tous les retours
+- Les **49 premiers cycles**, puis **28 cycles supplémentaires** ont été effectués
+  sur l'hôte, dans deux opérations distinctes. Tous les retours
   arrière ont réussi; la comparaison globale finale retrouve exactement les
   fichiers initiaux, sans ajout résiduel ni contenu changé.
-- Le rapport local est `OFFLINE_REHEARSAL.json` dans la session hôte. Les données
+- Les rapports locaux sont `OFFLINE_REHEARSAL.json` et
+  `OFFLINE_REHEARSAL-expansion-20260926.json` dans la session hôte. Les données
   commerciales, sauvegardes, fichiers écartés et journaux restent hors de Git.
-- **296 tests Python réussis sur 297 dans la copie de publication**; un test de création de lien symbolique
+- **330 tests Python réussis sur 331 dans la copie de publication**; un test de création de lien symbolique
   n'a pas pu s'exécuter sans privilège Windows. Les liens physiques, les cibles
   modifiées, les interruptions et les restaurations ont leurs tests distincts.
 - **Zéro essai moteur** et aucun lancement de jeu ou d'installateur par ces outils.
-  Les 165 résultats expérimentaux restent `pending`.
+  Les 249 résultats expérimentaux restent `pending`.
 
 Les anciennes fiches sous `.analysis/reconstruction-trials/preparation-20260926/`
 décrivent une préparation antérieure des laboratoires. Pour les essais natifs,

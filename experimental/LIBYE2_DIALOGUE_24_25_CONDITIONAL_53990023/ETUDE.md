@@ -50,3 +50,25 @@ Comparer : parc intact, un seul véhicule restant, huit détruits avec Jeep1
 préservée, locuteur mort/alerté avant 23, destruction pendant 22, alarme pendant
 23, retour du même signal et sauvegarde à chaque étape. La variante coop ne
 sera qualifiée qu'après essais réseau distincts. Aucun nouvel objectif ajouté.
+
+## Variante solo reproductible du 26 septembre 2026
+
+`libye2-destroyed-park-dialogue` produit le contrôleur complet de 2715 octets.
+Un état local distingue attente, déplacement demandé, dialogue engagé et fin;
+la proximité est désarmée avant l'envoi initial. Le retour 2 n'engage la
+séquence que depuis l'état d'attente de l'acteur. L'annulation reste accessible
+et coupe toujours les deux voix; les scripts AF2_24/25 ne sont pas modifiés.
+
+Juste avant 53990023, le contrôleur relit les huit états, vérifie les deux acteurs
+vivants et consomme un verrou local avant l'appel vocal. Les autres voix et
+AF2_obj3 restent inchangés. Ces gardes sont une **construction moderne**, pas
+une preuve du fonctionnement des interruptions du moteur.
+
+Le générateur vérifie aussi les empreintes WAV/Dabing anglaises ci-dessus. Une
+surcharge locale différente de la ressource attendue est refusée, même dans le
+mode archives-only; la ressource n'est jamais exportée ou ajoutée à Git. Le
+déploiement natif revérifie ces ressources avant toute écriture de mission.
+
+La sauvegarde des variables locales, les retours 2 répétés pendant une voix et
+la priorité de l'annulation nécessitent encore les essais réels décrits plus
+haut. Aucun enregistrement du registre n'est marqué réussi par les tests Python.

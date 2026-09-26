@@ -48,6 +48,19 @@ Arctic 3 ou au MP par symétrie.
 - sauvegarde/reprise avant/après, valeurs 101–106 inchangées ;
 - aucune répétition au chargement d'Arctic 3.
 
+## Construction reproductible du 26 septembre 2026
+
+Deux recettes complètes existent désormais : `arctic1-cistern1-particle` et
+`arctic1-cistern1-sound`. Chacune retire un seul préfixe de commentaire sur la
+citerne `m_nadrz_`, liée à `r_arc1a_cisterna1.scr`. Le script passe de 278 à 276
+octets; explosion, dégâts, sauvegarde 101 et cinq autres citernes sont inchangés.
+Registre et acteur sont contrôlés avec leurs empreintes dans
+[`reconstruction-variants.json`](../reconstruction-variants.json).
+
+Ces deux recettes sont exclusives. Aucun profil combinant les deux effets
+n'est ajouté avant les observations séparées requises ci-dessus. Le montage
+est prêt pour les essais natifs, pas validé visuellement ou acoustiquement.
+
 ## Sources internes
 
 - scripts `R_arc1A_cisterna1..6.scr` ;

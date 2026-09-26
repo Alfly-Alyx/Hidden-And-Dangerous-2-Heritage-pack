@@ -16,7 +16,7 @@ import uuid
 
 from build_burgundy_ambient_patch import RECIPES, prepare as prepare_scene
 from build_reconstruction_lab import REQUIRED_MISSION_FILES, script_closure
-from build_reconstruction_variant import ArchiveSources, digest, entry_path, load_catalog, prepare_changes
+from build_reconstruction_variant import ArchiveSources, asset_specs, digest, entry_path, load_catalog, prepare_changes
 from reconstruction_bundle_evidence import payload_manifest
 from reconstruction_runtime_audit import audit, definitions, file_hash, fingerprint
 from reconstruction_sandbox import (
@@ -163,6 +163,8 @@ def native_plan(identifier: str, catalog: dict, sources, runtime: dict) -> tuple
         'limits': ['Commercial mission data on an independently copied installed environment',
                    'Native original mission paths, not renamed custom-mission laboratories',
                    'Heritage composition and engine behavior remain runtime tests'],
+        **({'asset_evidence': profile['asset_evidence']}
+           if identifier in catalog and profile.get('asset_evidence') else {}),
     }
 
 
@@ -225,6 +227,7 @@ def load_preset(session: Path, identifier: str, *, expected=None) -> dict:
         raise ValueError('Preset identity/fingerprint mismatch')
     if expected is not None and preset['definition_sha256'] != expected[identifier]['definition_sha256']:
         raise ValueError('Recipe changed since preparation')
+    asset_specs(preset)
     if set(preset['payloads']) != {'baseline', 'variant'}:
         raise ValueError('Both native snapshots are required')
     for snapshot in preset['payloads'].values():
@@ -252,6 +255,60 @@ def load_preset(session: Path, identifier: str, *, expected=None) -> dict:
     if len(absent) != len(set(absent)):
         raise ValueError('Duplicate absent-path requirement')
     return preset
+
+
+def extend_all(session: Path, *, root=ROOT, progress=None) -> dict:
+    """Add newly defined profiles without changing existing presets or game files."""
+    session, ready, manifest = load_session(session, root)
+    idle_game()
+    supported_client(session)
+    with operation(session):
+        if destination(session, 'active.json').exists():
+            raise ValueError('Restore the active trial before extending presets')
+        checked = audit(root)
+        if not checked['ok']:
+            raise ValueError('Runtime register must be valid before extension')
+        expected = definitions(root)
+        catalog = load_catalog(root / 'experimental/reconstruction-variants.json')
+        index_path = destination(session, 'PRESETS.json')
+        old = json.loads(index_path.read_text(encoding='utf-8'))
+        identifiers = [p['profile'] for p in old['profiles']]
+        if (old.get('kind') != 'native_trial_presets' or old.get('schema_version') != 1
+                or old.get('environment_sha256') != ready['manifest_sha256']
+                or len(set(identifiers)) != len(identifiers)
+                or not set(identifiers) <= set(expected)):
+            raise ValueError('Invalid existing preset index')
+        for identifier in identifiers:
+            preset = load_preset(session, identifier, expected=expected)
+            if (preset['environment_sha256'] != ready['manifest_sha256']
+                    or preset['test_plan_sha256'] != checked['test_plan_sha256'][identifier]):
+                raise ValueError('Existing preset environment or protocol changed; not overwritten')
+        additions = sorted(set(expected) - set(identifiers))
+        if not additions:
+            return {'profiles': len(identifiers), 'added': [], 'game_launched': False}
+        check_environment(session, ready, manifest)
+        records = list(old['profiles'])
+        with ArchiveSources(session / 'game', archives_only=True) as sources:
+            for identifier in additions:
+                snapshots, preset = native_plan(identifier, catalog, sources, checked)
+                for values in snapshots.values():
+                    for raw in values.values():
+                        put_blob(session, raw)
+                preset['environment_sha256'] = ready['manifest_sha256']
+                path = destination(session, 'presets/' + identifier + '.json')
+                save_preset(path, preset, resume=True)
+                records.append({'profile': identifier, 'sha256': fingerprint(preset)})
+                if progress:
+                    progress('Prepared additional profile ' + identifier)
+        history = destination(session, 'preset-history/' + fingerprint(old) + '.json')
+        history.parent.mkdir(parents=True, exist_ok=True)
+        save_preset(history, old, resume=True)
+        # Publish only after every addition is complete. Interrupted additions
+        # are inert/unindexed and may be resumed only with byte-identical data.
+        new = {**old, 'profiles': sorted(records, key=lambda p: p['profile'])}
+        atomic_json(session, 'PRESETS.json', new)
+        return {'profiles': len(records), 'added': additions,
+                'game_launched': False, 'payloads_activated': False}
 
 
 def check_environment(session: Path, ready: dict, manifest: dict):
@@ -391,6 +448,12 @@ def apply(session: Path, identifier: str, mode: str, *, root=ROOT, expected=None
                     or evidence.get('game_build_sha256') != file_hash(session / 'game/HD2_SabreSquadron.exe')):
                 raise ValueError('This variant awaits a real, evidenced native-baseline test')
         check_environment(session, ready, manifest)
+        if asset_specs(preset):
+            with ArchiveSources(session / 'game', archives_only=True) as sources:
+                for asset in asset_specs(preset):
+                    raw = sources.read_asset(asset['path'], asset['archive'])
+                    if len(raw) != asset['size'] or digest(raw) != asset['sha256']:
+                        raise ValueError('Pinned dialogue asset changed before application')
         records, created_directories = [], set()
         for item in preset['payloads'][mode]['files']:
             target = destination(session / 'game', item['path'])
@@ -459,10 +522,15 @@ def status(session: Path, *, root=ROOT) -> dict:
             'game_launched_by_tool': False}
 
 
-def rehearse(session: Path, *, root=ROOT, progress=None) -> dict:
+def rehearse(session: Path, *, root=ROOT, progress=None, profiles=None, report_name=None) -> dict:
     """Exercise real file application/rollback, not game behavior or engine tests."""
     session, _, _ = load_session(session, root)
-    if destination(session, 'OFFLINE_REHEARSAL.json').exists():
+    if report_name is not None and not SLUG.fullmatch(report_name):
+        raise ValueError('Invalid rehearsal report name')
+    if profiles is not None and report_name is None:
+        raise ValueError('A selected-profile rehearsal needs a separate report name')
+    output_name = 'OFFLINE_REHEARSAL' + ('-' + report_name if report_name else '') + '.json'
+    if destination(session, output_name).exists():
         raise FileExistsError('An existing rehearsal record is never overwritten')
     if not verify_clone(session, root=root)['ok']:
         raise ValueError('Offline rehearsal requires the unmodified initial copy')
@@ -471,6 +539,11 @@ def rehearse(session: Path, *, root=ROOT, progress=None) -> dict:
     ids = [row['profile'] for row in index['profiles']]
     if set(ids) != set(expected) or len(ids) != len(expected):
         raise ValueError('Rehearsal needs the complete current preset set')
+    if profiles is not None:
+        if (not profiles or len(set(profiles)) != len(profiles)
+                or not set(profiles) <= set(ids)):
+            raise ValueError('Unknown, duplicate or empty selected profiles')
+        ids = list(profiles)
     records, awaiting = [], []
     for identifier in sorted(ids):
         preset = load_preset(session, identifier, expected=expected)
@@ -494,9 +567,10 @@ def rehearse(session: Path, *, root=ROOT, progress=None) -> dict:
     if not final['ok']:
         raise ValueError('Whole-copy comparison failed after rehearsal')
     report = {'kind': 'offline_filesystem_rehearsal', 'profiles': len(ids), 'cycles': records,
+              'selected_profiles': sorted(ids), 'total_current_presets': len(expected),
               'variant_engine_baseline_gates': awaiting, 'initial_copy_restored': True,
               'game_launched': False, 'runtime_tests_performed': 0, 'runtime_register_modified': False}
-    output = destination(session, 'OFFLINE_REHEARSAL.json')
+    output = destination(session, output_name)
     write_new(output, json_data(report))
     return {'profiles': len(ids), 'filesystem_cycles': len(records),
             'variant_engine_baseline_gates': awaiting, 'initial_copy_restored': True,
@@ -505,11 +579,13 @@ def rehearse(session: Path, *, root=ROOT, progress=None) -> dict:
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=('prepare', 'apply', 'restore', 'status', 'rehearse'))
+    parser.add_argument('action', choices=('prepare', 'extend', 'apply', 'restore', 'status', 'rehearse'))
     parser.add_argument('--session', type=Path, required=True)
     parser.add_argument('--profile')
     parser.add_argument('--mode', choices=('baseline', 'variant'))
     parser.add_argument('--resume', action='store_true')
+    parser.add_argument('--select-profile', action='append')
+    parser.add_argument('--report-name')
     args = parser.parse_args(argv)
     if args.action == 'apply' and (not args.profile or not args.mode):
         parser.error('apply requires --profile and --mode')
@@ -517,16 +593,21 @@ def main(argv=None):
         parser.error('--profile and --mode are only used by apply')
     if args.resume and args.action != 'prepare':
         parser.error('--resume only rechecks an incomplete preset preparation')
+    if args.action != 'rehearse' and (args.select_profile or args.report_name):
+        parser.error('--select-profile and --report-name are only used by rehearse')
     try:
         if args.action == 'prepare':
             report = prepare_all(args.session, resume=args.resume,
                                  progress=lambda s: print(s, file=sys.stderr, flush=True))
+        elif args.action == 'extend':
+            report = extend_all(args.session, progress=lambda s: print(s, file=sys.stderr, flush=True))
         elif args.action == 'apply':
             report = apply(args.session, args.profile, args.mode, expected=definitions(ROOT))
         elif args.action == 'restore':
             report = restore(args.session)
         elif args.action == 'rehearse':
-            report = rehearse(args.session, progress=lambda s: print(s, file=sys.stderr, flush=True))
+            report = rehearse(args.session, profiles=args.select_profile, report_name=args.report_name,
+                              progress=lambda s: print(s, file=sys.stderr, flush=True))
         else:
             report = status(args.session)
         print(json.dumps(report, ensure_ascii=False, indent=2))

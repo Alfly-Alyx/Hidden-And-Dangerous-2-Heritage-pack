@@ -1,8 +1,10 @@
 # Benelli M4 — reconstruction additive expérimentale
 
-État : **priorité haute, banc visuel/sonore d'abord**, 15 septembre 2026.
-Aucune entrée Weapon n'est créée, aucun asset commercial n'est recopié et rien
-n'est compilé.
+État initial : **priorité haute, banc visuel/sonore d'abord**, 15 septembre 2026.
+Mise à jour du 26 septembre : le [modèle extérieur moderne](MODELE_MODERNE.md)
+et son générateur sont réalisés et contrôlés hors moteur. Les autres étapes
+B1–B4 ne sont pas terminées. Aucune entrée Weapon n'est créée et aucun asset
+commercial n'est recopié.
 
 ## Décision
 
