@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **468 tests Python réussis sur 469 dans la copie de publication**; un test de lien symbolique non exécuté
+- **476 tests Python réussis sur 477 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -67,6 +67,11 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   recherche d'empiéter sur une fiche voisine. Preuves Benelli, FG42, MG34 et
   lance-flammes recalées ; banc privé BenelliFPV_v5 reconstruit sans changer
   les géométries. Aucune arme activée.
+- Deux modèles extérieurs originaux supplémentaires :
+  [FG42](../FG42/MODELE_MODERNE.md), 876/564 triangles, et
+  [MG34 portative](../MG34_PORTABLE/MODELE_MODERNE.md), 1536/960 triangles.
+  Géométrie, LOD et trois vues contrôlés ; huit tests nouveaux. Ce sont des
+  créations modernes statiques, muettes, sans slot alloué ni validation moteur.
 - Trois comparaisons binaires Co_Burgundy1/2/3 supplémentaires reconstruisent
   respectivement douze/deux/dix porteurs et leurs liaisons sans modifier les scripts
   ou sons. Elles restent inertes, hors compte des laboratoires de mission.

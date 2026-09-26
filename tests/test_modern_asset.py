@@ -148,7 +148,8 @@ class ModernAssetTests(unittest.TestCase):
     def test_output_is_new_and_ignored(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            for name in ('../escape', '..', '/outside', 'CON', 'AUX', 'name.4ds', 'C:escape'):
+            for name in ('../escape', '..', '/outside', 'CON', 'AUX', 'name.4ds', 'C:escape',
+                         'con','nul','CoM1','com9','LPT9',None):
                 with self.subTest(name=name), self.assertRaises(ValueError):
                     asset.output_directory(root, name)
             output = asset.output_directory(root, 'modern_demo')

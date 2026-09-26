@@ -1,7 +1,9 @@
 # MG 34 portative — reconstruction additive
 
 État : **fiche de tir et ressources partielles, reconstruction moderne**, 26 septembre 2026.
-Aucune entrée Weapon ni modèle n'est créé et rien n'est compilé.
+Aucune entrée Weapon n'est créée. Le [modèle extérieur moderne](MODELE_MODERNE.md)
+est maintenant fabriqué : 33 pièces, deux LOD, aperçus et fichier natif
+désactivé contrôlés. Ce n'est pas une géométrie récupérée du montage de char.
 
 La munition `AMMO MG 34`, des icônes et des sons associés subsistent. Ils
 n'établissent ni modèle portable, ni animation FPV, ni entrée Weapon
@@ -14,7 +16,7 @@ tir de 135 octets. Le [parseur complet](../RECONSTRUCTION_BACKLOG/TABLES_EDITEUR
 en fixe les limites. Les paramètres restent bruts et le slot natif 32 est
 occupé par un casque ; ni cette fiche ni le montage de char n'autorisent sa reprise.
 
-Une reconstruction additive exige d'abord des modèles nouveaux FPV/tiers/sol,
+Une reconstruction additive exige encore la vue FPV et la tenue tiers/sol,
 une série d'animations, puis un slot libre audité. Cadence, alimentation,
 dispersion, recul, bipied, rechargement, sons, IA et réseau sont des choix
 modernes. Le premier banc autorisé est statique et muet, sous préfixe `TEST_`.
