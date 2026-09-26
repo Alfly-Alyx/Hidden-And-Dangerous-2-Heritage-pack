@@ -14,6 +14,7 @@
 | record `Benelli` / `item_shoot.tbl` | `others.DTA`, offsets 1547–1682 | 135 octets attestés, sémantique numérique non qualifiée |
 | Weapon 9 actuel | table commerciale | boussole livrée, réservée et non modifiable |
 | Liaison des identifiants Item/FPV | client 1.12 possédé, analyse et émulation ciblées | `groupe = slot + 100` confirmé ; pas une validation d'animation en jeu. [Contrat](CONTRAT_NATIF.md). |
+| Liaison arme/munition et état d'objet | même client 1.12, routines isolées | 208 associations commerciales contrôlées ; munition 179 : quantité 7,0 ; deux tags communs non relus. Pas une validation de sauvegarde complète. [Limites](ETAT_ET_MUNITION.md). |
 
 ## DÉRIVÉ / INFÉRÉ
 
@@ -27,7 +28,8 @@ jouée hors moteur ne serait une preuve d'équivalence au moteur.
 - les neuf couples forment une chaîne FPV avancée et les noms de nœuds
   suggèrent culasse, chargeur et éjection ;
 - la munition 179 et les deux sons étaient vraisemblablement destinés à cette
-  arme, mais leur binding fonctionnel n'est pas conservé ;
+  arme ; le consommateur de munition est prouvé, mais aucune fiche Weapon
+  Benelli commerciale ni synchronisation sonore n'est restaurée ;
 - la position historique du bloc d'animations n'autorise pas à reprendre le
   slot 9 désormais occupé.
 
