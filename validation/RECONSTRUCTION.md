@@ -18,12 +18,19 @@ autres modes, notamment Carnage ou une conversion coop vers solo.
 
 ## Avant un essai
 
+La [voie d'essai native](ESSAIS_NATIFS.md) fournit désormais une copie indépendante,
+des configurations sous les noms de mission d'origine et un déploiement
+réversible, sans lancer de programme de jeu. Elle est distincte des laboratoires
+renommés décrits ci-dessous et ne lève aucune validation moteur.
+
 Préparer une copie de jeu isolée et un déploiement réversible. Ne pas utiliser
 directement l'installation personnelle. Les 20 laboratoires complets restent
 désactivés; les quatre profils Africa 5 n'ont pas de mission complète tant que
 le détecteur commercial de piste manque. Les trois comparaisons binaires ne
 sont pas des paquets de mission activables. Le registre n'est pas une permission
 d'ignorer ces prérequis, de créer une dépendance vide ou de forcer un déploiement.
+Pour Africa 5 et Co-Burgundy 1, la voie native conserve exactement les absences
+commerciales et impose l'observation réelle du témoin avant sa variante.
 
 Lire l'étude du profil et ses exclusions : les deux variantes du garde 3
 Arctic4 et les deux variantes d'explosion Burgundy3 doivent notamment rester
@@ -146,7 +153,8 @@ ces tests utilisent des preuves inventées et ne comptent jamais comme essais du
 `tools/prepare_reconstruction_trials.py` rassemble les éléments nécessaires aux
 essais ultérieurs dans un dossier documentaire local. Il ne déploie rien, ne
 retire aucun suffixe `.disabled` et ne lance ni jeu, ni installateur, ni
-gestionnaire. La copie de jeu isolée reste à préparer avant les essais.
+gestionnaire. Cet outil documentaire ne construit pas la copie de jeu;
+les [outils de préparation native](ESSAIS_NATIFS.md) prennent désormais cette étape en charge.
 
 ```powershell
 .\.venv\Scripts\python.exe tools\prepare_reconstruction_trials.py --game "D:\Games\Hidden and Dangerous 2" --labs .analysis\laboratories\20260925 --scenes .analysis\scene-patches --archives-only --build --output .analysis\reconstruction-trials\preparation-20260926

@@ -122,6 +122,8 @@ zéro conversion validée.
 | `tools/reconstruction_runtime_audit.py` | Vérifier séparément les 27 profils expérimentaux, leurs 165 contrôles et leurs preuves; aucun lancement moteur. |
 | `tools/reconstruction_bundle_evidence.py` | Recontrôler un ZIP inerte contre les archives et calculer les empreintes des fichiers témoins/variantes, sans extraction. |
 | `tools/prepare_reconstruction_trials.py` | Réunir 27 fiches d'essai, manifestes, incompatibilités et consignes de retour arrière dans un nouveau dossier ignoré; aucun déploiement ni lancement. Voir [la procédure](../../validation/RECONSTRUCTION.md#préparer-les-fiches-sans-rien-lancer). |
+| `tools/reconstruction_sandbox.py` | Créer une copie réelle, sans lien partagé, de l'installation légitime dans une nouvelle session ignorée, puis vérifier tous ses fichiers. Aucun lancement. |
+| `tools/reconstruction_trial_deploy.py` | Préparer les 27 comparaisons dans leurs missions d'origine, appliquer un seul témoin/variante à la copie isolée et restaurer avec contrôle des modifications ultérieures. Voir [les essais natifs](../../validation/ESSAIS_NATIFS.md). |
 | `tools/stable_candidate_coverage_audit.py` | Vérifier que chaque candidat stable a une disposition. |
 | `tools/installer_wiring_audit.py` | Vérifier le câblage des options de l'installateur. |
 | `tools/installer_composition_audit.py` | Vérifier la composition des modules. |

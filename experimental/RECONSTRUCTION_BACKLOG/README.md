@@ -9,7 +9,8 @@ La préparation de `codex/experimental-reconstruction-inventory` a été intégr
 Ce dossier réunit l'état des connaissances disponible pour la restauration et la
 reconstruction additive de contenu de *Hidden & Dangerous 2*. La branche part de
 `master` et contient donc tous les fichiers déjà versionnés du projet. Le présent
-registre complète ces fichiers sans activer de script expérimental dans le jeu.
+registre complète ces fichiers sans activer de script expérimental dans
+l'installation personnelle. Les déploiements privés de test sont isolés et journalisés.
 
 ## Principes
 
@@ -21,6 +22,8 @@ registre complète ces fichiers sans activer de script expérimental dans le jeu
 - Aucun binaire commercial extrait n'est ajouté au dépôt.
 - Les prototypes restent en `.disabled` tant que leurs propriétaires, liaisons,
   positions et conditions de fin ne sont pas démontrés puis testés en jeu.
+  Seuls les essais explicitement préparés dans une copie isolée peuvent utiliser
+  des fichiers actifs, avec empreintes et restauration; aucune promotion n'en découle.
 - Une reconstruction ne doit jamais doubler un signal, un objectif, une voix, un
   effet ou un acteur déjà pris en charge par la version commerciale.
 
@@ -29,11 +32,12 @@ registre complète ces fichiers sans activer de script expérimental dans le jeu
 ### Avancement vérifié le 26 septembre 2026
 
 - **24 profils / 27 scripts dérivés** reconstruits depuis les archives, avec
-  78 sources épinglées; tous restent désactivés et non validés en jeu.
+  78 sources épinglées; les archives de prototypes restent désactivées et aucune
+  variante n'est validée en jeu.
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Quatre profils Africa 5 restent des scripts seuls :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **265 tests Python réussis sur 266**; un test de lien symbolique non exécuté
+- **296 tests Python réussis sur 297 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV décodés et mesurés en mémoire, sans
@@ -46,6 +50,13 @@ registre complète ces fichiers sans activer de script expérimental dans le jeu
 - L'installation actuelle n'est pas modifiée. Cinq profils refusent ses
   surcharges pertinentes en mode strict; les exclusions et empreintes sont
   consignées pour Africa 1, Normandy 1 et Africa 5.
+- **Trois copies indépendantes** pour hôte/deux clients : 24 385 fichiers et
+  6 508 813 370 octets chacune, même manifeste initial, aucun lien partagé.
+  La [voie d'essai native](../../validation/ESSAIS_NATIFS.md) prépare les
+  **27 configurations** dans chacune, sans nouveau menu ni lancement du jeu.
+- **49 cycles réels de fichiers** déployés, relus et restaurés sur la copie hôte :
+  27 témoins et 22 variantes sans préalable moteur. La comparaison globale finale
+  retrouve tous les fichiers initiaux. Ces cycles ne sont pas des essais en jeu.
 
 Ces nombres ne signifient pas que la reconstruction globale est terminée :
 le registre du paquet stable reste à **56 cas pending**, et les 21 candidates
@@ -54,8 +65,11 @@ multijoueur vers solo n'ont toujours aucune validation de jeu. Le nouveau
 **27 profils et 165 contrôles pending**, sans inventer de résultats moteur.
 Un [préparateur de fiches](../../validation/RECONSTRUCTION.md#préparer-les-fiches-sans-rien-lancer)
 réunit désormais les protocoles, manifestes exacts, incompatibilités et consignes
-de retour arrière. Il ne prépare pas encore la copie de jeu ni le déploiement,
-et respecte la demande de ne rien lancer pour le moment.
+de retour arrière. Les nouveaux outils d'essais natifs prennent maintenant en
+charge la copie indépendante et le déploiement réversible. Les quatre variantes
+Africa 5 et l'ambiance Co-Burgundy 1 exigent d'abord une preuve réelle du témoin
+natif : leurs références commerciales absentes sont préservées, pas remplacées
+par des scripts inventés. Aucun jeu ni installateur n'a été lancé par ces outils.
 
 | État | Sens |
 |---|---|
@@ -95,8 +109,9 @@ et respecte la demande de ne rien lancer pour le moment.
    auparavant « À documenter » ont désormais une étude ou un renvoi précis.
 2. Conserver fermés les faux positifs prouvés; ne pas recréer les six barils du
    dépôt Co_Burgundy3 ni réactiver le signal maquis remplacé par l'alarme.
-3. Préparer une copie de test isolée et instrumenter les signaux ambigus avant
-   de proposer une réaction inventée; aucun résultat moteur n'est encore acquis.
+3. Utiliser les trois copies de test isolées déjà préparées et observer les signaux
+   ambigus avant de proposer une réaction inventée; aucun résultat moteur n'est
+   encore acquis.
 4. Tester les variantes en solo, Carnage et coopération quand la mission existe
    dans plusieurs modes.
 5. Ne promouvoir un prototype qu'après réussite des contrôles décrits dans

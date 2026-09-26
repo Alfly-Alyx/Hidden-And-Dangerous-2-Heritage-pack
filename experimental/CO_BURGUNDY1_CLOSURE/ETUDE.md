@@ -93,3 +93,24 @@ comparaison de cadence et retour aux témoins. Mesurer qui exécute les scripts
 aléatoires et vérifier qu'aucun son n'est multiplié par le nombre de clients.
 Progression, explosion 05 et fin de mission doivent rester identiques. La fidélité
 des records ne prouve ni l'autorité réseau ni le rendu; le ZIP reste inerte.
+
+## Préparation d'un essai dans la mission d'origine — 26 septembre 2026
+
+La fermeture complète du registre coop, examinée pour préparer un déploiement
+réversible, révèle deux dépendances absentes **dans le témoin comme dans la
+variante** : `dummy_diary -> bu1_diary.scr` et
+`F_sloup03 -> bur1_obj_carnage.scr`. Le registre commercial fait 3376 octets,
+SHA-256 `1714d8b87f29be8755cb50fb3b2b77a802d357aa28ab3b62bcc24ddd937b315c`.
+Les douze ajouts d'ambiance ne créent ni ne résolvent ces deux absences.
+
+Le préparateur d'essais natifs conserve la mission `co_burgundy1`, tous ses
+fichiers commerciaux et ces deux liaisons. Il ne fabrique pas de scripts vides
+et ne transforme pas la comparaison en laboratoire déclaré complet. Seul le
+témoin peut être déployé avant observation du jeu; la variante reste verrouillée
+tant qu'une preuve réelle du témoin natif n'est pas inscrite au registre.
+Toute autre dépendance manquante ou modification des sources est refusée.
+
+Avant d'essayer l'ambiance, vérifier le chargement coop, les objectifs et la
+progression du témoin. Si l'absence empêche le fonctionnement commercial, arrêter
+la comparaison et consigner cet échec : elle n'autorise pas à inventer le journal
+ou un contrôleur Carnage. Ces observations restent à effectuer en moteur.
