@@ -20,6 +20,21 @@ def fixture():
 
 
 class EditorTableTests(unittest.TestCase):
+    def test_v5_requires_explicit_selection_and_keeps_the_same_shape_checks(self):
+        raw=bytearray(fixture());struct.pack_into('<I',raw,4,5)
+        with self.assertRaises(ValueError):parse(raw)
+        result=parse(raw,expected_version=5)
+        self.assertEqual(result['version'],5)
+        self.assertEqual(result['rows'],parse(fixture())['rows'])
+        for bad in (raw[:-1],raw+b'\0'):
+            with self.assertRaises(ValueError):parse(bad,expected_version=5)
+
+    def test_unreviewed_or_mismatched_version_requests_are_refused(self):
+        for version in (True,None,0,6,8,'5',5.0):
+            with self.subTest(version=version),self.assertRaises(ValueError):
+                parse(fixture(),expected_version=version)
+        with self.assertRaises(ValueError):parse(fixture(),expected_version=5)
+
     def test_header_schema_owns_boundaries_and_typed_columns(self):
         parsed=parse(fixture())
         self.assertEqual(parsed['data_offset'],96)

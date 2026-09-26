@@ -40,6 +40,11 @@ diffèrent. Leur sens n'est pas réinterprété et leurs données ne sont pas é
 
 ## Numéro 359 : candidat, pas allocation
 
+Un [premier descripteur moderne complet](DESCRIPTEUR_MODERNE.md) est désormais
+assemblé et contrôlé hors moteur, avec fragment FPV isolé et ressources verrouillées.
+Il ne constitue toujours pas une entrée additive installée : texte non alloué,
+contrats de comportement et transaction des tables encore incomplets.
+
 Complément du **27 septembre 2026** :
 [18 colonnes de tir projetées](../RECONSTRUCTION_BACKLOG/PARAMETRES_TIR.md)
 sur les octets consommés de l'action native. Les 40 témoins Base/Patch
