@@ -63,6 +63,12 @@ Les transformations et le banc FPV sont des implémentations propres au projet ;
 leurs sorties dérivées des ressources commerciales restent locales et exclues
 du dépôt.
 
+Les [notes sur items.sav de Corporal Desola](https://hidden-and-dangerous.net/board/viewtopic.php?t=957)
+ont été consultées comme piste historique le 26 septembre 2026. Le lecteur
+`tools/items_sav.py` est original et suit le découpage corrigé vérifié sur les
+quatre fichiers locaux : emplacements absents de quatre octets, et non records
+longs absorbant le voisin. Aucun code ni fixture commerciale n'est reproduit.
+
 Les liens historiques et techniques sont regroupés dans les rapports du dossier `docs`, notamment :
 
 - RpR Clan pour le jeu en ligne et les mods ;

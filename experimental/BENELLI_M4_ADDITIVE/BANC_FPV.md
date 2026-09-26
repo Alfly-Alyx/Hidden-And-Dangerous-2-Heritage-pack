@@ -106,6 +106,12 @@ produits : modèle désactivé, aperçu, consigne et inspecteur. L'HTML embarque
 données commerciales : **ne pas publier, joindre à une PR ou téléverser**.
 Le code générique et les empreintes seules sont versionnés.
 
+Ajouter `--native-assets` fabrique également deux alias courts désactivés,
+`PROTOTYPE_BenFPV` et `PROTOTYPE_BenM4`, compatibles avec les vingt octets des
+champs de nom des tables. Les [preuves de table](TABLES_ADDITIVES.md) détaillent
+cette contrainte. La génération privée `BenelliFPV_v4` avec les deux options a
+réussi ; elle contient sept fichiers, manifeste compris.
+
 La génération réelle `BenelliFPV_v3` a réussi. L'aperçu filaire a été inspecté.
 La vérification visuelle de l'HTML reste **pending** : le navigateur intégré a
 refusé le protocole local `file:` ; aucune autre voie n'a été utilisée pour

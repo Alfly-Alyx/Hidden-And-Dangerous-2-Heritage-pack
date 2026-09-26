@@ -187,5 +187,28 @@ class FpvLabTests(unittest.TestCase):
         with self.assertRaises(FileExistsError): lab.build({'models/#fpvbeneliaim.4ds':source()}, {},output)
         self.assertEqual({p.name:p.read_bytes() for p in output.iterdir()},before)
 
+    def test_native_aliases_are_short_prototypes_with_distinct_provenances(self):
+        derived,_=lab.derive(source())
+        resources,proof=lab.native_assets(derived)
+        self.assertEqual(set(resources),{'PROTOTYPE_BenFPV','PROTOTYPE_BenM4'})
+        self.assertEqual(resources['PROTOTYPE_BenFPV'],derived)
+        self.assertEqual(parse_4ds_nodes(resources['PROTOTYPE_BenM4'])['node_count'],30)
+        self.assertFalse(proof['item_table_modified']);self.assertFalse(proof['item_slot_allocated'])
+        self.assertEqual(proof['resources']['PROTOTYPE_BenFPV']['provenance'],'DERIVE_DU_JEU')
+        self.assertEqual(proof['resources']['PROTOTYPE_BenM4']['provenance'],'MODERNE_ORIGINAL')
+        for name,entry in proof['resources'].items():
+            self.assertEqual(len(bytes.fromhex(entry['item_model_field_hex'])),20)
+            self.assertEqual(entry['sha256'],lab.sha(resources[name]))
+
+    def test_native_asset_pair_is_exported_only_disabled_and_manifested(self):
+        output=lab.output_directory('Pair',self.root)
+        with patch('model_wireframe.projection_png',side_effect=lambda v,f,n,p:p.write_bytes(b'fixture PNG')):
+            report=lab.build({'models/#fpvbeneliaim.4ds':source()},{},output,with_native_assets=True)
+        for name,entry in report['native_assets']['resources'].items():
+            path=output/(name+'.4ds.disabled')
+            self.assertEqual(lab.sha(path.read_bytes()),entry['sha256'])
+            self.assertIn(path.name,report['files'])
+        self.assertEqual(len(list(output.glob('*.4ds'))),0)
+
 
 if __name__=='__main__': unittest.main()

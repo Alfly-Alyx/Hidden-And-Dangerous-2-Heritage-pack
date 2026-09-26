@@ -21,6 +21,9 @@ commerciales restent intacts.
 - Les ressources originales ne sont ni écrasées ni renommées. Préfixe
   `PROTOTYPE_HERITAGE_` pour les modèles modernes et suffixe `.disabled` pour
   les fichiers natifs non validés.
+- Les champs natifs limités à vingt octets emploient, lorsqu'il le faut, un alias
+  court `PROTOTYPE_` explicite, sans troncature. Les [deux alias Benelli](../BENELLI_M4_ADDITIVE/TABLES_ADDITIVES.md)
+  conservent leurs provenances et empreintes séparées.
 - Une géométrie inspectable n'est pas une arme jouable, une animation compatible
   ni un avion pilotable. Chaque étape garde son propre statut de validation.
 - Aucun numéro Item/Weapon n'est réservé par la création d'un modèle. Un rescan
