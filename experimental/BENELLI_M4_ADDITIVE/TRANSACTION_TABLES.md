@@ -60,6 +60,11 @@ les surcharges personnelles, ne réserve pas globalement 359, ne migre pas les
 sauvegardes et ne démontre pas le chargement complet en jeu. Le chargeur natif
 global n'a pas été exécuté par cet outil : ses lecteurs de descripteurs le sont.
 
+Un [oracle distinct de parcours natif](PARCOURS_NATIF_TABLE.md) vérifie désormais
+également la boucle originale des 500 emplacements, avant/après ajout dans les
+deux variantes. Il s'arrête toujours avant les appels système et ne valide
+pas le chargement en jeu ni le chargeur FPV complet.
+
 Restent la préparation d'un déploiement isolé et la gestion des surcharges,
 les contrats de sauvegarde complète, les paramètres secondaires, les mains,
 la caméra et les événements FPV. Les essais de rendu, de comportement et de
