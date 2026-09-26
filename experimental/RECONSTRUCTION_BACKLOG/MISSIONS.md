@@ -151,6 +151,8 @@ Chemins : `experimental/ARCTIC1_*` et
 | [AFRICA5_SNIPER31_RANGE_VARIANT](../AFRICA5_SNIPER31_RANGE_VARIANT/ETUDE.md) | Documenté / bloqué contrat | Entrée 12 / sortie 14, pas simple remplacement de rayon. Le détecteur dormant peut interrompre la cinématique 20 et les attaques suivantes; atcutscene seul ne protège pas toute la séquence. |
 | [AFRICA5_RANDOM_FACE_SEED_VARIANT](../AFRICA5_RANDOM_FACE_SEED_VARIANT/ETUDE.md) | Prototype désactivé / laboratoire bloqué | Départ aléatoire de la seule palette appelée, 46 acteurs, visages fixes préservés par le delta. Script reconstruit, quatre tests; mission complète refusée pour le détecteur de piste absent. |
 | Correctifs Africa5 stables | Information | `SetEvents(true)` AF4_43 et visage `e_f0w1` AF4_10 forment le socle; ne pas les dupliquer. |
+| [AFRICA5_PHYSICAL_FAN](../AFRICA5_PHYSICAL_FAN/QUALIFICATION.md) | Deux profils modernes désactivés | Utilisation et proximité exclusives, verrou avant conversion; modèle exact et pales racines sans enfants vérifiés. Jumeau intact. Physique et interaction à tester après témoin commercial. |
+| [AFRICA5_READING_GUARD_19](../AFRICA5_READING_GUARD_19/QUALIFICATION.md) | Profil moderne désactivé | Prise/lecture/dépôt avec verrous et nettoyage alarme/décès/reprise; deux accessoires typés et épinglés. API historiquement inachevée, aucune saisissabilité ou interruption présumée. |
 | [AFRICA6_AIRANIM_OWNER_AND_SEQUENCE](../AFRICA6_AIRANIM_OWNER_AND_SEQUENCE/ETUDE.md) | Documenté / support retrouvé | Six couples 4DS/5DS et parent #aircraftdum.airdummy du Ju88 actif retrouvés. Script libre reste dormant; concurrence avec SetupJunkers88 à établir avant sonde séparée. |
 
 ## Ajouts Alps et partie de cartes Africa 1
