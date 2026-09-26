@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **429 tests Python réussis sur 430 dans la copie de publication**; un test de lien symbolique non exécuté
+- **443 tests Python réussis sur 444 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -52,7 +52,11 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - [Tables Benelli](../BENELLI_M4_ADDITIVE/TABLES_ADDITIVES.md) : lecteurs centraux
   et associations FPV structurées réalisés, 359 vide dans Sabre/PatchX01 mais
   hors capacité Base/Patch. Les modèles ont maintenant des alias courts natifs.
-  Ni sauvegarde ni liaison d'arme qualifiée : aucune entrée n'est allouée.
+  Le [contrat natif 1.12](../BENELLI_M4_ADDITIVE/CONTRAT_NATIF.md) compare 1 036
+  descripteurs au lecteur d'origine en émulation isolée et établit la liaison
+  objet → groupe FPV. Quatorze tests supplémentaires couvrent ces calculs et
+  leurs refus. Ni sauvegarde de partie ni animation en jeu qualifiée : aucune
+  entrée n'est allouée.
 - Trois comparaisons binaires Co_Burgundy1/2/3 supplémentaires reconstruisent
   respectivement douze/deux/dix porteurs et leurs liaisons sans modifier les scripts
   ou sons. Elles restent inertes, hors compte des laboratoires de mission.
