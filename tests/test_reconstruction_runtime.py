@@ -64,8 +64,8 @@ class RuntimeRegisterTests(unittest.TestCase):
         report = audit.audit(ROOT)
         self.assertTrue(report['ok'], report['errors'])
         self.assertEqual(report['profiles'], report['expected_profiles'])
-        self.assertEqual(report['profiles'], 41)
-        self.assertEqual(report['states'], {'pending': 249})
+        self.assertEqual(report['profiles'], 46)
+        self.assertEqual(report['states'], {'pending': 280})
 
     def test_unknown_missing_and_duplicate_profiles_are_refused(self):
         original = copy.deepcopy(self.register)

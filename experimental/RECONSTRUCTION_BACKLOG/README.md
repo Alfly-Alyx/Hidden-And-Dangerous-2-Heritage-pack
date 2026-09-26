@@ -31,14 +31,14 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 
 ### Avancement vérifié le 26 septembre 2026
 
-- **38 profils / 42 scripts dérivés** reconstruits depuis les archives, avec
-  105 sources de mission épinglées et deux ressources de dialogue supplémentaires;
+- **43 profils / 51 scripts dérivés** reconstruits depuis les archives, avec
+  126 sources de mission épinglées et deux ressources de dialogue supplémentaires;
   les archives de prototypes restent désactivées et aucune
   variante n'est validée en jeu.
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Quatre profils Africa 5 restent des scripts seuls :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **330 tests Python réussis sur 331 dans la copie de publication**; un test de lien symbolique non exécuté
+- **351 tests Python réussis sur 352 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV décodés et mesurés en mémoire, sans
@@ -55,6 +55,8 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   6 508 813 370 octets chacune, même manifeste initial, aucun lien partagé.
   La [voie d'essai native](../../validation/ESSAIS_NATIFS.md) prépare les
   **41 configurations** dans chacune, sans nouveau menu ni lancement du jeu.
+  Cinq profils supplémentaires sont maintenant définis et contrôlés en mémoire;
+  leur ajout aux copies attend la fermeture du client ouvert par un autre usage.
 - **77 cycles réels de fichiers**, en deux rapports conservés : 49 pour la
   première série et 28 pour les quatorze ajouts. La comparaison globale finale
   retrouve tous les fichiers initiaux. Ces cycles ne sont pas des essais en jeu.
@@ -63,7 +65,7 @@ Ces nombres ne signifient pas que la reconstruction globale est terminée :
 le registre du paquet stable reste à **56 cas pending**, et les 21 candidates
 multijoueur vers solo n'ont toujours aucune validation de jeu. Le nouveau
 [registre expérimental](../../validation/RECONSTRUCTION.md) suit séparément
-**41 profils et 249 contrôles pending**, sans inventer de résultats moteur.
+**46 profils et 280 contrôles pending**, sans inventer de résultats moteur.
 Un [préparateur de fiches](../../validation/RECONSTRUCTION.md#préparer-les-fiches-sans-rien-lancer)
 réunit désormais les protocoles, manifestes exacts, incompatibilités et consignes
 de retour arrière. Les nouveaux outils d'essais natifs prennent maintenant en
@@ -97,7 +99,7 @@ par des scripts inventés. Aucun jeu ni installateur n'a été lancé par ces ou
   rapports internes, sources externes et règles de conservation.
 - [État de préparation](ETAT_PREPARATION.md) : photo vérifiée de la branche et
   de l'environnement juste avant le début des travaux.
-- [Variantes reproductibles](VARIANTES_REPRODUCTIBLES.md) : trente-huit profils et quarante-deux scripts
+- [Variantes reproductibles](VARIANTES_REPRODUCTIBLES.md) : quarante-trois profils et cinquante-et-un scripts
   expérimentaux générés localement, contrôles automatisés, provenance,
   conflit de surcharge Africa 1 et validations en moteur encore en attente.
 - [Laboratoires désactivés](LABORATOIRES_DESACTIVES.md) : copies A/B complètes,

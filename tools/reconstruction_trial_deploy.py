@@ -16,7 +16,10 @@ import uuid
 
 from build_burgundy_ambient_patch import RECIPES, prepare as prepare_scene
 from build_reconstruction_lab import REQUIRED_MISSION_FILES, script_closure
-from build_reconstruction_variant import ArchiveSources, asset_specs, digest, entry_path, load_catalog, prepare_changes
+from build_reconstruction_variant import (
+    ArchiveSources, asset_specs, digest, entry_path, load_catalog, prepare_changes,
+    qualification_mode, registry_name,
+)
 from reconstruction_bundle_evidence import payload_manifest
 from reconstruction_runtime_audit import audit, definitions, file_hash, fingerprint
 from reconstruction_sandbox import (
@@ -106,9 +109,9 @@ def native_plan(identifier: str, catalog: dict, sources, runtime: dict) -> tuple
     if identifier in catalog:
         profile = catalog[identifier]
         changes, proof = prepare_changes(profile, sources)
-        mission, registry = profile['source'].split('/')[1], 'scripts.dta'
+        mission, registry = profile['source'].split('/')[1], registry_name(profile)
         definition_sha = fingerprint(profile)
-        mode = 'solo'
+        mode = qualification_mode(profile)
     else:
         if identifier not in RECIPES:
             raise ValueError('Unknown native trial profile')
@@ -227,6 +230,9 @@ def load_preset(session: Path, identifier: str, *, expected=None) -> dict:
         raise ValueError('Preset identity/fingerprint mismatch')
     if expected is not None and preset['definition_sha256'] != expected[identifier]['definition_sha256']:
         raise ValueError('Recipe changed since preparation')
+    if (expected is not None and 'mode' in expected[identifier]
+            and preset.get('mode') != expected[identifier]['mode']):
+        raise ValueError('Qualification mode differs from the recipe')
     asset_specs(preset)
     if set(preset['payloads']) != {'baseline', 'variant'}:
         raise ValueError('Both native snapshots are required')

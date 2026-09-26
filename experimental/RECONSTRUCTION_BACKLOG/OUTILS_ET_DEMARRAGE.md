@@ -119,11 +119,11 @@ zéro conversion validée.
 | Outil | Usage |
 |---|---|
 | `tools/runtime_validation_audit.py` | Valider la structure des preuves d'exécution. |
-| `tools/reconstruction_runtime_audit.py` | Vérifier séparément les 41 profils expérimentaux, leurs 249 contrôles et leurs preuves; aucun lancement moteur. |
+| `tools/reconstruction_runtime_audit.py` | Vérifier séparément les 46 profils expérimentaux, leurs 280 contrôles et leurs preuves de mode solo/Carnage/coop; aucun lancement moteur. |
 | `tools/reconstruction_bundle_evidence.py` | Recontrôler un ZIP inerte contre les archives et calculer les empreintes des fichiers témoins/variantes, sans extraction. |
-| `tools/prepare_reconstruction_trials.py` | Réunir 41 fiches d'essai, manifestes, incompatibilités et consignes de retour arrière dans un nouveau dossier ignoré; aucun déploiement ni lancement. Voir [la procédure](../../validation/RECONSTRUCTION.md#préparer-les-fiches-sans-rien-lancer). |
+| `tools/prepare_reconstruction_trials.py` | Réunir 46 fiches d'essai, manifestes, incompatibilités et consignes de retour arrière dans un nouveau dossier ignoré; aucun déploiement ni lancement. Les modes non solo sont orientés vers la voie native. Voir [la procédure](../../validation/RECONSTRUCTION.md#préparer-les-fiches-sans-rien-lancer). |
 | `tools/reconstruction_sandbox.py` | Créer une copie réelle, sans lien partagé, de l'installation légitime dans une nouvelle session ignorée, puis vérifier tous ses fichiers. Aucun lancement. |
-| `tools/reconstruction_trial_deploy.py` | Préparer ou étendre les 41 comparaisons dans leurs missions d'origine, appliquer un seul témoin/variante à la copie isolée et restaurer avec contrôle des modifications ultérieures. Voir [les essais natifs](../../validation/ESSAIS_NATIFS.md). |
+| `tools/reconstruction_trial_deploy.py` | Préparer ou étendre les 46 comparaisons dans leurs missions d'origine, appliquer un seul témoin/variante à la copie isolée et restaurer avec contrôle des modifications ultérieures. Voir [les essais natifs](../../validation/ESSAIS_NATIFS.md). |
 | `tools/build_modern_asset.py` | Générer une géométrie originale, ses deux LOD, un 4DS désactivé et un aperçu sans lire les archives. Voir le [modèle moderne Benelli](../BENELLI_M4_ADDITIVE/MODELE_MODERNE.md). |
 | `tools/stable_candidate_coverage_audit.py` | Vérifier que chaque candidat stable a une disposition. |
 | `tools/installer_wiring_audit.py` | Vérifier le câblage des options de l'installateur. |

@@ -178,6 +178,39 @@ et être validé séparément en solo et en coopération.
 
 ## Sources internes
 
+### Réalisation solo du 26 septembre 2026
+
+`burgundy3-interrogation-visual-phases` reconstruit atomiquement les trois
+scripts solo à partir de Sabre, avec neuf sources épinglées. Ce profil **MODERNE**
+n'est pas le [profil coop séparé](COOPERATION.md) : le registre coop et les quatre scripts
+participants ne sont pas interchangeables.
+
+| Script | Source → variante, octets | SHA-256 source |
+|---|---:|---|
+| `bur3_20.scr` | 1554 → 3162 | `8dad418c41e59e7c486cff2c8f8526c7051e6f049a5d99b6dc94dec893920f45` |
+| `bur3_sas02.scr` | 1757 → 3151 | `6c96d54090d36bd357be0e0de7d95e5534027885eed5f509128fd274d7dab5a9` |
+| `bur3_rozhovor.scr` | 3824 → 3918 | `dbd0af922abbab3d7a75cb3aeaba22f2cd7886b10ec278440f61ee4fbff7f3a7` |
+
+Chaque récepteur garde une phase locale et n'accepte que l'étape suivante quand
+les deux acteurs sont vivants. Les signaux du SAS réaffirment seulement son
+assise commerciale; le garde emploie `rozhovor2`, `rozhovor3`, `rozhovor4`, puis
+efface son animation. Les trois scripts voisins attestant ces gestes sont
+conservés comme preuves, sans être modifiés.
+
+Les nouveaux signaux visuels sont désactivés avant l'alarme/mort du garde,
+avant les objectifs de mort du SAS et avant ses voix de libération à quatre
+mètres. Ainsi les récepteurs ajoutés ne doivent pas détourner ces séquences.
+Le contrôleur emploie le signal **moderne 99** après la réplique 19 et au début
+du watcher de mort pour fermer les récepteurs; ce numéro est absent des scripts
+commerciaux de cette mission. Il efface un geste du garde encore en cours mais
+ne relève pas le SAS de sa pose commerciale. Aucun nouveau signal d'objectif.
+
+Les dix-neuf appels de voix, les huit émissions historiques, les rayons, les
+délais et la progression demeurent inchangés. Le profil ne corrige pas la
+répétabilité éventuelle de la conversation commerciale. La priorité réelle des
+handlers, les signaux retardés, la sauvegarde et la pose assise sont à vérifier
+en moteur, pas déduits des tests du générateur.
+
 - `.analysis/scripts/sabre/Scripts/Burgundy3/bur3_rozhovor.scr`
 - `.analysis/scripts/sabre/Scripts/Burgundy3/bur3_20.scr`
 - `.analysis/scripts/sabre/Scripts/Burgundy3/bur3_sas02.scr`

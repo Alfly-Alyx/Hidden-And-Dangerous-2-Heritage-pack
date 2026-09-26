@@ -33,6 +33,6 @@ défini par une recette de géométrie originale et un générateur indépendant
 archives du jeu. Il vise la représentation extérieure/posée, pas le remplacement
 des neuf couples FPV officiels ni l'invention de leurs animations.
 
-Les laboratoires de scripts et leurs 249 contrôles moteur restent distincts de
+Les laboratoires de scripts et leurs 280 contrôles moteur restent distincts de
 la validation de ces nouveaux assets. Les contrôles de format et aperçus hors
 moteur ne sont jamais comptés comme essais réussis dans le jeu.

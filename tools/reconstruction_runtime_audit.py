@@ -16,7 +16,7 @@ import re
 import sys
 
 from build_burgundy_ambient_patch import RECIPES
-from build_reconstruction_variant import load_catalog
+from build_reconstruction_variant import load_catalog, qualification_mode
 
 ROOT = Path(__file__).resolve().parents[1]
 SCENARIOS = {'baseline', 'effect', 'interruption', 'save_load', 'objectives', 'rollback'}
@@ -44,6 +44,7 @@ def test_plan_fingerprint(profile: dict, common: dict, study_sha: str | None) ->
 
 def definitions(root: Path) -> dict:
     result = {p['id']: {'kind': 'script', 'mission': p['source'].split('/')[1],
+                       'mode': qualification_mode(p),
                        'definition_sha256': fingerprint(p)}
               for p in load_catalog(root / 'experimental/reconstruction-variants.json').values()}
     for identifier, recipe in RECIPES.items():
@@ -160,7 +161,7 @@ def validate(register, expected: dict, root: Path) -> dict:
         for field in ('kind', 'mission', 'definition_sha256'):
             if item.get(field) != proof[field]:
                 errors.append(f'{identifier}: stale or incorrect {field}')
-        mode = 'cooperation' if proof['kind'] == 'scene_registry' else 'solo'
+        mode = proof.get('mode', 'cooperation' if proof['kind'] == 'scene_registry' else 'solo')
         if item.get('mode') != mode:
             errors.append(f'{identifier}: unsupported qualification mode')
         if not isinstance(item.get('title'), str) or not item['title'].strip():

@@ -44,3 +44,29 @@ syntaxe conditionnelle dans une copie de mission.
 
 La variante Carnage n'est pas incluse automatiquement : son script et ses
 timings doivent être mesurés séparément avant d'adopter la même option.
+
+## Profil complet du 26 septembre 2026
+
+`alps2-agent-segment-pace` est désormais une recette complète **MODERNE** du
+catalogue. Elle fabrique 5 828 octets à partir des 4 646 octets de
+`Scripts.dta::scripts/alps2/al2_agent.scr`, SHA-256
+`90ffa75ea923d2353c01505c6640715dd92b5b5c5755dd1831fcefd676b558d0`.
+L'acteur `AL2_agent`, sa liaison, les huit points concernés et les sept frames
+`way1..way7` sont vérifiés dans les sources épinglées.
+
+Six choix d'allure sont insérés **avant**, et non à l'intérieur, des boucles de
+reprise : `AL2_ag_01`, `al2_agx_002`, `al2_agx_04`, `AL2_ag_05`, `AL2_ag_05c`,
+`AL2_ag_06x`. Au début du segment, joueur dans les sept unités : Run; sinon Walk.
+La distance est un choix moderne. L'attente commerciale du joueur 9/3 reste
+active et l'allure n'est pas recalculée continuellement pendant le mouvement.
+
+Le retour Walk est explicite avant `AL2_ag_07_1`, donc avant la porte et la
+boucle `AL2_ag_08`. Il est aussi rétabli avant `SetNPCTeamStatus(me, 1)` pour
+ne pas transmettre l'allure expérimentale au contrôle joueur. Aucune route,
+condition de reprise, voix, attente, alarme ou émission d'objectif n'est changée.
+Le Run global commenté reste commenté. Variante issue du solo, pas un port coop.
+
+Empreinte du script dérivé :
+`a8709f5393233b7e285be49a4aa0dc75ef20edbbb90dc64c3b0d8b8f87019a65`.
+Le profil est prêt pour préparation native; la fluidité, la distance réellement
+évaluée, les portes et les interruptions restent des essais moteur `pending`.

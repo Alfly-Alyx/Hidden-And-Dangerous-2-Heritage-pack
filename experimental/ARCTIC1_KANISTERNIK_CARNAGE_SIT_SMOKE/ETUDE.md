@@ -61,7 +61,42 @@ aucun mouvement, n'active pas `%%kourimsed2` et n'est pas un script complet.
 - mort avec/sans bidon en main, sans duplication physique ;
 - retrait du profil : retour byte-for-byte au script release de la copie.
 
-## Sources internes
+## Réalisation du 26 septembre 2026
+
+Deux profils natifs exclusifs sont maintenant reconstructibles :
+`arctic1-carnage-sit-after-smoke` et `arctic1-carnage-sit-before-smoke`.
+Ils emploient le registre solo d'origine mais portent une qualification
+**Carnage**, jamais une validation solo normale implicite. Aucun wrapper de
+mission renommée n'est généré pour ce mode.
+
+Le script commercial de 2 123 octets est épinglé, SHA-256
+`0f7ed013bb4807e605fc1cf601a1d08857ee73172ac587eec027ec8d54bb3259`.
+Les dérivés mesurent respectivement 3 064 et 3 052 octets. Acteur, liaison,
+bidon et repère d'assise sont vérifiés dans leurs conteneurs typés. Aucun
+nouveau propriétaire ni placement n'est créé.
+
+Les deux variantes sont classées **MODERNE**, car leur protection de cycle de
+vie dépasse le seul appel dormant. L'état d'activité n'est armé qu'en types 3/7
+et avant le début de la fumée, pour couvrir aussi le délai de 1 450 ms précédant
+l'assise historique. L'alarme nettoie la fumée et remet debout; la mort nettoie
+sans imposer une posture debout au cadavre. Les routes, le bidon physique et le
+signal 5 restent commerciaux.
+
+Les deux handlers vides de cutscene 4 sont regroupés : lorsqu'elle interrompt
+l'activité, le nettoyage efface l'état avant ses appels puis quitte vers
+`TheEnd`. Une garde empêche toute nouvelle **assise expérimentale** après cette
+cutscene; `OnCutsceneDone(4)` reste vide. Si la cutscene précède l'activité, les
+gestes commerciaux ultérieurs ne sont pas réécrits : la garde interdit l'assise,
+pas la fumée commerciale. Ce cas fait partie du protocole, pas d'un résultat
+déjà acquis. Le chemin normal n'arme jamais les nouveaux états.
+
+`%%kourimsed2` reste commenté dans les deux profils. Celui « après » compare
+l'ordre dormant; celui « avant » applique le précédent générique avec les mêmes
+protections modernes. Aucun des deux n'a été lancé en moteur, ni combiné avec
+les caméras Heritage. Leur pose dans les copies d'essai est différée tant qu'un
+client du jeu est ouvert.
+
+### Sources internes conservées
 
 - `.analysis/scripts/base/SCRIPTS/ARCTIC1/R_Arc1A_Kanisternik.scr` ;
 - `.analysis/arctic1-full/MISSIONS/ARCTIC1/scene2.bin` ;

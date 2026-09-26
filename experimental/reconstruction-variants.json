@@ -3,6 +3,503 @@
   "reference_edition": "GOG English Sabre Squadron 1.12",
   "profiles": [
     {
+      "id": "co-burgundy3-interrogation-visual-phases",
+      "title": "Co-Burgundy 3 — quatre phases visuelles modernes",
+      "classification": "MODERNE",
+      "source": "scripts/co_burgundy3/bur3_20.scr",
+      "actor": "BUR03_20",
+      "owner_entry": "missions/co_burgundy3/actors.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/co_burgundy3/bur3_20.scr": {
+          "archive": "SabreSquadron.dta",
+          "size": 1691,
+          "sha256": "3459502e41e62c3b4b4609e5caf92e5af4910240a85203517bb42416e35b6725"
+        },
+        "missions/co_burgundy3/mpscripts.dta": {
+          "archive": "SabreSquadron.dta",
+          "size": 2029,
+          "sha256": "78e1ae06d70ee4e587d633c196f07d1b9942314cb7fe5d136376b4c79207fe82"
+        },
+        "missions/co_burgundy3/actors.bin": {
+          "archive": "SabreSquadron.dta",
+          "size": 20767,
+          "sha256": "b5a16eac58352fb9cce5fd614fb53d5046dfcfe5e651d191de11457d66487751"
+        },
+        "scripts/co_burgundy3/bur3_sas02.scr": {
+          "archive": "SabreSquadron.dta",
+          "size": 1670,
+          "sha256": "ab91c1ca62bcd66196e80e03977aabdeffb04201743799eb85176e204e3d9c7e"
+        },
+        "scripts/co_burgundy3/bur3_rozhovor.scr": {
+          "archive": "SabreSquadron.dta",
+          "size": 3543,
+          "sha256": "d16c3cb370569b99074f15b8be3301ca3d35a4de72ef63c9e9dc7233a04f8476"
+        },
+        "scripts/co_burgundy3/bur3_22.scr": {
+          "archive": "SabreSquadron.dta",
+          "size": 1373,
+          "sha256": "5fb1359c8323d6b9a1e7866e2b759329f9acbfb3a2c88bf30e7a089bbf3276b9"
+        },
+        "scripts/co_burgundy3/bur3_23.scr": {
+          "archive": "SabreSquadron.dta",
+          "size": 1373,
+          "sha256": "171c9f2c76d0748494d175d0c74260f270c4180932d714b0ea9d2d86fde050f1"
+        },
+        "missions/co_burgundy3/scene2.bin": {
+          "archive": "SabreSquadron.dta",
+          "size": 5006340,
+          "sha256": "4e0b3b14f4d6e14d331585a869f254b1a07c57a29a45c3330eca4c39b10ddf25"
+        }
+      },
+      "checks": [
+        {
+          "kind": "frames",
+          "entry": "missions/co_burgundy3/actors.bin",
+          "values": [
+            "BUR03_20",
+            "BUR03_SAS02"
+          ]
+        },
+        {
+          "kind": "frames",
+          "entry": "missions/co_burgundy3/scene2.bin",
+          "values": [
+            "dummy_rozhovor_sas"
+          ]
+        }
+      ],
+      "edits": [
+        {
+          "before": "INTEGER difficulty",
+          "after": "// MODERNE: cooperative visual-only phase receivers.\nINTEGER heritage_visual_phase = 0;\nINTEGER difficulty"
+        },
+        {
+          "before": "OnDeath()",
+          "after": "OnSignal(11)\n{\n  if ((heritage_visual_phase == 0) AND (_ACTOR_GetState(en20) != 0) AND (_ACTOR_GetState(sas) != 0))\n  {\n    heritage_visual_phase = 1;\n    HUMAN_SetAnim(\"%%rozhovor2\", 100, 100, true);\n    goto END;\n  }\n}\n\nOnSignal(13)\n{\n  if ((heritage_visual_phase == 1) AND (_ACTOR_GetState(en20) != 0) AND (_ACTOR_GetState(sas) != 0))\n  {\n    heritage_visual_phase = 2;\n    HUMAN_SetAnim(\"%%rozhovor3\", 100, 100, true);\n    goto END;\n  }\n}\n\nOnSignal(15)\n{\n  if ((heritage_visual_phase == 2) AND (_ACTOR_GetState(en20) != 0) AND (_ACTOR_GetState(sas) != 0))\n  {\n    heritage_visual_phase = 3;\n    HUMAN_SetAnim(\"%%rozhovor4\", 100, 100, true);\n    goto END;\n  }\n}\n\nOnSignal(17)\n{\n  if ((heritage_visual_phase == 3) AND (_ACTOR_GetState(en20) != 0) AND (_ACTOR_GetState(sas) != 0))\n  {\n    heritage_visual_phase = 4;\n    HUMAN_SetAnim(\"\", 100, 100, false);\n    goto END;\n  }\n}\n\nOnSignal(99)\n{\n  DisableSignals(true);\n  if ((heritage_visual_phase > 0) AND (heritage_visual_phase < 4))\n  {\n    HUMAN_SetAnim(\"\", 100, 100, false);\n  }\n  heritage_visual_phase = 99;\n}\n\nOnDeath()"
+        },
+        {
+          "before": "OnDeath()\n{",
+          "after": "OnDeath()\n{\n  DisableSignals(true);\n  if ((heritage_visual_phase > 0) AND (heritage_visual_phase < 4))\n  {\n    HUMAN_SetAnim(\"\", 100, 100, false);\n  }\n  heritage_visual_phase = 99;\n"
+        },
+        {
+          "before": "OnAlarm()\n{",
+          "after": "OnAlarm()\n{\n  DisableSignals(true);\n  if ((heritage_visual_phase > 0) AND (heritage_visual_phase < 4))\n  {\n    HUMAN_SetAnim(\"\", 100, 100, false);\n  }\n  heritage_visual_phase = 99;\n  SetWhenever(inrange, false);"
+        }
+      ],
+      "qualification_mode": "cooperation",
+      "additional_changes": [
+        {
+          "source": "scripts/co_burgundy3/bur3_sas02.scr",
+          "actor": "BUR03_SAS02",
+          "edits": [
+            {
+              "before": "OnDeath()",
+              "after": "INTEGER heritage_visual_phase = 0;\nFRAME heritage_enemy; FRM_FindFrame(heritage_enemy, \"BUR03_20\");\n\nOnSignal(10)\n{\n  if ((heritage_visual_phase == 0) AND (_ACTOR_GetState(this) != 0) AND (_ACTOR_GetState(heritage_enemy) != 0))\n  {\n    heritage_visual_phase = 1;\n    HUMAN_SetAnim(\"%%kucasedi.i3d\", 100, 100, true);\n    goto END;\n  }\n}\n\nOnSignal(12)\n{\n  if ((heritage_visual_phase == 1) AND (_ACTOR_GetState(this) != 0) AND (_ACTOR_GetState(heritage_enemy) != 0))\n  {\n    heritage_visual_phase = 2;\n    HUMAN_SetAnim(\"%%kucasedi.i3d\", 100, 100, true);\n    goto END;\n  }\n}\n\nOnSignal(14)\n{\n  if ((heritage_visual_phase == 2) AND (_ACTOR_GetState(this) != 0) AND (_ACTOR_GetState(heritage_enemy) != 0))\n  {\n    heritage_visual_phase = 3;\n    HUMAN_SetAnim(\"%%kucasedi.i3d\", 100, 100, true);\n    goto END;\n  }\n}\n\nOnSignal(16)\n{\n  if ((heritage_visual_phase == 3) AND (_ACTOR_GetState(this) != 0) AND (_ACTOR_GetState(heritage_enemy) != 0))\n  {\n    heritage_visual_phase = 4;\n    HUMAN_SetAnim(\"%%kucasedi.i3d\", 100, 100, true);\n    goto END;\n  }\n}\n\nOnSignal(99)\n{\n  // Preserve the commercial seated pose; block later visual interruptions.\n  DisableSignals(true);\n  heritage_visual_phase = 99;\n}\n\nOnDeath()"
+            },
+            {
+              "before": "OnDeath()\n{",
+              "after": "OnDeath()\n{\n  DisableSignals(true);\n  heritage_visual_phase = 99;\n  HUMAN_SetAnim(\"\", 100, 100, false);"
+            },
+            {
+              "before": "Whenever incloserange (_PlayerInRange(4))\n{",
+              "after": "Whenever incloserange (_PlayerInRange(4))\n{\n  DisableSignals(true);\n  heritage_visual_phase = 99;"
+            }
+          ]
+        },
+        {
+          "source": "scripts/co_burgundy3/bur3_rozhovor.scr",
+          "actor": "dummy_rozhovor_sas",
+          "owner_entry": "missions/co_burgundy3/scene2.bin",
+          "edits": [
+            {
+              "before": "\tFRM_MorphSpeechDelayed(sas, 59990019, 8, 20);",
+              "after": "\tFRM_MorphSpeechDelayed(sas, 59990019, 8, 20);\n\tSendSignal(en20, 99);\n\tSendSignal(sas, 99);"
+            },
+            {
+              "before": "Whenever dead((_ACTOR_GetState(en20)==0) OR (_ACTOR_GetState(sas)==0))\n{",
+              "after": "Whenever dead((_ACTOR_GetState(en20)==0) OR (_ACTOR_GetState(sas)==0))\n{\n\tSendSignal(en20, 99);\n\tSendSignal(sas, 99);"
+            },
+            {
+              "before": "OnSignal(1)\t// received from bur3_20\n{",
+              "after": "OnSignal(1)\t// received from bur3_20\n{\n\tSendSignal(en20, 99);\n\tSendSignal(sas, 99);"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arctic1-carnage-sit-after-smoke",
+      "title": "Arctic 1 Carnage — assise après la fumée",
+      "classification": "MODERNE",
+      "source": "scripts/arctic1/r_arc1a_kanisternik.scr",
+      "actor": "Kanisternik",
+      "owner_entry": "missions/arctic1/actors.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/arctic1/r_arc1a_kanisternik.scr": {
+          "archive": "Scripts.dta",
+          "size": 2123,
+          "sha256": "0f7ed013bb4807e605fc1cf601a1d08857ee73172ac587eec027ec8d54bb3259"
+        },
+        "missions/arctic1/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 4862,
+          "sha256": "fedfb47f89d393f120efb6b2570dc4c5cd019c9b2b78290094e80b3045fa5ea4"
+        },
+        "missions/arctic1/actors.bin": {
+          "archive": "missions.dta",
+          "size": 19916,
+          "sha256": "3b992e9981c35f451ef8e7f33b9c6761238d60178800765565cab2861652961f"
+        },
+        "missions/arctic1/scene2.bin": {
+          "archive": "missions.dta",
+          "size": 12993841,
+          "sha256": "6abbc6e2bb8b7a335dd6272c2144d7e62b68d38c21ad40857950ddca83b3de15"
+        }
+      },
+      "checks": [
+        {
+          "kind": "frames",
+          "entry": "missions/arctic1/scene2.bin",
+          "values": [
+            "kanister",
+            "dummy_kanisternik_sit"
+          ]
+        }
+      ],
+      "edits": [
+        {
+          "before": "integer v_hnatach = 0;",
+          "after": "integer v_hnatach = 0;\nInteger heritage_idle_active = 0;\nInteger heritage_idle_blocked = 0;"
+        },
+        {
+          "before": "OnCutsceneDone(4){}",
+          "after": ""
+        },
+        {
+          "before": "  HUMAN_ACTIVITY_Smoke(true);",
+          "after": "  // MODERNE: Carnage-only idle, kept separate from the commercial cutscene path.\n  if (((_SPGetGameType()==3) OR (_SPGetGameType()==7)) AND (heritage_idle_blocked == 0))\n  {\n    heritage_idle_active = 1;\n  }\n  HUMAN_ACTIVITY_Smoke(true);"
+        },
+        {
+          "before": "OnAlarm()\n{",
+          "after": "OnAlarm()\n{\n  if (heritage_idle_active == 1)\n  {\n    heritage_idle_active = 0;\n    HUMAN_ACTIVITY_Smoke(false);\n    HUMAN_SetAnim(\"\", 250, 250, false);\n    HUMAN_SETMODE_Stand();\n  }"
+        },
+        {
+          "before": "OnDeath()\n{",
+          "after": "OnDeath()\n{\n  if (heritage_idle_active == 1)\n  {\n    heritage_idle_active = 0;\n    HUMAN_ACTIVITY_Smoke(false);\n    HUMAN_SetAnim(\"\", 250, 250, false);\n  }"
+        },
+        {
+          "before": "OnCutscene(4){}",
+          "after": "OnCutscene(4)\n{\n  if ((_SPGetGameType()==3) OR (_SPGetGameType()==7))\n  {\n    heritage_idle_blocked = 1;\n    if (heritage_idle_active == 1)\n    {\n      heritage_idle_active = 0;\n      HUMAN_ACTIVITY_Smoke(false);\n      HUMAN_SetAnim(\"\", 250, 250, false);\n      HUMAN_SETMODE_Stand();\n      goto TheEnd;\n    }\n  }\n}\n\nOnCutsceneDone(4){}"
+        },
+        {
+          "before": "//  HUMAN_ACTIVITY_Sit(sit);",
+          "after": "  if (heritage_idle_active == 1)\n  {\n    HUMAN_ACTIVITY_Sit(sit);\n  }"
+        }
+      ],
+      "qualification_mode": "carnage"
+    },
+    {
+      "id": "arctic1-carnage-sit-before-smoke",
+      "title": "Arctic 1 Carnage — assise avant la fumée",
+      "classification": "MODERNE",
+      "source": "scripts/arctic1/r_arc1a_kanisternik.scr",
+      "actor": "Kanisternik",
+      "owner_entry": "missions/arctic1/actors.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/arctic1/r_arc1a_kanisternik.scr": {
+          "archive": "Scripts.dta",
+          "size": 2123,
+          "sha256": "0f7ed013bb4807e605fc1cf601a1d08857ee73172ac587eec027ec8d54bb3259"
+        },
+        "missions/arctic1/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 4862,
+          "sha256": "fedfb47f89d393f120efb6b2570dc4c5cd019c9b2b78290094e80b3045fa5ea4"
+        },
+        "missions/arctic1/actors.bin": {
+          "archive": "missions.dta",
+          "size": 19916,
+          "sha256": "3b992e9981c35f451ef8e7f33b9c6761238d60178800765565cab2861652961f"
+        },
+        "missions/arctic1/scene2.bin": {
+          "archive": "missions.dta",
+          "size": 12993841,
+          "sha256": "6abbc6e2bb8b7a335dd6272c2144d7e62b68d38c21ad40857950ddca83b3de15"
+        }
+      },
+      "checks": [
+        {
+          "kind": "frames",
+          "entry": "missions/arctic1/scene2.bin",
+          "values": [
+            "kanister",
+            "dummy_kanisternik_sit"
+          ]
+        }
+      ],
+      "edits": [
+        {
+          "before": "integer v_hnatach = 0;",
+          "after": "integer v_hnatach = 0;\nInteger heritage_idle_active = 0;\nInteger heritage_idle_blocked = 0;"
+        },
+        {
+          "before": "OnCutsceneDone(4){}",
+          "after": ""
+        },
+        {
+          "before": "  HUMAN_ACTIVITY_Smoke(true);",
+          "after": "  // MODERNE: Carnage-only idle, kept separate from the commercial cutscene path.\n  if (((_SPGetGameType()==3) OR (_SPGetGameType()==7)) AND (heritage_idle_blocked == 0))\n  {\n    heritage_idle_active = 1;\n    HUMAN_ACTIVITY_Sit(sit);\n  }\n  HUMAN_ACTIVITY_Smoke(true);"
+        },
+        {
+          "before": "OnAlarm()\n{",
+          "after": "OnAlarm()\n{\n  if (heritage_idle_active == 1)\n  {\n    heritage_idle_active = 0;\n    HUMAN_ACTIVITY_Smoke(false);\n    HUMAN_SetAnim(\"\", 250, 250, false);\n    HUMAN_SETMODE_Stand();\n  }"
+        },
+        {
+          "before": "OnDeath()\n{",
+          "after": "OnDeath()\n{\n  if (heritage_idle_active == 1)\n  {\n    heritage_idle_active = 0;\n    HUMAN_ACTIVITY_Smoke(false);\n    HUMAN_SetAnim(\"\", 250, 250, false);\n  }"
+        },
+        {
+          "before": "OnCutscene(4){}",
+          "after": "OnCutscene(4)\n{\n  if ((_SPGetGameType()==3) OR (_SPGetGameType()==7))\n  {\n    heritage_idle_blocked = 1;\n    if (heritage_idle_active == 1)\n    {\n      heritage_idle_active = 0;\n      HUMAN_ACTIVITY_Smoke(false);\n      HUMAN_SetAnim(\"\", 250, 250, false);\n      HUMAN_SETMODE_Stand();\n      goto TheEnd;\n    }\n  }\n}\n\nOnCutsceneDone(4){}"
+        }
+      ],
+      "qualification_mode": "carnage"
+    },
+    {
+      "id": "alps2-agent-segment-pace",
+      "title": "Alps 2 — allure moderne aux frontières de trajet",
+      "classification": "MODERNE",
+      "source": "scripts/alps2/al2_agent.scr",
+      "actor": "AL2_agent",
+      "owner_entry": "missions/alps2/actors.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/alps2/al2_agent.scr": {
+          "archive": "Scripts.dta",
+          "size": 4646,
+          "sha256": "90ffa75ea923d2353c01505c6640715dd92b5b5c5755dd1831fcefd676b558d0"
+        },
+        "missions/alps2/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 4273,
+          "sha256": "c40a7e6cf2f33fdbe9d50fdf21799b8693c002c38d503ceed353618f58b700ec"
+        },
+        "missions/alps2/actors.bin": {
+          "archive": "Patch.dta",
+          "size": 13958,
+          "sha256": "7520774eb75bf951d8106dea6bb5dee9a225c368394c388a799e90591420cab0"
+        },
+        "missions/alps2/check2.bin": {
+          "archive": "missions.dta",
+          "size": 55794,
+          "sha256": "c1e4ef247c867693fc4b30fba3d760b0edf80860a6f89f9c382c7930b148db48"
+        },
+        "missions/alps2/scene2.bin": {
+          "archive": "Patch.dta",
+          "size": 3364325,
+          "sha256": "176b5c41fd11e31990c3a157e1f6382e52f886faa1e1c3bc3183b4d496b0bf01"
+        }
+      },
+      "checks": [
+        {
+          "kind": "nul_strings",
+          "entry": "missions/alps2/check2.bin",
+          "values": [
+            "AL2_ag_01",
+            "al2_agx_002",
+            "al2_agx_04",
+            "AL2_ag_05",
+            "AL2_ag_05c",
+            "AL2_ag_06x",
+            "AL2_ag_07_1",
+            "AL2_ag_08"
+          ]
+        },
+        {
+          "kind": "frames",
+          "entry": "missions/alps2/scene2.bin",
+          "values": [
+            "way1",
+            "way2",
+            "way3",
+            "way4",
+            "way5",
+            "way6",
+            "way7"
+          ]
+        }
+      ],
+      "edits": [
+        {
+          "before": "\tHUMAN_Move(\"AL2_ag_01\");",
+          "after": "  // MODERNE: choose pace once at this segment boundary, never in retry loops.\n  if (_PlayerInRange(7)>0)\n  {\n    HUMAN_SETMODE_Run();\n  }\n  else\n  {\n    HUMAN_SETMODE_Walk();\n  }\n\tHUMAN_Move(\"AL2_ag_01\");"
+        },
+        {
+          "before": "\tHUMAN_Move(\"al2_agx_002\");",
+          "after": "  // MODERNE: choose pace once at this segment boundary, never in retry loops.\n  if (_PlayerInRange(7)>0)\n  {\n    HUMAN_SETMODE_Run();\n  }\n  else\n  {\n    HUMAN_SETMODE_Walk();\n  }\n\tHUMAN_Move(\"al2_agx_002\");"
+        },
+        {
+          "before": "\tHUMAN_Move(\"al2_agx_04\");",
+          "after": "  // MODERNE: choose pace once at this segment boundary, never in retry loops.\n  if (_PlayerInRange(7)>0)\n  {\n    HUMAN_SETMODE_Run();\n  }\n  else\n  {\n    HUMAN_SETMODE_Walk();\n  }\n\tHUMAN_Move(\"al2_agx_04\");"
+        },
+        {
+          "before": "\tHUMAN_Move(\"AL2_ag_05\");",
+          "after": "  // MODERNE: choose pace once at this segment boundary, never in retry loops.\n  if (_PlayerInRange(7)>0)\n  {\n    HUMAN_SETMODE_Run();\n  }\n  else\n  {\n    HUMAN_SETMODE_Walk();\n  }\n\tHUMAN_Move(\"AL2_ag_05\");"
+        },
+        {
+          "before": "\tHUMAN_Move(\"AL2_ag_05c\");",
+          "after": "  // MODERNE: choose pace once at this segment boundary, never in retry loops.\n  if (_PlayerInRange(7)>0)\n  {\n    HUMAN_SETMODE_Run();\n  }\n  else\n  {\n    HUMAN_SETMODE_Walk();\n  }\n\tHUMAN_Move(\"AL2_ag_05c\");"
+        },
+        {
+          "before": "\tHUMAN_Move(\"AL2_ag_06x\");",
+          "after": "  // MODERNE: choose pace once at this segment boundary, never in retry loops.\n  if (_PlayerInRange(7)>0)\n  {\n    HUMAN_SETMODE_Run();\n  }\n  else\n  {\n    HUMAN_SETMODE_Walk();\n  }\n\tHUMAN_Move(\"AL2_ag_06x\");"
+        },
+        {
+          "before": "\tHUMAN_Move(\"AL2_ag_07_1\");",
+          "after": "\tHUMAN_SETMODE_Walk();\n\tHUMAN_Move(\"AL2_ag_07_1\");"
+        },
+        {
+          "before": "\tSetNPCTeamStatus(me, 1);",
+          "after": "\tHUMAN_SETMODE_Walk();\n\tSetNPCTeamStatus(me, 1);"
+        }
+      ]
+    },
+    {
+      "id": "burgundy3-interrogation-visual-phases",
+      "title": "Burgundy 3 — quatre phases visuelles modernes",
+      "classification": "MODERNE",
+      "source": "scripts/burgundy3/bur3_20.scr",
+      "actor": "BUR03_20",
+      "owner_entry": "missions/burgundy3/actors.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/burgundy3/bur3_20.scr": {
+          "archive": "SabreSquadron.dta",
+          "size": 1554,
+          "sha256": "8dad418c41e59e7c486cff2c8f8526c7051e6f049a5d99b6dc94dec893920f45"
+        },
+        "missions/burgundy3/scripts.dta": {
+          "archive": "SabreSquadron.dta",
+          "size": 3421,
+          "sha256": "606d7a312b600d9e3b15060d3faa32c27ef6ebe73c1ca38c0f78f899b4b98ac5"
+        },
+        "missions/burgundy3/actors.bin": {
+          "archive": "SabreSquadron.dta",
+          "size": 22645,
+          "sha256": "669dbf9a0902601e9e8e2a1b832f27dfbe300578750d8879655061a61c67bcae"
+        },
+        "scripts/burgundy3/bur3_sas02.scr": {
+          "archive": "SabreSquadron.dta",
+          "size": 1757,
+          "sha256": "6c96d54090d36bd357be0e0de7d95e5534027885eed5f509128fd274d7dab5a9"
+        },
+        "scripts/burgundy3/bur3_rozhovor.scr": {
+          "archive": "SabreSquadron.dta",
+          "size": 3824,
+          "sha256": "dbd0af922abbab3d7a75cb3aeaba22f2cd7886b10ec278440f61ee4fbff7f3a7"
+        },
+        "scripts/burgundy3/bur3_06.scr": {
+          "archive": "SabreSquadron.dta",
+          "size": 2349,
+          "sha256": "8260e4c3e51cc300b6dd38ba49beda436b08eb7cea6f232fee69683ad4976398"
+        },
+        "scripts/burgundy3/bur3_22.scr": {
+          "archive": "SabreSquadron.dta",
+          "size": 1589,
+          "sha256": "11ea5027ec94ed1285e5ba49b3f773042e3ca0212cd8134b7724ba0963946d0a"
+        },
+        "scripts/burgundy3/bur3_23.scr": {
+          "archive": "SabreSquadron.dta",
+          "size": 1589,
+          "sha256": "81983d26f8898b126d1e0cb737fc75b58719ba206ba3ea14191e8b53288d7eff"
+        },
+        "missions/burgundy3/scene2.bin": {
+          "archive": "SabreSquadron.dta",
+          "size": 5008185,
+          "sha256": "7bcbed955744bd5b5646cbc6ce68dfd8d8d02b786677b378698d6c643cedb94c"
+        }
+      },
+      "checks": [
+        {
+          "kind": "frames",
+          "entry": "missions/burgundy3/actors.bin",
+          "values": [
+            "BUR03_20",
+            "BUR03_SAS02",
+            "BUR03_21"
+          ]
+        },
+        {
+          "kind": "frames",
+          "entry": "missions/burgundy3/scene2.bin",
+          "values": [
+            "dummy_rozhovor01"
+          ]
+        }
+      ],
+      "edits": [
+        {
+          "before": "INTEGER difficulty",
+          "after": "// MODERNE: visual-only phase receivers, never an objective controller.\nINTEGER heritage_visual_phase = 0;\nINTEGER difficulty"
+        },
+        {
+          "before": "OnDeath()",
+          "after": "OnSignal(11)\n{\n  if ((heritage_visual_phase == 0) AND (_ACTOR_GetState(this) != 0) AND (_ACTOR_GetState(sas) != 0))\n  {\n    heritage_visual_phase = 1;\n    HUMAN_SetAnim(\"%%rozhovor2\", 100, 100, true);\n    goto END;\n  }\n}\n\nOnSignal(13)\n{\n  if ((heritage_visual_phase == 1) AND (_ACTOR_GetState(this) != 0) AND (_ACTOR_GetState(sas) != 0))\n  {\n    heritage_visual_phase = 2;\n    HUMAN_SetAnim(\"%%rozhovor3\", 100, 100, true);\n    goto END;\n  }\n}\n\nOnSignal(15)\n{\n  if ((heritage_visual_phase == 2) AND (_ACTOR_GetState(this) != 0) AND (_ACTOR_GetState(sas) != 0))\n  {\n    heritage_visual_phase = 3;\n    HUMAN_SetAnim(\"%%rozhovor4\", 100, 100, true);\n    goto END;\n  }\n}\n\nOnSignal(17)\n{\n  if ((heritage_visual_phase == 3) AND (_ACTOR_GetState(this) != 0) AND (_ACTOR_GetState(sas) != 0))\n  {\n    heritage_visual_phase = 4;\n    HUMAN_SetAnim(\"\", 100, 100, false);\n    goto END;\n  }\n}\n\nOnSignal(99)\n{\n  DisableSignals(true);\n  if ((heritage_visual_phase > 0) AND (heritage_visual_phase < 4))\n  {\n    HUMAN_SetAnim(\"\", 100, 100, false);\n  }\n  heritage_visual_phase = 99;\n}\n\nOnDeath()"
+        },
+        {
+          "before": "OnDeath()\n{",
+          "after": "OnDeath()\n{\n  DisableSignals(true);\n  if ((heritage_visual_phase > 0) AND (heritage_visual_phase < 4))\n  {\n    HUMAN_SetAnim(\"\", 100, 100, false);\n  }\n  heritage_visual_phase = 99;\n"
+        },
+        {
+          "before": "OnAlarm()\n{",
+          "after": "OnAlarm()\n{\n  DisableSignals(true);\n  if ((heritage_visual_phase > 0) AND (heritage_visual_phase < 4))\n  {\n    HUMAN_SetAnim(\"\", 100, 100, false);\n  }\n  heritage_visual_phase = 99;\n  SetWhenever(inrange, false);"
+        }
+      ],
+      "additional_changes": [
+        {
+          "source": "scripts/burgundy3/bur3_sas02.scr",
+          "actor": "BUR03_SAS02",
+          "edits": [
+            {
+              "before": "OnDeath()",
+              "after": "INTEGER heritage_visual_phase = 0;\nFRAME heritage_enemy; FRM_FindFrame(heritage_enemy, \"BUR03_20\");\n\nOnSignal(10)\n{\n  if ((heritage_visual_phase == 0) AND (_ACTOR_GetState(this) != 0) AND (_ACTOR_GetState(heritage_enemy) != 0))\n  {\n    heritage_visual_phase = 1;\n    HUMAN_SetAnim(\"%%kucasedi.i3d\", 100, 100, true);\n    goto END;\n  }\n}\n\nOnSignal(12)\n{\n  if ((heritage_visual_phase == 1) AND (_ACTOR_GetState(this) != 0) AND (_ACTOR_GetState(heritage_enemy) != 0))\n  {\n    heritage_visual_phase = 2;\n    HUMAN_SetAnim(\"%%kucasedi.i3d\", 100, 100, true);\n    goto END;\n  }\n}\n\nOnSignal(14)\n{\n  if ((heritage_visual_phase == 2) AND (_ACTOR_GetState(this) != 0) AND (_ACTOR_GetState(heritage_enemy) != 0))\n  {\n    heritage_visual_phase = 3;\n    HUMAN_SetAnim(\"%%kucasedi.i3d\", 100, 100, true);\n    goto END;\n  }\n}\n\nOnSignal(16)\n{\n  if ((heritage_visual_phase == 3) AND (_ACTOR_GetState(this) != 0) AND (_ACTOR_GetState(heritage_enemy) != 0))\n  {\n    heritage_visual_phase = 4;\n    HUMAN_SetAnim(\"%%kucasedi.i3d\", 100, 100, true);\n    goto END;\n  }\n}\n\nOnSignal(99)\n{\n  // Preserve the commercial seated pose; block later visual interruptions.\n  DisableSignals(true);\n  heritage_visual_phase = 99;\n}\n\nOnDeath()"
+            },
+            {
+              "before": "OnDeath()\n{",
+              "after": "OnDeath()\n{\n  DisableSignals(true);\n  heritage_visual_phase = 99;\n  HUMAN_SetAnim(\"\", 100, 100, false);"
+            },
+            {
+              "before": "Whenever incloserange (_PlayerInRange(4))\n{",
+              "after": "Whenever incloserange (_PlayerInRange(4))\n{\n  DisableSignals(true);\n  heritage_visual_phase = 99;"
+            }
+          ]
+        },
+        {
+          "source": "scripts/burgundy3/bur3_rozhovor.scr",
+          "actor": "dummy_rozhovor01",
+          "owner_entry": "missions/burgundy3/scene2.bin",
+          "edits": [
+            {
+              "before": "\tFRM_MorphSpeechDelayed(sas, 59990019, 1, outrange);",
+              "after": "\tFRM_MorphSpeechDelayed(sas, 59990019, 1, outrange);\n\tSendSignal(en20, 99);\n\tSendSignal(sas, 99);"
+            },
+            {
+              "before": "  SetWhenever(pir, false);",
+              "after": "  SetWhenever(pir, false);\n\tSendSignal(en20, 99);\n\tSendSignal(sas, 99);"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "alps1-ge04-crouch-sniper",
       "title": "Alps 1 — ge04-crouch-sniper",
       "classification": "HISTORIQUE_EXPERIMENTAL",
