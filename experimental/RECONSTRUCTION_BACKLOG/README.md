@@ -33,7 +33,9 @@ registre complète ces fichiers sans activer de script expérimental dans le jeu
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Quatre profils Africa 5 restent des scripts seuls :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **252 tests Python**, compilation console et auto-tests de sécurité C# réussis.
+- **265 tests Python réussis sur 266**; un test de lien symbolique non exécuté
+  faute de privilège Windows. Compilation console et auto-tests de sécurité C#
+  précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV décodés et mesurés en mémoire, sans
   export ni modification du jeu; [méthode et empreintes](AUDIO_RESSOURCES.md).
 - Trois comparaisons binaires Co_Burgundy1/2/3 supplémentaires reconstruisent
@@ -50,6 +52,10 @@ le registre du paquet stable reste à **56 cas pending**, et les 21 candidates
 multijoueur vers solo n'ont toujours aucune validation de jeu. Le nouveau
 [registre expérimental](../../validation/RECONSTRUCTION.md) suit séparément
 **27 profils et 165 contrôles pending**, sans inventer de résultats moteur.
+Un [préparateur de fiches](../../validation/RECONSTRUCTION.md#préparer-les-fiches-sans-rien-lancer)
+réunit désormais les protocoles, manifestes exacts, incompatibilités et consignes
+de retour arrière. Il ne prépare pas encore la copie de jeu ni le déploiement,
+et respecte la demande de ne rien lancer pour le moment.
 
 | État | Sens |
 |---|---|

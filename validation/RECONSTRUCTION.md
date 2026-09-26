@@ -138,5 +138,52 @@ Vingt tests synthétiques vérifient couverture, modes, signatures de recettes,
 chemins, commentaires de blocage, dates, empreintes, résultats incomplets et
 non-promotion automatique. Dix autres vérifient les contenus des ZIP, les sources
 changées, leurs empreintes, noms ambigus et métadonnées d'activation refusées.
-La suite complète compte **252 tests réussis**;
+Avant l'ajout du préparateur ci-dessous, la suite comptait **252 tests réussis**;
 ces tests utilisent des preuves inventées et ne comptent jamais comme essais du jeu.
+
+## Préparer les fiches sans rien lancer
+
+`tools/prepare_reconstruction_trials.py` rassemble les éléments nécessaires aux
+essais ultérieurs dans un dossier documentaire local. Il ne déploie rien, ne
+retire aucun suffixe `.disabled` et ne lance ni jeu, ni installateur, ni
+gestionnaire. La copie de jeu isolée reste à préparer avant les essais.
+
+```powershell
+.\.venv\Scripts\python.exe tools\prepare_reconstruction_trials.py --game "D:\Games\Hidden and Dangerous 2" --labs .analysis\laboratories\20260925 --scenes .analysis\scene-patches --archives-only --build --output .analysis\reconstruction-trials\preparation-20260926
+```
+
+Sans `--build` et sans `--output`, l'outil effectue les contrôles en lecture seule.
+Pour vérifier ultérieurement un dossier existant, remplacer `--build` par
+`--check-output` en conservant les autres arguments. Cette vérification refait
+les comparaisons aux sources, puis compare chaque document; elle ne se contente
+pas de relire les empreintes qu'il contient. Un changement d'exécutable, de ZIP,
+d'étude, de protocole ou de source rend le dossier obsolète.
+
+Le dossier contient un index, un relevé général et une fiche Markdown/JSON pour
+chacun des 27 profils. Les fiches réunissent :
+
+- l'étude, les prérequis et les étapes particulières;
+- les six contrôles solo ou sept contrôles coop, sans résultat inventé;
+- les empreintes du protocole, de l'exécutable source et du ZIP désactivé;
+- les chemins, tailles et empreintes des fichiers témoins et variantes;
+- les surcharges locales exclues et les profils modifiant le même script;
+- le protocole de retour arrière à vérifier dans la future copie isolée.
+
+Les 20 laboratoires et trois comparaisons de scène sont recontrôlés contre les
+archives. Si un laboratoire manque, l'outil vérifie sa recette et essaie sa
+fermeture avant de distinguer « ZIP non construit » et « dépendance absente ».
+Les quatre profils Africa 5 conservent leur obstacle explicite; aucun fichier
+vide n'est fabriqué. Une erreur de source ou un ZIP ambigu/corrompu interrompt
+la préparation au lieu d'être reclassé comme un simple prérequis.
+
+Les sorties sont limitées à un **nouveau** sous-dossier direct de
+`.analysis/reconstruction-trials/`. Aucun dossier existant n'est écrasé et les
+liens de sortie sont refusés. Une écriture interrompue laisse son dossier partiel
+pour inspection; il n'est pas réutilisé silencieusement. Les fichiers produits
+ne contiennent que des métadonnées et des consignes, pas les contenus commerciaux.
+Ils restent ignorés par Git, notamment parce qu'ils contiennent des chemins locaux.
+
+Quatorze tests supplémentaires couvrent cette préparation. Sur ce poste,
+**265 tests réussissent sur 266**, avec un test de création réelle de lien
+symbolique non exécuté faute de privilège Windows. Ce résultat ne valide aucun
+des 165 essais moteur, qui restent en attente.

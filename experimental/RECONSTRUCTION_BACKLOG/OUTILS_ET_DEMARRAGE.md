@@ -121,6 +121,7 @@ zéro conversion validée.
 | `tools/runtime_validation_audit.py` | Valider la structure des preuves d'exécution. |
 | `tools/reconstruction_runtime_audit.py` | Vérifier séparément les 27 profils expérimentaux, leurs 165 contrôles et leurs preuves; aucun lancement moteur. |
 | `tools/reconstruction_bundle_evidence.py` | Recontrôler un ZIP inerte contre les archives et calculer les empreintes des fichiers témoins/variantes, sans extraction. |
+| `tools/prepare_reconstruction_trials.py` | Réunir 27 fiches d'essai, manifestes, incompatibilités et consignes de retour arrière dans un nouveau dossier ignoré; aucun déploiement ni lancement. Voir [la procédure](../../validation/RECONSTRUCTION.md#préparer-les-fiches-sans-rien-lancer). |
 | `tools/stable_candidate_coverage_audit.py` | Vérifier que chaque candidat stable a une disposition. |
 | `tools/installer_wiring_audit.py` | Vérifier le câblage des options de l'installateur. |
 | `tools/installer_composition_audit.py` | Vérifier la composition des modules. |
