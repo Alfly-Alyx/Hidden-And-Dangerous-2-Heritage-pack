@@ -45,6 +45,8 @@ def test_plan_fingerprint(profile: dict, common: dict, study_sha: str | None) ->
 def definitions(root: Path) -> dict:
     result = {p['id']: {'kind': 'script', 'mission': p['source'].split('/')[1],
                        'mode': qualification_mode(p),
+                       **({'comparison_baseline': p['comparison_baseline']['id']}
+                          if p.get('comparison_baseline') is not None else {}),
                        'definition_sha256': fingerprint(p)}
               for p in load_catalog(root / 'experimental/reconstruction-variants.json').values()}
     for identifier, recipe in RECIPES.items():
@@ -164,6 +166,8 @@ def validate(register, expected: dict, root: Path) -> dict:
         mode = proof.get('mode', 'cooperation' if proof['kind'] == 'scene_registry' else 'solo')
         if item.get('mode') != mode:
             errors.append(f'{identifier}: unsupported qualification mode')
+        if item.get('comparison_baseline') != proof.get('comparison_baseline'):
+            errors.append(f'{identifier}: incorrect comparison baseline')
         if not isinstance(item.get('title'), str) or not item['title'].strip():
             errors.append(f'{identifier}: missing title')
         if not strings(item.get('steps')) or len(item.get('steps', [])) < 2:

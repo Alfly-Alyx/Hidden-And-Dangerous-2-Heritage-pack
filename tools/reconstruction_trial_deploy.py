@@ -20,6 +20,8 @@ from build_reconstruction_variant import (
     ArchiveSources, asset_specs, digest, entry_path, load_catalog, prepare_changes,
     qualification_mode, registry_name,
 )
+from reconstruction_baseline import prepare_baseline
+from build_reconstruction_variant import apply_edits
 from reconstruction_bundle_evidence import payload_manifest
 from reconstruction_runtime_audit import audit, definitions, file_hash, fingerprint
 from reconstruction_sandbox import (
@@ -133,6 +135,15 @@ def native_plan(identifier: str, catalog: dict, sources, runtime: dict) -> tuple
         raise ValueError('Incomplete native mission resources')
     if not set(changes) <= set(files):
         raise ValueError('Variant is outside original mission files')
+    baseline_proof = None
+    if identifier in catalog and profile.get('comparison_baseline') is not None:
+        # The source provenance stays commercial. Both compared snapshots get
+        # the same reviewed Heritage delta before the experimental difference.
+        name = profile['source']
+        baseline, baseline_proof = prepare_baseline(profile, files[name], sources, apply_edits)
+        if baseline_proof != proof.get('comparison_baseline'):
+            raise ValueError('Comparison baseline changed during preparation')
+        files = {**files, name: baseline}
     variant = {**files, **changes}
     baseline_closure = closure(files, mission, registry)
     variant_closure = closure(variant, mission, registry,
@@ -168,6 +179,7 @@ def native_plan(identifier: str, catalog: dict, sources, runtime: dict) -> tuple
                    'Heritage composition and engine behavior remain runtime tests'],
         **({'asset_evidence': profile['asset_evidence']}
            if identifier in catalog and profile.get('asset_evidence') else {}),
+        **({'comparison_baseline': baseline_proof} if baseline_proof is not None else {}),
     }
 
 
@@ -234,6 +246,9 @@ def load_preset(session: Path, identifier: str, *, expected=None) -> dict:
             and preset.get('mode') != expected[identifier]['mode']):
         raise ValueError('Qualification mode differs from the recipe')
     asset_specs(preset)
+    if (expected is not None and
+            (preset.get('comparison_baseline') or {}).get('id') != expected[identifier].get('comparison_baseline')):
+        raise ValueError('Comparison baseline differs from the recipe')
     if set(preset['payloads']) != {'baseline', 'variant'}:
         raise ValueError('Both native snapshots are required')
     for snapshot in preset['payloads'].values():

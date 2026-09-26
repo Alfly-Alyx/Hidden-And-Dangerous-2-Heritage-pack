@@ -14,6 +14,56 @@
   },
   "profiles": [
     {
+      "id": "africa4-invasion-transition-heritage-radio",
+      "mission": "africa4",
+      "title": "Africa 4 — transition composée avec le choix radio Heritage",
+      "definition_sha256": "4228ae04c087d028dd52684b07e1c71009a5615b68e4582c6d175d4d75e2a12c",
+      "kind": "script",
+      "study": "experimental/AFRICA4_INVASION_TRANSITION_VARIANT/COMPOSITION_HERITAGE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Copie native isolée; module radio Heritage limité à l’organisateur, identique dans les deux branches de comparaison.",
+        "Deux progressions Africa 3 vérifiées séparément, valeur de campagne 20=0 puis 20=1; aucune sauvegarde modifiée automatiquement.",
+        "Incompatible avec la paire commerciale de transition et l’assaut de proximité. Aucun laboratoire renommé ni compatibilité globale Heritage présumée."
+      ],
+      "steps": [
+        "La référence est Heritage-radio seul, pas le script commercial : vérifier absence du forçage odvysilali=1 dans témoin ET variante.",
+        "Partir de deux progressions réelles Africa 3, radio non transmise puis transmise (valeur 20=0/1). Les empreintes des scripts ne prouvent pas la valeur d’une sauvegarde.",
+        "Dans chaque progression, comparer référence Heritage puis référence+transition : signaux conducteurs 21/20, fantassins 2/1, délais de groupes 20000/30000 conservés.",
+        "Vérifier les deux textes de journal 4154/4153, les réserves 26–30 et tous les récepteurs; aucun destinataire, objectif ou nombre de signaux ajouté.",
+        "Mesurer fade-out 200, pause 1000, fade-in 700 et première attente 20000 sans supposer les fondus bloquants; délais ultérieurs inchangés.",
+        "Tester réutilisation radio, interruption par autre cinématique, sauvegarde/reprise autour des fondus et des ordres. Refuser écran noir ou invasion doublée.",
+        "Retourner à la référence Heritage de cette paire, puis restaurer les fichiers initiaux de la copie. Ne pas confondre avec le témoin commercial de l’autre profil ni avec une qualification de tout le pack."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      },
+      "comparison_baseline": "heritage-africa4-radio-v1"
+    },
+    {
       "id": "africa5-fan-onuse-oneshot",
       "mission": "africa5",
       "title": "Africa 5 — ventilateur physique, utilisation explicite",

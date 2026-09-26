@@ -52,7 +52,7 @@ ne doit être ajouté à Git.
   des cartes;
 - `experimental/PRINCIPE_RECONSTRUCTION_ADDITIVE.md` : contrat de coexistence;
 - `validation/runtime-validation.json` : 56 scénarios manuels encore en attente;
-- `validation/reconstruction-runtime.json` : 49 profils expérimentaux, 298
+- `validation/reconstruction-runtime.json` : 50 profils expérimentaux, 304
   contrôles distincts encore en attente; protocole dans `validation/RECONSTRUCTION.md`;
 - `validation/multiplayer-solo-runtime.json` : 21 candidates, aucune validée;
 - `validation/stable-candidate-dispositions.json` : disposition des candidats

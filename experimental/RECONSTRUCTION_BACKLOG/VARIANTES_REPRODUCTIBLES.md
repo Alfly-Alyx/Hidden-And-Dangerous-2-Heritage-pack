@@ -1,7 +1,7 @@
 # Variantes reproductibles
 
 État vérifié le **26 septembre 2026** sur la branche
-`codex/reconstruction-phase-1` : quarante-six profils, soit cinquante-quatre scripts dérivés,
+`codex/reconstruction-phase-1` : quarante-sept profils, soit cinquante-cinq scripts dérivés,
 ont été construits et
 comparés aux sources commerciales. **Aucun n'est installé ni validé en jeu.**
 
@@ -19,8 +19,15 @@ ordres d'assise/fumée Arctic 1 Carnage. Leurs 143/105/80/105 fichiers de missio
 sont résolus en mémoire, sans dépendance de script absente. Une troisième série
 ajoute les deux déclencheurs exclusifs du ventilateur et la lecture AF4_19
 d'Africa 5 : 194 fichiers par paire, détecteur commercial absent conservé.
-L'ensemble des recettes épingle 129 sources de mission distinctes, les deux
+L'ensemble des recettes épingle 157 sources de mission distinctes, les deux
 ressources de dialogue Libye 2 et trois modèles d'accessoires Africa 5.
+
+La composition Africa 4 ajoute une paire native distincte : radio Heritage dans
+les deux branches, transition seule dans la variante (3978 → 3970 octets).
+Les 28 scripts de journal/récepteurs et trois sources externes Africa 3 sont
+contrôlés. Les 95 fichiers natifs sont résolus, sans script absent; la pose/retrait
+attend la fermeture du client rouvert indépendamment. Voir la
+[composition et ses limites](../AFRICA4_INVASION_TRANSITION_VARIANT/COMPOSITION_HERITAGE.md).
 
 La propriété des accessoires est désormais contrôlée par décodage de l'instance
 de scène, référence de modèle prioritaire, nœud racine unique, géométrie et
