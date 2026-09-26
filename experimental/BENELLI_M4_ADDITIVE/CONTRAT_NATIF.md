@@ -31,6 +31,11 @@ Un marqueur vide fait avancer de quatre octets ; une entrée présente ajoute
 son type puis un bloc de 500 octets. Cela confirme le découpage de 508 octets
 complets, sans absorber le marqueur vide suivant.
 
+Le [parcours natif complet des emplacements](PARCOURS_NATIF_TABLE.md), ajouté
+le 27 septembre, exécute maintenant cette boucle sur Sabre/PatchX01 avant et
+après l'ajout désactivé : 2 000 passages d'emplacement et 1 090 objets contrôlés.
+L'ouverture des fichiers et les appels système restent exclus.
+
 Le décodeur couvre les deux descripteurs d'action et les trois types d'objet.
 Les tailles retournées par les dix sérialiseurs d'action sont respectivement
 36, 40, 136, 128, 16, 12, 12, 28, 16 et 0 octets. Un sélecteur nul signifie
