@@ -21,6 +21,7 @@ Heritage Pack remet en service le jeu en ligne, corrige des objectifs et des sé
 | Easter eggs | Réactive les séquences d’Africa 1 et d’Africa 4 neutralisées par la mise à jour 1.12. |
 | Contenu communautaire | Consulte le dépôt CMP officiel et installe ou met à jour sa dernière révision disponible (actuellement 2.6.5 avec 156 cartes et missions coopératives). |
 | Missions personnalisées | Ajoute `Solo → Missions personnalisées`, avec des listes séparées pour les missions utilisateur, les adaptations multijoueur et l’exploration libre. Le gestionnaire fourni analyse le dossier `CustomMissions` sans remplacer les créations existantes. |
+| Adaptations solo | Une option construit 11 missions solo à partir de missions coopératives et de variantes d’objectifs officielles déjà présentes dans le jeu installé. Elles sont clairement signalées et rangées dans `Adaptations multijoueur`. |
 | Vestiges officiels | Ajoute Africa5 Prototype et Normandy3 Zone au menu multijoueur avec un nom qui indique clairement leur état expérimental. |
 | Affichage | Détecte l’écran et le PC, applique la résolution maximale utilisable et adapte les graphismes aux performances de la machine. |
 | Restauration | Sauvegarde les fichiers remplacés et permet de revenir à l’état précédent. |
@@ -45,6 +46,7 @@ La CMP 2.6.5 représente environ **1,08 Go à télécharger** et **3,12 Go insta
 - Les campagnes et missions officielles restent dans les menus solo habituels.
 - Les missions CMP se trouvent dans `Multijoueur → Créer → LAN → Coopération`.
 - Ouvrez `Solo → Missions personnalisées` pour accéder aux trois listes séparées.
+- La liste `Adaptations multijoueur` contient les versions solo d’Alps 3 Objectif, Ardennes 1 Objectif, Brest Coop, Bourgogne 1–3 Coop, Libye 1–3 Coop et Sicile 1–2 Coop lorsque l’option correspondante de l’installateur est sélectionnée.
 - Pour ajouter une mission, placez son dossier contenant `tree.klz` et ses fichiers nécessaires dans `CustomMissions`, puis lancez `HD2-Custom-Mission-Manager.exe` depuis la racine du jeu et choisissez **Scanner et installer**. Les paquets avancés existants avec `mission.json` restent compatibles.
 - `PROTOTYPE - Africa5` se trouve en Deathmatch.
 - `PROTOTYPE - Normandy3 Zone` se trouve en Occupation.
@@ -72,12 +74,13 @@ Le rapport raconte les découvertes : contenu coupé, variantes de missions, Lon
 
 ## État actuel
 
-La version **0.8.0** consolide notamment :
+La version **0.9.0** consolide notamment :
 
 - la détection exacte des options déjà installées ;
 - une seule liste H&D2 réunissant le service communautaire déjà utilisé et OpenSpy ;
 - le menu natif des missions personnalisées, ses trois catégories séparées et l’analyse automatique des dossiers de mission sans manifeste obligatoire ;
 - le déploiement automatique de ce menu dans le jeu par l’installateur principal, même avant l’ajout d’une mission personnalisée ;
+- la création et l’installation facultatives de 11 adaptations solo depuis les archives H&D2 du joueur, sans remplacer les missions coopératives d’origine ;
 - la remise en service de contenu original qui ne fonctionnait plus dans la version finale ;
 - l’exploration libre appliquée aussi aux deux prototypes ;
 - l’installation réversible et la protection des sauvegardes du joueur.

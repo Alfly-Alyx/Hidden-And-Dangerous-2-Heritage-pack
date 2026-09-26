@@ -24,6 +24,18 @@ Chaque choix ouvre sa propre liste. Les catalogues officiels restent dans
 `Scripts/HD2.CustomMenu.asi` raccorde ces écrans sans réécrire l'exécutable
 commercial.
 
+## Onze adaptations solo fournies par Heritage Pack
+
+L'installateur principal peut créer les adaptations de `ALPS3_OBJ`,
+`ARDENS1_OBJ`, `CO_BREST`, `CO_BURGUNDY1–3`, `CO_LIBYE1–3` et `CO_SICILY1–2`.
+Elles sont placées dans **Missions multijoueur adaptées au jeu solo**. Les 33
+missions solo commerciales restent dans leur catalogue d'origine et les
+versions multijoueur restent intactes.
+
+Les fichiers nécessaires sont extraits au moment de l'installation depuis la
+copie de Hidden & Dangerous 2 déjà présente sur le PC. Heritage Pack ne contient
+ni ne remplace les archives commerciales du jeu.
+
 ## Installation la plus simple
 
 1. Fermer le jeu.

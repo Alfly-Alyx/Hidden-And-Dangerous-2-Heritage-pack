@@ -42,6 +42,23 @@ def effective_entries(
     return result
 
 
+def overlay_loose_entries(
+    game: Path,
+    root_name: str,
+    result: dict[str, tuple[str, bytes]],
+    wanted,
+) -> None:
+    root = game / root_name
+    if not root.is_dir():
+        return
+    for path in root.rglob("*"):
+        if not path.is_file():
+            continue
+        relative = path.relative_to(game).as_posix().lower()
+        if wanted(relative):
+            result[relative] = ("loose", path.read_bytes())
+
+
 def registry_string(data: bytes, offset: int) -> tuple[str, int]:
     if offset + 6 > len(data):
         raise ValueError("Truncated mission script registry")
@@ -99,9 +116,22 @@ def audit(game: Path, selected: set[str]) -> dict[str, object]:
             or name.endswith("/sounds.bin")
         ) and (not selected or name.startswith(mission_prefixes)),
     )
+    overlay_loose_entries(
+        game, "Missions", missions,
+        lambda name: (
+            name.endswith("/scripts.dta") or name.endswith("/mpscripts.dta")
+            or name.endswith("/scene2.bin") or name.endswith("/actors.bin")
+            or name.endswith("/sounds.bin")
+        ) and (not selected or name.startswith(mission_prefixes)),
+    )
     scripts = effective_entries(
         game,
         SCRIPT_ARCHIVES,
+        lambda name: name.endswith(".scr")
+        and (not selected or name.startswith(script_prefixes)),
+    )
+    overlay_loose_entries(
+        game, "Scripts", scripts,
         lambda name: name.endswith(".scr")
         and (not selected or name.startswith(script_prefixes)),
     )

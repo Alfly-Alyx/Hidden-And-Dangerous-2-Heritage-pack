@@ -1106,7 +1106,38 @@ namespace HD2CustomMissionManager
             return ReadArchiveEntry(originalGame, "GameData\\Gamedata01.gdt");
         }
 
-        public static byte[] BuildCatalogue(byte[] source, MissionLibrary library)
+        private static Dictionary<string, GdtBlock> MissionTemplates(
+            byte[] expansionSource, byte[] originalSource)
+        {
+            Dictionary<string, GdtBlock> templates =
+                new Dictionary<string, GdtBlock>(StringComparer.OrdinalIgnoreCase);
+            foreach (byte[] data in new[] { expansionSource, originalSource })
+            {
+                if (data == null) continue;
+                List<GdtBlock> parsed;
+                if (!TryParseBlocks(data, 0, data.Length, out parsed))
+                    throw new InvalidDataException("Catalogue de gabarits illisible.");
+                GdtBlock top = parsed.FirstOrDefault(block => block.Kind == 0x01);
+                GdtBlock main = top == null ? null : Direct(top, 0x05);
+                if (main == null)
+                    throw new InvalidDataException("Catalogue de gabarits sans campagnes.");
+                foreach (GdtBlock mission in Walk(main.Children)
+                    .Where(block => block.Kind == 0x32))
+                {
+                    GdtBlock directory = Direct(mission, 0x36);
+                    if (directory == null) continue;
+                    string name = BlockString(directory);
+                    if (templates.ContainsKey(name))
+                        throw new InvalidDataException(
+                            "Gabarit de mission ambigu : " + name);
+                    templates.Add(name, mission);
+                }
+            }
+            return templates;
+        }
+
+        public static byte[] BuildCatalogue(
+            byte[] source, MissionLibrary library, byte[] originalSource = null)
         {
             List<GdtBlock> root;
             if (!TryParseBlocks(source, 0, source.Length, out root))
@@ -1117,18 +1148,13 @@ namespace HD2CustomMissionManager
             List<GdtBlock> sourceCampaigns = main.Children.Where(block => block.Kind == 0x3C).ToList();
             if (sourceCampaigns.Count < 3) throw new InvalidDataException("Trois gabarits de campagne requis.");
             Dictionary<string, GdtBlock> templates =
-                new Dictionary<string, GdtBlock>(StringComparer.OrdinalIgnoreCase);
-            foreach (GdtBlock mission in Walk(main.Children).Where(block => block.Kind == 0x32))
-            {
-                GdtBlock directory = Direct(mission, 0x36);
-                if (directory != null) templates[BlockString(directory)] = mission;
-            }
+                MissionTemplates(source, originalSource);
             List<string> officialDirectories = Walk(main.Children)
                 .Where(block => block.Kind == 0x32)
                 .Select(block => Direct(block, 0x36)).Where(block => block != null)
                 .Select(BlockString).ToList();
             HashSet<string> officialSet = new HashSet<string>(
-                officialDirectories, StringComparer.OrdinalIgnoreCase);
+                templates.Keys, StringComparer.OrdinalIgnoreCase);
             foreach (MissionPackage package in library.Packages)
                 if (officialSet.Contains(package.MissionDirectory))
                     throw new InvalidDataException(
@@ -1164,7 +1190,8 @@ namespace HD2CustomMissionManager
         }
 
         private static byte[] BuildCustomCatalogue(
-            byte[] source, IList<MissionPackage> packages)
+            byte[] source, IList<MissionPackage> packages,
+            byte[] originalSource = null)
         {
             List<GdtBlock> root;
             if (!TryParseBlocks(source, 0, source.Length, out root))
@@ -1178,12 +1205,7 @@ namespace HD2CustomMissionManager
                 throw new InvalidDataException("Trois gabarits de campagne requis.");
 
             Dictionary<string, GdtBlock> templates =
-                new Dictionary<string, GdtBlock>(StringComparer.OrdinalIgnoreCase);
-            foreach (GdtBlock mission in Walk(main.Children).Where(block => block.Kind == 0x32))
-            {
-                GdtBlock directory = Direct(mission, 0x36);
-                if (directory != null) templates[BlockString(directory)] = mission;
-            }
+                MissionTemplates(source, originalSource);
 
             Dictionary<int, List<MissionPackage>> grouped =
                 new Dictionary<int, List<MissionPackage>>();
@@ -1304,7 +1326,8 @@ namespace HD2CustomMissionManager
             };
             Dictionary<string, byte[]> result =
                 new Dictionary<string, byte[]>(StringComparer.OrdinalIgnoreCase);
-            result["Gamedata02.gdt"] = BuildCustomCatalogue(source, categories);
+            result["Gamedata02.gdt"] = BuildCustomCatalogue(
+                source, categories, originalSource);
             for (int index = 0; index < CategoryOrder.Length; index++)
             {
                 string category = CategoryOrder[index];
@@ -1312,7 +1335,7 @@ namespace HD2CustomMissionManager
                     String.Equals(item.Category, category, StringComparison.OrdinalIgnoreCase))
                     .ToList();
                 result["Gamedata" + (index + 3).ToString("D2") + ".gdt"] =
-                    BuildCustomCatalogue(source, detail);
+                    BuildCustomCatalogue(source, detail, originalSource);
             }
             return result;
         }
@@ -1719,12 +1742,23 @@ namespace HD2CustomMissionManager
                 + library.FileCount + " fichier(s).";
         }
 
+        public static string ListInstallTargets(string libraryRoot)
+        {
+            MissionLibrary library = LoadLibrary(libraryRoot, false);
+            return String.Join(Environment.NewLine, library.Packages
+                .SelectMany(package => package.Files)
+                .Select(file => file.Relative.Replace('\\', '/'))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(relative => relative, StringComparer.OrdinalIgnoreCase));
+        }
+
         public static string BuildCatalogueForTest(
             string libraryRoot, string originalGame, string outputPath)
         {
             MissionLibrary library = LoadLibrary(libraryRoot, false);
             if (library.Packages.Count == 0) throw new InvalidDataException("Bibliothèque vide.");
-            byte[] result = BuildCatalogue(ReadSourceCatalogue(originalGame), library);
+            byte[] result = BuildCatalogue(ReadSourceCatalogue(originalGame), library,
+                ReadArchiveEntry(originalGame, "GameData\\Gamedata00.gdt"));
             if (!String.IsNullOrWhiteSpace(outputPath)) WriteAtomic(outputPath, result);
             return Sha256(result);
         }

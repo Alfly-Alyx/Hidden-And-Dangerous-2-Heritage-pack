@@ -151,20 +151,40 @@ def singleplayer_catalogues(game: Path) -> tuple[dict[str, dict], list[dict]]:
             decoded.append(catalogue(path.read_bytes(), str(path)))
 
     missions: dict[str, dict] = {}
+
+    def remember(directory: str, source: str, objective_count: int) -> None:
+        key = normalized(directory)
+        candidate = {
+            "source": source,
+            "objective_count": objective_count,
+        }
+        current = missions.get(key)
+        source_is_official = source.lower().endswith(
+            ("gamedata00.gdt", "gamedata01.gdt")
+        )
+        current_is_official = bool(current) and current["source"].lower().endswith(
+            ("gamedata00.gdt", "gamedata01.gdt")
+        )
+        # Loose custom catalogues may repeat an official mission.  They are an
+        # overlay for the running game, not a reason to erase its commercial
+        # provenance from the 33-mission baseline.
+        if current is None or (source_is_official and not current_is_official):
+            missions[key] = candidate
+
     for cat in decoded:
         for campaign in cat["campaigns"]:
             for mission in campaign["missions"]:
                 if mission["directory"]:
-                    missions[normalized(mission["directory"])] = {
-                        "source": cat["source"],
-                        "objective_count": len(mission["objectives"]),
-                    }
+                    remember(
+                        mission["directory"], cat["source"],
+                        len(mission["objectives"]),
+                    )
         for mission in cat["unassigned_missions"]:
             if mission["directory"]:
-                missions[normalized(mission["directory"])] = {
-                    "source": cat["source"],
-                    "objective_count": len(mission["objectives"]),
-                }
+                remember(
+                    mission["directory"], cat["source"],
+                    len(mission["objectives"]),
+                )
     return missions, decoded
 
 

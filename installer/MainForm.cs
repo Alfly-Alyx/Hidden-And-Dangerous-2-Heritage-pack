@@ -12,6 +12,7 @@ namespace HD2CommunityInstaller
         private readonly CheckBox master = new CheckBox();
         private readonly CheckBox directPlay = new CheckBox();
         private readonly CheckBox cmp = new CheckBox();
+        private readonly CheckBox soloAdaptations = new CheckBox();
         private readonly CheckBox exploration = new CheckBox();
         private readonly CheckBox objectives = new CheckBox();
         private readonly CheckBox dormant = new CheckBox();
@@ -70,54 +71,58 @@ namespace HD2CommunityInstaller
             cmp.Checked = true;
             cmp.AutoSize = true;
             cmp.Location = new Point(29, 216);
+            soloAdaptations.Text = "Installer 11 missions cooperatives adaptees au jeu solo";
+            soloAdaptations.Checked = true;
+            soloAdaptations.AutoSize = true;
+            soloAdaptations.Location = new Point(29, 244);
             exploration.Text = "Autoriser l'exploration hors zone sans message, echec ni mur invisible";
             exploration.Checked = true;
             exploration.AutoSize = true;
-            exploration.Location = new Point(29, 244);
+            exploration.Location = new Point(29, 272);
             objectives.Text = "Reparer les objectifs optionnels casses ou incoherents";
             objectives.Checked = true;
             objectives.AutoSize = true;
-            objectives.Location = new Point(29, 272);
+            objectives.Location = new Point(29, 300);
             dormant.Text = "Reactiver guidages, routes et vestiges officiels (experimental)";
             dormant.Checked = true;
             dormant.AutoSize = true;
-            dormant.Location = new Point(29, 300);
+            dormant.Location = new Point(29, 328);
             officialEasterEggs.Text = "Reactiver les easter eggs neutralises d'Africa 1 et Africa 4 (experimental)";
             officialEasterEggs.Checked = true;
             officialEasterEggs.AutoSize = true;
-            officialEasterEggs.Location = new Point(29, 328);
+            officialEasterEggs.Location = new Point(29, 356);
             unlockMissions.Text = "Debloquer toutes les campagnes et missions pour le profil actif";
             unlockMissions.Checked = true;
             unlockMissions.AutoSize = true;
-            unlockMissions.Location = new Point(29, 356);
+            unlockMissions.Location = new Point(29, 384);
             graphics.Text = "Detecter le PC et appliquer la resolution maximale et les graphismes adaptes";
             graphics.Checked = true;
             graphics.AutoSize = true;
-            graphics.Location = new Point(29, 384);
+            graphics.Location = new Point(29, 412);
 
             Label safety = new Label {
                 Text = "Les fonctions deja actives sont detectees et decochees. Le paquet communautaire "
                     + "est verrouille par SHA-256; les fichiers remplaces sont sauvegardes.",
-                AutoSize = false, Size = new Size(706, 42), Location = new Point(28, 418)
+                AutoSize = false, Size = new Size(706, 42), Location = new Point(28, 446)
             };
 
             install.Text = "Installer";
-            install.Location = new Point(25, 466);
+            install.Location = new Point(25, 494);
             install.Size = new Size(116, 34);
             install.Click += InstallClick;
             restore.Text = "Restaurer";
-            restore.Location = new Point(151, 466);
+            restore.Location = new Point(151, 494);
             restore.Size = new Size(116, 34);
             restore.Click += RestoreClick;
             verify.Text = "Verifier l'etat";
-            verify.Location = new Point(277, 466);
+            verify.Location = new Point(277, 494);
             verify.Size = new Size(116, 34);
             verify.Click += delegate { RunDiagnostic(); };
 
-            bar.Location = new Point(25, 514);
+            bar.Location = new Point(25, 542);
             bar.Size = new Size(710, 18);
-            log.Location = new Point(25, 544);
-            log.Size = new Size(710, 175);
+            log.Location = new Point(25, 572);
+            log.Size = new Size(710, 147);
             log.Multiline = true;
             log.ReadOnly = true;
             log.ScrollBars = ScrollBars.Vertical;
@@ -131,7 +136,7 @@ namespace HD2CommunityInstaller
             };
 
             Controls.AddRange(new Control[] {
-                title, intro, pathLabel, gamePath, browse, master, directPlay, cmp,
+                title, intro, pathLabel, gamePath, browse, master, directPlay, cmp, soloAdaptations,
                 exploration, objectives, dormant, officialEasterEggs, unlockMissions, graphics, safety,
                 install, restore, verify, bar, log, prototypeLabel
             });
@@ -177,6 +182,7 @@ namespace HD2CommunityInstaller
                 ConfigureMasterServer = master.Checked,
                 EnableDirectPlay = directPlay.Checked,
                 InstallCmp = cmp.Checked,
+                InstallSoloAdaptations = soloAdaptations.Checked,
                 FreeExploration = exploration.Checked,
                 FixOptionalObjectives = objectives.Checked,
                 RestoreDormantSequences = dormant.Checked,
@@ -281,6 +287,8 @@ namespace HD2CommunityInstaller
                 diagnostic, "DirectPlay :", "deja actif");
             cmp.Checked = !DiagnosticStatusMatcher.HasStatus(
                 diagnostic, "CMP officiel :", "deja installee");
+            soloAdaptations.Checked = !DiagnosticStatusMatcher.HasStatus(
+                diagnostic, "Onze adaptations solo :", "deja installees");
             exploration.Checked = !DiagnosticStatusMatcher.HasStatus(
                 diagnostic, "Exploration libre :", "deja active");
             objectives.Checked = !DiagnosticStatusMatcher.HasStatus(
@@ -314,6 +322,7 @@ namespace HD2CommunityInstaller
             master.Enabled = !busy;
             directPlay.Enabled = !busy;
             cmp.Enabled = !busy;
+            soloAdaptations.Enabled = !busy;
             exploration.Enabled = !busy;
             objectives.Enabled = !busy;
             dormant.Enabled = !busy;
