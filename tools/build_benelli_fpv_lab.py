@@ -199,7 +199,23 @@ def output_directory(name,root=ROOT):
     return output
 
 
-def build(data,report,output,*,inspector=False):
+def native_assets(derived):
+    """Short, explicit prototype aliases fit native 20-byte model-name fields."""
+    from items_sav import model_name_field
+    from build_modern_asset import RECIPE, build_meshes, encode_4ds
+    recipe=json.loads(RECIPE.read_text(encoding='utf-8'))
+    modern=encode_4ds(recipe,build_meshes(recipe))
+    parsed=parse_4ds_nodes(modern)
+    if parsed['has_animation']:raise ValueError('World resource must remain static')
+    resources={'PROTOTYPE_BenFPV':derived,'PROTOTYPE_BenM4':modern}
+    proofs={name:{'size':len(raw),'sha256':sha(raw),'item_model_field_hex':model_name_field(name).hex(),
+                  'provenance':'DERIVE_DU_JEU' if name.endswith('FPV') else 'MODERNE_ORIGINAL',
+                  'disabled':True,'runtime_status':'pending'} for name,raw in resources.items()}
+    return resources,{'resources':proofs,'world_recipe_sha256':sha(json.dumps(recipe,sort_keys=True).encode()),
+                      'item_table_modified':False,'item_slot_allocated':False}
+
+
+def build(data,report,output,*,inspector=False,with_native_assets=False):
     derived,proof=derive(data['models/#fpvbeneliaim.4ds'])
     vertices,faces,names=geometry(derived)
     proof.update(size=len(derived),sha256=sha(derived),vertices=len(vertices),triangles=len(faces),
@@ -211,9 +227,12 @@ def build(data,report,output,*,inspector=False):
         inspector_html=render(data,STATES)  # validate every pair before writing
         report['inspector']={'pose_mode':'4ds_bind_pose_only','key_mode':'raw_samples_no_interpolation',
                              'animation_playback':False,'network_access':False,'private_only':True}
+    aliases={}
+    if with_native_assets:aliases,report['native_assets']=native_assets(derived)
     output.mkdir(parents=True,exist_ok=False)
     model_name='PROTOTYPE_HERITAGE_BenelliFPV.4ds.disabled'
     (output/model_name).write_bytes(derived)
+    for name,raw in aliases.items():(output/(name+'.4ds.disabled')).write_bytes(raw)
     from model_wireframe import projection_png
     projection_png(vertices,faces,['DERIVE LOCAL / NON JOUABLE',*names],output/'preview.png')
     if inspector_html is not None:
@@ -234,14 +253,16 @@ def main(argv=None):
     parser.add_argument('--archives-only',action='store_true')
     parser.add_argument('--output-name')
     parser.add_argument('--inspector',action='store_true',help='Include a private raw-key/static-model inspector; requires --output-name')
+    parser.add_argument('--native-assets',action='store_true',help='Also generate both disabled assets with short native-table-compatible prototype names')
     args=parser.parse_args(argv)
     try:
-        if args.inspector and not args.output_name: raise ValueError('--inspector requires --output-name')
+        if (args.inspector or args.native_assets) and not args.output_name:
+            raise ValueError('--inspector/--native-assets requires --output-name')
         output=output_directory(args.output_name) if args.output_name else None
         manifest=json.loads(MANIFEST.read_text(encoding='utf-8'))
         data,excluded=read_sources(args.game,manifest,archives_only=args.archives_only)
         report=audit(data,manifest,excluded)
-        if output: report=build(data,report,output,inspector=args.inspector)
+        if output: report=build(data,report,output,inspector=args.inspector,with_native_assets=args.native_assets)
         print(json.dumps({'pairs':len(report['pairs']),'pinned_sources':len(report['sources']),
                           'frames':{k:v['frame_end_inclusive'] for k,v in report['pairs'].items()},
                           'derived_static':report.get('derived_static'),

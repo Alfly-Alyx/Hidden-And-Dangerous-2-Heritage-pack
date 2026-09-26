@@ -24,6 +24,11 @@ Toute arme jouable future doit employer un emplacement réellement libre après
 audit de toutes les tables Base/Patch/Sabre et des sauvegardes. Aucun numéro
 libre n'est inventé dans cette étude.
 
+Le [lecteur des tables centrales](TABLES_ADDITIVES.md) est maintenant réalisé :
+359 est vide dans Sabre/PatchX01, mais hors capacité Base/Patch. Le groupe FPV
+109 est entièrement décodé. Les liaisons moteur et sauvegardes restent à
+qualifier ; aucun numéro n'est alloué sur la seule foi de ce résultat.
+
 ## Phases
 
 1. **B0 — banc FPV/sonore.** Charger manuellement les neuf couples depuis
