@@ -19,7 +19,7 @@ class DiagnosticReportingTests(unittest.TestCase):
         self.assertIn("StartDiagnostics();", menu)
         self.assertIn("--watch-pid %lu", menu)
         self.assertIn("CreateProcessA", menu)
-        self.assertIn('strcmp(slash + 1, "HD2.exe")', menu)
+        self.assertIn('if (!stricmp(name, "HD2.exe")) return 1;', menu)
 
     def test_reports_cover_crashes_hangs_logs_context_and_manual_capture(self):
         monitor = (ROOT / "diagnostic-monitor/Program.cs").read_text(encoding="utf-8")

@@ -54,11 +54,26 @@
 - Mission officielle, sauvegarde et rechargement, puis mission personnalisée.
 - Sources réellement compilées, décisions, compteurs, signaux et objectifs dans
   une trace de mission réelle, sans perte d'événements ni régression de performance.
-- Production automatique du rapport après erreur contrôlée dans la copie de test.
+- Production automatique du rapport après erreur contrôlée dans la copie de test : validée dans la mise à jour ci-dessous.
 - Arrêt du moniteur avec le jeu ; comparaison avec une session sans instrumentation.
 - Application native du profil H&D2 de base (les tests des instructions passent).
 - Règles attendues par mission pour diagnostiquer les blocages logiques silencieux.
   Enregistrer les instructions ne suffit pas à prouver qu'un objectif aurait dû
   se terminer : il ne faut pas présenter ce travail comme une détection universelle.
 
-Aucun nouvel installateur de livraison n'a été compilé pour ce lot.
+Au moment de ce premier relevé, aucun nouvel installateur de livraison n'avait été compilé.
+
+## Mise à jour du 26 septembre 2026 — intégration sur master
+
+- Branche de livraison : master, le dépôt ne possède pas de branche main. Le commit 014cec8 corrige le rafraîchissement des lignes après le choix d'une catégorie.
+- Une copie isolée du jeu commercial a été lancée avant la compilation du nouvel installateur. Son rapport d'intégration confirme 11 adaptations solo et 1300 fichiers, toutes rangées dans le catalogue des conversions multijoueur vers solo.
+- Le journal natif du jeu chargé contient catalogue-load count=6 puis onze entrées mission-context pour le catalogue 3, lignes 0 à 10. Cela atteste l'accès aux onze lignes par le menu ; la fin de chaque mission reste à vérifier en jouant.
+- Le menu chargé en jeu et le module compilé ont la même empreinte SHA-256 : AC3EC00ECC6C48E79FF3267320AA4D36C997882CEBAE2A28011BCB4D6E455838.
+- Une erreur de script factice, volontairement ajoutée au journal pendant la session de test, a déclenché automatiquement un rapport local dans %LOCALAPPDATA%\HD2 Heritage Pack\Reports avec report.txt, game-log.txt, custom-menu-log.txt et une archive ZIP. Cela vérifie le chemin de remontée d'erreur du journal, sans simuler un véritable crash.
+- Après ces lancements, le gestionnaire et l'installateur ont été reconstruits. Leurs ressources embarquées ont été comparées par SHA-256 au menu corrigé et au moniteur de diagnostics ; les trois comparaisons concordent.
+- Le gestionnaire recompilé a ensuite réintégré les onze missions dans la copie de test ; son rapport et le fichier ASI déployé donnent tous deux l'empreinte du menu corrigé.
+- Suites ciblées réussies après compilation : 6 tests d'adaptation solo, 5 tests de diagnostic, 31 tests du menu natif et 2 tests des lignes masquées. Le test de chargement de catalogue qui dépend d'une autre installation locale a été ignoré ; les journaux de cette copie de test fournissent les comptages réels.
+- La comparaison des fichiers avec les missions solo officielles est détaillée dans SOLO_ADAPTATIONS_COMPARAISON.md.
+- La commande de validation locale de l'installateur compilé a réussi sur la copie du jeu de test.
+
+Restent à valider en jeu : le démarrage, les objectifs, la sauvegarde et la fin des onze adaptations ; un crash réel et le rapport de blocage ; l'effet en performance pendant une mission complète. Les tests et le rapport contrôlé ne prouvent pas ces points.
