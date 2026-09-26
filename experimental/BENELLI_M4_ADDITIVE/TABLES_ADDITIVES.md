@@ -42,8 +42,10 @@ diffèrent. Leur sens n'est pas réinterprété et leurs données ne sont pas é
 
 Un [premier descripteur moderne complet](DESCRIPTEUR_MODERNE.md) est désormais
 assemblé et contrôlé hors moteur, avec fragment FPV isolé et ressources verrouillées.
-Il ne constitue toujours pas une entrée additive installée : texte non alloué,
-contrats de comportement et transaction des tables encore incomplets.
+Le libellé moderne 21500 est préparé dans huit langues. Une
+[transaction binaire réversible distincte](TRANSACTION_TABLES.md) construit
+maintenant les tables complètes désactivées, sans installation. Les contrats
+de comportement, de sauvegarde et de déploiement isolé restent incomplets.
 
 Complément du **27 septembre 2026** :
 [18 colonnes de tir projetées](../RECONSTRUCTION_BACKLOG/PARAMETRES_TIR.md)
