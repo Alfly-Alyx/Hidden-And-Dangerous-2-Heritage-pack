@@ -22,7 +22,7 @@ ROOT=Path(__file__).resolve().parents[1]
 SYNTHETIC_SLOT=359
 MODEL_PINS={'PROTOTYPE_BenFPV':(61351,'0c54e499b6b6b434b3bdd02ed78cc2f7f99b304d44e162e11e787d323234300f'),
             'PROTOTYPE_BenM4':(207614,'6bc815610019739adc101d3e00319fa7819dd3d436b05e66d0521d258f291c8c')}
-PENDING=('inventory_text_allocation','shoot_consumer_semantics_and_sound_ids',
+PENDING=('inventory_text_allocation','remaining_shoot_consumer_semantics_and_audio_timing',
          'secondary_mode_and_scalar_semantics','fpv_camera_hands_and_events',
          'complete_saved_game_compatibility','global_id_collision_clearance',
          'additive_table_transaction','engine_gameplay_and_multiplayer_tests')
@@ -83,11 +83,19 @@ def prepare(tables,sources,machine):
     from item_editor_table import require_row
     from benelli_fpv_static import derive
     from build_benelli_fpv_lab import native_assets
+    from sound_definition import parse as parse_sounds
+    from item_sound_audit import editor_references
     data=tables['SabreSquadron.dta','tables/items.sav'];parsed=parse_items(data)
     if parsed['capacity']!=500 or parsed['slots'][SYNTHETIC_SLOT]['present']:
         raise ValueError('Synthetic candidate not empty in reviewed Sabre table')
     slot=parsed['slots'][23];baseline=data[slot['offset']:slot['offset']+slot['size']]
     row=require_row(tables['others.DTA','tables/item_shoot.tbl'],9,stride=135,name_column=2,name='Benelli')
+    sounds=editor_references(row['fields'],parse_sounds(sources['tables/ingamesounds.def']))
+    for ref,bank,index,label,filename in zip(sounds,(2,3),(36,54),
+            ('I Benelli M4','I Benelli M4 Reload'),('f_bene_a.wav','bene_r.wav')):
+        if (not ref['resolved'] or (ref['bank'],ref['index'],ref['label'],ref['filenames'])
+                !=(bank,index,label,[filename]) or 'sounds/'+filename not in sources):
+            raise ValueError('Changed Benelli sound reference or missing source')
     spec=specification(row['fields'],baseline);descriptor=build_weapon(spec)
     native=machine.inspect_record(descriptor,SYNTHETIC_SLOT)
     ammo=[]
@@ -121,6 +129,7 @@ def prepare(tables,sources,machine):
                 'opaque_bytes_policy':'modern_zero_fill_not_historical_reconstruction',
                 'historical_base_record_recovered':False,'whole_donor_record_copied':False},
             'historical_shoot_row_sha256':row['sha256'],'native_descriptor':native,
+            'sound_references':sounds,'native_sound_argument_audit_included':False,
             'native_ammunition_checks':ammo,'native_fpv_binding_checks':bindings,
             'model_references':model_report,'icon':{'stem':'wi_it-benelli','source':'maps/wi_it-benelli.bmp','sha256':sha(sources['maps/wi_it-benelli.bmp'])},
             'fpv_group':{'owner':SYNTHETIC_SLOT+100,'size':len(group),'sha256':sha(group),'commercial_group_109_preserved':True},

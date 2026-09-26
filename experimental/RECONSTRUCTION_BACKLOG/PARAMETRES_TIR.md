@@ -78,9 +78,11 @@ supplémentaire, un changement de type ou de sélecteur fait refuser l'audit.
 - **MG 34**, ligne 32 : 21 plages, 83 octets.
   Projection SHA-256 `abbd1c7e753f9392292d98e0dbc993c2ff2e7faf35c9b18578b8637f7606bd6b`.
 
-L'absence de symbole non résolu ne signifie pas que les références numériques
-restantes sont toutes reliées à une ressource ou à une fonction sonore vérifiée.
-Les noms de sons ne sont pas déduits de la seule position de ces champs.
+Complément distinct : les [références sonores](REFERENCES_SONORES.md) établissent
+maintenant que les colonnes 8/10 sélectionnent les banques 2/3. Benelli retrouve
+36/54 et MG34 34/38, avec passage natif des arguments contrôlé. Les noms de sons
+ne sont donc pas déduits de la seule position des champs. Les autres paramètres,
+la synchronisation sonore et les symboles FG42 restent non qualifiés.
 
 Aucune fiche commerciale d'arme exploitable n'est créée pour ces trois lignes ;
 les objets actuellement présents aux slots 9/27/32 restent intacts. Il manque
@@ -99,4 +101,3 @@ Les surcharges libres sont exclues et empreintées ; sans cette option elles
 font refuser l'audit. Huit tests inventés, sans archive commerciale, couvrent
 conversions, arrondis, masques, symboles, champs manquants et refus.
 Ni jeu ni sauvegarde de partie ouverts.
-
