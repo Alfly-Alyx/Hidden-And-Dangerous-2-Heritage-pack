@@ -60,7 +60,8 @@ Un dossier de preuve complet contient exactement :
 - `game_build_sha256`, `baseline_payload_sha256`, `variant_payload_sha256` :
   empreintes de l'exécutable testé et des deux ensembles de fichiers testés;
 - `test_plan_sha256` : empreinte fournie par l'audit pour ce profil **avant
-  l'essai**, couvrant sa définition, les étapes et les scénarios communs;
+  l'essai**, couvrant sa définition, les étapes, les scénarios communs et le
+  texte de l'étude liée (fins de ligne normalisées);
 - `notes` : observations et résultat, avec les écarts constatés;
 - `artifacts` : liste non vide d'objets `{ "path": "...", "sha256": "..." }`
   pointant vers de vraies captures ou journaux locaux.
@@ -85,6 +86,37 @@ d'anciennes captures comme preuve d'une nouvelle variante.
 
 ## Commandes sans écriture ni lancement du jeu
 
+### Identifier exactement le témoin et la variante
+
+```powershell
+.\.venv\Scripts\python.exe tools\reconstruction_bundle_evidence.py .analysis\laboratories\20260925\czech2-ger12-lie.lab.zip.disabled --profile czech2-ger12-lie --game "D:\Games\Hidden and Dangerous 2" --archives-only
+.\.venv\Scripts\python.exe tools\reconstruction_bundle_evidence.py .analysis\scene-patches\co-burgundy3-ambience.scene-patch.zip.disabled --profile co-burgundy3-ambience --game "D:\Games\Hidden and Dangerous 2" --archives-only
+```
+
+L'outil reconstruit la comparaison **en mémoire** depuis les sources actuelles
+et compare chaque octet du contenu attendu au ZIP existant. Il ne se contente
+pas de croire les empreintes du rapport inclus. Il conserve les refus de sources
+modifiées et de surcharges; `--archives-only` consigne les exclusions.
+
+Il produit les deux empreintes `baseline_payload_sha256` et
+`variant_payload_sha256`, ainsi que leurs listes exactes de chemins, tailles et
+SHA-256. Le condensat porte sur le JSON canonique `{ "files": [...] }`, tri des
+fichiers par chemin, clés triées, séparateurs compacts et échappement ASCII.
+Pour les laboratoires, les chemins incluent leurs espaces de mission distincts;
+pour les comparaisons de scène, ils désignent seulement les deux fichiers de
+mission concernés. Conserver ces listes avec les preuves du déploiement réel.
+
+**20 laboratoires et trois comparaisons de scène ont été recontrôlés** avec cet
+outil. Les quatre profils Africa 5 restent hors de ce total : aucun ZIP complet
+n'est inventé. L'ancienne comparaison Burgundy3 sans champ `profile` est reconnue
+par la correspondance exacte des quatre contenus reconstruits, pas par son nom.
+
+Ces empreintes ne couvrent ni l'installation entière, ni les fichiers de menu
+produits lors d'un déploiement ultérieur : consigner séparément ces derniers.
+Aucun résultat du registre n'est rempli automatiquement.
+
+### Contrôler les registres
+
 ```powershell
 .\.venv\Scripts\python.exe tools\reconstruction_runtime_audit.py
 .\.venv\Scripts\python.exe tools\reconstruction_runtime_audit.py --require-recorded-passes
@@ -102,7 +134,9 @@ automatiquement**. Il reste la relecture des preuves, la compatibilité avec le
 paquet cible et les critères de promotion du
 [registre maître](../experimental/RECONSTRUCTION_BACKLOG/VALIDATION.md).
 
-Dix-huit tests synthétiques vérifient couverture, modes, signatures de recettes,
+Vingt tests synthétiques vérifient couverture, modes, signatures de recettes,
 chemins, commentaires de blocage, dates, empreintes, résultats incomplets et
-non-promotion automatique. La suite complète compte **240 tests réussis**;
+non-promotion automatique. Dix autres vérifient les contenus des ZIP, les sources
+changées, leurs empreintes, noms ambigus et métadonnées d'activation refusées.
+La suite complète compte **252 tests réussis**;
 ces tests utilisent des preuves inventées et ne comptent jamais comme essais du jeu.

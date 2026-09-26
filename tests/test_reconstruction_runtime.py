@@ -41,7 +41,9 @@ class RuntimeRegisterTests(unittest.TestCase):
         return {'tester': 'Synthetic unit-test fixture', 'date': '2000-01-01', 'mode': 'solo',
                 'game_build_sha256': 'b' * 64, 'baseline_payload_sha256': 'c' * 64,
                 'variant_payload_sha256': 'd' * 64,
-                'test_plan_sha256': audit.test_plan_fingerprint(self.profile, self.register['common_scenarios']),
+                'test_plan_sha256': audit.test_plan_fingerprint(
+                    self.profile, self.register['common_scenarios'],
+                    audit.study_fingerprint(self.root / self.profile['study'])),
                 'notes': 'Invented data only; no game execution.',
                 'artifacts': [{'path': self.artifact.relative_to(self.root).as_posix(),
                                'sha256': audit.file_hash(self.artifact)}]}
@@ -179,6 +181,18 @@ class RuntimeRegisterTests(unittest.TestCase):
         with patch.object(audit, 'audit', return_value=report), redirect_stdout(io.StringIO()):
             self.assertEqual(audit.main([]), 0)
             self.assertEqual(audit.main(['--require-recorded-passes']), 1)
+
+    def test_changed_study_invalidates_old_evidence(self):
+        self.record()
+        (self.root / self.profile['study']).write_text('Changed synthetic contract', encoding='utf-8')
+        self.assertFalse(self.run_audit()['ok'])
+
+    def test_study_fingerprint_ignores_checkout_line_endings(self):
+        path = self.root / self.profile['study']
+        path.write_bytes(b'line one\nline two\n')
+        before = audit.study_fingerprint(path)
+        path.write_bytes(b'line one\r\nline two\r\n')
+        self.assertEqual(before, audit.study_fingerprint(path))
 
 
 if __name__ == '__main__':

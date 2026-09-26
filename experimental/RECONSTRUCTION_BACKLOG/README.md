@@ -33,7 +33,7 @@ registre complète ces fichiers sans activer de script expérimental dans le jeu
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Quatre profils Africa 5 restent des scripts seuls :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **240 tests Python**, compilation console et auto-tests de sécurité C# réussis.
+- **252 tests Python**, compilation console et auto-tests de sécurité C# réussis.
 - Lecteur audio DPCM complété : vingt WAV décodés et mesurés en mémoire, sans
   export ni modification du jeu; [méthode et empreintes](AUDIO_RESSOURCES.md).
 - Trois comparaisons binaires Co_Burgundy1/2/3 supplémentaires reconstruisent

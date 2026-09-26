@@ -32,9 +32,14 @@ def fingerprint(value: dict) -> str:
     return hashlib.sha256(encoded.encode('ascii')).hexdigest()
 
 
-def test_plan_fingerprint(profile: dict, common: dict) -> str:
+def study_fingerprint(path: Path) -> str:
+    # Normalize text line endings so Git's Windows checkout does not stale proofs.
+    return fingerprint({'study_text': path.read_text(encoding='utf-8')})
+
+
+def test_plan_fingerprint(profile: dict, common: dict, study_sha: str | None) -> str:
     return fingerprint({'profile': {k: v for k, v in profile.items() if k != 'results'},
-                        'common_scenarios': common})
+                        'common_scenarios': common, 'study_sha256': study_sha})
 
 
 def definitions(root: Path) -> dict:
@@ -151,7 +156,6 @@ def validate(register, expected: dict, root: Path) -> dict:
             errors.append(f'Unknown profile: {identifier!r}')
             continue
         identifiers.append(identifier)
-        plan_fingerprints[identifier] = test_plan_fingerprint(item, common)
         proof = expected[identifier]
         for field in ('kind', 'mission', 'definition_sha256'):
             if item.get(field) != proof[field]:
@@ -165,12 +169,15 @@ def validate(register, expected: dict, root: Path) -> dict:
             errors.append(f'{identifier}: needs profile-specific executable steps')
         if not strings(item.get('prerequisites')):
             errors.append(f'{identifier}: missing isolation/resource prerequisites')
+        study_sha = None
         try:
             study = local_file(root, item.get('study'), ('experimental',))
             if study.suffix != '.md':
                 raise ValueError('Study must be a Markdown document')
+            study_sha = study_fingerprint(study)
         except (OSError, ValueError) as error:
             errors.append(f'{identifier}: {error}')
+        plan_fingerprints[identifier] = test_plan_fingerprint(item, common, study_sha)
         required = SCENARIOS | ({'network'} if mode == 'cooperation' else set())
         results = item.get('results')
         if not isinstance(results, dict) or set(results) != required:
