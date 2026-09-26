@@ -167,6 +167,64 @@ def transform_mesh(mesh, specification):
     return Mesh(mesh.name,mesh.material,points,list(mesh.triangles))
 
 
+def sweep_mesh(part, material, low=False):
+    """Original planar decorative tube; not a physical hose simulation.
+
+    A fixed plane normal gives a twist-free frame, including the closed seam.
+    Open paths are capped. The recipe explicitly supplies the plane normal.
+    """
+    count=part['segments']
+    if type(count) is not int or not 6<=count<=64:
+        raise ValueError('Invalid sweep resolution')
+    count=max(6,count//2) if low else count
+    radius=finite(part['radius'])
+    closed=part.get('closed',False)
+    if type(closed) is not bool or not 0<radius<=1:
+        raise ValueError('Invalid sweep radius or closure')
+    path=[vector(p) for p in part['path']]
+    if not (3 if closed else 2)<=len(path)<=128:
+        raise ValueError('Invalid sweep path size')
+    normal=unit(vector(part['plane_normal']))
+    if any(abs(sum(a*b for a,b in zip(sub(p,path[0]),normal)))>1e-8 for p in path):
+        raise ValueError('Sweep path must lie in the declared plane')
+    edges=[sub(b,a) for a,b in zip(path,path[1:]+([path[0]] if closed else []))]
+    lengths=[math.sqrt(sum(v*v for v in e)) for e in edges]
+    if any(length<1e-6 for length in lengths):
+        raise ValueError('Sweep contains a repeated or indistinguishable point')
+    directions=[unit(e) for e in edges]
+    points=[]
+    for i,center in enumerate(path):
+        previous=directions[(i-1)%len(edges)] if i or closed else directions[0]
+        following=directions[i%len(edges)] if closed or i<len(edges) else directions[-1]
+        cosine=sum(a*b for a,b in zip(previous,following))
+        if cosine<0:
+            raise ValueError('Sweep corner exceeds ninety degrees')
+        if cosine<1-1e-10:
+            available=min(lengths[(i-1)%len(edges)],lengths[i%len(edges)])
+            if radius*1.25>=available*math.sqrt((1+cosine)/(1-cosine))/2:
+                raise ValueError('Sweep radius too wide for its corner')
+        tangent=unit(tuple(a+b for a,b in zip(previous,following)))
+        side=unit(cross(normal,tangent))
+        for j in range(count):
+            angle=2*math.pi*j/count
+            points.append(tuple(c+radius*(n*math.cos(angle)+s*math.sin(angle))
+                                for c,n,s in zip(center,normal,side)))
+    faces=[]
+    for i in range(len(edges)):
+        first=i*count;second=((i+1)%len(path))*count
+        for j in range(count):
+            a,b=first+j,first+(j+1)%count
+            c,d=second+j,second+(j+1)%count
+            faces.extend(((a,c,d),(a,d,b)))
+    if not closed:
+        for end in (0,len(path)-1):
+            middle=len(points);points.append(path[end])
+            for j in range(count):
+                face=(middle,end*count+j,end*count+(j+1)%count)
+                faces.append(tuple(reversed(face)) if end else face)
+    return Mesh(part['name'],material,points,faces)
+
+
 def build_meshes(recipe):
     if (recipe.get("schema_version") != 1 or recipe.get("provenance") != PROVENANCE
             or recipe.get("runtime_status") != "pending" or recipe.get("units") != "metres"
@@ -199,6 +257,9 @@ def build_meshes(recipe):
         elif part["kind"] == "rings":
             high = ring_mesh(part, mat)
             low = ring_mesh(part, mat, low=True)
+        elif part["kind"] == "sweep":
+            high = sweep_mesh(part, mat)
+            low = sweep_mesh(part, mat, low=True)
         else:
             raise ValueError("Unsupported original geometry primitive")
         high=transform_mesh(high,part.get('transform'))

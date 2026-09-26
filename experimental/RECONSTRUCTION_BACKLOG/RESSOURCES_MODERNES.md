@@ -48,6 +48,13 @@ cinq repères et deux LOD. Trois vues inspectées pour chacun ; huit tests
 nouveaux contrôlent notamment les rotations rigides et la géométrie. Leurs
 fichiers natifs restent désactivés, sans Item, animation ni mécanique.
 
+Les [deux ensembles lance-flammes](../FLAMMENWERFER_35_AND_NO2/MODELES_MODERNES.md)
+sont créés avec des silhouettes distinctes, respectivement 21 et 19 pièces.
+Leurs sacs, pièces tenues et tuyaux sont des surfaces décoratives originales,
+pas des mécanismes ni des plans techniques. Huit nouveaux tests couvrent
+notamment les chemins plans ouverts/fermés ; trois vues de chaque ensemble
+sont inspectées. Aucun effet, son, combustible, dégât ou rattachement animé.
+
 Les laboratoires de scripts et leurs 304 contrôles moteur restent distincts de
 la validation de ces nouveaux assets. Les contrôles de format et aperçus hors
 moteur ne sont jamais comptés comme essais réussis dans le jeu.
