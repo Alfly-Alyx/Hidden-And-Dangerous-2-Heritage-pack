@@ -15,7 +15,7 @@ import sys
 import zipfile
 
 from build_reconstruction_variant import (
-    ROOT, ArchiveSources, digest, entry_path, load_catalog, prepare_changes,
+    ROOT, ArchiveSources, digest, entry_path, load_catalog, prepare_changes, qualification_mode,
 )
 from mission_closure_audit import INCLUDE_RE, transitive_scripts
 from objective_audit import split_comments
@@ -74,6 +74,8 @@ def script_closure(files: dict[str, bytes], mission: str, registry: str = "scrip
 
 
 def plan_lab(profile: dict, sources) -> tuple[dict[str, bytes], dict]:
+    if qualification_mode(profile) != 'solo':
+        raise ValueError('Native-only qualification mode: use the original mission and selected registry')
     changes, variant_report = prepare_changes(profile, sources)
     mission = profile["source"].split("/")[1]
     files, provenance = {}, {}

@@ -294,7 +294,7 @@ class CatalogTests(unittest.TestCase):
 
     def test_shipped_catalog_loads(self):
         profiles = builder.load_catalog()
-        self.assertEqual(len(profiles), 38)
+        self.assertEqual(len(profiles), 43)
 
     def test_pianist_handler_matches_reviewed_fragment_and_does_not_guess_alarm_type(self):
         profile = builder.load_catalog()["czech4-pianist-signal5"]

@@ -1,6 +1,6 @@
 # Essais natifs dans des copies indépendantes
 
-Cette procédure prépare les **41 reconstructions déjà définies**, pas l'ensemble
+Cette procédure couvre les **46 reconstructions déjà définies**, pas l'ensemble
 des 180 dossiers de recherche. Elle n'active aucune option de l'installateur
 public et ne transforme pas un prototype en contenu validé.
 
@@ -9,8 +9,10 @@ public et ne transforme pas un prototype en contenu validé.
 Les 20 laboratoires désactivés utilisent des noms de mission distincts et restent
 disponibles. La nouvelle voie d'essai utilise les **missions d'origine** dans une
 copie privée du jeu : aucun remappage de nom, menu expérimental supplémentaire ou
-gestionnaire à lancer. Elle prépare les 38 profils de scripts et les trois
-comparaisons de scène coop, soit 41 paires de fichiers témoin/variante.
+gestionnaire à lancer. Elle prend en charge les 43 profils de scripts et les trois
+comparaisons de scène coop, soit 46 paires de fichiers témoin/variante. À ce
+point d'étape, 41 paires sont préparées dans les trois copies; les cinq derniers
+ajouts attendent la fermeture d'un client avant l'extension.
 
 Chaque paire comprend les fichiers de la mission et ses scripts commerciaux
 effectifs, issus des archives. La variante ne change que les scripts de sa recette
@@ -142,8 +144,9 @@ dossier seul, font foi pour leur préparation.
 .\.venv\Scripts\python.exe tools\reconstruction_sandbox.py verify --session .analysis\reconstruction-sandboxes\native-trials-20260926
 ```
 
-La répétition complète déploie, relit et restaure les 41 témoins et les
-36 variantes sans préalable moteur, soit **77 cycles de fichiers**. Elle ne
+Une nouvelle répétition complète déploierait, relirait et restaurerait les 46
+témoins et 41 variantes sans préalable moteur, soit **87 cycles de fichiers**.
+Seuls 77 cycles ont été effectués jusqu'ici, sur les 41 premiers profils. Elle ne
 contourne pas les cinq barrières de témoin réel. Une comparaison finale de tous
 les fichiers du jeu copié doit retrouver exactement le manifeste initial.
 Le rapport `OFFLINE_REHEARSAL.json` conserve les empreintes et journaux, avec
@@ -192,11 +195,26 @@ remplace pas la série historique et annonce explicitement sa sélection.
 - Les rapports locaux sont `OFFLINE_REHEARSAL.json` et
   `OFFLINE_REHEARSAL-expansion-20260926.json` dans la session hôte. Les données
   commerciales, sauvegardes, fichiers écartés et journaux restent hors de Git.
-- **330 tests Python réussis sur 331 dans la copie de publication**; un test de création de lien symbolique
+- **351 tests Python réussis sur 352 dans la copie de publication**; un test de création de lien symbolique
   n'a pas pu s'exécuter sans privilège Windows. Les liens physiques, les cibles
   modifiées, les interruptions et les restaurations ont leurs tests distincts.
 - **Zéro essai moteur** et aucun lancement de jeu ou d'installateur par ces outils.
-  Les 249 résultats expérimentaux restent `pending`.
+  Les 280 résultats expérimentaux restent `pending`.
+
+Les cinq ajouts suivant l'extension à 41 ont été construits en mémoire et leur
+fermeture contrôlée. Une tentative d'extension a été refusée **avant écriture**
+car `HD2_SabreSquadron.exe` était ouvert dans une autre installation. Aucun
+processus n'a été fermé et aucune protection contournée. Reprendre `extend`
+après fermeture, puis une répétition nommée ciblant les cinq profils.
+
+## Solo, Carnage et coopération ne sont pas interchangeables
+
+Le mode fait partie de la recette et des preuves attendues. Carnage conserve
+`scripts.dta` et les types commerciaux 3/7; la coopération sélectionne seulement
+`mpscripts.dta`. Les fichiers communs ne fusionnent pas leurs liaisons. Les
+profils non solo sont refusés par le générateur de wrappers renommés et orientés
+vers cette voie native. Le profil coop d'interrogatoire garde un scénario réseau
+obligatoire; un résultat solo ou une simple pose de fichiers ne le valide pas.
 
 Les anciennes fiches sous `.analysis/reconstruction-trials/preparation-20260926/`
 décrivent une préparation antérieure des laboratoires. Pour les essais natifs,

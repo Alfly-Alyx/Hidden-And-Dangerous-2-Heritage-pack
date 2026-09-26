@@ -14,6 +14,241 @@
   },
   "profiles": [
     {
+      "id": "co-burgundy3-interrogation-visual-phases",
+      "mission": "co_burgundy3",
+      "title": "Co-Burgundy 3 — quatre phases visuelles modernes",
+      "definition_sha256": "40b18decd142481043ad6b6776b5866bfbb8a0bbd3cc569c043e1c8a32e39d86",
+      "kind": "script",
+      "study": "experimental/BURGUNDY3_INTERROGATION_ANIMATIONS/COOPERATION.md",
+      "mode": "cooperation",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Hôte et deux clients avec le même profil: baseline commerciale puis quatre phases visuelles; mêmes dix-neuf voix et huit signaux, assise du SAS conservée.",
+        "Comparer déclenchements par chacun des joueurs à sept mètres, entrées simultanées, retard réseau et reconnexion; aucune multiplication de geste ou divergence de phase.",
+        "Déclencher alarme du garde et signal 1 d’interruption pendant chaque phase: conserver les deux arrêts de voix et EndScript, aucune reprise vers la boucle ACTIVITY.",
+        "Tuer garde/SAS à chaque phase; comparer signaux objectifs 3/4/12, textes et valeur 17 à la baseline. Approche à quatre mètres: la libération conserve priorité.",
+        "Vérifier rollback des trois scripts, reprise selon les fonctions réellement offertes par le mode et absence de mutation de la mission solo. Aucun résultat réseau déduit des tests Python."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "network": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "arctic1-carnage-sit-after-smoke",
+      "mission": "arctic1",
+      "title": "Arctic 1 Carnage — assise après la fumée",
+      "definition_sha256": "00ccb48749629b7e4808e623e27f77fb371fb49598dcb028d2aaf26bb8f65774",
+      "kind": "script",
+      "study": "experimental/ARCTIC1_KANISTERNIK_CARNAGE_SIT_SMOKE/ETUDE.md",
+      "mode": "carnage",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Sélectionner explicitement Carnage, types 3 et 7, dans la mission native: dépôt unique du bidon, route conservée, puis assise/fumée selon ce profil exclusif.",
+        "Comparer le profil assise après fumée au témoin; ne sélectionner le profil avant fumée que dans un essai séparé. Aucune animation kourimsed2 activée.",
+        "Déclencher alarme et mort avant, pendant et après les 1450 ms: fumée retirée, pas de posture debout imposée au cadavre, arme et bidon commerciaux conservés.",
+        "Déclencher une cutscene 4 pendant activité puis sa fin: nettoyage sans réassise. La garde bloque toute nouvelle assise après une telle cutscene.",
+        "Vérifier le type normal séparément: les nouveaux états restent inactifs, signal 5 et trajets inchangés; ne pas confondre cet essai avec la qualification du module de caméra Heritage.",
+        "Sauvegarder/reprendre avant dépôt, pendant la fumée et assis; contrôler objectifs Carnage et restauration des fichiers."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "arctic1-carnage-sit-before-smoke",
+      "mission": "arctic1",
+      "title": "Arctic 1 Carnage — assise avant la fumée",
+      "definition_sha256": "3fa81aba571d9119cf0ed645e4b900b9c4eaa0fa6e0e947aba85f5a1c5d94c6a",
+      "kind": "script",
+      "study": "experimental/ARCTIC1_KANISTERNIK_CARNAGE_SIT_SMOKE/ETUDE.md",
+      "mode": "carnage",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Sélectionner explicitement Carnage, types 3 et 7, dans la mission native: dépôt unique du bidon, route conservée, puis assise/fumée selon ce profil exclusif.",
+        "Comparer le profil assise après fumée au témoin; ne sélectionner le profil avant fumée que dans un essai séparé. Aucune animation kourimsed2 activée.",
+        "Déclencher alarme et mort avant, pendant et après les 1450 ms: fumée retirée, pas de posture debout imposée au cadavre, arme et bidon commerciaux conservés.",
+        "Déclencher une cutscene 4 pendant activité puis sa fin: nettoyage sans réassise. La garde bloque toute nouvelle assise après une telle cutscene.",
+        "Vérifier le type normal séparément: les nouveaux états restent inactifs, signal 5 et trajets inchangés; ne pas confondre cet essai avec la qualification du module de caméra Heritage.",
+        "Sauvegarder/reprendre avant dépôt, pendant la fumée et assis; contrôler objectifs Carnage et restauration des fichiers."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "alps2-agent-segment-pace",
+      "mission": "alps2",
+      "title": "Alps 2 — allure moderne aux frontières de trajet",
+      "definition_sha256": "651580af46dba079ad05403cf5d1b7bf11b700311d3fb5c62caccd6c9c29260b",
+      "kind": "script",
+      "study": "experimental/ALPS2_AGENT_WALK_RUN_OPTION/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Chronométrer le témoin puis la variante avec joueur proche, à 5–10 m, loin ou bloqué; course seulement si proche au début de chacun des six segments.",
+        "Provoquer les sept boucles xw1..xw7; aucun nouveau choix de vitesse à chaque tour. Attente joueur 9/3 et chemin commercial inchangés.",
+        "Vérifier retour à la marche avant AL2_ag_07_1, ouverture de porte, AL2_ag_08 et passage sous contrôle joueur par le signal 3.",
+        "Comparer dialogues, signaux, objectifs, mort et sauvegarde pendant chaque segment. Qualification solo uniquement; Carnage et coopération non couverts."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "burgundy3-interrogation-visual-phases",
+      "mission": "burgundy3",
+      "title": "Burgundy 3 — quatre phases visuelles modernes",
+      "definition_sha256": "358da9912a18f9f8e420390f9b51c63dcbf76251bfa95bdd84c346901098f860",
+      "kind": "script",
+      "study": "experimental/BURGUNDY3_INTERROGATION_ANIMATIONS/PROPOSITION.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Filmer le témoin solo puis la variante: même ordre des dix-neuf voix et des huit signaux historiques; trois gestes debout puis effacement pour le garde, assise conservée pour le SAS.",
+        "Dupliquer et désordonner les signaux 10..17 dans la copie de test; une phase ne doit progresser que depuis sa phase précédente, sans redémarrage de conversation.",
+        "Déclencher alarme ou mort pendant chaque phase: aucun signal visuel tardif ne doit interrompre la réaction du garde ou les objectifs de mort du SAS.",
+        "Approcher du SAS à quatre mètres pendant une phase: les trois voix de libération et leurs objectifs gardent priorité; le SAS reste assis comme le témoin.",
+        "Tester mort de chacun des trois acteurs observés, retour dans le rayon et sauvegarde à chaque phase. Aucun correctif de répétabilité audio ni port coop dans ce profil."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
       "id": "alps1-ge04-crouch-sniper",
       "mission": "alps1",
       "title": "Alps 1 — ge04-crouch-sniper",

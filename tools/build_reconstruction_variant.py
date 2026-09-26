@@ -28,6 +28,18 @@ ASSET_PATTERN = re.compile(r"(?:sounds/[0-9]{8}\.wav|tables/dabing/[0-9]{8}\.dat
 ASSET_ARCHIVES = ("LangEnglish.dta", "SabreSquadron.dta")
 
 
+def qualification_mode(profile: dict) -> str:
+    mode = profile.get("qualification_mode", "solo")
+    if mode not in ("solo", "carnage", "cooperation"):
+        raise ValueError("Unsupported script qualification mode")
+    return mode
+
+
+def registry_name(profile: dict) -> str:
+    # A cooperative root is never inferred from a folder name or merged with solo.
+    return "mpscripts.dta" if qualification_mode(profile) == "cooperation" else "scripts.dta"
+
+
 def asset_specs(profile: dict) -> list[dict]:
     specs = profile.get("asset_evidence", [])
     if not isinstance(specs, list):
@@ -123,7 +135,7 @@ def load_catalog(path: Path = CATALOG) -> dict:
         evidence = profile["evidence"]
         asset_specs(profile)
         changes = change_specs(profile)
-        required = {f"missions/{mission}/scripts.dta", f"missions/{mission}/actors.bin"}
+        required = {f"missions/{mission}/{registry_name(profile)}", f"missions/{mission}/actors.bin"}
         for change in changes:
             owner_entry = change.get("owner_entry", f"missions/{mission}/actors.bin")
             if owner_entry not in tuple(f"missions/{mission}/{name}" for name in
@@ -304,7 +316,7 @@ def prepare(profile: dict, sources) -> tuple[bytes, dict]:
         verified[name] = raw
     source_name = profile["source"]
     mission = source_name.split("/")[1]
-    registry = verified[f"missions/{mission}/scripts.dta"]
+    registry = verified[f"missions/{mission}/{registry_name(profile)}"]
     bindings = [script for actor, script in parse_bindings(registry)
                 if actor.casefold() == profile["actor"].casefold()]
     if len(bindings) != 1 or normalized(bindings[0]) != source_name.rsplit("/", 1)[1]:

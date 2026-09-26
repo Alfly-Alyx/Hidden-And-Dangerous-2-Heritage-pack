@@ -98,9 +98,12 @@ def collect(root: Path, game: Path, labs: Path, scenes: Path, sources,
                 try:
                     plan_lab(profile, sources)
                 except ValueError as error:
-                    if not str(error).startswith('Missing script dependencies: '):
+                    if str(error).startswith('Native-only qualification mode: '):
+                        row['preparation_status'] = 'native_mode_required'
+                    elif str(error).startswith('Missing script dependencies: '):
+                        row['preparation_status'] = 'missing_script_dependencies'
+                    else:
                         raise
-                    row['preparation_status'] = 'missing_script_dependencies'
                     row['preparation_obstacles'].append(str(error))
                 else:
                     row['preparation_status'] = 'complete_lab_bundle_missing'
