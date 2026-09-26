@@ -377,10 +377,11 @@ def preview(recipe, meshes, output):
                 shade = 0.38 + 0.62*max(0, dot(normal, unit((0.6, -0.3, 1))))
                 rgb = tuple(round(255*min(1, c*shade)**(1/2.2)) for c in recipe["materials"][high.material-1]["diffuse"])
                 screen = [(left+width/2+(dot(q, right)-center_x)*scale,
-                           top+height/2+18-(dot(q, up)-center_y)*scale) for q in p]
-                triangles.append((sum(dot(q, forward) for q in p)/3, screen, rgb))
-        for _, points, colour in sorted(triangles, key=lambda item: item[0]):
-            draw.polygon(points, fill=colour)
+                           top+height/2+18-(dot(q, up)-center_y)*scale,
+                           dot(q,forward)) for q in p]
+                triangles.append((screen,rgb))
+        from software_depth import draw_triangles
+        draw_triangles(image,triangles,(left,top+20,width,height-20))
     image.save(output)
 
 

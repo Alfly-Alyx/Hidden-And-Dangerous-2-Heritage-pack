@@ -13,6 +13,11 @@
 | Garota / ZK383 | Aucun ensemble commercial complet démontré. | Création moderne clairement étiquetée. |
 | `PROLEZACKA_GUARD_AI_TEST` | Neuf scripts seulement; aucune mission, ressource ou entrée de registre. | Laboratoire IA moderne, sans restauration de carte ni ajout menu. |
 
+Les [banques de mouvements FG42/MG34](ANIMATIONS_MODERNES.md) sont maintenant
+construites : neuf séquences de pièces par arme, aucun mouvement de mains ni
+liaison au personnage. Les animations de personnage et l'intégration fonctionnelle
+restent donc à réaliser ; les modèles statiques précédents ne sont pas écrasés.
+
 Dossiers existants : `BENELLI_M4_*`, `FG42`, `MG34_PORTABLE`,
 `FLAMMENWERFER_35_AND_NO2`, `GAROTA_AND_ZK383` et
 `WEAPONS_VEHICLES_TRIAGE`.

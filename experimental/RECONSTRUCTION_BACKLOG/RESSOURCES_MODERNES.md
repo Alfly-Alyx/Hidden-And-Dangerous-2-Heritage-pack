@@ -55,6 +55,11 @@ pas des mécanismes ni des plans techniques. Huit nouveaux tests couvrent
 notamment les chemins plans ouverts/fermés ; trois vues de chaque ensemble
 sont inspectées. Aucun effet, son, combustible, dégât ou rattachement animé.
 
+Une [banque originale de mouvements FG42/MG34](ANIMATIONS_MODERNES.md) est créée :
+neuf séquences par arme sont maintenant écrites en 5DS, liées à des pivots de
+pièces et inspectées hors moteur. Les mains et raccords au personnage restent
+à construire ; le format natif n'est pas une validation de gameplay.
+
 Les laboratoires de scripts et leurs 304 contrôles moteur restent distincts de
 la validation de ces nouveaux assets. Les contrôles de format et aperçus hors
 moteur ne sont jamais comptés comme essais réussis dans le jeu.
