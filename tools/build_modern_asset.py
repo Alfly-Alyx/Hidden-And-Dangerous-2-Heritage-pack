@@ -147,6 +147,26 @@ def ring_mesh(part, material, low=False):
     return Mesh(part["name"], material, points, faces)
 
 
+def transform_mesh(mesh, specification):
+    """Bake a modern rigid part transform; never introduces skeleton binding."""
+    if specification is None:
+        return mesh
+    if not isinstance(specification,dict) or set(specification)-{'rotation_degrees','translation'}:
+        raise ValueError('Unknown modern part transform')
+    angles=vector(specification.get('rotation_degrees',[0,0,0]))
+    if any(abs(a)>360 for a in angles):raise ValueError('Part rotation outside reviewed domain')
+    tx,ty,tz=vector(specification.get('translation',[0,0,0]))
+    rx,ry,rz=(math.radians(a) for a in angles)
+    sx,cx,sy,cy,sz,cz=math.sin(rx),math.cos(rx),math.sin(ry),math.cos(ry),math.sin(rz),math.cos(rz)
+    points=[]
+    for x,y,z in mesh.points:
+        y,z=cx*y-sx*z,sx*y+cx*z
+        x,z=cy*x+sy*z,-sy*x+cy*z
+        x,y=cz*x-sz*y,sz*x+cz*y
+        points.append((x+tx,y+ty,z+tz))
+    return Mesh(mesh.name,mesh.material,points,list(mesh.triangles))
+
+
 def build_meshes(recipe):
     if (recipe.get("schema_version") != 1 or recipe.get("provenance") != PROVENANCE
             or recipe.get("runtime_status") != "pending" or recipe.get("units") != "metres"
@@ -181,6 +201,8 @@ def build_meshes(recipe):
             low = ring_mesh(part, mat, low=True)
         else:
             raise ValueError("Unsupported original geometry primitive")
+        high=transform_mesh(high,part.get('transform'))
+        low=transform_mesh(low,part.get('transform'))
         high.validate()
         low.validate()
         meshes.append((high, low))
@@ -302,10 +324,11 @@ def preview(recipe, meshes, output):
 
 
 def output_directory(root, name):
+    if (not isinstance(name,str) or not NAME.fullmatch(name)
+            or re.fullmatch(r'(?i)(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])',name)):
+        raise ValueError("Unsafe output name")
     base = root / ".analysis"
     candidate = base / "modern-assets" / name
-    if not NAME.fullmatch(name) or name in ("CON", "PRN", "AUX", "NUL"):
-        raise ValueError("Unsafe output name")
     for parent in (root, base, base / "modern-assets", candidate):
         if parent.is_symlink() or (hasattr(parent, "is_junction") and parent.is_junction()):
             raise ValueError("Linked output paths are refused")

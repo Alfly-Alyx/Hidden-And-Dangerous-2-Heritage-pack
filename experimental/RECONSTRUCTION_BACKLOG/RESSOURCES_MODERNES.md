@@ -29,7 +29,7 @@ commerciales restent intacts.
 - Aucun numéro Item/Weapon n'est réservé par la création d'un modèle. Un rescan
   complet et une voie additive distincte restent nécessaires avant intégration.
 
-## Première réalisation
+## Réalisations
 
 Le [modèle extérieur Benelli](../BENELLI_M4_ADDITIVE/MODELE_MODERNE.md) est
 défini par une recette de géométrie originale et un générateur indépendant des
@@ -40,6 +40,13 @@ Le [modèle FPV statique](../BENELLI_M4_ADDITIVE/BANC_FPV.md), lui, est une
 **ressource dérivée du jeu**. Son extraction et son recalage sont modernes, mais
 sa géométrie ne l'est pas. Le générateur est versionné ; le résultat et
 l'inspecteur contenant poses, clés, bitmaps et sons sont privés, ignorés par Git.
+
+Les modèles extérieurs [FG42](../FG42/MODELE_MODERNE.md) et
+[MG34 portative](../MG34_PORTABLE/MODELE_MODERNE.md) sont désormais générés
+sans source commerciale : respectivement 25 et 33 pièces, cinq matériaux,
+cinq repères et deux LOD. Trois vues inspectées pour chacun ; huit tests
+nouveaux contrôlent notamment les rotations rigides et la géométrie. Leurs
+fichiers natifs restent désactivés, sans Item, animation ni mécanique.
 
 Les laboratoires de scripts et leurs 304 contrôles moteur restent distincts de
 la validation de ces nouveaux assets. Les contrôles de format et aperçus hors

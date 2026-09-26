@@ -15,7 +15,8 @@
 
 ## CRÉATION MODERNE REQUISE
 
-- modèle FPV, troisième personne et sol ; icône ; animations ; sons ;
+- modèle extérieur/sol : [fabriqué](MODELE_MODERNE.md), essai moteur et tenue requis ;
+- modèle FPV ; icône ; animations ; sons ;
 - entrée Weapon additive et liaison munition ;
 - balistique, chargeur, cadence, recul, dispersion et dégâts ;
 - inventaire, IA, sauvegarde et réseau.
