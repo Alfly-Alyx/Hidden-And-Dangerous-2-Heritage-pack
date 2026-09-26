@@ -42,6 +42,15 @@ namespace HD2CommunityInstaller
                 "Deblocage des missions :", "deja actif"))
                 throw new InvalidOperationException(
                     "La detection refuse un profil dont les missions sont debloquees.");
+            if (!HasStatus(
+                    "Rapports automatiques : deja actif (demarre et s'arrete avec le jeu)",
+                    "Rapports automatiques :", "deja actif"))
+                throw new InvalidOperationException(
+                    "La detection refuse le moniteur de diagnostics actif.");
+            if (!HasStatus("Guides PDF sur le Bureau : deja presents en francais",
+                    "Guides PDF sur le Bureau :", "deja presents"))
+                throw new InvalidOperationException(
+                    "La detection refuse les guides deja telecharges.");
             string hosts = "# BEGIN HD2 Community MasterList\r\n"
                 + "78.47.255.224 hd2.available.gamespy.com\r\n"
                 + "78.47.255.224 hd2.master.gamespy.com\r\n"

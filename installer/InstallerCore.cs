@@ -96,6 +96,12 @@ namespace HD2CommunityInstaller
                     + CustomMissionManagerInstaller.DetectStatus(gamePath));
                 text.AppendLine("Onze adaptations solo : "
                     + SoloMissionAdaptationInstaller.DetectStatus(gamePath));
+                text.AppendLine("Rapports automatiques : "
+                    + DiagnosticMonitorInstaller.DetectStatus(gamePath));
+                text.AppendLine("Dossier des rapports : "
+                    + DiagnosticMonitorInstaller.ReportsRoot);
+                text.AppendLine("Guides PDF sur le Bureau : "
+                    + GuideDownloader.DetectStatus());
                 text.AppendLine("Graphismes automatiques : " + GraphicsConfigurator.DetectStatus());
                 text.AppendLine(FeatureStatusDetector.BuildReport(gamePath));
             }
@@ -160,6 +166,9 @@ namespace HD2CommunityInstaller
                 GraphicsConfigurator.ValidateOnly();
             }
             WidescreenInstaller.ValidateOnly();
+            if (options.InstallAutomaticDiagnostics)
+                DiagnosticMonitorInstaller.ValidateOnly();
+            if (options.DownloadGuides) GuideDownloader.ValidateOnly();
             bool updating = File.Exists(AppConfig.StateFile);
             if (updating)
                 EnsureSafeUpdate(options.GamePath);
@@ -194,6 +203,9 @@ namespace HD2CommunityInstaller
                     prepared.Add(change.RelativePath);
                 CustomMissionManagerInstaller.Install(
                     options.GamePath, journal, prepared, progress);
+                if (options.InstallAutomaticDiagnostics)
+                    DiagnosticMonitorInstaller.Install(
+                        options.GamePath, journal, prepared, progress);
                 if (options.InstallSoloAdaptations)
                     SoloMissionAdaptationInstaller.Install(
                         options.GamePath, journal, prepared, progress);
@@ -443,6 +455,16 @@ namespace HD2CommunityInstaller
                     MissionUnlockInstaller.Install(options.GamePath, journal, progress);
                 CustomMissionManagerInstaller.ActivateMenu(
                     options.GamePath, journal, prepared, progress);
+                if (options.DownloadGuides)
+                {
+                    try { GuideDownloader.Install(progress); }
+                    catch (Exception guideError)
+                    {
+                        Log("Guides PDF non telecharges : " + guideError);
+                        Report(progress, "AVERTISSEMENT : le jeu est installe, mais les guides "
+                            + "PDF n'ont pas pu etre telecharges : " + guideError.Message);
+                    }
+                }
                 int sealedHashes = journal.SealMissingHashes(options.GamePath);
                 if (sealedHashes > 0)
                     Report(progress, "Journal de restauration securise : "
@@ -512,6 +534,7 @@ namespace HD2CommunityInstaller
             }
             GraphicsConfigurator.Restore(state, progress);
             MasterBridgeInstaller.Uninstall(state, progress);
+            DiagnosticMonitorInstaller.Uninstall(state, progress);
             for (int index = state.ProfileUnlocks.Count - 1; index >= 0; index--)
                 MissionUnlockInstaller.Restore(
                     state.GamePath, state.ProfileUnlocks[index], progress);

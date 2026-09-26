@@ -8,7 +8,7 @@ namespace HD2CommunityInstaller
     {
         public const string ProductName = "H&D2 Heritage Pack";
         private const string DataFolderName = "HD2 Community Pack";
-        public const string Version = "0.9.0";
+        public const string Version = "0.10.0";
         public const string ExpectedGameVersion = "1.12";
         public const string CmpVersion = "2.6.5";
         public const string CmpCommit = "793d979748b27a9924fccc30fa0fba6edb7cd70f";
@@ -75,6 +75,8 @@ namespace HD2CommunityInstaller
         public bool RestoreOfficialEasterEggs = true;
         public bool UnlockAllMissions = true;
         public bool AutoConfigureGraphics = true;
+        public bool InstallAutomaticDiagnostics = true;
+        public bool DownloadGuides = true;
         public string PackageOverride;
     }
 }

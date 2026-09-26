@@ -24,6 +24,8 @@ Heritage Pack brings online play back, repairs forgotten objectives and sequence
 | Solo adaptations | An optional setting builds 11 solo missions from cooperative missions and official objective variants already present in the installed game. They are clearly labelled and placed in `Multiplayer adaptations`. |
 | Official remnants | Adds Africa5 Prototype and Normandy3 Zone to multiplayer with names that clearly show their experimental status. |
 | Display setup | Detects the monitor and PC, applies the highest usable resolution, and adjusts quality to the machine’s performance. |
+| Error reports | Starts a monitor only with the game, creates a local report and ZIP archive after a crash, hang, or engine-reported error, then exits with the game. Nothing is uploaded automatically. |
+| PDF guides | Can download the player guide and discovery report to the Desktop, in French on French Windows installations and English for other languages. |
 | Restore option | Backs up replaced files and can return the game to its previous state. |
 
 The installer detects features that are already active. After installation or verification, completed options are automatically unticked.
@@ -53,10 +55,9 @@ CMP 2.6.5 requires about **1.08 GB to download** and **3.12 GB once installed**.
 
 The two prototypes are playable remnants intended for exploration. They are not presented as completed solo missions.
 
-## Separate release documents
+## PDF guides
 
-These PDFs are separate downloads on the GitHub release page. The installer
-does not copy or manage them in the game folder.
+These PDFs remain available as separate downloads on the GitHub release page. An installer option can also download both documents in the Windows display language and place them on the Desktop. They are never added to the game folder.
 
 ### For players
 
@@ -74,7 +75,7 @@ The report tells the story of the findings: cut content, mission variants, Londo
 
 ## Current status
 
-Version **0.9.0** consolidates:
+Version **0.10.0** consolidates:
 
 - exact detection of features that are already installed;
 - one H&D2 server list assembled from the established community service and OpenSpy;
@@ -83,7 +84,9 @@ Version **0.9.0** consolidates:
 - optional creation and installation of 11 solo adaptations from the player’s own H&D2 archives, without replacing the original cooperative missions;
 - original game content that no longer worked in the final release;
 - free exploration applied to both prototypes as well;
-- reversible installation and protection of player progress.
+- reversible installation and protection of player progress;
+- local automatic reports whose monitor starts and stops with each game session;
+- optional download of the two French or English PDF guides to the Desktop.
 
 ## What is not playable yet
 
@@ -103,7 +106,9 @@ Run the installer again and choose **Restaurer**. Heritage Pack restores its bac
 
 ## Reporting a problem
 
-If a mission will not start, the game hangs, or an installed feature is detected incorrectly, open a [GitHub issue](https://github.com/Alfly-Alyx/Hidden-And-Dangerous-2-Heritage-pack/issues) and include the mission, game mode, and what appears on screen.
+The diagnostic monitor runs only while the game is running. It automatically creates a folder and ZIP after a crash, sustained hang, or recognised engine-log error. For a visible mission fault that does not crash the game, press **Ctrl+Shift+F12** during the mission.
+
+Select **Ouvrir les rapports** in the installer and attach the latest ZIP to a [GitHub issue](https://github.com/Alfly-Alyx/Hidden-And-Dangerous-2-Heritage-pack/issues), together with what happened on screen. Reports remain on the PC and are never uploaded automatically.
 
 ## Current licence
 

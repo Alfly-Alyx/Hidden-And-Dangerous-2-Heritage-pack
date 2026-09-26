@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
@@ -19,18 +20,21 @@ namespace HD2CommunityInstaller
         private readonly CheckBox officialEasterEggs = new CheckBox();
         private readonly CheckBox unlockMissions = new CheckBox();
         private readonly CheckBox graphics = new CheckBox();
+        private readonly CheckBox diagnostics = new CheckBox();
+        private readonly CheckBox guides = new CheckBox();
         private readonly Button browse = new Button();
         private readonly Button install = new Button();
         private readonly Button restore = new Button();
         private readonly Button verify = new Button();
+        private readonly Button openReports = new Button();
         private readonly ProgressBar bar = new ProgressBar();
         private readonly TextBox log = new TextBox();
 
         public MainForm()
         {
             Text = AppConfig.ProductName + " " + AppConfig.Version;
-            ClientSize = new Size(760, 780);
-            MinimumSize = new Size(776, 819);
+            ClientSize = new Size(760, 836);
+            MinimumSize = new Size(776, 875);
             StartPosition = FormStartPosition.CenterScreen;
             Font = new Font("Segoe UI", 9F);
             BuildLayout();
@@ -99,29 +103,42 @@ namespace HD2CommunityInstaller
             graphics.Checked = true;
             graphics.AutoSize = true;
             graphics.Location = new Point(29, 412);
+            diagnostics.Text = "Creer automatiquement un rapport local en cas d'erreur du jeu";
+            diagnostics.Checked = true;
+            diagnostics.AutoSize = true;
+            diagnostics.Location = new Point(29, 440);
+            guides.Text = "Telecharger les deux guides PDF en "
+                + GuideDownloader.LanguageName + " sur le Bureau";
+            guides.Checked = true;
+            guides.AutoSize = true;
+            guides.Location = new Point(29, 468);
 
             Label safety = new Label {
                 Text = "Les fonctions deja actives sont detectees et decochees. Le paquet communautaire "
                     + "est verrouille par SHA-256; les fichiers remplaces sont sauvegardes.",
-                AutoSize = false, Size = new Size(706, 42), Location = new Point(28, 446)
+                AutoSize = false, Size = new Size(706, 42), Location = new Point(28, 502)
             };
 
             install.Text = "Installer";
-            install.Location = new Point(25, 494);
+            install.Location = new Point(25, 550);
             install.Size = new Size(116, 34);
             install.Click += InstallClick;
             restore.Text = "Restaurer";
-            restore.Location = new Point(151, 494);
+            restore.Location = new Point(151, 550);
             restore.Size = new Size(116, 34);
             restore.Click += RestoreClick;
             verify.Text = "Verifier l'etat";
-            verify.Location = new Point(277, 494);
+            verify.Location = new Point(277, 550);
             verify.Size = new Size(116, 34);
             verify.Click += delegate { RunDiagnostic(); };
+            openReports.Text = "Ouvrir les rapports";
+            openReports.Location = new Point(403, 550);
+            openReports.Size = new Size(145, 34);
+            openReports.Click += OpenReportsClick;
 
-            bar.Location = new Point(25, 542);
+            bar.Location = new Point(25, 598);
             bar.Size = new Size(710, 18);
-            log.Location = new Point(25, 572);
+            log.Location = new Point(25, 628);
             log.Size = new Size(710, 147);
             log.Multiline = true;
             log.ReadOnly = true;
@@ -132,13 +149,14 @@ namespace HD2CommunityInstaller
             Label prototypeLabel = new Label {
                 Text = "Prototypes dans le jeu : Multijoueur > LAN > Deathmatch (Africa5) "
                     + "ou Occupation (Normandy3 Zone).",
-                AutoSize = false, Size = new Size(706, 38), Location = new Point(25, 730)
+                AutoSize = false, Size = new Size(706, 38), Location = new Point(25, 786)
             };
 
             Controls.AddRange(new Control[] {
                 title, intro, pathLabel, gamePath, browse, master, directPlay, cmp, soloAdaptations,
-                exploration, objectives, dormant, officialEasterEggs, unlockMissions, graphics, safety,
-                install, restore, verify, bar, log, prototypeLabel
+                exploration, objectives, dormant, officialEasterEggs, unlockMissions, graphics,
+                diagnostics, guides, safety, install, restore, verify, openReports, bar, log,
+                prototypeLabel
             });
         }
 
@@ -188,7 +206,9 @@ namespace HD2CommunityInstaller
                 RestoreDormantSequences = dormant.Checked,
                 RestoreOfficialEasterEggs = officialEasterEggs.Checked,
                 UnlockAllMissions = unlockMissions.Checked,
-                AutoConfigureGraphics = graphics.Checked
+                AutoConfigureGraphics = graphics.Checked,
+                InstallAutomaticDiagnostics = diagnostics.Checked,
+                DownloadGuides = guides.Checked
             };
             try
             {
@@ -279,6 +299,20 @@ namespace HD2CommunityInstaller
             }
         }
 
+        private void OpenReportsClick(object sender, EventArgs e)
+        {
+            try
+            {
+                Directory.CreateDirectory(DiagnosticMonitorInstaller.ReportsRoot);
+                Process.Start("explorer.exe", DiagnosticMonitorInstaller.ReportsRoot);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, AppConfig.ProductName,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void ApplyDetectedState(string diagnostic)
         {
             master.Checked = !DiagnosticStatusMatcher.HasStatus(
@@ -303,6 +337,10 @@ namespace HD2CommunityInstaller
                 diagnostic, "Correctif ecran large :", "deja actif")
                 && DiagnosticStatusMatcher.HasStatus(
                     diagnostic, "Graphismes automatiques :", "deja applique"));
+            diagnostics.Checked = !DiagnosticStatusMatcher.HasStatus(
+                diagnostic, "Rapports automatiques :", "deja actif");
+            guides.Checked = !DiagnosticStatusMatcher.HasStatus(
+                diagnostic, "Guides PDF sur le Bureau :", "deja presents");
         }
         private void AppendLog(string message)
         {
@@ -329,6 +367,9 @@ namespace HD2CommunityInstaller
             officialEasterEggs.Enabled = !busy;
             unlockMissions.Enabled = !busy;
             graphics.Enabled = !busy;
+            diagnostics.Enabled = !busy;
+            guides.Enabled = !busy;
+            openReports.Enabled = !busy;
             UseWaitCursor = busy;
         }
     }

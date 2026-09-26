@@ -20,6 +20,12 @@ namespace HD2CommunityInstaller
         public string InstalledSha256;
     }
 
+    internal sealed class DiagnosticWerChange
+    {
+        public string RegistryView;
+        public string Executable;
+    }
+
     internal sealed class InstallState
     {
         public string GamePath;
@@ -37,6 +43,8 @@ namespace HD2CommunityInstaller
         public readonly List<FileChange> Changes = new List<FileChange>();
         public readonly List<ProfileUnlockChange> ProfileUnlocks =
             new List<ProfileUnlockChange>();
+        public readonly List<DiagnosticWerChange> DiagnosticWerKeys =
+            new List<DiagnosticWerChange>();
 
         public static InstallState Load()
         {
@@ -85,6 +93,13 @@ namespace HD2CommunityInstaller
                         OriginalBase = Convert.FromBase64String(fields[2]),
                         OriginalSabre = Convert.FromBase64String(fields[3]),
                         InstalledSha256 = fields[4]
+                    });
+                }
+                else if (fields[0] == "DIAGNOSTIC_WER" && fields.Length >= 3)
+                {
+                    state.DiagnosticWerKeys.Add(new DiagnosticWerChange {
+                        RegistryView = fields[1],
+                        Executable = Decode(fields[2])
                     });
                 }
                 else if (fields[0] == "CREATED" || fields[0] == "REPLACED")
@@ -261,6 +276,16 @@ namespace HD2CommunityInstaller
                 + Convert.ToBase64String(State.OriginalGraphics) + "\t"
                 + Convert.ToBase64String(State.InstalledGraphics) + "\t"
                 + InstallState.Encode(profile));
+        }
+
+        public void RecordDiagnosticWerKey(string registryView, string executable)
+        {
+            writer.WriteLine("DIAGNOSTIC_WER\t" + registryView + "\t"
+                + InstallState.Encode(executable));
+            State.DiagnosticWerKeys.Add(new DiagnosticWerChange {
+                RegistryView = registryView,
+                Executable = executable
+            });
         }
 
         public void RecordHostsChanged()

@@ -15,6 +15,7 @@ if (-not (Test-Path -LiteralPath $csc)) {
 
 & (Join-Path $projectRoot 'build-custom-mission-manager.ps1')
 & (Join-Path $projectRoot 'build-network-bridge.ps1')
+& (Join-Path $projectRoot 'build-diagnostic-monitor.ps1')
 
 $build = Join-Path $projectRoot 'build'
 $dist = Join-Path $projectRoot 'dist'
@@ -24,6 +25,8 @@ $missionManager = Join-Path $projectRoot 'dist\HD2-Custom-Mission-Manager.exe'
 $missionManagerHash = Join-Path $build 'HD2-Custom-Mission-Manager.sha256'
 $masterBridge = Join-Path $build 'HD2-Master-Bridge.exe'
 $masterBridgeHash = Join-Path $build 'HD2-Master-Bridge.sha256'
+$diagnosticMonitor = Join-Path $build 'HD2-Heritage-Diagnostics.exe'
+$diagnosticMonitorHash = Join-Path $build 'HD2-Heritage-Diagnostics.sha256'
 $customMissionReadme = Join-Path $projectRoot 'custom-missions\README.md'
 $customMissionSchema = Join-Path $projectRoot 'custom-missions\mission.schema.json'
 $customMissionTemplate = Join-Path $projectRoot 'custom-missions\_modele\mission.json'
@@ -46,6 +49,9 @@ $managerSha256 = (Get-FileHash -LiteralPath $missionManager -Algorithm SHA256).H
 $bridgeSha256 = (Get-FileHash -LiteralPath $masterBridge -Algorithm SHA256).Hash
 [IO.File]::WriteAllText(
     $masterBridgeHash, $bridgeSha256 + "`n", [Text.Encoding]::ASCII)
+$diagnosticSha256 = (Get-FileHash -LiteralPath $diagnosticMonitor -Algorithm SHA256).Hash
+[IO.File]::WriteAllText(
+    $diagnosticMonitorHash, $diagnosticSha256 + "`n", [Text.Encoding]::ASCII)
 if (-not (Test-Path -LiteralPath $icon)) {
     throw 'The Windows icon is missing.'
 }
@@ -73,6 +79,8 @@ $common = @('/nologo', '/utf8output', '/checked+', '/warn:4', '/platform:anycpu'
         "/resource:$missionManagerHash,HD2CommunityInstaller.CustomMissionManager.sha256",
         "/resource:$masterBridge,HD2CommunityInstaller.MasterBridge.exe",
         "/resource:$masterBridgeHash,HD2CommunityInstaller.MasterBridge.sha256",
+        "/resource:$diagnosticMonitor,HD2CommunityInstaller.DiagnosticMonitor.exe",
+        "/resource:$diagnosticMonitorHash,HD2CommunityInstaller.DiagnosticMonitor.sha256",
         "/resource:$customMissionReadme,HD2CommunityInstaller.CustomMissions.Readme",
         "/resource:$customMissionSchema,HD2CommunityInstaller.CustomMissions.Schema",
         "/resource:$customMissionTemplate,HD2CommunityInstaller.CustomMissions.TemplateManifest",

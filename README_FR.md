@@ -24,6 +24,8 @@ Heritage Pack remet en service le jeu en ligne, corrige des objectifs et des sé
 | Adaptations solo | Une option construit 11 missions solo à partir de missions coopératives et de variantes d’objectifs officielles déjà présentes dans le jeu installé. Elles sont clairement signalées et rangées dans `Adaptations multijoueur`. |
 | Vestiges officiels | Ajoute Africa5 Prototype et Normandy3 Zone au menu multijoueur avec un nom qui indique clairement leur état expérimental. |
 | Affichage | Détecte l’écran et le PC, applique la résolution maximale utilisable et adapte les graphismes aux performances de la machine. |
+| Rapports d’erreur | Lance un moniteur uniquement avec le jeu, crée un rapport local et une archive ZIP en cas de plantage, blocage ou erreur signalée par le moteur, puis s’arrête avec le jeu. Aucun rapport n’est envoyé automatiquement. |
+| Guides PDF | Peut télécharger sur le Bureau le guide joueur et le rapport des découvertes, en français sur un Windows français et en anglais dans les autres langues. |
 | Restauration | Sauvegarde les fichiers remplacés et permet de revenir à l’état précédent. |
 
 L’installateur reconnaît ce qui est déjà actif. Après une installation ou une vérification, les options déjà appliquées sont automatiquement décochées.
@@ -53,10 +55,9 @@ La CMP 2.6.5 représente environ **1,08 Go à télécharger** et **3,12 Go insta
 
 Les deux prototypes servent à explorer des vestiges jouables. Ils ne sont pas présentés comme des missions solo terminées.
 
-## Documents séparés de la release
+## Guides PDF
 
-Ces PDF sont proposés séparément sur la page de la release GitHub.
-L’installateur ne les copie pas et ne les gère pas dans le dossier du jeu.
+Ces PDF restent proposés séparément sur la page de la release GitHub. Une option de l’installateur peut aussi télécharger automatiquement les deux documents de la langue de Windows et les placer sur le Bureau. Ils ne sont jamais ajoutés au dossier du jeu.
 
 ### Pour les joueurs
 
@@ -74,7 +75,7 @@ Le rapport raconte les découvertes : contenu coupé, variantes de missions, Lon
 
 ## État actuel
 
-La version **0.9.0** consolide notamment :
+La version **0.10.0** consolide notamment :
 
 - la détection exacte des options déjà installées ;
 - une seule liste H&D2 réunissant le service communautaire déjà utilisé et OpenSpy ;
@@ -83,7 +84,9 @@ La version **0.9.0** consolide notamment :
 - la création et l’installation facultatives de 11 adaptations solo depuis les archives H&D2 du joueur, sans remplacer les missions coopératives d’origine ;
 - la remise en service de contenu original qui ne fonctionnait plus dans la version finale ;
 - l’exploration libre appliquée aussi aux deux prototypes ;
-- l’installation réversible et la protection des sauvegardes du joueur.
+- l’installation réversible et la protection des sauvegardes du joueur ;
+- les rapports automatiques locaux, démarrés et arrêtés avec chaque session du jeu ;
+- le téléchargement facultatif des deux guides PDF français ou anglais sur le Bureau.
 
 ## Ce qui n’est pas encore jouable
 
@@ -103,7 +106,9 @@ Relancez l’installateur et choisissez **Restaurer**. Heritage Pack remet les f
 
 ## Signaler un problème
 
-Pour un blocage, une mission qui ne démarre pas ou une option mal détectée, ouvrez une [issue GitHub](https://github.com/Alfly-Alyx/Hidden-And-Dangerous-2-Heritage-pack/issues) en indiquant la mission, le mode de jeu et ce qui se passe à l’écran.
+Le moniteur de diagnostic ne fonctionne que pendant le jeu. Il produit automatiquement un dossier et un ZIP lors d’un plantage, d’un blocage durable ou d’une erreur reconnue dans le journal du moteur. Pour un défaut visible qui ne fait pas planter le jeu, appuyez sur **Ctrl+Maj+F12** pendant la mission.
+
+Utilisez **Ouvrir les rapports** dans l’installateur, puis joignez le ZIP le plus récent à une [issue GitHub](https://github.com/Alfly-Alyx/Hidden-And-Dangerous-2-Heritage-pack/issues) en indiquant ce qui se passe à l’écran. Les rapports restent sur le PC et ne sont jamais envoyés automatiquement.
 
 ## Licence actuelle
 

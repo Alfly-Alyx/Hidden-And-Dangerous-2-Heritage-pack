@@ -24,6 +24,8 @@ EXPORT void *MenuMissionScene;
 EXPORT void *MenuCategoryControls[4];
 static LONG initialized;
 static char logPath[MAX_PATH];
+static unsigned lastDecodedCatalogue = 0xffffffff;
+static unsigned lastDecodedRow = 0xffffffff;
 
 extern int GameCount(unsigned catalogue);
 extern void GameReload(void *screen);
@@ -65,6 +67,44 @@ static void Log(const char *message)
     CloseHandle(file);
 }
 
+static void StartDiagnostics(void)
+{
+    char executable[MAX_PATH];
+    char gamePath[MAX_PATH];
+    char command[MAX_PATH * 2 + 96];
+    char line[160];
+    char *slash;
+    STARTUPINFOA startup;
+    PROCESS_INFORMATION process;
+    GetModuleFileNameA(NULL, gamePath, sizeof(gamePath));
+    slash = strrchr(gamePath, '\\');
+    if (!slash) return;
+    if ((unsigned)(slash - gamePath) + 1
+            + strlen("HD2-Heritage-Diagnostics.exe") >= sizeof(gamePath)) return;
+    strcpy(slash + 1, "HD2-Heritage-Diagnostics.exe");
+    strcpy(executable, gamePath);
+    if (GetFileAttributesA(executable) == INVALID_FILE_ATTRIBUTES) {
+        Log("Diagnostic monitor is not installed.");
+        return;
+    }
+    *slash = 0;
+    sprintf(command, "\"%s\" --watch-pid %lu \"%s\"",
+        executable, (unsigned long)GetCurrentProcessId(), gamePath);
+    memset(&startup, 0, sizeof(startup));
+    memset(&process, 0, sizeof(process));
+    startup.cb = sizeof(startup);
+    if (!CreateProcessA(executable, command, NULL, NULL, FALSE,
+            CREATE_NO_WINDOW, NULL, gamePath, &startup, &process)) {
+        sprintf(line, "Could not start diagnostic monitor; Windows error %lu.",
+            (unsigned long)GetLastError());
+        Log(line);
+        return;
+    }
+    CloseHandle(process.hThread);
+    CloseHandle(process.hProcess);
+    Log("Diagnostic monitor started for this game session.");
+}
+
 static unsigned CatalogueCount(void)
 {
     unsigned manager = WORD_AT(0x8aea10);
@@ -95,8 +135,17 @@ EXPORT unsigned long long MenuDecode(unsigned row)
     for (index = 0; index < count; index++) {
         int size = GameCount(index);
         if (size < 0) break;
-        if (row < (unsigned)size)
+        if (row < (unsigned)size) {
+            if (logPath[0] && (index != lastDecodedCatalogue || row != lastDecodedRow)) {
+                char line[100];
+                sprintf(line, "mission-context catalogue=%u row=%u view=%u",
+                    index, row, MenuView);
+                Log(line);
+                lastDecodedCatalogue = index;
+                lastDecodedRow = row;
+            }
             return ((unsigned long long)row << 32) | index;
+        }
         row -= size;
     }
     return ~(unsigned long long)0;
@@ -271,13 +320,21 @@ EXPORT const unsigned MenuHookCount = sizeof(MenuHooks) / sizeof(MenuHooks[0]);
 EXPORT void InitializeASI(void)
 {
     unsigned index, count = sizeof(MenuHooks) / sizeof(MenuHooks[0]);
+    int isSabre;
     DWORD oldProtect, unused;
     char *slash;
     if (InterlockedCompareExchange(&initialized, 1, 0)) return;
     GetModuleFileNameA(NULL, logPath, sizeof(logPath));
     slash = strrchr(logPath, '\\');
-    if (!slash || strcmp(slash + 1, "HD2_SabreSquadron.exe")) return;
+    if (!slash) return;
+    isSabre = !strcmp(slash + 1, "HD2_SabreSquadron.exe");
+    if (!isSabre && strcmp(slash + 1, "HD2.exe")) return;
     strcpy(slash + 1, "HD2.CustomMenu.log");
+    StartDiagnostics();
+    if (!isSabre) {
+        Log("Diagnostic monitor started for base H&D2; custom menu hooks are Sabre-only.");
+        return;
+    }
     Log("Native Custom Missions menu module initialized (native queue v2).");
     if ((unsigned)GetModuleHandleA(NULL) != 0x400000) {
         Log("Unsupported image base. No changes applied.");

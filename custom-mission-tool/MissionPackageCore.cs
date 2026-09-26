@@ -2078,6 +2078,29 @@ namespace HD2CustomMissionManager
             foreach (KeyValuePair<string, byte[]> output in outputs)
                 runtimeHashes[output.Key] = Sha256(output.Value);
             report["runtime_sha256"] = runtimeHashes;
+            List<Dictionary<string, object>> missionEntries =
+                new List<Dictionary<string, object>>();
+            for (int categoryIndex = 0; categoryIndex < CategoryOrder.Length;
+                categoryIndex++)
+            {
+                string category = CategoryOrder[categoryIndex];
+                int row = 0;
+                foreach (MissionPackage package in library.Packages.Where(item =>
+                    String.Equals(item.Category, category,
+                        StringComparison.OrdinalIgnoreCase)))
+                {
+                    Dictionary<string, object> entry = new Dictionary<string, object>();
+                    entry["id"] = package.Id;
+                    entry["category"] = category;
+                    entry["catalogue"] = categoryIndex + 3;
+                    entry["row"] = row++;
+                    entry["mission_directory"] = package.MissionDirectory;
+                    entry["title_fr"] = package.Title.ForLanguage("french");
+                    entry["title_en"] = package.Title.ForLanguage("english");
+                    missionEntries.Add(entry);
+                }
+            }
+            report["mission_entries"] = missionEntries;
             report["library"] = library.Root;
             transaction.AddWrite(
                 Path.Combine(testGame, "CUSTOM_MISSIONS_INSTALL.json"),

@@ -29,6 +29,8 @@ namespace HD2CommunityInstaller
                     {
                         Console.WriteLine(MasterBridgeInstaller.ValidateOnly());
                         Console.WriteLine(CustomMissionManagerInstaller.ValidateOnly());
+                        Console.WriteLine(DiagnosticMonitorInstaller.ValidateOnly());
+                        Console.WriteLine(GuideDownloader.ValidateOnly());
                         Console.WriteLine(WidescreenInstaller.ValidateOnly());
                         Console.WriteLine(GraphicsConfigurator.ValidateOnly());
                         Console.WriteLine(DiagnosticStatusMatcher.ValidateOnly());
@@ -120,6 +122,8 @@ namespace HD2CommunityInstaller
                         Console.WriteLine(CmpInstaller.ValidateOnly(args[2], game));
                         Console.WriteLine(MasterBridgeInstaller.ValidateOnly());
                         Console.WriteLine(CustomMissionManagerInstaller.ValidateOnly());
+                        Console.WriteLine(DiagnosticMonitorInstaller.ValidateOnly());
+                        Console.WriteLine(GuideDownloader.ValidateOnly());
                         Console.WriteLine(WidescreenInstaller.ValidateOnly());
                         Console.WriteLine(GraphicsConfigurator.ValidateOnly());
                         Console.WriteLine(DiagnosticStatusMatcher.ValidateOnly());
