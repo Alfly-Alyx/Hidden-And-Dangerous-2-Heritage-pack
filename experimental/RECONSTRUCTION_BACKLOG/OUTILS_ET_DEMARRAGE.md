@@ -55,6 +55,7 @@ Ni installation ni lancement du jeu ; aucun asset commercial requis.
 | `tools/full_game_audit.py` | Produire l'audit global JSON et Markdown d'une installation. |
 | `tools/map_inventory_audit.py` | Inventorier les missions, cartes et conteneurs. |
 | `tools/asset_presence_audit.py` | Vérifier la présence et les empreintes de ressources. |
+| `tools/item_shoot_projection.py` | Comparer 18 colonnes d'éditeur aux descripteurs natifs, préserver les différences entre couches et les symboles non résolus ; aucun slot alloué. |
 
 Exemples sûrs et non destructifs :
 

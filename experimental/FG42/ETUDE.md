@@ -1,5 +1,9 @@
 # FG 42 — reconstruction lourde moderne
 
+Le [contrôle des paramètres du 27 septembre](../RECONSTRUCTION_BACKLOG/PARAMETRES_TIR.md)
+conserve explicitement `FG42_F` et `FG42_R` comme références symboliques
+non résolues. Aucune conversion silencieuse en numéros ou en zéro.
+
 [Mouvements originaux des pièces](../RECONSTRUCTION_BACKLOG/ANIMATIONS_MODERNES.md) :
 neuf séquences construites, sans mains ni liaison au personnage. Les besoins
 FPV et animations de personnage mentionnés ci-dessous restent ouverts.

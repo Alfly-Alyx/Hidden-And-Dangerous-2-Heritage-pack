@@ -1,6 +1,6 @@
 # Registre maître des reconstructions expérimentales
 
-Inventaire initial : **2026-09-19**. Dernière mise à jour : **2026-09-26**.
+Inventaire initial : **2026-09-19**. Dernière mise à jour : **2026-09-27**.
 
 Branche de travail actuelle : `codex/reconstruction-phase-1`.
 La préparation de `codex/experimental-reconstruction-inventory` a été intégrée
@@ -29,7 +29,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 
 ## Légende d'état
 
-### Avancement vérifié le 26 septembre 2026
+### Avancement vérifié le 27 septembre 2026
 
 - **47 profils / 55 scripts dérivés** reconstruits depuis les archives, avec
   157 sources de mission, trois preuves de campagne Africa 3, deux ressources de dialogue et trois modèles
@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **504 tests Python réussis sur 505 dans la copie de publication**; un test de lien symbolique non exécuté
+- **512 tests Python réussis sur 513 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -81,6 +81,10 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   514 poses entières évaluées hors moteur ; deux planches de rechargement
   inspectées avec un rendu de profondeur corrigé. Vingt nouveaux tests.
   Ni mains, événements, sons, caméra FPV ou comportement d'arme réalisés.
+- [Paramètres de tir](PARAMETRES_TIR.md) : 18 colonnes rapprochées des données
+  natives de 40 armes dans quatre couches. Onze différences de paramètres
+  conservées sur six fiches, deux symboles FG42 explicitement non résolus.
+  Huit tests nouveaux ; aucune entrée Weapon ni allocation créée.
 - Trois comparaisons binaires Co_Burgundy1/2/3 supplémentaires reconstruisent
   respectivement douze/deux/dix porteurs et leurs liaisons sans modifier les scripts
   ou sons. Elles restent inertes, hors compte des laboratoires de mission.
