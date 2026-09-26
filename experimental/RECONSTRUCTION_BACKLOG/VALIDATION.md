@@ -13,7 +13,10 @@ Les 21 candidates multijoueur vers solo conservent leur registre indépendant.
 
 ## Contrôles statiques obligatoires
 
-- Aucun fichier expérimental exécutable ne doit porter l'extension active `.scr`.
+- Aucun fichier expérimental versionné, distribué ou installé dans le jeu
+  personnel ne doit porter l'extension active `.scr`. Le seul déploiement privé
+  pour les essais utilise la [copie native isolée](../../validation/ESSAIS_NATIFS.md),
+  ses empreintes, son journal et sa restauration; ce n'est pas une promotion.
 - Tous les liens Markdown locaux doivent résoudre vers un fichier existant.
 - Chaque propriétaire ajouté doit avoir une frame, une transformation, une
   liaison de script et un cycle de vie documentés.
