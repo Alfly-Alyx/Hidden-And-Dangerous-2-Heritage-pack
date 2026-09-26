@@ -28,8 +28,11 @@ Le [lecteur des tables centrales](TABLES_ADDITIVES.md) est maintenant réalisé 
 359 est vide dans Sabre/PatchX01, mais hors capacité Base/Patch. Le groupe FPV
 109 est entièrement décodé. Le [contrat natif](CONTRAT_NATIF.md) confirme la
 liaison objet 359 → groupe 459 et compare 1 036 descripteurs au lecteur natif
-en émulation isolée. La munition, les sauvegardes et l'animation effective
-restent à qualifier ; aucun numéro n'est alloué sur la seule foi de ce résultat.
+en émulation isolée. Le [contrôle état/munition](ETAT_ET_MUNITION.md) vérifie
+208 associations commerciales et la sérialisation d'un objet isolé ; deux
+tags communs sont ignorés par le lecteur natif. Sauvegardes complètes,
+rechargement et animation effective restent à qualifier ; aucun numéro
+n'est alloué sur la seule foi de ces résultats.
 
 ## Phases
 

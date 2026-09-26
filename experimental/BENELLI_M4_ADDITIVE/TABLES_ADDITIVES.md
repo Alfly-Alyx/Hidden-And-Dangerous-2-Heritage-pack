@@ -55,7 +55,9 @@ diffèrent. Leur sens n'est pas réinterprété et leurs données ne sont pas é
 
 Le slot 9 reste `KOMPAS`, type 2, texte 1009. La munition 179 est `AMMO Beneli`,
 type 0, texte 1179, icône `ii_br-side-m`, modèle `w_ammo`. Ces éléments sont
-attestés dans les quatre couches ; ils n'établissent pas une arme consommatrice.
+attestés dans les quatre couches. Le [contrôle natif de munition](ETAT_ET_MUNITION.md)
+établit séparément le consommateur et la quantité 7,0, avec une association
+synthétique seulement : aucune fiche commerciale d'arme Benelli n'est inventée.
 
 ## Associations FPV structurées
 
@@ -116,8 +118,9 @@ les octets des records commerciaux.
 
 18 tests synthétiques supplémentaires couvrent capacités, marqueurs vides,
 champs, noms courts, hiérarchie FPV, couches, surcharges, non-allocation et les
-deux alias générés. Avant B2 restent à établir : sérialisation des sauvegardes,
-liaison munition et interprétation des paramètres. La liaison numérique
-arme/FPV est maintenant établie par un outil distinct, sans chargement de scène.
+deux alias générés. Avant B2 restent à établir : sauvegardes complètes et
+interprétation des paramètres. La liaison munition et l'état d'un objet isolé
+sont maintenant contrôlés séparément, avec une asymétrie native documentée.
+La liaison numérique arme/FPV est établie sans chargement de scène.
 Les recettes d'intégration ne sont pas fabriquées à partir d'un record Garand
 copié ou d'une boussole réaffectée.

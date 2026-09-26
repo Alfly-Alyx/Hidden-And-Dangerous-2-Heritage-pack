@@ -51,8 +51,9 @@ comme données non consommées par cette copie, sans leur inventer une fonction.
 Les lecteurs natifs de référence sont `0x7e0150`, `0x7e0910`, `0x7e0a80` et
 `0x7e0bb0` ; le calcul de taille commun est `0x7dff10`. Les valeurs non
 interprétées restent `value_raw`. Le membre final du type 1 contient notamment
-180 pour le Garand et 192 pour le Side by Side ; cela suggère la munition,
-mais la preuve du consommateur de ce champ est un travail distinct.
+180 pour le Garand et 192 pour le Side by Side. Le contrôle distinct
+[état et munition](ETAT_ET_MUNITION.md) établit désormais ce consommateur,
+avec 208 associations commerciales typées comparées en mémoire.
 
 **1 036 entrées vérifiées** : 246 Base, 246 Patch, 272 Sabre, 272 PatchX01.
 Pour chacune, copies de noms, membres numériques, octets d'action copiés et
@@ -117,7 +118,9 @@ Il ne le fabrique ni ne remplace un cache différent. Un nouveau nom de rapport
 est obligatoire. Les sept tests purement synthétiques n'exigent aucun fichier
 commercial ; les sept tests avec oracle sont ignorés si le cache privé manque.
 
-Restent avant une entrée jouable : consommateurs de la munition et des
-paramètres mécaniques, véritable sérialisation des sauvegardes, fiche additive
-de laboratoire, préservation complète de la boussole et essais moteur.
+Le contrôle [état et munition](ETAT_ET_MUNITION.md) couvre maintenant la liaison
+munition et une enveloppe d'objet isolé. Il révèle deux tags communs écrits mais
+ignorés à la lecture, sans extrapoler à une sauvegarde complète ni les modifier.
+Restent avant une entrée jouable : paramètres mécaniques, sauvegardes complètes,
+fiche additive de laboratoire, préservation complète de la boussole et essais moteur.
 Cette preuve de liaison ne lève pas ces autres exigences de B2–B4.

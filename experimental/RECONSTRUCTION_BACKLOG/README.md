@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **443 tests Python réussis sur 444 dans la copie de publication**; un test de lien symbolique non exécuté
+- **457 tests Python réussis sur 458 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -57,6 +57,11 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   objet → groupe FPV. Quatorze tests supplémentaires couvrent ces calculs et
   leurs refus. Ni sauvegarde de partie ni animation en jeu qualifiée : aucune
   entrée n'est allouée.
+- [État d'objet et munition](../BENELLI_M4_ADDITIVE/ETAT_ET_MUNITION.md) :
+  208 associations commerciales contrôlées, codec d'enveloppe isolée réalisé,
+  identifiants supérieurs à 255 conservés. Quatorze tests supplémentaires ;
+  deux tags communs écrits mais ignorés par le lecteur natif sont explicités.
+  Pas de migration ni de compatibilité de sauvegarde complète annoncée.
 - Trois comparaisons binaires Co_Burgundy1/2/3 supplémentaires reconstruisent
   respectivement douze/deux/dix porteurs et leurs liaisons sans modifier les scripts
   ou sons. Elles restent inertes, hors compte des laboratoires de mission.
