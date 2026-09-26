@@ -119,6 +119,7 @@ zéro conversion validée.
 | Outil | Usage |
 |---|---|
 | `tools/runtime_validation_audit.py` | Valider la structure des preuves d'exécution. |
+| `tools/reconstruction_runtime_audit.py` | Vérifier séparément les 27 profils expérimentaux, leurs 165 contrôles et leurs preuves; aucun lancement moteur. |
 | `tools/stable_candidate_coverage_audit.py` | Vérifier que chaque candidat stable a une disposition. |
 | `tools/installer_wiring_audit.py` | Vérifier le câblage des options de l'installateur. |
 | `tools/installer_composition_audit.py` | Vérifier la composition des modules. |

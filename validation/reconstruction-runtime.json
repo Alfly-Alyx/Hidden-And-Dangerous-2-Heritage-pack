@@ -1,0 +1,1194 @@
+{
+  "schema_version": 1,
+  "scope": "experimental-reconstruction",
+  "default_profile": "commercial",
+  "purpose": "Registre d'essais des prototypes, distinct des 56 cas du paquet stable. Aucun essai moteur effectué n'est présumé.",
+  "common_scenarios": {
+    "baseline": "Dans une copie de test isolée, lancer le témoin commercial à froid et consigner la scène initiale, le mode exact, les objectifs et le comportement concerné.",
+    "effect": "Appliquer uniquement la variante étudiée dans la copie isolée; exécuter les étapes propres au profil et comparer les résultats avec le témoin.",
+    "interruption": "Tester les interruptions pertinentes de l'étude : alarme, mort, nouvelle activation, changement de secteur ou fin de cinématique. Vérifier absence de blocage et de doublon.",
+    "save_load": "Sauvegarder puis reprendre avant, pendant et après le comportement concerné; vérifier états, acteurs, sons, signaux et progression.",
+    "objectives": "Parcourir les objectifs et terminer la mission témoin puis variante; comparer compteurs, récompenses et conditions de fin sans qualifier une simple exploration.",
+    "rollback": "Retirer seulement la variante de la copie isolée; vérifier les empreintes de retour au témoin et recharger ses sauvegardes sans écraser l'installation de jeu personnelle.",
+    "network": "Dans la copie coop isolée, comparer hôte et deux clients proches/éloignés, reconnexion et changement de secteur; mesurer une cadence indépendante du nombre de clients."
+  },
+  "profiles": [
+    {
+      "id": "africa1-af126-safe-idle",
+      "mission": "africa1",
+      "title": "Africa 1 — sortie moderne de la boucle incomplète AF1_26",
+      "definition_sha256": "65cb975cf36395c151c3f29614cb753df93d7d80ecef35351c51313e447020a8",
+      "kind": "script",
+      "study": "experimental/AFRICA1_AF1_26_INCOMPLETE_START_LOOP/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le laboratoire A/B reste désactivé : préparer une copie de jeu isolée et vérifier le déploiement réversible sans toucher à l'installation personnelle."
+      ],
+      "steps": [
+        "Vérifier que la branche START rejoint END sans boucle active vide.",
+        "Provoquer l'alarme initiale puis une nouvelle alarme et comparer les gestionnaires conservés.",
+        "Mesurer immobilité, réponse IA et coût en attente; aucun comportement ambiant nouveau attendu."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "africa1-officer21-cutscene-move",
+      "mission": "africa1",
+      "title": "Africa 1 — déplacement de l'officier pendant la cinématique 10",
+      "definition_sha256": "216ee85e025c3faa978748d2e99567f54f5203c3c517d57ce91710650308c8d7",
+      "kind": "script",
+      "study": "experimental/AFRICA1_OFFICER_21_CUTSCENE_MOVE/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le laboratoire A/B reste désactivé : préparer une copie de jeu isolée et vérifier le déploiement réversible sans toucher à l'installation personnelle."
+      ],
+      "steps": [
+        "Déclencher la cinématique 10 et observer le mouvement après les 2100 ms prévus.",
+        "Comparer cadrage, voix, collision et réaction du joueur au témoin commercial.",
+        "Tester interruption et reprise; ne pas déclarer cette variante compatible avec l'introduction Heritage sans composition dédiée."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "africa5-random-german-face-seed",
+      "mission": "africa5",
+      "title": "Africa 5 — départ aléatoire de la palette allemande existante",
+      "definition_sha256": "e75486811054480f56a079f2c7d5cdcdbd7060c79793ff3a878b8b2280e9631e",
+      "kind": "script",
+      "study": "experimental/AFRICA5_RANDOM_FACE_SEED_VARIANT/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le détecteur commercial af4_runway01_detector.scr est absent : aucun laboratoire complet n'est construit. Résoudre cette dépendance sans stub inventé avant tout essai de mission.",
+        "Préparer une composition séparée pour les surcharges Heritage concernées; le profil archives-only n'est pas une mise à jour de l'installation actuelle."
+      ],
+      "steps": [
+        "Comparer plusieurs chargements à froid : la palette allemande varie au départ et tous les visages fixes restent inchangés.",
+        "Vérifier AF4_10 dans une composition Heritage dédiée; ne pas remplacer sa surcharge par le script archives-only complet.",
+        "Mesurer les effets sur les autres tirages aléatoires et ne pas revendiquer 46 tirages indépendants."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "africa5-storage01-alarm-filter",
+      "mission": "africa5",
+      "title": "Africa 5 — filtre historique 4 du garde de magasin 01",
+      "definition_sha256": "edf778601e3f48ada6f1943b57fb2c69366faa860aeb679791bba7b99bac39c0",
+      "kind": "script",
+      "study": "experimental/AFRICA5_STORAGE_ALARM_FILTER_VARIANTS/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le détecteur commercial af4_runway01_detector.scr est absent : aucun laboratoire complet n'est construit. Résoudre cette dépendance sans stub inventé avant tout essai de mission.",
+        "Préparer une composition séparée pour les surcharges Heritage concernées; le profil archives-only n'est pas une mise à jour de l'installation actuelle."
+      ],
+      "steps": [
+        "Comparer les réactions au type 4 avec le témoin commercial pour le garde 01.",
+        "Déclencher le signal 2 puis répéter les alarmes; vérifier le réarmement existant.",
+        "Contrôler les autres types d'alarme, les routes et la fin de mission sans modifier le masque 4."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "africa5-storage02-alarm-filter",
+      "mission": "africa5",
+      "title": "Africa 5 — filtre historique 516 du garde de magasin 02",
+      "definition_sha256": "ff1472c9ab1bde9ca0bc55ddf443050a57fe0adcf5fc7856841901e270919b6e",
+      "kind": "script",
+      "study": "experimental/AFRICA5_STORAGE_ALARM_FILTER_VARIANTS/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le détecteur commercial af4_runway01_detector.scr est absent : aucun laboratoire complet n'est construit. Résoudre cette dépendance sans stub inventé avant tout essai de mission.",
+        "Préparer une composition séparée pour les surcharges Heritage concernées; le profil archives-only n'est pas une mise à jour de l'installation actuelle."
+      ],
+      "steps": [
+        "Comparer séparément les types 4 et 512, puis leur combinaison, chez le garde 02.",
+        "Déclencher le signal 2 puis répéter les alarmes; vérifier le réarmement existant.",
+        "Conserver le masque 516 et comparer les alarmes non concernées au témoin."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "africa5-storage03-alarm-filter",
+      "mission": "africa5",
+      "title": "Africa 5 — filtre historique 516 du garde de magasin 03",
+      "definition_sha256": "56a5d2a385b1ce73d28e80adcfcc868be7f33e4ce101bab19a72d9c4a4091c32",
+      "kind": "script",
+      "study": "experimental/AFRICA5_STORAGE_ALARM_FILTER_VARIANTS/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le détecteur commercial af4_runway01_detector.scr est absent : aucun laboratoire complet n'est construit. Résoudre cette dépendance sans stub inventé avant tout essai de mission.",
+        "Préparer une composition séparée pour les surcharges Heritage concernées; le profil archives-only n'est pas une mise à jour de l'installation actuelle."
+      ],
+      "steps": [
+        "Comparer séparément les types 4 et 512, puis leur combinaison, chez le garde 03.",
+        "Déclencher le signal 2 puis répéter les alarmes; vérifier le réarmement existant.",
+        "Conserver le masque 516 et comparer les alarmes non concernées au témoin."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "arctic4-guard2-cold-fallback",
+      "mission": "arctic4",
+      "title": "Arctic 4 — activité de froid moderne du garde 2",
+      "definition_sha256": "c36a3be54d17391069567ef3452f89e3a7baa09c9aeb2038a3008b3e89d6b6e5",
+      "kind": "script",
+      "study": "experimental/ARCTIC4_AMBIENT_ANIMATIONS_AND_FLAK_EXIT/PROPOSITION.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le laboratoire A/B reste désactivé : préparer une copie de jeu isolée et vérifier le déploiement réversible sans toucher à l'installation personnelle."
+      ],
+      "steps": [
+        "Observer le repli Cold du garde 2 et son enchaînement avec la ronde.",
+        "Interrompre par alarme et mort à chaque transition, avec arme en main.",
+        "Comparer cadence et reprise après sauvegarde au témoin commercial."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "arctic4-guard3-alarm-post",
+      "mission": "arctic4",
+      "title": "Arctic 4 — poste d'alarme historique du garde 3",
+      "definition_sha256": "e94a0cc184b27755b1a7efdca1a29266a8202584524089a2223570cc54ef0642",
+      "kind": "script",
+      "study": "experimental/ARCTIC4_STATIC_GUARD3_ALARM_POST_ADDITIVE/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le laboratoire A/B reste désactivé : préparer une copie de jeu isolée et vérifier le déploiement réversible sans toucher à l'installation personnelle."
+      ],
+      "steps": [
+        "Déclencher l'alarme du garde 3 et suivre le checkpoint historique réactivé.",
+        "Tester obstacle et combat pendant le trajet, puis la reprise après alarme.",
+        "Tester seule cette variante, sans arctic4-guard3-sit-smoke."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "arctic4-guard3-sit-smoke",
+      "mission": "arctic4",
+      "title": "Arctic 4 — assise et cigarette, variante moderne avec sorties protégées",
+      "definition_sha256": "cd74b37af964cbed1267fa41f35ca4853f9191d319bf2d363d74262c10f863e2",
+      "kind": "script",
+      "study": "experimental/ARCTIC4_STATIC_GUARD3_SIT_SMOKE/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le laboratoire A/B reste désactivé : préparer une copie de jeu isolée et vérifier le déploiement réversible sans toucher à l'installation personnelle."
+      ],
+      "steps": [
+        "Observer l'assise et la cigarette, puis l'alignement du garde et de son arme.",
+        "Interrompre à chaque transition par alarme et mort; vérifier la sortie d'assise sans animation historique non prouvée.",
+        "Tester cette variante seule, sans la variante arctic4-guard3-alarm-post."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "arctic4-guard6-cold-fallback",
+      "mission": "arctic4",
+      "title": "Arctic 4 — activité de froid moderne après la bouteille",
+      "definition_sha256": "a8782074225a0bf8a3a7569c5394d49e8a8f7ec20f0279f815782dd0d4f5bc50",
+      "kind": "script",
+      "study": "experimental/ARCTIC4_AMBIENT_ANIMATIONS_AND_FLAK_EXIT/PROPOSITION.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le laboratoire A/B reste désactivé : préparer une copie de jeu isolée et vérifier le déploiement réversible sans toucher à l'installation personnelle."
+      ],
+      "steps": [
+        "Observer l'activité Cold du garde 6 après la bouteille et les transitions d'objets.",
+        "Interrompre pendant la bouteille puis pendant Cold : vérifier objets, arme et combat.",
+        "Comparer les retours de ronde et la reprise après sauvegarde au témoin."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "arctic4-gunner1-flak-exit",
+      "mission": "arctic4",
+      "title": "Arctic 4 — sortie moderne du Flak avant retour au poste",
+      "definition_sha256": "4451b353f5754ed999e380817ab21f3ea26305221bf1b724dc2d7dcfc3529dc1",
+      "kind": "script",
+      "study": "experimental/ARCTIC4_AMBIENT_ANIMATIONS_AND_FLAK_EXIT/PROPOSITION.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le laboratoire A/B reste désactivé : préparer une copie de jeu isolée et vérifier le déploiement réversible sans toucher à l'installation personnelle."
+      ],
+      "steps": [
+        "Terminer une alarme avec Gunner 1 au Flak et vérifier sa sortie avant le retour au poste.",
+        "Tester siège déjà libéré, sortie empêchée et nouvelle alarme pendant la descente.",
+        "Vérifier que Gunner 2 et les autres sièges ne changent pas; aucun embarquement forcé."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "burgundy3-cutscene-nearby-guard-deaths",
+      "mission": "burgundy3",
+      "title": "Burgundy 3 — morts historiques des gardes proches pendant la cinématique",
+      "definition_sha256": "0635f30c83b091abaf0acd51f77fd3b6f0a14837bf3009bf82e1b5e41b50d899",
+      "kind": "script",
+      "study": "experimental/BURGUNDY3_EN22_EN23_END_STATE/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le laboratoire A/B reste désactivé : préparer une copie de jeu isolée et vérifier le déploiement réversible sans toucher à l'installation personnelle."
+      ],
+      "steps": [
+        "Tester les gardes 22/23 juste en dessous de 15, à 15 et au-dessus pendant la cinématique 4.",
+        "Comparer les morts avec les dégâts commerciaux et la destruction directe hors cinématique.",
+        "Tester séparément de burgundy3-direct-explosion-sound : ces deux profils ne sont pas composés."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "burgundy3-direct-explosion-sound",
+      "mission": "burgundy3",
+      "title": "Burgundy 3 — couche sonore directe sur signal moderne 11 distinct",
+      "definition_sha256": "d34046b34213bf6e971310956031d47b2316bdbfeb1aa7c5e78393af51dff834",
+      "kind": "script",
+      "study": "experimental/BURGUNDY3_DEPOT_EXPLOSION_SOUND/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le laboratoire A/B reste désactivé : préparer une copie de jeu isolée et vérifier le déploiement réversible sans toucher à l'installation personnelle."
+      ],
+      "steps": [
+        "Détruire le dépôt directement : compter une seule séquence sonore sur le signal moderne 11.",
+        "Déclencher la route maquis/cinématique 4 : vérifier zéro signal 11 et la conservation du son commercial.",
+        "Provoquer la course attaque du maquis/tir du joueur; vérifier absence de double son. Tester hors profil de mort des gardes."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "co-burgundy1-ambience",
+      "mission": "co_burgundy1",
+      "definition_sha256": "5ba4c763814380e193d384cb457e77ed23a84332df8d5da4f2cc59d8db34ddf1",
+      "kind": "scene_registry",
+      "title": "CO_BURGUNDY1_CLOSURE",
+      "study": "experimental/CO_BURGUNDY1_CLOSURE/ETUDE.md",
+      "mode": "cooperation",
+      "prerequisites": [
+        "La sortie est une paire scène/registre inerte, sans mission activable. Préparer et vérifier une copie coop isolée et son déploiement réversible avant tout essai réseau."
+      ],
+      "steps": [
+        "Activer séparément les douze porteurs de la comparaison isolée, puis observer l'ensemble.",
+        "Contrôler 21 sons et sept portes : ouverture/fermeture, cadence, absence de doublons.",
+        "Conserver sons, scripts et objectifs coop existants; mesurer cent déclenchements et le coût."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "network": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "co-burgundy2-animal-ambience",
+      "mission": "co_burgundy2",
+      "definition_sha256": "66167989d79b6c1bd98f80254fd518527a076acb379a5c87313b0c40e7a7c1f4",
+      "kind": "scene_registry",
+      "title": "CO_BURGUNDY2_ANIMAL_AMBIENCE",
+      "study": "experimental/CO_BURGUNDY2_ANIMAL_AMBIENCE/ETUDE.md",
+      "mode": "cooperation",
+      "prerequisites": [
+        "La sortie est une paire scène/registre inerte, sans mission activable. Préparer et vérifier une copie coop isolée et son déploiement réversible avant tout essai réseau."
+      ],
+      "steps": [
+        "Comparer les deux porteurs d'ambiance animale et les trois sons existants.",
+        "Conserver le script cheval coop, distinct du solo; ne pas importer son ancien arrêt sur signal.",
+        "Vérifier cadence et absence d'acteur cheval ajouté ou de doublon sonore."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "network": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "co-burgundy3-ambience",
+      "mission": "co_burgundy3",
+      "definition_sha256": "95ebae5d0bbcff2c73c8930947c37fdbbfad9ee0fcb8a30b3fc37dd77631f9ec",
+      "kind": "scene_registry",
+      "title": "CO_BURGUNDY3_REMOVED_AMBIENT_CONTROLLERS",
+      "study": "experimental/CO_BURGUNDY3_REMOVED_AMBIENT_CONTROLLERS/ETUDE.md",
+      "mode": "cooperation",
+      "prerequisites": [
+        "La sortie est une paire scène/registre inerte, sans mission activable. Préparer et vérifier une copie coop isolée et son déploiement réversible avant tout essai réseau."
+      ],
+      "steps": [
+        "Tester les dix porteurs séparément puis ensemble, sur cent déclenchements aléatoires.",
+        "Actionner les trois portes, simultanément et successivement; contrôler 24 sources sonores.",
+        "Conserver le modèle, les scripts et sons coop; mesurer absence de doublon et de coût durable."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "network": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "czech2-ger12-lie",
+      "mission": "czech2",
+      "title": "Czech 2 — posture couchée avant la mort de Ger12",
+      "definition_sha256": "6f40a32612116ab7ac45b1fcb35c5d73c1209b5c9bc2ade72ad0541fde2e9888",
+      "kind": "script",
+      "study": "experimental/CZECH2_GER12_DEATH_STAGING/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le laboratoire A/B reste désactivé : préparer une copie de jeu isolée et vérifier le déploiement réversible sans toucher à l'installation personnelle."
+      ],
+      "steps": [
+        "Observer la posture couchée avant la mort de Ger12 et comparer le timing commercial.",
+        "Interrompre par dégâts/alarme avant et pendant la posture; vérifier arme et animation finale.",
+        "Ne pas ajouter de dummy assis; comparer la progression après la mort."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "czech3-leader-formation-cleanup",
+      "mission": "czech3",
+      "title": "Czech 3 — dissolution conditionnelle unique de la formation à l'alarme du chef",
+      "definition_sha256": "efe399a64243263125cd4fff7f3617098962dc8674ba36ee6b7609ba2b9a78ba",
+      "kind": "script",
+      "study": "experimental/CZECH3_FORMATION_CLEANUP_DUAL_PATH/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le laboratoire A/B reste désactivé : préparer une copie de jeu isolée et vérifier le déploiement réversible sans toucher à l'installation personnelle."
+      ],
+      "steps": [
+        "Déclencher l'alarme du chef avant puis après la création de la formation.",
+        "Vérifier une seule dissolution et la conservation des sorties individuelles des soldats.",
+        "Tester mort du chef, seconde alarme et sauvegarde pendant la formation, sans activer le coordinateur orphelin."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "czech3-nosic2-long-smoke",
+      "mission": "czech3",
+      "title": "Czech 3 — ancienne pause fumée de 42 secondes",
+      "definition_sha256": "a09ad0c7f084ea391b994c66fe9960373c432811f438a548f83e73061ec7b20b",
+      "kind": "script",
+      "study": "experimental/CZECH3_NOSIC2_SMOKE_IDLE_VARIANT/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le laboratoire A/B reste désactivé : préparer une copie de jeu isolée et vérifier le déploiement réversible sans toucher à l'installation personnelle."
+      ],
+      "steps": [
+        "Mesurer la pause de 42 secondes après rotation vers ja_patnik17, en remplacement des cinq secondes.",
+        "Observer le retour à l'activité et l'interaction avec la partie de cartes.",
+        "Interrompre pendant la rotation, la cigarette et le délai; comparer les réactions au témoin."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "czech4-pianist-signal5",
+      "mission": "czech4",
+      "title": "Czech 4 — réaction moderne du pianiste au signal 5",
+      "definition_sha256": "741438de50bd95defa7ba33a0ff8c51edc3f57112ad29308a8bb2201bc7d4c6d",
+      "kind": "script",
+      "study": "experimental/CZECH4_MISSING_SIGNAL_HANDLERS/PROPOSITION.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le laboratoire A/B reste désactivé : préparer une copie de jeu isolée et vérifier le déploiement réversible sans toucher à l'installation personnelle."
+      ],
+      "steps": [
+        "Envoyer le signal 5 pendant le piano : vérifier réveil, arrêt des deux sons et de l'animation.",
+        "Entrer/sortir des proximités 40/30 après le réveil; vérifier qu'elles ne relancent pas la musique.",
+        "Répéter le signal et provoquer alarme/mort : aucun double réveil, type d'alarme inventé ou blocage."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "czech6-isu-base-route",
+      "mission": "czech6",
+      "title": "Czech 6 — trajet Base à 12, sortie de véhicule conservée du Patch",
+      "definition_sha256": "06dee2ac1d020531df6d9f8fa225bb8fed0011bad3038110e2856ff81c068024",
+      "kind": "script",
+      "study": "experimental/CZECH6_ISU_DUAL_ROUTE/PROPOSITION.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le laboratoire A/B reste désactivé : préparer une copie de jeu isolée et vérifier le déploiement réversible sans toucher à l'installation personnelle."
+      ],
+      "steps": [
+        "Suivre la route Base à vitesse 12 et vérifier braquage, collisions et passagers.",
+        "Vérifier la sortie de véhicule du Patch à l'arrivée, conservée dans la variante.",
+        "Tester une route obstruée et l'alarme pendant le trajet; aucun cumul avec l'autre route."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "czech6-radio-before-alarm",
+      "mission": "czech6",
+      "title": "Czech 6 — sabotage récompensé seulement avant l'alarme, paire Base",
+      "definition_sha256": "904d4507289c3de89f7a70023a0d8e84430d611523f729283791c7c1cfe1a749",
+      "kind": "script",
+      "study": "experimental/CZECH6_RADIO_SABOTAGE_DUAL_PATH/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le laboratoire A/B reste désactivé : préparer une copie de jeu isolée et vérifier le déploiement réversible sans toucher à l'installation personnelle."
+      ],
+      "steps": [
+        "Tester la paire complète câble/opérateur avant l'alarme : sabotage récompensé.",
+        "Après l'alarme, vérifier que le câble reste cassable mais sans récompense du sabotage.",
+        "Ne jamais installer un seul des deux scripts; comparer les objectifs et le départ de l'opérateur au témoin Patch."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "libye3-german15-move-to-alarm",
+      "mission": "libye3",
+      "title": "Libye 3 — déplacement vers l'alarme avant le combat",
+      "definition_sha256": "9272501e35cbb7d52b3fcecc3e03709d2ed537706d81e13e599f77add5ff7258",
+      "kind": "script",
+      "study": "experimental/LIBYE3_GERMAN15_ALARM_DUAL_BEHAVIOR/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le laboratoire A/B reste désactivé : préparer une copie de jeu isolée et vérifier le déploiement réversible sans toucher à l'installation personnelle."
+      ],
+      "steps": [
+        "Déclencher des alarmes à plusieurs positions et suivre le déplacement vers leur source.",
+        "Vérifier le délai avant combat et le retour à la ronde existante.",
+        "Interrompre par nouvelle alarme, mort et obstacle; aucun signal supplémentaire attendu."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "libye3-panzer-driver-alarm-gate",
+      "mission": "libye3",
+      "title": "Libye 3 — masque historique des alarmes jusqu'à la fin du trajet du char",
+      "definition_sha256": "2cb6444188857516c26293de2d9d8acb4dbb794691e6e1b3ebff18909891f149",
+      "kind": "script",
+      "study": "experimental/LIBYE3_PANZER_DRIVER_ALARM_GATE/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le laboratoire A/B reste désactivé : préparer une copie de jeu isolée et vérifier le déploiement réversible sans toucher à l'installation personnelle."
+      ],
+      "steps": [
+        "Déclencher une alarme avant le départ, pendant les quatre étapes et après l'arrêt du char.",
+        "Vérifier le réarmement uniquement après l'arrêt Drive vide à vitesse zéro.",
+        "Tester route bloquée et signal absent; conserver équipage, sièges et opérateurs 2/5."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "normandy-inner-guards-proximity",
+      "mission": "normandy",
+      "title": "Normandy 1 — réveil de proximité N24/N25, routes d'alarme conservées",
+      "definition_sha256": "fbb48094975e30da0f4a08c1bb0fe643e9890afe99f950613be5c839db019fc4",
+      "kind": "script",
+      "study": "experimental/NORMANDY1_LEGACY_ACTIVATORS/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le laboratoire A/B reste désactivé : préparer une copie de jeu isolée et vérifier le déploiement réversible sans toucher à l'installation personnelle."
+      ],
+      "steps": [
+        "Approcher séparément N24/N25 autour du seuil de 30 et comparer leurs routes.",
+        "Déclencher quasi simultanément proximité et signal de N01; compter les activations.",
+        "Contrôler séparément les branches de types de jeu 3/7 conservées et consigner le mode exact; ne pas ajouter les anciens porteurs absents."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "sicily1-it40-open-doors",
+      "mission": "sicily1",
+      "title": "Sicily 1 — déverrouillage et ouverture des deux portes",
+      "definition_sha256": "f7549481f1728b16c9bd65f8720d26073f72f7f8eeb397ecd6e0f63c86ecb95d",
+      "kind": "script",
+      "study": "experimental/SICILY1_IT40_DUAL_DOOR_BEHAVIOR/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le laboratoire A/B reste désactivé : préparer une copie de jeu isolée et vérifier le déploiement réversible sans toucher à l'installation personnelle."
+      ],
+      "steps": [
+        "Observer It40 : déverrouillage et ouverture des deux portes puis suite du parcours.",
+        "Tester chacune des portes déjà ouverte, fermée ou actionnée pendant le déplacement.",
+        "Interrompre It40 pendant la séquence; vérifier accessibilité des deux passages et progression."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "sicily2-three-cleared-wave",
+      "mission": "sicily2",
+      "title": "Sicily 2 — vague moderne après au moins trois charges retirées",
+      "definition_sha256": "a9b3d94fd3c28e2a57219ac9e60e268d891bc0b1c1179829caa037d67c35a482",
+      "kind": "script",
+      "study": "experimental/SICILY2_CHARGES_DUAL_STATE_WAVE/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Le laboratoire A/B reste désactivé : préparer une copie de jeu isolée et vérifier le déploiement réversible sans toucher à l'installation personnelle."
+      ],
+      "steps": [
+        "Passer de deux à trois puis quatre charges à l'état zéro; la vague ne doit partir qu'au seuil prévu.",
+        "Tester un mélange d'états non zéro sans changer l'état des charges depuis l'activateur.",
+        "Vérifier que l'objectif final exige toujours les six états zéro et n'est pas validé par la vague."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    }
+  ]
+}

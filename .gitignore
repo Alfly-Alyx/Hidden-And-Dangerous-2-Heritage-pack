@@ -21,3 +21,4 @@ dist/*
 __pycache__/
 .venv/
 tmp/
+validation/evidence/reconstruction/
