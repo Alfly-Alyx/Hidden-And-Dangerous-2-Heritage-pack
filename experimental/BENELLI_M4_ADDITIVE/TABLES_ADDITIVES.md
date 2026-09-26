@@ -40,6 +40,12 @@ diffèrent. Leur sens n'est pas réinterprété et leurs données ne sont pas é
 
 ## Numéro 359 : candidat, pas allocation
 
+Complément du **27 septembre 2026** :
+[18 colonnes de tir projetées](../RECONSTRUCTION_BACKLOG/PARAMETRES_TIR.md)
+sur les octets consommés de l'action native. Les 40 témoins Base/Patch
+concordent ; les écarts Sabre/PatchX01 sont conservés. La projection Benelli
+couvre 85 octets sur 88, mais n'est pas un descripteur d'arme complet.
+
 - Hors de la capacité Base/Patch ; une intégration 359 ne peut donc pas être
   annoncée compatible Base sans autre mécanisme.
 - Vide dans Sabre/PatchX01 : marqueur de quatre octets à l'offset **138524**.
