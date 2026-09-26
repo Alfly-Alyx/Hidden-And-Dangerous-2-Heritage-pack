@@ -24,9 +24,11 @@ réaffecté. Les données non reliées, anciens suffixes et zones opaques sont
 remplies à zéro selon une **politique moderne de sérialisation**, pas une
 reconstitution historique. Les symboles de tir non résolus sont refusés.
 
-L'identifiant de texte vaut provisoirement **0xffffffff** : marqueur de travail
-non résolu, **pas** une réservation de traduction, **pas** une preuve que le menu
-natif accepte cette valeur. Cette limite interdit l'installation du laboratoire.
+Dans les versions v1/v2, l'identifiant de texte vaut **0xffffffff**, marqueur
+non résolu et non installable. La version **v3**, construite avec
+`--inventory-texts`, le remplace par **21500** et joint les
+[huit libellés modernes additifs](../RECONSTRUCTION_BACKLOG/TEXTES_INVENTAIRE_MODERNES.md).
+Cette réservation reste limitée au laboratoire ; le rendu natif n'est pas validé.
 Le choix de poids et de catégorie ne constitue pas une certification historique
 ou une validation d'équilibrage du Benelli.
 
@@ -52,25 +54,26 @@ rechargement, visée, animation des mains, IA ou synchronisation réseau.
 
 ## Exemplaire privé contrôlé
 
-`.analysis/item-descriptor-labs/BenelliDescriptor_v2`, six fichiers. La version
-v1 est conservée ; les binaires sont identiques, le manifeste v2 ajoute les
+`.analysis/item-descriptor-labs/BenelliDescriptor_v3`, quatorze fichiers. Les
+versions v1/v2 sont conservées. Le manifeste v2 avait ajouté les
 [références sonores qualifiées](../RECONSTRUCTION_BACKLOG/REFERENCES_SONORES.md)
-36/54 et refuse une définition différente :
+36/54. La version v3 ajoute les textes 21500, sans modifier les autres membres,
+les modèles ou le fragment FPV :
 
 | Fichier désactivé | Taille | SHA-256 |
 |---|---:|---|
-| PROTOTYPE_Benelli.item.disabled | 508 | `4ce09f35ef630d59a72a4254aefd53c3d05b95afe447375f029c6f05fbc4f06e` |
+| PROTOTYPE_Benelli.item.disabled | 508 | `6b03354261405a6e30c2225c65c23a7eed7349653828a4444ba3c10da90a251c` |
 | PROTOTYPE_Benelli.fpvgroup.disabled | 790 | `edd79bcc71f40926b559f75f822187c5d2f0695264646e630bf3d9ccce71cf05` |
 | PROTOTYPE_BenFPV.4ds.disabled | 61351 | `0c54e499b6b6b434b3bdd02ed78cc2f7f99b304d44e162e11e787d323234300f` |
 | PROTOTYPE_BenM4.4ds.disabled | 207614 | `6bc815610019739adc101d3e00319fa7819dd3d436b05e66d0521d258f291c8c` |
 
-Les deux autres fichiers sont le manifeste de provenance/contrôles et les
-avertissements. Les sorties dérivées du jeu restent privées et ignorées par Git.
+Les dix autres fichiers sont les huit tables de texte désactivées, le manifeste
+de provenance/contrôles et les avertissements. Les sorties dérivées du jeu restent privées et ignorées par Git.
 Seuls le code original, les tests synthétiques et la documentation sont publiés.
 
 ## Travaux restants avant les seuls essais
 
-1. Réserver et fournir le texte d'inventaire sans collision.
+1. Valider le rendu du texte d'inventaire maintenant préparé, lors des essais natifs.
 2. Qualifier les autres consommateurs de paramètres et la synchronisation sonore ;
    les références Benelli aux banques 2/3 sont maintenant établies séparément.
 3. Raccorder la caméra, les mains et les événements FPV.
@@ -81,9 +84,10 @@ Les essais de comportement en moteur et multijoueur viennent ensuite. Ce lot
 ne permet donc pas d'annoncer « il ne reste que les tests ».
 
 ```powershell
-.\.venv\Scripts\python.exe tools/build_benelli_descriptor_lab.py --game 'D:\Games\Hidden and Dangerous 2' --archives-only --output-name BenelliDescriptor_nouveau
+.\.venv\Scripts\python.exe tools/build_benelli_descriptor_lab.py --game 'D:\Games\Hidden and Dangerous 2' --archives-only --inventory-texts --output-name BenelliDescriptor_nouveau
 ```
 
 Sans `--output-name`, tout est construit/contrôlé en mémoire. Un nom existant,
 un chemin lié, une source modifiée ou une référence invalide fait refuser l'outil.
-Dix-sept tests synthétiques couvrent l'assembleur et ce laboratoire.
+Vingt tests synthétiques couvrent l'assembleur et ce laboratoire, en plus des
+douze tests du préparateur multilingue.

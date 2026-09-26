@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **549 tests Python réussis sur 550 dans la copie de publication**; un test de lien symbolique non exécuté
+- **564 tests Python réussis sur 565 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -92,12 +92,17 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   premier record Weapon de 508 octets assemblé sans copie intégrale d'un donneur,
   relu par les routines natives isolées, munition 179 initialisée à 7 et treize
   liaisons FPV contrôlées. Seize tests nouveaux ; aucune insertion dans les
-  tables, texte d'inventaire non alloué et comportement moteur non validé.
+  tables et comportement moteur non validé. Les textes sont préparés séparément ci-dessous.
 - [Références sonores](REFERENCES_SONORES.md) : 14 banques/539 entrées décodées,
   indices de tir/rechargement contrôlés sur 168 fiches commerciales et le
   descripteur moderne Benelli. Benelli 36/54 et MG34 34/38 identifiés, FG42
   toujours symbolique. Dix tests nouveaux ; aucune lecture audio ni synchronisation
   moteur validée. Le banc Benelli v2 conserve les mêmes binaires et ajoute ces contrôles.
+- [Textes d'inventaire modernes](TEXTES_INVENTAIRE_MODERNES.md) : libellé Benelli
+  21500 préparé dans huit langues après contrôle de quinze tables et des références
+  d'objets. La plage des missions personnalisées 22000–65000 est protégée ; les
+  anciens textes restent intégralement conservés. Quinze tests nouveaux, retrait
+  exact en mémoire et raccordement au descripteur v3 ; affichage moteur non validé.
 - Trois comparaisons binaires Co_Burgundy1/2/3 supplémentaires reconstruisent
   respectivement douze/deux/dix porteurs et leurs liaisons sans modifier les scripts
   ou sons. Elles restent inertes, hors compte des laboratoires de mission.

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "provenance": "MODERNE_ORIGINAL",
+  "status": "prototype_disabled",
+  "project_reservation": [21500, 21531],
+  "labels": [
+    {
+      "key": "benelli_m4",
+      "text_id": 21500,
+      "values": {
+        "czech": "Benelli M4 [MODERNÍ]",
+        "english": "Benelli M4 [MODERN]",
+        "englishus": "Benelli M4 [MODERN]",
+        "french": "Benelli M4 [MODERNE]",
+        "german": "Benelli M4 [MODERN]",
+        "italian": "Benelli M4 [MODERNO]",
+        "japan": "Benelli M4 [MODERN]",
+        "spanish": "Benelli M4 [MODERNO]"
+      }
+    }
+  ]
+}
