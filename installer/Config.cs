@@ -8,7 +8,7 @@ namespace HD2CommunityInstaller
     {
         public const string ProductName = "H&D2 Heritage Pack";
         private const string DataFolderName = "HD2 Community Pack";
-        public const string Version = "0.8.0";
+        public const string Version = "0.9.0";
         public const string ExpectedGameVersion = "1.12";
         public const string CmpVersion = "2.6.5";
         public const string CmpCommit = "793d979748b27a9924fccc30fa0fba6edb7cd70f";
@@ -68,6 +68,7 @@ namespace HD2CommunityInstaller
         public bool ConfigureMasterServer = true;
         public bool EnableDirectPlay = true;
         public bool InstallCmp = true;
+        public bool InstallSoloAdaptations = true;
         public bool FreeExploration = true;
         public bool FixOptionalObjectives = true;
         public bool RestoreDormantSequences = true;

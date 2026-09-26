@@ -32,6 +32,7 @@ $sources = @(
     (Join-Path $projectRoot 'custom-mission-tool\SimpleMainForm.cs'),
     (Join-Path $projectRoot 'custom-mission-tool\MissionPackageCore.cs'),
     (Join-Path $projectRoot 'custom-mission-tool\AssemblyInfo.cs'),
+    (Join-Path $projectRoot 'solo-mission-pack\SoloMissionPackBuilder.cs'),
     (Join-Path $projectRoot 'installer\DtaArchive.cs')
 )
 $common = @(
@@ -45,6 +46,10 @@ $consoleOut = Join-Path $build 'HD2CustomMissionManager.Console.exe'
 & $csc (@('/target:exe', "/out:$consoleOut") + $common)
 if ($LASTEXITCODE -ne 0) {
     throw "Custom mission manager validation build failed: $LASTEXITCODE"
+}
+& $consoleOut --self-test-heritage-solo
+if ($LASTEXITCODE -ne 0) {
+    throw 'Solo adaptation builder self-tests failed.'
 }
 
 if (-not $ConsoleOnly) {

@@ -1747,6 +1747,16 @@ namespace HD2CustomMissionManager
                 + library.FileCount + " fichier(s).";
         }
 
+        public static string ListInstallTargets(string libraryRoot)
+        {
+            MissionLibrary library = LoadLibrary(libraryRoot, false);
+            return String.Join(Environment.NewLine, library.Packages
+                .SelectMany(package => package.Files)
+                .Select(file => file.Relative.Replace('\\', '/'))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(relative => relative, StringComparer.OrdinalIgnoreCase));
+        }
+
         public static string BuildCatalogueForTest(
             string libraryRoot, string originalGame, string outputPath)
         {

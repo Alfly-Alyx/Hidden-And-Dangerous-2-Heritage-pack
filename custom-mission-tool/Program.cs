@@ -38,6 +38,15 @@ namespace HD2CustomMissionManager
                         message = GameLanguageDetector.Detect(args[1]);
                     else if (args[0] == "--self-test-safety" && args.Length == 2)
                         message = MissionPackageCore.RunSafetySelfTests(args[1]);
+                    else if (args[0] == "--list-install-targets" && args.Length == 2)
+                        message = MissionPackageCore.ListInstallTargets(args[1]);
+                    else if (args[0] == "--export-heritage-solo" && args.Length == 3)
+                        message = SoloMissionPackBuilder.ExportLibrary(
+                            args[1], args[2], Console.WriteLine);
+                    else if (args[0] == "--check-heritage-solo" && args.Length == 2)
+                        message = SoloMissionPackBuilder.Check(args[1]);
+                    else if (args[0] == "--self-test-heritage-solo" && args.Length == 1)
+                        message = SoloMissionPackBuilder.RunSelfTests();
                     else
                         throw new ArgumentException("Commande de validation inconnue.");
                     SafeConsoleWrite(message, false);

@@ -62,6 +62,7 @@ $references = @(
     '/reference:System.Windows.Forms.dll',
     '/reference:System.Management.dll',
     '/reference:System.ServiceProcess.dll',
+    '/reference:System.Web.Extensions.dll',
     '/reference:System.IO.Compression.dll',
     '/reference:System.IO.Compression.FileSystem.dll'
 )

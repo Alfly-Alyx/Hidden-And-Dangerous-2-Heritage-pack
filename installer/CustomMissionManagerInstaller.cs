@@ -44,7 +44,7 @@ namespace HD2CommunityInstaller
             new EmbeddedFile {
                 ResourceName = "HD2CommunityInstaller.CustomMissions.Readme",
                 RelativePath = "CustomMissions/README.md",
-                Sha256 = "A68618FCEE71845E95A6967F830CF1556E4D0916E5B2446761E4A1820F6E8415",
+                Sha256 = "A3512B29BE69DD8317274DF81F1745E07CF3F2D88942CC17E76391F5B2D448B5",
                 PreserveExisting = true
             },
             new EmbeddedFile {
@@ -192,7 +192,18 @@ namespace HD2CommunityInstaller
                     .TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
             }
 
-            foreach (string relative in outputs)
+            string library = InstallerCore.SafeGameTarget(gamePath, "CustomMissions");
+            Directory.CreateDirectory(library);
+            string targets = RunManager(manager, "--list-install-targets", library);
+            foreach (string line in targets.Split(
+                new[] { "\r\n", "\n", "\r" }, StringSplitOptions.RemoveEmptyEntries))
+                outputs.Add(line.Trim());
+            string registryRelative = "CustomMissions/.catalogue-ids.json";
+            if (!String.IsNullOrWhiteSpace(targets)
+                || File.Exists(InstallerCore.SafeGameTarget(gamePath, registryRelative)))
+                outputs.Add(registryRelative);
+
+            foreach (string relative in outputs.Distinct(StringComparer.OrdinalIgnoreCase))
             {
                 string target = InstallerCore.SafeGameTarget(gamePath, relative);
                 InstallerCore.PrepareTarget(
@@ -200,17 +211,9 @@ namespace HD2CommunityInstaller
             }
 
             HashSet<string> priorBackups = BackupFiles(gamePath);
-            string emptyLibrary = Path.Combine(
-                Path.GetTempPath(), "HD2-Heritage-empty-menu-" + Guid.NewGuid().ToString("N"));
-            Directory.CreateDirectory(emptyLibrary);
-            try
-            {
-                RunManager(manager, "--integrate", emptyLibrary, gamePath, gamePath);
-            }
-            finally
-            {
-                if (Directory.Exists(emptyLibrary)) Directory.Delete(emptyLibrary, true);
-            }
+            string result = RunManager(
+                manager, "--integrate", library, gamePath, gamePath);
+            InstallerCore.Report(progress, result.Trim());
 
             foreach (string relative in BackupFiles(gamePath))
                 if (!priorBackups.Contains(relative) && prepared.Add(relative))
@@ -251,7 +254,7 @@ namespace HD2CommunityInstaller
             return result;
         }
 
-        private static void RunManager(
+        internal static string RunManager(
             string manager, params string[] arguments)
         {
             ProcessStartInfo start = new ProcessStartInfo {
@@ -278,18 +281,19 @@ namespace HD2CommunityInstaller
                 };
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
-                if (!process.WaitForExit(120000))
+                if (!process.WaitForExit(300000))
                 {
                     try { process.Kill(); }
                     catch { }
                     throw new TimeoutException(
-                        "Le gestionnaire du nouveau menu n'a pas repondu dans les deux minutes.");
+                        "Le gestionnaire du nouveau menu n'a pas repondu dans les cinq minutes.");
                 }
                 process.WaitForExit();
                 if (process.ExitCode != 0)
                     throw new InvalidOperationException(
                         "Installation du nouveau menu impossible. "
                         + (error.Length == 0 ? output : error).ToString().Trim());
+                return output.ToString();
             }
         }
 
