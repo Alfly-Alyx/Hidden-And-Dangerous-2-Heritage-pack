@@ -98,6 +98,11 @@ fichier**. Il ne consomme qu'un premier nom/valeur par conteneur. La projection
 native refuse donc les groupes incomplets, canaux réordonnés et multiples
 variantes qui seraient correctement structurés mais consommés autrement.
 
+Le [parcours natif FPV du 27 septembre](PARCOURS_NATIF_FPV.md) confirme cette
+lecture sur les tables Base/Sabre, le fragment 459 et la table Sabre augmentée
+désactivée. Les 614 noms/valeurs de cette dernière concordent ; les cellules
+inoccupées restent inchangées. Aucun chargeur de modèle ou d'animation n'est exécuté.
+
 Pour une case `(slot, état, choix)`, les noms sont à
 `0xb0 + (13 × slot + état) × 48 + choix × 4`, les valeurs seize octets plus loin.
 Le consommateur recherche le premier seuil supérieur ou égal au tirage : ce
