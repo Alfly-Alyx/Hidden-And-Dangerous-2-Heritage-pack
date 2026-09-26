@@ -16,6 +16,7 @@ def main():
                     str(ROOT / "native-custom-menu/CustomMenu.c"),
                     str(ROOT / "native-custom-menu/Hooks.S")], check=True)
     subprocess.run([sys.executable, str(ROOT / "tests/test_native_custom_menu.py")], check=True)
+    subprocess.run([sys.executable, str(ROOT / "tests/test_native_menu_rows.py")], check=True)
     print("Offline build and emulator tests passed. This script does not install or launch the game.")
 
 

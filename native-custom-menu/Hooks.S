@@ -12,6 +12,14 @@ GameCount:
     ret
 
 .globl GameReload
+.globl GameCountForManager
+GameCountForManager:
+    push 8(%esp)
+    mov 8(%esp), %ecx
+    mov $0x6b9350, %eax
+    call *%eax
+    ret
+
 GameReload:
     mov 4(%esp), %ecx
     mov $0x63ab60, %eax
@@ -484,6 +492,11 @@ HookNativeCarnage:
 .globl HookCatalogueReset
 HookCatalogueReset:
     pushfl
+    pusha
+    push %eax
+    call MenuLogCatalogues
+    add $4, %esp
+    popa
     cmpl $2, MenuView
     jae 1f
     movl $1, 0xe8(%eax)

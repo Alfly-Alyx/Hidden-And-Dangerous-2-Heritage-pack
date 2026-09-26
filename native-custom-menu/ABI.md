@@ -9,6 +9,9 @@ starts at VA `0x401000`). Offline tests are not evidence of rendered output.
 `0x614e80` and `0x614f10` append initialization messages to the definition.
 The mission builder `0x6392b0` runs during preload, with `MenuView == 0`.
 Opening a category does not call this builder again.
+Definitions are subsequently released; copy their routing IDs during preload,
+not by dereferencing their old addresses on later refreshes. The copied IDs in
+`MenuCategoryIds` are the durable handles, not `MenuCategoryControls`.
 
 The runtime object's routing ID is at +0x60, and its visibility byte is at
 +0x65. A definition must never be passed to a runtime or scene vtable method,
@@ -32,6 +35,22 @@ The renderer checks +0x65 at `0x661fa0`.
 The stock refresh `0x63ab60` queues changes before returning at `0x63af06`.
 The custom layout must queue its visibility changes after this refresh.
 
+### Hidden list groups need an explicit row refresh
+
+The real flat list uses vtable `0x814a08`, not a text-button vtable. Handler
+`0x659d50` maintains active children at +8/+0xc and inactive children at
++0xa4/+0xa8. `0x02000085` hides/removes active rows; `0x02000083` restores a
+row to the active collection, but queues its refresh only if +0x65 is nonzero
+(`0x65a060`). Adding rows while the category selector hides the list therefore
+leaves those rows hidden. SHOW only reveals the parent (`0x6564b3`), and does
+not reflow/reveal children. Queue `0x0200002c` for `0x14800000` **after** SHOW.
+The native refresh runs `0x656a20`, which reveals the active visible range.
+
+`test_native_menu_rows.py` reproduces the empty-list failure with the stock
+row builder and list handler; font projection and scene calls remain doubles.
+It failed on the pre-fix module and passes with the ordered row refresh.
+This is stronger than testing parent visibility but still is not a pixel test.
+
 ## Mission browser target IDs
 
 | ID | Element |
@@ -49,8 +68,8 @@ The custom layout must queue its visibility changes after this refresh.
 | 0x14b00000 | Resume |
 | 0x14c00000 | Secondary Back, hidden by default (`bexit01`) |
 
-Custom categories are appended after stock definitions; read their assigned
-IDs from definition +8 instead of hardcoding runtime pointers.
+Custom categories are appended after stock definitions; copy their assigned
+IDs from definition +8 before the definitions are released.
 
 ## Back and category input
 

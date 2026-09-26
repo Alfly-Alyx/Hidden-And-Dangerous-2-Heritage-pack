@@ -210,11 +210,18 @@ class Machine:
             name = self.imports[address]
             if name == "CreateFileA":
                 self.return_call(0xffffffff, 7)  # no real files, ever
+            elif name == "GetCurrentDirectoryA":
+                self.uc.mem_write(self.get(esp + 8), b'test\0')
+                self.return_call(4, 2)
             elif name == "sprintf":
                 self.uc.mem_write(self.get(esp + 4), b"test\0")
                 self.return_call(4)
             elif name == "strlen":
                 self.return_call(len(self.string(self.get(esp + 4))))
+            elif name in ("stricmp", "_stricmp"):
+                first = self.string(self.get(esp + 4)).lower()
+                second = self.string(self.get(esp + 8)).lower()
+                self.return_call((first > second) - (first < second))
             else:
                 raise AssertionError("Unexpected OS/CRT function: " + name)
 
@@ -241,6 +248,31 @@ class Machine:
 
 
 class NativeMenuTests(unittest.TestCase):
+    def test_catalogue_logging_hook_preserves_registers_and_custom_selection(self):
+        for view in (0, 2, 3, 4, 5):
+            m = Machine(view)
+            registers = {UC_X86_REG_EAX: m.manager, UC_X86_REG_EBX: 0x1234,
+                         UC_X86_REG_ECX: 0x2345, UC_X86_REG_EDX: 0x3456,
+                         UC_X86_REG_ESI: 0x4567, UC_X86_REG_EDI: 0x5678,
+                         UC_X86_REG_EBP: 0x6789}
+            m.run(0x6b6912, registers=registers, until=0x6b691c)
+            for register, value in registers.items():
+                self.assertEqual(m.reg(register), value)
+            self.assertEqual(m.reg(UC_X86_REG_ESP), m.stack)
+            self.assertEqual(m.get(m.manager + 0xe8), 1 if view < 2 else view)
+
+    def test_executable_recognition_is_case_insensitive_and_exact(self):
+        m = Machine()
+        for name, expected in (
+            ("HD2_SabreSquadron.exe", 2), ("hd2_sabresquadron.exe", 2),
+            ("Hd2_SaBrEsQuAdRoN.ExE", 2), ("HD2.exe", 1), ("hd2.EXE", 1),
+            ("HD2DS.exe", 0), ("HD2_SabreSquadron.original.exe", 0),
+            ("not-hd2.exe", 0), ("", 0),
+        ):
+            with self.subTest(name=name):
+                m.uc.mem_write(0x200F000, name.encode("ascii") + b"\0")
+                self.assertEqual(m.run("MenuExecutableKind", (0x200F000,)), expected)
+
     def test_signatures_match_stock_client(self):
         stock = (ROOT / "tmp" / "stock-menu-analysis.bin").read_bytes()
         for address, (length, expected, _) in Machine().hooks.items():
@@ -396,6 +428,15 @@ class NativeMenuTests(unittest.TestCase):
                 m = Machine(view)
                 self.assertEqual(len(m.preload()), 3)
                 self.assertEqual(len(m.definitions), 3)
+
+    def test_category_ids_survive_release_of_build_time_definitions(self):
+        m = Machine(2)
+        definitions = m.preload()
+        for definition in definitions:
+            m.uc.mem_write(definition, b'\xcc' * 0x40)  # released/reused storage
+        m.run('MenuApplyLayout', (2,))
+        self.assertEqual(m.messages[:3], [(target, SHOW, 0, 0, 0, 0)
+                                         for target in CATEGORY_IDS])
 
     def test_each_callback_queues_private_event_without_corrupting_runtime_id(self):
         for index in range(3):

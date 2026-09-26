@@ -1,5 +1,5 @@
 /* H&D2 1.12 native custom-mission menu, loaded by Ultimate ASI Loader.
- * Does not rewrite the game EXE, start a game, or open another process.
+ * Does not rewrite the game EXE or start a game. Starts the session monitor.
  */
 #include <windows.h>
 #include <stdio.h>
@@ -19,15 +19,17 @@ EXPORT const char MenuMultiControlName[] = "bcustom multi";
 EXPORT const char MenuExploreControlName[] = "bcustom explore";
 EXPORT void *MenuMissionScreen;
 EXPORT void *MenuMissionScene;
-/* These are persistent 0x40-byte definitions, NOT live GUI controls. Their
- * target IDs at +8 address the separate runtime objects in the event queue. */
+/* Build-time definitions, NOT live GUI controls. The engine releases them
+ * after construction, so copy their routing IDs before the builder returns. */
 EXPORT void *MenuCategoryControls[4];
+EXPORT unsigned MenuCategoryIds[3];
 static LONG initialized;
 static char logPath[MAX_PATH];
 static unsigned lastDecodedCatalogue = 0xffffffff;
 static unsigned lastDecodedRow = 0xffffffff;
 
 extern int GameCount(unsigned catalogue);
+extern int GameCountForManager(void *manager, unsigned catalogue);
 extern void GameReload(void *screen);
 extern void GamePostMenuMessage(const unsigned *message);
 extern unsigned GameCurrentScreenId(void);
@@ -103,6 +105,25 @@ static void StartDiagnostics(void)
     CloseHandle(process.hThread);
     CloseHandle(process.hProcess);
     Log("Diagnostic monitor started for this game session.");
+}
+
+/* Log the catalogue state produced by the actual loader, not a disk scan. */
+EXPORT void MenuLogCatalogues(void *pointer)
+{
+    unsigned manager=(unsigned)pointer, index, count;
+    char line[160], directory[MAX_PATH];
+    if(!manager) { Log("catalogue-load manager=absent"); return; }
+    count=(WORD_AT(manager+12)-WORD_AT(manager+8))/4;
+    if (!GetCurrentDirectoryA(sizeof(directory),directory))
+        strcpy(directory,"(current directory unavailable)");
+    sprintf(line,"catalogue-load count=%u view=%u",count,MenuView);
+    Log(line); Log(directory);
+    if(count>256) { Log("catalogue-load invalid count"); return; }
+    for(index=0;index<count;index++) {
+        sprintf(line,"catalogue-loaded index=%u missions=%d",index,
+            GameCountForManager(pointer,index));
+        Log(line);
+    }
 }
 
 static unsigned CatalogueCount(void)
@@ -186,19 +207,29 @@ EXPORT void MenuApplyLayout(unsigned view)
     };
     unsigned index, categories = view == 2;
     for (index = 0; index < 3; index++)
-        if (MenuCategoryControls[index])
-            SetControlVisible(WORD_AT((unsigned)MenuCategoryControls[index] + 8), categories);
+        SetControlVisible(MenuCategoryIds[index], categories);
     for (index = 0; index < sizeof(browserControls) / sizeof(browserControls[0]); index++)
         SetControlVisible(browserControls[index], !categories);
     SetControlVisible(0x14500000, 1); /* real bottom Back */
     SetControlVisible(0x14c00000, 0); /* secondary Back is hidden in stock */
+    if (!categories) {
+        /* ADD_ROW while the group is hidden intentionally does not refresh its
+         * children. SHOW only reveals the parent, not rows hidden by CLEAR.
+         * Reflow AFTER SHOW, through the same ordered engine queue. */
+        unsigned refresh[6] = {0x14800000, 0x0200002c, 0, 0, 0, 0};
+        GamePostMenuMessage(refresh);
+    }
 }
 
 EXPORT void MenuMissionReady(void *screen, void *scene)
 {
+    unsigned index;
     char line[180];
     MenuMissionScreen = screen;
     MenuMissionScene = scene;
+    for (index=0;index<3;index++)
+        MenuCategoryIds[index] = MenuCategoryControls[index]
+            ? WORD_AT((unsigned)MenuCategoryControls[index] + 8) : 0;
     sprintf(line, "mission-ready view=%u controls=%p,%p,%p", MenuView,
         MenuCategoryControls[0], MenuCategoryControls[1],
         MenuCategoryControls[2]);
@@ -317,6 +348,15 @@ EXPORT MenuHook MenuHooks[] = {
 };
 EXPORT const unsigned MenuHookCount = sizeof(MenuHooks) / sizeof(MenuHooks[0]);
 
+/* Windows may report the executable path in lowercase (notably when launched
+ * using a process identifier). Its spelling must not disable menus/diagnostics. */
+EXPORT unsigned MenuExecutableKind(const char *name)
+{
+    if (!stricmp(name, "HD2_SabreSquadron.exe")) return 2;
+    if (!stricmp(name, "HD2.exe")) return 1;
+    return 0;
+}
+
 EXPORT void InitializeASI(void)
 {
     unsigned index, count = sizeof(MenuHooks) / sizeof(MenuHooks[0]);
@@ -327,8 +367,9 @@ EXPORT void InitializeASI(void)
     GetModuleFileNameA(NULL, logPath, sizeof(logPath));
     slash = strrchr(logPath, '\\');
     if (!slash) return;
-    isSabre = !strcmp(slash + 1, "HD2_SabreSquadron.exe");
-    if (!isSabre && strcmp(slash + 1, "HD2.exe")) return;
+    index = MenuExecutableKind(slash + 1);
+    if (!index) return;
+    isSabre = index == 2;
     strcpy(slash + 1, "HD2.CustomMenu.log");
     StartDiagnostics();
     if (!isSabre) {
