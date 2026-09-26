@@ -1,7 +1,11 @@
 # FG 42 — reconstruction lourde moderne
 
+[Mouvements originaux des pièces](../RECONSTRUCTION_BACKLOG/ANIMATIONS_MODERNES.md) :
+neuf séquences construites, sans mains ni liaison au personnage. Les besoins
+FPV et animations de personnage mentionnés ci-dessous restent ouverts.
+
 État : **fiche de tir attestée, chaîne exploitable absente**, 26 septembre 2026.
-Aucun prototype d'arme fonctionnelle n'est activé et rien n'est compilé.
+Aucun prototype d'arme fonctionnelle n'est activé ni intégré aux tables du jeu.
 
 Le [modèle extérieur moderne](MODELE_MODERNE.md) est maintenant fabriqué :
 25 pièces, deux LOD, aperçu et format natif désactivé contrôlés. Il ne change

@@ -44,6 +44,10 @@ de régression du modèle Benelli :
 .\.venv\Scripts\python.exe -m unittest discover -s tests -p test_modern_weapon_assets.py
 ```
 
+Les [animations originales de pièces](../RECONSTRUCTION_BACKLOG/ANIMATIONS_MODERNES.md)
+sont désormais construites dans un banc distinct ; ce modèle extérieur
+statique et son empreinte restent inchangés.
+
 Suites nécessaires : banc décoratif isolé, échelle/éclairage/LOD en moteur,
-modèle FPV et animations originales, tenue en troisième personne, puis entrée
+modèle FPV et animations de personnage, tenue en troisième personne, puis entrée
 additive et comportements. Aucun de ces essais n'est déclaré réussi ici.

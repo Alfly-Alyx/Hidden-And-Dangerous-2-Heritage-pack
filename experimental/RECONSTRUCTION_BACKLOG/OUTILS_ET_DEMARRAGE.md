@@ -37,6 +37,15 @@ ensuite utiliser :
 .\.venv\Scripts\python.exe tools\NOM_OUTIL.py --help
 ```
 
+## Fabrication originale hors moteur
+
+`tools/build_modern_asset.py` produit les modèles extérieurs originaux ;
+`tools/build_modern_animation_bank.py` produit les bancs rigides FG42/MG34.
+Sans nom de sortie, ils contrôlent en mémoire. Avec un nom neuf, leurs sorties
+restent dans `.analysis/modern-assets/`, sous extensions natives désactivées.
+Voir [ressources](RESSOURCES_MODERNES.md) et [animations](ANIMATIONS_MODERNES.md).
+Ni installation ni lancement du jeu ; aucun asset commercial requis.
+
 ## Outils d'archives et de recherche
 
 | Outil | Usage |

@@ -36,7 +36,11 @@ Ce contrôle n'est pas un essai moteur. Les repères ne sont pas des os FPV ;
 les pieds ne font pas un bipied déployable et le tambour n'est pas un chargeur
 fonctionnel. Aucun son ni projectile n'est créé.
 
+Les [animations originales de pièces](../RECONSTRUCTION_BACKLOG/ANIMATIONS_MODERNES.md)
+sont construites dans un banc distinct ; ce modèle extérieur statique et son
+empreinte restent inchangés.
+
 Le casque 32, la munition portative 201 et la munition de char 211 restent
 intacts ; aucun ID n'est alloué. Restent le banc décoratif en moteur, la vue
-FPV originale, les animations et la chaîne additive, avec essais de tenue,
+FPV originale, les animations de personnage et la chaîne additive, avec essais de tenue,
 dépôt/reprise, tir, IA, sauvegarde et réseau.

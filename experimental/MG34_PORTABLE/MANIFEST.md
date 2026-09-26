@@ -17,7 +17,8 @@
 ## CRÉATION MODERNE REQUISE
 
 - modèle extérieur/sol : [fabriqué](MODELE_MODERNE.md), tenue et moteur non validés ;
-- modèle FPV ; animations ; entrée Weapon additive ;
+- [neuf animations originales de pièces construites](../RECONSTRUCTION_BACKLOG/ANIMATIONS_MODERNES.md), sans mains ni liaison moteur ;
+- modèle FPV complet ; animations de personnage ; entrée Weapon additive ;
 - alimentation, cadence, recul, dispersion, dégâts, bipied et rechargement ;
 - mapping sonore vérifié ; inventaire, IA, sauvegarde et réseau.
 

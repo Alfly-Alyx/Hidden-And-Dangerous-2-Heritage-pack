@@ -1,5 +1,9 @@
 # MG 34 portative — reconstruction additive
 
+[Mouvements originaux des pièces](../RECONSTRUCTION_BACKLOG/ANIMATIONS_MODERNES.md) :
+neuf séquences construites, sans mains ni liaison au personnage. Les besoins
+FPV et animations de personnage mentionnés ci-dessous restent ouverts.
+
 État : **fiche de tir et ressources partielles, reconstruction moderne**, 26 septembre 2026.
 Aucune entrée Weapon n'est créée. Le [modèle extérieur moderne](MODELE_MODERNE.md)
 est maintenant fabriqué : 33 pièces, deux LOD, aperçus et fichier natif

@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "name": "FG42",
+  "provenance": "MODERNE",
+  "runtime_status": "pending",
+  "description": "Original weapon-only illustrative motions, not player-hand animations, historical operation or recovered keyframes. Aim is an authoring pose, not calibrated to the game camera. No sound, events, particles, damage, ammo or Item binding.",
+  "preview_fps": 24,
+  "model_sha256": "111c3e8cb882bc67b53415097165f6ca8f63533af528ac554e6e16aa57091aba",
+  "groups": [
+    {
+      "name": "MOD_magazine_pivot",
+      "pivot": [-0.02, 0.072, 0.036],
+      "members": [
+        "MOD_side_magazine",
+        "MOD_magazine_endplate",
+        "MOD_magazine_rib_front",
+        "MOD_magazine_rib_rear",
+        "MOD_magazine_anchor"
+      ]
+    },
+    {
+      "name": "MOD_bolt_pivot",
+      "pivot": [0.024, 0.07, 0.044],
+      "members": [
+        "MOD_bolt_plate",
+        "MOD_charging_handle"
+      ]
+    }
+  ],
+  "clips": [
+    {
+      "name": "Idle1",
+      "frame_end": 60,
+      "loop": true,
+      "motions": {
+        "ROOT": [
+          [0, [0, 0, 0], [0, 0, 0]],
+          [30, [0, 0, 0.002], [0.15, 0, 0.12]],
+          [60, [0, 0, 0], [0, 0, 0]]
+        ]
+      }
+    },
+    {
+      "name": "Aim",
+      "frame_end": 12,
+      "loop": false,
+      "motions": {
+        "ROOT": [
+          [0, [0, 0, 0], [0, 0, 0]],
+          [12, [-0.075, 0.025, 0.035], [-1, 0, 0]]
+        ]
+      }
+    },
+    {
+      "name": "Daim",
+      "frame_end": 12,
+      "loop": false,
+      "motions": {
+        "ROOT": [
+          [0, [-0.075, 0.025, 0.035], [-1, 0, 0]],
+          [12, [0, 0, 0], [0, 0, 0]]
+        ]
+      }
+    },
+    {
+      "name": "Arm",
+      "frame_end": 20,
+      "loop": false,
+      "motions": {
+        "ROOT": [
+          [0, [0.08, -0.15, -0.28], [25, 0, -12]],
+          [12, [0.01, -0.025, -0.04], [3, 0, -2]],
+          [20, [0, 0, 0], [0, 0, 0]]
+        ]
+      }
+    },
+    {
+      "name": "Disarm",
+      "frame_end": 20,
+      "loop": false,
+      "motions": {
+        "ROOT": [
+          [0, [0, 0, 0], [0, 0, 0]],
+          [8, [0.01, -0.025, -0.04], [3, 0, -2]],
+          [20, [0.08, -0.15, -0.28], [25, 0, -12]]
+        ]
+      }
+    },
+    {
+      "name": "Shot",
+      "frame_end": 8,
+      "loop": false,
+      "motions": {
+        "ROOT": [
+          [0, [0, 0, 0], [0, 0, 0]],
+          [2, [0, -0.018, 0.009], [1.5, 0, 0]],
+          [8, [0, 0, 0], [0, 0, 0]]
+        ],
+        "MOD_bolt_pivot": [
+          [0, [0, 0, 0], [0, 0, 0]],
+          [2, [0, -0.032, 0], [0, 0, 0]],
+          [5, [0, 0, 0], [0, 0, 0]],
+          [8, [0, 0, 0], [0, 0, 0]]
+        ]
+      }
+    },
+    {
+      "name": "AimShot",
+      "frame_end": 8,
+      "loop": false,
+      "motions": {
+        "ROOT": [
+          [0, [-0.075, 0.025, 0.035], [-1, 0, 0]],
+          [2, [-0.075, 0.009, 0.041], [0.2, 0, 0]],
+          [8, [-0.075, 0.025, 0.035], [-1, 0, 0]]
+        ],
+        "MOD_bolt_pivot": [
+          [0, [0, 0, 0], [0, 0, 0]],
+          [2, [0, -0.032, 0], [0, 0, 0]],
+          [5, [0, 0, 0], [0, 0, 0]],
+          [8, [0, 0, 0], [0, 0, 0]]
+        ]
+      }
+    },
+    {
+      "name": "Rel",
+      "frame_end": 80,
+      "loop": false,
+      "motions": {
+        "ROOT": [
+          [0, [0, 0, 0], [0, 0, 0]],
+          [14, [0.025, -0.035, -0.018], [2, 0, 18]],
+          [66, [0.025, -0.035, -0.018], [2, 0, 18]],
+          [80, [0, 0, 0], [0, 0, 0]]
+        ],
+        "MOD_magazine_pivot": [
+          [0, [0, 0, 0], [0, 0, 0]],
+          [14, [0, 0, 0], [0, 0, 0]],
+          [27, [-0.2, 0, -0.045], [0, 18, 0]],
+          [46, [-0.2, 0, -0.045], [0, 18, 0]],
+          [61, [0, 0, 0], [0, 0, 0]],
+          [80, [0, 0, 0], [0, 0, 0]]
+        ],
+        "MOD_bolt_pivot": [
+          [0, [0, 0, 0], [0, 0, 0]],
+          [62, [0, 0, 0], [0, 0, 0]],
+          [68, [0, -0.045, 0], [0, 0, 0]],
+          [74, [0, 0, 0], [0, 0, 0]],
+          [80, [0, 0, 0], [0, 0, 0]]
+        ]
+      }
+    },
+    {
+      "name": "Jammed",
+      "frame_end": 28,
+      "loop": false,
+      "motions": {
+        "ROOT": [
+          [0, [0, 0, 0], [0, 0, 0]],
+          [7, [0.015, 0, -0.015], [0, 0, 8]],
+          [21, [0.015, 0, -0.015], [0, 0, 8]],
+          [28, [0, 0, 0], [0, 0, 0]]
+        ],
+        "MOD_bolt_pivot": [
+          [0, [0, 0, 0], [0, 0, 0]],
+          [8, [0, -0.043, 0], [0, 0, 0]],
+          [16, [0, -0.043, 0], [0, 0, 0]],
+          [22, [0, 0, 0], [0, 0, 0]],
+          [28, [0, 0, 0], [0, 0, 0]]
+        ]
+      }
+    }
+  ]
+}

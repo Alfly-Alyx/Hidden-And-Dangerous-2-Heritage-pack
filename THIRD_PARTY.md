@@ -69,6 +69,11 @@ ont été consultées comme piste historique le 26 septembre 2026. Le lecteur
 quatre fichiers locaux : emplacements absents de quatre octets, et non records
 longs absorbant le voisin. Aucun code ni fixture commerciale n'est reproduit.
 
+L'encodeur `tools/modern_animation.py` et le générateur de banques rigides
+utilisent également ces références de format. Leurs algorithmes, géométries,
+pivots et clés modernes sont originaux, sans réemploi des animations du jeu.
+L'interpolation de prévisualisation n'est pas présentée comme celle du moteur.
+
 Les liens historiques et techniques sont regroupés dans les rapports du dossier `docs`, notamment :
 
 - RpR Clan pour le jeu en ligne et les mods ;
