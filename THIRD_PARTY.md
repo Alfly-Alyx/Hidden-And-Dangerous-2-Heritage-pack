@@ -55,6 +55,14 @@ dans [mafia-formats](https://github.com/RoadTrain/mafia-formats), consultées le
 26 septembre 2026. Ces templates ne sont pas redistribués ni traduits dans le
 projet. La géométrie procédurale moderne ne copie aucun asset commercial.
 
+Le lecteur original `tools/five_ds.py` recoupe également le format 5DS v122
+avec [5ds.bt](https://github.com/RoadTrain/mafia-formats/blob/master/5ds.bt),
+consulté le 26 septembre 2026, et avec les fichiers locaux possédés. Il ne
+reproduit pas le template et ne prétend pas émuler l'animation du moteur.
+Les transformations et le banc FPV sont des implémentations propres au projet ;
+leurs sorties dérivées des ressources commerciales restent locales et exclues
+du dépôt.
+
 Les liens historiques et techniques sont regroupés dans les rapports du dossier `docs`, notamment :
 
 - RpR Clan pour le jeu en ligne et les mods ;

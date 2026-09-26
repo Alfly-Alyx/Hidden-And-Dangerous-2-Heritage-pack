@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; media-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Benelli · inspecteur local des ressources</title>
+<style>
+:root { color-scheme:dark; font:16px/1.5 system-ui,sans-serif; background:#101820; color:#e1ebf2 }
+* { box-sizing:border-box } body { max-width:1280px; margin:auto; padding:24px }
+h1 { font-size:28px; margin:0 0 6px } h2 { font-size:20px; margin:0 0 12px }
+p { margin:8px 0 } .muted { color:#a8becd } .warning { border-left:4px solid #e9ae54; padding:10px 16px; background:#252422 }
+section { margin:20px 0; padding:20px; background:#17232e; border:1px solid #304452; border-radius:12px }
+.controls { display:flex; gap:16px; align-items:end; flex-wrap:wrap; margin:16px 0 }
+label { display:flex; flex-direction:column; gap:6px } label.check { flex-direction:row; align-items:center }
+select,button { font:inherit; color:inherit; background:#223544; border:1px solid #647f90; border-radius:6px; padding:7px 12px }
+input[type=range] { width:min(500px,60vw); accent-color:#7ecef5 } button { cursor:pointer }
+canvas { display:block; width:100%; background:#101820; border-radius:6px }
+#mesh { aspect-ratio:3/1 } #plot { aspect-ratio:4/1 }
+#values { font-family:ui-monospace,monospace; white-space:pre-wrap; overflow-wrap:anywhere; padding:12px; background:#101820 }
+.textures { display:flex; flex-wrap:wrap; gap:20px } figure { margin:0; max-width:100% }
+figure img { display:block; max-width:256px; max-height:256px; object-fit:contain; background:repeating-conic-gradient(#59616a 0% 25%,#9ba2a9 0% 50%) 50% / 20px 20px }
+figcaption { max-width:280px; overflow-wrap:anywhere; color:#a8becd; font-size:14px }
+:focus-visible { outline:3px solid #e9ae54; outline-offset:3px }
+@media(max-width:650px) { body {padding:12px} section {padding:12px} #mesh {aspect-ratio:1.4} #plot {aspect-ratio:2} }
+</style>
+</head>
+<body>
+<header><p class="muted">HERITAGE · LABORATOIRE PRIVÉ · AUCUNE ARME JOUABLE</p>
+<h1>Benelli : inspecter les ressources conservées</h1>
+<p>Neuf états, sélection manuelle. Aucune connexion réseau, aucune modification du jeu.</p></header>
+<p class="warning">Ce fichier contient des données commerciales dérivées de votre installation. Usage local uniquement, ne pas partager ni publier. La lecture hors jeu ne valide pas le comportement du moteur.</p>
+<main>
+<section aria-labelledby="model-title"><h2 id="model-title">Modèle 4DS — pose enregistrée</h2>
+<div class="controls"><label>État <select id="state"></select></label><label class="check"><input id="joints" type="checkbox">Afficher les repères du squelette</label></div>
+<canvas id="mesh" width="1200" height="400" aria-label="Trois projections filaires du modèle statique"></canvas>
+<p id="model-info" class="muted"></p>
+<p class="muted">Géométrie du premier niveau de détail. Les textures sont montrées séparément, sans rendu éclairé. Les articulations des bras ne sont pas un maillage de mains. Ce modèle reste immobile lorsque vous parcourez les clés ci-dessous.</p>
+</section>
+<section aria-labelledby="track-title"><h2 id="track-title">Animation 5DS — clés brutes</h2>
+<p>Pas de lecture temporelle, d’interpolation ni de conversion en secondes. Les courbes relient seulement les mesures enregistrées ; elles ne reproduisent pas le mouvement du moteur.</p>
+<div class="controls"><label>Piste <select id="track"></select></label><label>Canal <select id="channel"></select></label></div>
+<canvas id="plot" width="1200" height="300" aria-label="Valeurs des composantes des clés enregistrées"></canvas>
+<div class="controls"><button id="previous" type="button" aria-label="Clé précédente">←</button><label>Clé enregistrée <input id="key" type="range" min="0" max="0" value="0" step="1"></label><button id="next" type="button" aria-label="Clé suivante">→</button></div>
+<p id="values" aria-live="polite"></p>
+<p class="muted">Rotation : quatre composantes dans l’ordre du fichier, sans hypothèse d’interprétation par le moteur. Position et échelle : trois composantes. Cadence d’animation, événements, sons et règles de tir non qualifiés.</p>
+</section>
+<section aria-labelledby="textures-title"><h2 id="textures-title">Bitmaps sources</h2><div id="textures" class="textures"></div>
+<p class="muted">Aperçus 2D bruts : ni transparence, ni mipmaps, ni UV, ni matériau du moteur ne sont validés ici.</p></section>
+<section aria-labelledby="audio-title"><h2 id="audio-title">Sons — écoute manuelle séparée</h2><div id="audio" class="textures"></div>
+<p class="muted">Aucune lecture automatique. Ces sources ne sont associées à aucune clé d’animation et ne prouvent ni cadence de tir ni durée de rechargement. Changer d’état arrête toute écoute en cours.</p></section>
+</main>
+<script type="application/json" id="resource-data">__FPV_DATA__</script>
+<script>
+'use strict';
+const data=JSON.parse(document.getElementById('resource-data').textContent);
+const el=id=>document.getElementById(id);
+const palette=['#7ecef5','#ffbb77','#c3e58a','#dba3ed'];
+const number=v=>Number(v).toPrecision(7);
+function options(select,values) { select.replaceChildren(); for(const [value,label] of values) {const o=document.createElement('option');o.value=value;o.textContent=label;select.append(o);} }
+function pair(){return data.pairs[el('state').value];}
+function selectedTrack(){return pair().tracks[Number(el('track').value)];}
+function selectedChannel(){return selectedTrack().channels[el('channel').value];}
+function blank(canvas){const ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);return ctx;}
+function model(){
+ const p=pair(),c=el('mesh'),ctx=blank(c),panel=c.width/3,pad=28,show=el('joints').checked;
+ const pts=show?p.vertices.concat(p.nodes.map(n=>n.position)):p.vertices;
+ const axes=[[0,1,'XY'],[0,2,'XZ'],[2,1,'ZY']];
+ axes.forEach(([a,b,label],i)=>{
+  const av=pts.map(v=>v[a]),bv=pts.map(v=>v[b]); const loA=Math.min(...av),hiA=Math.max(...av),loB=Math.min(...bv),hiB=Math.max(...bv);
+  const scale=Math.min((panel-2*pad)/Math.max(hiA-loA,1e-8),(c.height-2*pad)/Math.max(hiB-loB,1e-8));
+  const project=v=>[i*panel+panel/2+(v[a]-(loA+hiA)/2)*scale,c.height/2-(v[b]-(loB+hiB)/2)*scale];
+  const vertices=p.vertices.map(project);ctx.strokeStyle='#5897b7';ctx.lineWidth=.65;
+  ctx.beginPath();for(const face of p.faces){face.forEach((id,j)=>{const v=vertices[id];j?ctx.lineTo(...v):ctx.moveTo(...v);});ctx.closePath();}ctx.stroke();
+  if(show){const nodes=new Map(p.nodes.map(n=>[n.id,n]));ctx.strokeStyle='#dba3ed';ctx.fillStyle='#e9ae54';ctx.lineWidth=1;
+   for(const n of p.nodes){const v=project(n.position);ctx.fillRect(v[0]-2,v[1]-2,4,4);if(n.parent){const parent=project(nodes.get(n.parent).position);ctx.beginPath();ctx.moveTo(...parent);ctx.lineTo(...v);ctx.stroke();}}}
+  ctx.fillStyle='#dbe7ef';ctx.font='16px system-ui';ctx.fillText(label,i*panel+12,20);
+ });
+ el('model-info').textContent=`${p.nodes.length} nœuds · ${p.vertices.length} sommets · ${p.faces.length} triangles · ${p.tracks.length} pistes · repère final ${p.frame_end} inclus`;
+}
+function plot(){
+ const channel=selectedChannel(),k=Number(el('key').value),c=el('plot'),ctx=blank(c),pad=36;
+ const flat=channel.values.flat(),low=Math.min(...flat),high=Math.max(...flat),span=high-low||1;
+ const x=f=>pad+f/pair().frame_end*(c.width-2*pad),y=v=>c.height-pad-(v-low)/span*(c.height-2*pad);
+ ctx.strokeStyle='#304452';ctx.beginPath();ctx.moveTo(pad,pad);ctx.lineTo(pad,c.height-pad);ctx.lineTo(c.width-pad,c.height-pad);ctx.stroke();
+ channel.values[0].forEach((_,j)=>{ctx.strokeStyle=palette[j];ctx.fillStyle=palette[j];ctx.lineWidth=1.5;ctx.beginPath();
+  channel.frames.forEach((f,i)=>i?ctx.lineTo(x(f),y(channel.values[i][j])):ctx.moveTo(x(f),y(channel.values[i][j])));ctx.stroke();
+  ctx.beginPath();ctx.arc(x(channel.frames[k]),y(channel.values[k][j]),4,0,Math.PI*2);ctx.fill();ctx.font='14px system-ui';ctx.fillText(`C${j+1}`,c.width-210+j*50,20);});
+ ctx.fillStyle='#a8becd';ctx.font='13px system-ui';ctx.fillText('0',pad,c.height-8);ctx.fillText(String(pair().frame_end),c.width-pad-25,c.height-8);
+ el('values').textContent=`Clé ${k+1}/${channel.frames.length} · repère ${channel.frames[k]}\n`+channel.values[k].map((v,j)=>`C${j+1} = ${number(v)}`).join('   ');
+ el('previous').disabled=k===0;el('next').disabled=k===channel.frames.length-1;
+}
+function channelChanged(){el('key').value=0;el('key').max=selectedChannel().frames.length-1;plot();}
+function trackChanged(){options(el('channel'),Object.keys(selectedTrack().channels).map(k=>[k,({rotation:'Rotation',position:'Position',scale:'Échelle'})[k]]));channelChanged();}
+function stateChanged(){for(const audio of el('audio').querySelectorAll('audio')){audio.pause();audio.currentTime=0;}options(el('track'),pair().tracks.map((t,i)=>[i,t.name]));model();trackChanged();}
+options(el('state'),Object.keys(data.pairs).map(k=>[k,k]));
+el('state').addEventListener('change',stateChanged);el('track').addEventListener('change',trackChanged);el('channel').addEventListener('change',channelChanged);el('joints').addEventListener('change',model);el('key').addEventListener('input',plot);
+el('previous').addEventListener('click',()=>{el('key').value=Math.max(0,Number(el('key').value)-1);plot();});
+el('next').addEventListener('click',()=>{el('key').value=Math.min(Number(el('key').max),Number(el('key').value)+1);plot();});
+for(const [name,encoded] of Object.entries(data.textures)) {const figure=document.createElement('figure'),img=document.createElement('img'),caption=document.createElement('figcaption');img.alt=name;img.src='data:image/bmp;base64,'+encoded;caption.textContent=name;img.addEventListener('error',()=>{caption.textContent=name+' — aperçu indisponible';});figure.append(img,caption);el('textures').append(figure);}
+for(const [name,encoded] of Object.entries(data.audio)) {const figure=document.createElement('figure'),audio=document.createElement('audio'),caption=document.createElement('figcaption');audio.controls=true;audio.preload='none';audio.src='data:audio/wav;base64,'+encoded;caption.textContent=name;audio.addEventListener('play',()=>{for(const other of el('audio').querySelectorAll('audio')){if(other!==audio)other.pause();}});figure.append(audio,caption);el('audio').append(figure);}
+stateChanged();
+</script>
+</body>
+</html>

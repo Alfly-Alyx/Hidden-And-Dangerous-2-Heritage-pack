@@ -39,11 +39,16 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **380 tests Python réussis sur 381 dans la copie de publication**; un test de lien symbolique non exécuté
+- **411 tests Python réussis sur 412 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
-- Lecteur audio DPCM complété : vingt WAV décodés et mesurés en mémoire, sans
-  export ni modification du jeu; [méthode et empreintes](AUDIO_RESSOURCES.md).
+- Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
+  sans export ; deux sons Benelli supplémentaires sont mesurés et incorporés
+  uniquement au banc privé, sans modification du jeu. [Méthode](AUDIO_RESSOURCES.md).
+- [Banc Benelli FPV](../BENELLI_M4_ADDITIVE/BANC_FPV.md) : 28 sources verrouillées,
+  neuf animations décodées, modèle FPV statique dérivé, inspecteur de poses/clés/sons.
+  Trois tests JavaScript synthétiques réussis ; affichage navigateur et moteur
+  non validés. Le modèle extérieur moderne demeure distinct.
 - Trois comparaisons binaires Co_Burgundy1/2/3 supplémentaires reconstruisent
   respectivement douze/deux/dix porteurs et leurs liaisons sans modifier les scripts
   ou sons. Elles restent inertes, hors compte des laboratoires de mission.

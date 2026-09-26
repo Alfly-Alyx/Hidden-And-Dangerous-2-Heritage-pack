@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "sources": {
+    "sounds/bene_r.wav": {
+      "archive": "Sounds.dta",
+      "size": 265818,
+      "sha256": "445c3f8cca43f9f59d09def9195f7c1f56f9dd04269eaaa2322060b0f579fae8"
+    },
+    "sounds/f_bene_a.wav": {
+      "archive": "Sounds.dta",
+      "size": 70236,
+      "sha256": "429e1b1a01d1acc63efa94a4b7d1177b1e8227ad0b6d25827d296717460bf897"
+    },
+    "tables/ingamesounds.def": {
+      "archive": "Patch.dta",
+      "size": 104700,
+      "sha256": "ab374c805b6bc663593bfd788f9e437b6998ffe8a3d02e83a393aa201dfd94f3"
+    },
+    "maps/w_shell.bmp": {
+      "archive": "Maps.dta",
+      "size": 17460,
+      "sha256": "bc74f5c4cbb836345196d80a88939449ca9904f3ef68d69e85c496d2f21d3ad5"
+    },
+    "maps/d_benellim4.bmp": {
+      "archive": "Maps.dta",
+      "size": 66616,
+      "sha256": "675b33c26c0a4661aa639807df339ef04cdd659d7f11bdb41c97062a72aa2c6a"
+    },
+    "maps/d_benellim4paz.bmp": {
+      "archive": "Maps.dta",
+      "size": 9272,
+      "sha256": "31b1f5490536b961eda9ebbabdfb491155c5e87da4c85f112d07fff5e081b0b5"
+    },
+    "maps/wi_it-benelli.bmp": {
+      "archive": "Maps.dta",
+      "size": 3128,
+      "sha256": "1128871c190acfb8642dd32b3cb15da7bf4179a72c3d0afe1554528b9326abfc"
+    },
+    "models/#fpvbeneliaim.4ds": {
+      "archive": "models.dta",
+      "size": 63906,
+      "sha256": "752a9c35da2ea42e0342750a014e2b947166cb5345d0176fcdef629c560eacc4"
+    },
+    "models/#fpvbeneliaim.5ds": {
+      "archive": "models.dta",
+      "size": 6365,
+      "sha256": "1f0e43bafd6b65a799b30f5ca9393603754d055d570823dd82ccae1908c71a2f"
+    },
+    "models/#fpvbeneliaimshot.4ds": {
+      "archive": "models.dta",
+      "size": 63906,
+      "sha256": "77f1bca45213fd89e798865998393dcfdd11b82e946a2525710dba42eb3b1da3"
+    },
+    "models/#fpvbeneliaimshot.5ds": {
+      "archive": "models.dta",
+      "size": 1772,
+      "sha256": "2c97ca73997f33b4fd17b28340046ab2b4106eba27b70709f7f6455370a0d973"
+    },
+    "models/#fpvbeneliarm.4ds": {
+      "archive": "models.dta",
+      "size": 28859,
+      "sha256": "addc96c2572f6b3003c7ffd850a9a378f96551cc76f8d63c85fedab36f26beb8"
+    },
+    "models/#fpvbeneliarm.5ds": {
+      "archive": "models.dta",
+      "size": 24602,
+      "sha256": "86c06a7f95fa000eab7afa047e1d6f79ee04946ad1d002d87ec890e8c3bb94cf"
+    },
+    "models/#fpvbenelidaim.4ds": {
+      "archive": "models.dta",
+      "size": 63906,
+      "sha256": "e4d869e1c21165dbdfb7d0b2369123552d6f886734efb3cde761eb8b62e4b7d4"
+    },
+    "models/#fpvbenelidaim.5ds": {
+      "archive": "models.dta",
+      "size": 6733,
+      "sha256": "852fa1fe08e17396f0fbebefe728b74eda5c6479da67cbae692fbc1655d5f6ea"
+    },
+    "models/#fpvbenelidisarm.4ds": {
+      "archive": "models.dta",
+      "size": 28859,
+      "sha256": "e3a0e9f048fa5d44570b5d00ff70ee69dc1baf23e74916cade98d5dbae23d3f0"
+    },
+    "models/#fpvbenelidisarm.5ds": {
+      "archive": "models.dta",
+      "size": 3201,
+      "sha256": "ef1fe114d5446ae579e4e7cae09be08bb5ab4f6e6d8487b7aa08b2a90a0d857c"
+    },
+    "models/#fpvbeneliidle1.4ds": {
+      "archive": "models.dta",
+      "size": 28859,
+      "sha256": "dc1cacba00807533f05b9a1808748d6ef6db64cb070c827cc10a72198dce6a99"
+    },
+    "models/#fpvbeneliidle1.5ds": {
+      "archive": "models.dta",
+      "size": 14369,
+      "sha256": "4e2744f076c78f026e8c5dd50dd0c4a93febf4ee5e7bddef8dceca6bdba416bb"
+    },
+    "models/#fpvbenelijammed.4ds": {
+      "archive": "models.dta",
+      "size": 28859,
+      "sha256": "5eec9462d9b8ccdc01cb30c130fb50f7f4058f5210f985dc8540c5c1596547a9"
+    },
+    "models/#fpvbenelijammed.5ds": {
+      "archive": "models.dta",
+      "size": 1562,
+      "sha256": "bf274192f9770721fb9fd515c49cc934cb031be116bcbe099467a40cfef6aef2"
+    },
+    "models/#fpvbenelirel.4ds": {
+      "archive": "models.dta",
+      "size": 28859,
+      "sha256": "ddace539bf96fd1aac010592f98bff9d1c729bb1a3afd67c78cd647214765946"
+    },
+    "models/#fpvbenelirel.5ds": {
+      "archive": "models.dta",
+      "size": 59265,
+      "sha256": "4d232870c3d69be6472d0511eb9f3de90ffe446dd3cc03f46250a6a9b89cd61b"
+    },
+    "models/#fpvbenelishot.4ds": {
+      "archive": "models.dta",
+      "size": 28859,
+      "sha256": "5f792926c1b37677d139ef60f4557d0cfa084353e93f8307b7cdfe318374fdc2"
+    },
+    "models/#fpvbenelishot.5ds": {
+      "archive": "models.dta",
+      "size": 3401,
+      "sha256": "2a24247fe1b508d838679e9ddaf1c7edcb8210c58342e216d575f528b9d518bb"
+    },
+    "models/w_garandfpv.4ds": {
+      "archive": "Patch.dta",
+      "size": 71146,
+      "sha256": "b104420287c5d0438d00bda90ca6668d99504dd2db355db040bf8d8177fc762c"
+    },
+    "tables/fpvanims.sav": {
+      "archive": "SabreSquadron.dta",
+      "size": 127158,
+      "sha256": "421c50251277b8f316535c430bf35dd1fcfb36a5a1a59cd0aee974fa63bedb1a"
+    },
+    "tables/item_shoot.tbl": {
+      "archive": "others.DTA",
+      "size": 34761,
+      "sha256": "9a0cad7b898549e2a3f61a78c9f5b9b1d937ed3b91dc6f659de1d62518b97f0a"
+    }
+  }
+}

@@ -60,3 +60,12 @@ Ces contrôles ne prouvent ni les secteurs audio du moteur, ni la spatialisation
 ni la synchronisation labiale, ni le comportement de SetOn pendant une lecture.
 Une ressource décodée n'autorise pas à relier un contrôleur orphelin ou à diffuser
 le fichier hors de l'installation possédée.
+
+## Banc Benelli séparé
+
+Les deux sons `f_bene_a.wav` et `bene_r.wav` sont désormais décodés, mesurés et
+vérifiés avec leurs définitions effectives de Patch.dta :
+[preuves et durées](../BENELLI_M4_ADDITIVE/BANC_FPV.md). Le total audité atteint
+vingt-deux WAV. L'option `--inspector` les incorpore uniquement dans l'HTML
+privé ignoré par Git, pour écoute manuelle, jamais synchronisée aux clés FPV.
+Ils n'ont pas été écoutés par l'agent et aucun résultat moteur n'est revendiqué.

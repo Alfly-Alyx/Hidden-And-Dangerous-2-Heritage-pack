@@ -125,6 +125,7 @@ zéro conversion validée.
 | `tools/reconstruction_sandbox.py` | Créer une copie réelle, sans lien partagé, de l'installation légitime dans une nouvelle session ignorée, puis vérifier tous ses fichiers. Aucun lancement. |
 | `tools/reconstruction_trial_deploy.py` | Préparer ou étendre les 50 comparaisons dans leurs missions d'origine, appliquer un seul témoin/variante à la copie isolée et restaurer avec contrôle des modifications ultérieures. Voir [les essais natifs](../../validation/ESSAIS_NATIFS.md). |
 | `tools/build_modern_asset.py` | Générer une géométrie originale, ses deux LOD, un 4DS désactivé et un aperçu sans lire les archives. Voir le [modèle moderne Benelli](../BENELLI_M4_ADDITIVE/MODELE_MODERNE.md). |
+| `tools/build_benelli_fpv_lab.py` | Auditer 28 sources FPV/sonores, lire neuf couples, dériver un modèle statique désactivé et construire un inspecteur privé de poses/clés/sons. Aucun Item ni lancement. Voir le [banc FPV](../BENELLI_M4_ADDITIVE/BANC_FPV.md). |
 | `tools/stable_candidate_coverage_audit.py` | Vérifier que chaque candidat stable a une disposition. |
 | `tools/installer_wiring_audit.py` | Vérifier le câblage des options de l'installateur. |
 | `tools/installer_composition_audit.py` | Vérifier la composition des modules. |
