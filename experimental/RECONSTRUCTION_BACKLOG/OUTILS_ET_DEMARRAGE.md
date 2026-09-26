@@ -176,6 +176,15 @@ installées; le mode strict les refuse. Huit tests synthétiques accompagnent
 l'[étude du protocole](../NORMANDY2_FAKE_DEFENCE_COORDINATOR/ETUDE.md).
 Aucune position ni réception de signal n'est déduite automatiquement.
 
+## Fermeture Co_Burgundy3 en lecture seule
+
+`tools/audit_co_burgundy3_closure.py --game "D:\Games\Hidden and Dangerous 2" --archives-only`
+contrôle 73 sources : registre coop distinct, 57 scripts accessibles, 80
+checkpoints nommés, protocole Maquis et six barils réellement présents dans le
+modèle du dépôt. Les références parent et lightmap ne sont pas acceptées comme
+déclarations d'acteur. Aucun fichier de jeu ni paquet n'est écrit. Voir
+l'[étude détaillée](../CO_BURGUNDY3_CLOSURE/ETUDE.md).
+
 ## Audio commercial en lecture seule
 
 `tools/audit_audio_resources.py` mesure les WAV sélectionnés en mémoire, sans

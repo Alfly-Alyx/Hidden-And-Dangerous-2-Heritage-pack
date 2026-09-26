@@ -33,13 +33,13 @@ registre complète ces fichiers sans activer de script expérimental dans le jeu
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Quatre profils Africa 5 restent des scripts seuls :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **208 tests Python**, compilation console et auto-tests de sécurité C# réussis.
-- Lecteur audio DPCM complété : sept WAV décodés et mesurés en mémoire, sans
+- **222 tests Python**, compilation console et auto-tests de sécurité C# réussis.
+- Lecteur audio DPCM complété : vingt WAV décodés et mesurés en mémoire, sans
   export ni modification du jeu; [méthode et empreintes](AUDIO_RESSOURCES.md).
 - Trois comparaisons binaires Co_Burgundy1/2/3 supplémentaires reconstruisent
   respectivement douze/deux/dix porteurs et leurs liaisons sans modifier les scripts
   ou sons. Elles restent inertes, hors compte des laboratoires de mission.
-- **172 dossiers** recensés. Les études continuent : certains vestiges exigent
+- **180 dossiers** recensés. Les études continuent : certains vestiges exigent
   encore une cible, un propriétaire, une ressource ou une observation préalable.
 - L'installation actuelle n'est pas modifiée. Cinq profils refusent ses
   surcharges pertinentes en mode strict; les exclusions et empreintes sont
@@ -82,11 +82,13 @@ multijoueur vers solo n'ont toujours aucune validation de jeu.
 
 ## Travaux immédiatement recommandés
 
-1. Créer les dossiers dédiés marqués **À documenter**, en commençant par les cas
-   qui disposent d'un propriétaire et de checkpoints existants.
-2. Fermer les faux positifs pour éviter de les réexaminer et de réintroduire des
-   régressions.
-3. Instrumenter les signaux ambigus avant de proposer une réaction inventée.
+1. Poursuivre les contrats encore incomplets : synchronisations coop, positions
+   réellement absentes et autorité des événements réseau. Les lignes de missions
+   auparavant « À documenter » ont désormais une étude ou un renvoi précis.
+2. Conserver fermés les faux positifs prouvés; ne pas recréer les six barils du
+   dépôt Co_Burgundy3 ni réactiver le signal maquis remplacé par l'alarme.
+3. Préparer une copie de test isolée et instrumenter les signaux ambigus avant
+   de proposer une réaction inventée; aucun résultat moteur n'est encore acquis.
 4. Tester les variantes en solo, Carnage et coopération quand la mission existe
    dans plusieurs modes.
 5. Ne promouvoir un prototype qu'après réussite des contrôles décrits dans

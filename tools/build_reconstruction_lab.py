@@ -40,14 +40,17 @@ def lab_names(profile: dict, mode: str) -> tuple[str, str]:
     return f"hd2lab.{identifier}.{mode}", directory
 
 
-def script_closure(files: dict[str, bytes], mission: str) -> dict:
+def script_closure(files: dict[str, bytes], mission: str, registry: str = "scripts.dta") -> dict:
+    # A cooperative registry is an alternative root set, never a union with solo.
+    if registry not in ("scripts.dta", "mpscripts.dta"):
+        raise ValueError("Unsupported script registry")
     prefix = f"scripts/{mission}/"
     # Undefined cp1252 bytes occur in commercial comments. Decoding is used
     # only for analysis; the bytes placed into the bundle are never transcoded.
     texts = {name.rsplit("/", 1)[1]: split_comments(raw.decode("cp1252", errors="replace"))[0]
              for name, raw in files.items() if name.startswith(prefix) and name.endswith(".scr")}
     roots = set()
-    for _, script in parse_bindings(files[f"missions/{mission}/scripts.dta"]):
+    for _, script in parse_bindings(files[f"missions/{mission}/{registry}"]):
         if not script.strip():
             continue
         if "/" in script or "\\" in script:

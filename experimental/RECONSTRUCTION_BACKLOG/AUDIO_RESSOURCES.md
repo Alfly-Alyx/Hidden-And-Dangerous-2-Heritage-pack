@@ -38,6 +38,16 @@ Les sept fichiers sont mono, 16 bits, 22050 Hz. Tailles DTA, RIFF et nombre de
 trames concordent. Ils ont été décodés en mémoire, **pas écoutés**, et aucun
 audio commercial n'est ajouté au dépôt.
 
+## Dialogues vérifiés après le premier lot
+
+Treize WAV supplémentaires de `LangEnglish.dta`, avec leurs treize fichiers
+de synchronisation, ont été lus en mémoire : `52990012..52990023` pour le
+[dialogue CoLibye1](../CO_LIBYE1_AF1_23_24_DIALOGUE/ETUDE.md) et `53990023`
+pour la [phrase conditionnelle Libye2](../LIBYE2_DIALOGUE_24_25_CONDITIONAL_53990023/ETUDE.md).
+Les études consignent les durées et ressources. **Total : vingt WAV décodés**,
+toujours sans export ni écoute. La présence des voix ne valide pas leurs
+déclenchements, interruptions ou synchronisation labiale en moteur.
+
 ## Portée des tests
 
 Dix-sept tests synthétiques couvrent les sept tables, signe/débordement,
