@@ -4,13 +4,20 @@
 14 septembre 2026. Le prototype visuel est désactivé, ne contient aucun asset
 commercial et n’entre pas dans le système Weapon.
 
+**Actualisation du 26 septembre :** un [banc privé réalisé](../BENELLI_M4_ADDITIVE/BANC_FPV.md)
+remplace désormais la seule proposition de visualiseur. Le modèle extérieur
+moderne et le FPV statique dérivé sont fabriqués hors moteur. L'étude ci-dessous
+reste historique ; les étapes jouables demeurent non validées.
+
 ## Verdict
 
 Les archives conservent une chaîne première personne exceptionnellement riche :
 neuf états FPV avec compagnons 5DS, textures/icône, munition et sons de tir et de
 rechargement. Elle permet un démonstrateur visuel fidèle et fournit les meilleurs
 matériaux du corpus pour recréer l’arme. Elle ne fournit toutefois ni objet
-ramassable, ni entrée Weapon, ni paramètres originaux de tir.
+ramassable ni entrée Weapon fonctionnelle. Contrairement au premier inventaire,
+un record original `item_shoot` de 135 octets existe : ses champs nécessitent
+encore une qualification, ce n'est pas une configuration de tir prête à activer.
 
 Classement : **vestige partiel**. Un banc visuel utilisant les fichiers de
 l’installation du testeur est borné et fidèle aux ressources présentes. Une
@@ -67,13 +74,14 @@ inventer cette synchronisation.
 - modèle monde/posé ou troisième personne w_benelli* ;
 - modèle FPV statique séparé attendu par une entrée Weapon ;
 - liaison prouvée vers la munition 179 ;
-- paramètres de balistique, dispersion, portée, recul, cadence et dégâts ;
+- interprétation qualifiée des paramètres conservés et des champs manquants ;
 - capacité du magasin et règle exacte de rechargement ;
 - liaison événementielle de ces deux sons à la future entrée Weapon ;
 - icônes/états d’inventaire complets pour prise, dépôt et échange ;
 - usage par l’IA, sauvegarde et réplication réseau.
 
-L’absence du modèle monde interdit à elle seule une intégration propre : une
+Au stade de l'étude initiale, l'absence du modèle monde interdisait une
+intégration propre : une
 arme équipée ne disposerait pas d’apparence fiable dans les mains d’un tiers,
 au sol ou lors d’un échange.
 

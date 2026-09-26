@@ -4,7 +4,7 @@
 
 | Ensemble | État et preuves | Décision |
 |---|---|---|
-| Benelli M4 | Neuf paires de modèles FPV/animations, 13 associations `FpvAnims`, munition 179 et un enregistrement `item_shoot` de 135 octets sont attestés. Aucun modèle monde/posé. Les noms Sabre proches de Compass ne prouvent pas un emplacement d'objet. | Consolider `BENELLI_M4_ADDITIVE` et `BENELLI_M4_PARTIAL_WEAPON`. Utiliser seulement un nouvel ID libre, proposé 359 après rescan. Ne jamais écraser l'ID 9. Les nœuds 38–45 seraient modernes. |
+| Benelli M4 | Neuf paires FPV entièrement décodées, munition 179 et record `item_shoot` de 135 octets attestés. Modèle extérieur moderne et FPV statique dérivé fabriqués, [banc privé](../BENELLI_M4_ADDITIVE/BANC_FPV.md) réalisé. | Les huit nœuds d'arme sont commerciaux, seul leur extraction/recalage est moderne. Aucun ID réservé : le scan historique de 359 ne suffit pas. Ne jamais écraser l'ID 9. Tables additives et comportement restent à construire/qualifier. |
 | Flammenwerfer 35 / No.2 | Enregistrement allemand officiel; vestige britannique remplacé par Flak TMP; munitions, icônes et effet 25/flame1 seulement. Modèles, animations, mapping de tir et fonction sonore manquent. | Reconstruction entièrement moderne avec IDs additifs; ne jamais réutiliser Flak TMP. |
 | FG42 | Enregistrement `item_shoot` officiel mais ancien emplacement 27 réutilisé par un casque. | Nouvel ID, modèles et animations modernes; conserver la provenance de la munition. |
 | MG34 portable | Enregistrement officiel mais ancien emplacement 32 réutilisé; munition portable distincte de la munition 211 du montage. | Nouvel ID; ne pas confondre portable et statique. |

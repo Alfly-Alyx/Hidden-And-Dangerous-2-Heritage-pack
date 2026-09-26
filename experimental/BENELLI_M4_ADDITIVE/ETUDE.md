@@ -2,15 +2,20 @@
 
 État initial : **priorité haute, banc visuel/sonore d'abord**, 15 septembre 2026.
 Mise à jour du 26 septembre : le [modèle extérieur moderne](MODELE_MODERNE.md)
-et son générateur sont réalisés et contrôlés hors moteur. Les autres étapes
-B1–B4 ne sont pas terminées. Aucune entrée Weapon n'est créée et aucun asset
-commercial n'est recopié.
+et son générateur sont réalisés et contrôlés hors moteur. Le
+[banc FPV privé](BANC_FPV.md) lit les neuf animations, fabrique le modèle FPV
+statique dérivé et fournit un inspecteur de poses/clés/sons. B0 reste partiel,
+les deux ressources de B1 attendent la qualification moteur et B2–B4 ne sont
+pas terminées. Aucune entrée Weapon n'est créée ; les données commerciales
+dérivées restent locales et ne sont jamais versionnées.
 
 ## Décision
 
 La Benelli est le vestige d'arme le plus complet du corpus : neuf couples
 d'états FPV, leur bloc dans `Tables/FpvAnims.sav`, trois bitmaps, deux sons et
-la munition 179 subsistent. Cette richesse autorise un banc fidèle aux ressources
+la munition 179 subsistent. Un record historique `item_shoot` de 135 octets est
+également conservé, sans qualification de la sémantique de tous ses champs.
+Cette richesse autorise un banc fidèle aux ressources
 présentes, puis une reconstruction jouable moderne.
 
 L'ancien emplacement Weapon 9 est aujourd'hui la boussole. Il est intangible :
