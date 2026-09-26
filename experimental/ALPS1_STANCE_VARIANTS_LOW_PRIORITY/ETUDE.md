@@ -9,7 +9,7 @@ retenu par la release. Rien n'est compilé.
 - **ge04 crouch sniper** : ajout commenté après l'arrivée à `ge04_sniper` et
   avant `HUMAN_SetSniper(1,1)`. La release utilise StandFast ; le retour
   d'alarme emploie déjà Crouch.
-- **ge14 crouch au signal 1** : ajout commenté avant
+- **ge14 crouch au signal 6** : ajout commenté avant
   `HUMAN_TurnAtNearestPlayer`. D'autres branches ge14 emploient déjà Crouch,
   sans prouver cette posture d'activation.
 - **ge19 crouch après `ge19_02`** : la réaction tir/explosion court actuellement
@@ -47,3 +47,20 @@ jamais avec une voix directe.
 Rejet : route modifiée, IA moins réactive, posture bloquée, animation cassée,
 double voix, différence hôte/client ou impossibilité de retrouver exactement
 la baseline.
+
+## Recettes complètes et correction de preuve — 26 septembre 2026
+
+Les huit variantes de la matrice sont maintenant des recettes complètes dans
+[`reconstruction-variants.json`](../reconstruction-variants.json), avec source,
+registre, acteur et checkpoints utiles épinglés. Une ligne est décommentée
+pour sept profils; GE31 retire deux préfixes de manière atomique. Aucun autre
+octet de script ni aucune voix directe n'est changé.
+
+Correction importante : chez GE14, la ligne accroupie appartient au
+`Whenever alarm(_SignalReceived(6))`, **pas** au signal 1. Le signal 1 fait
+embarquer le soldat. L'ancien libellé de la matrice était incorrect; le profil
+est donc nommé `alps1-ge14-crouch-signal6` et son protocole vise l'alerte 6.
+
+Les deux expériences GE19 restent exclusives. Ces recettes sont destinées à
+des essais solo indépendants; une option globale ou une qualification réseau
+ne découle pas de leur construction hors moteur.

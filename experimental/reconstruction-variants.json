@@ -3,6 +3,690 @@
   "reference_edition": "GOG English Sabre Squadron 1.12",
   "profiles": [
     {
+      "id": "alps1-ge04-crouch-sniper",
+      "title": "Alps 1 — ge04-crouch-sniper",
+      "classification": "HISTORIQUE_EXPERIMENTAL",
+      "source": "scripts/alps1/ge_04.scr",
+      "actor": "GE_04",
+      "owner_entry": "missions/alps1/actors.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/alps1/ge_04.scr": {
+          "archive": "Scripts.dta",
+          "size": 1972,
+          "sha256": "8c861034c95970e7b46783644d6e1cb679f8a0abf4bee1a134873f8bd5ee6eb0"
+        },
+        "missions/alps1/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 5700,
+          "sha256": "ba20d97c390c669c762b080eb2956ef6870566d8d1cae8698155d7793bc7f41b"
+        },
+        "missions/alps1/actors.bin": {
+          "archive": "Patch.dta",
+          "size": 41052,
+          "sha256": "2523c437d5391fdedeb39b3094488fe1a490dc5cad44ad7f2b4397a5c2d8675b"
+        },
+        "missions/alps1/check2.bin": {
+          "archive": "missions.dta",
+          "size": 277037,
+          "sha256": "5132139be1dbadab51be0e62b7ae29dff102228444554d9a61e402fcccd4d83b"
+        }
+      },
+      "checks": [
+        {
+          "kind": "nul_strings",
+          "entry": "missions/alps1/check2.bin",
+          "values": [
+            "ge04_sniper"
+          ]
+        }
+      ],
+      "edits": [
+        {
+          "before": "//HUMAN_SETMODE_Crouch();",
+          "after": "HUMAN_SETMODE_Crouch();"
+        }
+      ]
+    },
+    {
+      "id": "alps1-ge14-crouch-signal6",
+      "title": "Alps 1 — ge14-crouch-signal6",
+      "classification": "HISTORIQUE_EXPERIMENTAL",
+      "source": "scripts/alps1/ge_14.scr",
+      "actor": "GE_14",
+      "owner_entry": "missions/alps1/actors.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/alps1/ge_14.scr": {
+          "archive": "Scripts.dta",
+          "size": 2400,
+          "sha256": "8095eca4a647ab68b31d07556cd9fa2fbcba1717583521f19e7d1617035eb52f"
+        },
+        "missions/alps1/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 5700,
+          "sha256": "ba20d97c390c669c762b080eb2956ef6870566d8d1cae8698155d7793bc7f41b"
+        },
+        "missions/alps1/actors.bin": {
+          "archive": "Patch.dta",
+          "size": 41052,
+          "sha256": "2523c437d5391fdedeb39b3094488fe1a490dc5cad44ad7f2b4397a5c2d8675b"
+        }
+      },
+      "checks": [],
+      "edits": [
+        {
+          "before": "//HUMAN_SETMODE_Crouch();",
+          "after": "HUMAN_SETMODE_Crouch();"
+        }
+      ]
+    },
+    {
+      "id": "alps1-ge19-crouch-alarm",
+      "title": "Alps 1 — ge19-crouch-alarm",
+      "classification": "HISTORIQUE_EXPERIMENTAL",
+      "source": "scripts/alps1/ge_19.scr",
+      "actor": "GE_19",
+      "owner_entry": "missions/alps1/actors.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/alps1/ge_19.scr": {
+          "archive": "Scripts.dta",
+          "size": 3048,
+          "sha256": "681ee81d65534977c92d41a473c5482d7401e3518d788838a051107092950856"
+        },
+        "missions/alps1/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 5700,
+          "sha256": "ba20d97c390c669c762b080eb2956ef6870566d8d1cae8698155d7793bc7f41b"
+        },
+        "missions/alps1/actors.bin": {
+          "archive": "Patch.dta",
+          "size": 41052,
+          "sha256": "2523c437d5391fdedeb39b3094488fe1a490dc5cad44ad7f2b4397a5c2d8675b"
+        },
+        "missions/alps1/check2.bin": {
+          "archive": "missions.dta",
+          "size": 277037,
+          "sha256": "5132139be1dbadab51be0e62b7ae29dff102228444554d9a61e402fcccd4d83b"
+        }
+      },
+      "checks": [
+        {
+          "kind": "nul_strings",
+          "entry": "missions/alps1/check2.bin",
+          "values": [
+            "ge19_02"
+          ]
+        }
+      ],
+      "edits": [
+        {
+          "before": "//HUMAN_SETMODE_Crouch();",
+          "after": "HUMAN_SETMODE_Crouch();"
+        }
+      ]
+    },
+    {
+      "id": "alps1-ge19-turn-near",
+      "title": "Alps 1 — ge19-turn-near",
+      "classification": "HISTORIQUE_EXPERIMENTAL",
+      "source": "scripts/alps1/ge_19.scr",
+      "actor": "GE_19",
+      "owner_entry": "missions/alps1/actors.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/alps1/ge_19.scr": {
+          "archive": "Scripts.dta",
+          "size": 3048,
+          "sha256": "681ee81d65534977c92d41a473c5482d7401e3518d788838a051107092950856"
+        },
+        "missions/alps1/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 5700,
+          "sha256": "ba20d97c390c669c762b080eb2956ef6870566d8d1cae8698155d7793bc7f41b"
+        },
+        "missions/alps1/actors.bin": {
+          "archive": "Patch.dta",
+          "size": 41052,
+          "sha256": "2523c437d5391fdedeb39b3094488fe1a490dc5cad44ad7f2b4397a5c2d8675b"
+        }
+      },
+      "checks": [],
+      "edits": [
+        {
+          "before": "//HUMAN_TurnAtNearestPlayer();",
+          "after": "HUMAN_TurnAtNearestPlayer();"
+        }
+      ]
+    },
+    {
+      "id": "alps1-ge31-range-stance-pair",
+      "title": "Alps 1 — ge31-range-stance-pair",
+      "classification": "HISTORIQUE_EXPERIMENTAL",
+      "source": "scripts/alps1/ge_31.scr",
+      "actor": "GE_31",
+      "owner_entry": "missions/alps1/actors.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/alps1/ge_31.scr": {
+          "archive": "Scripts.dta",
+          "size": 3275,
+          "sha256": "4342cefb62946c6d6c9b1d697f0544e9620c8983d3b3be1c7c74c472494c2728"
+        },
+        "missions/alps1/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 5700,
+          "sha256": "ba20d97c390c669c762b080eb2956ef6870566d8d1cae8698155d7793bc7f41b"
+        },
+        "missions/alps1/actors.bin": {
+          "archive": "Patch.dta",
+          "size": 41052,
+          "sha256": "2523c437d5391fdedeb39b3094488fe1a490dc5cad44ad7f2b4397a5c2d8675b"
+        },
+        "missions/alps1/check2.bin": {
+          "archive": "missions.dta",
+          "size": 277037,
+          "sha256": "5132139be1dbadab51be0e62b7ae29dff102228444554d9a61e402fcccd4d83b"
+        }
+      },
+      "checks": [
+        {
+          "kind": "nul_strings",
+          "entry": "missions/alps1/check2.bin",
+          "values": [
+            "ge31_01",
+            "ge31_02"
+          ]
+        }
+      ],
+      "edits": [
+        {
+          "before": "//HUMAN_SETMODE_Crouch();",
+          "after": "HUMAN_SETMODE_Crouch();"
+        },
+        {
+          "before": "//HUMAN_SETMODE_Stand();",
+          "after": "HUMAN_SETMODE_Stand();"
+        }
+      ]
+    },
+    {
+      "id": "alps1-ge07-initial-walk",
+      "title": "Alps 1 — ge07-initial-walk",
+      "classification": "HISTORIQUE_EXPERIMENTAL",
+      "source": "scripts/alps1/ge_07.scr",
+      "actor": "GE_07",
+      "owner_entry": "missions/alps1/actors.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/alps1/ge_07.scr": {
+          "archive": "Scripts.dta",
+          "size": 6819,
+          "sha256": "ff84cbaa604ca5df2643f651b28ecb8f231d7a499e521af26cd27cecdfad4e1a"
+        },
+        "missions/alps1/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 5700,
+          "sha256": "ba20d97c390c669c762b080eb2956ef6870566d8d1cae8698155d7793bc7f41b"
+        },
+        "missions/alps1/actors.bin": {
+          "archive": "Patch.dta",
+          "size": 41052,
+          "sha256": "2523c437d5391fdedeb39b3094488fe1a490dc5cad44ad7f2b4397a5c2d8675b"
+        }
+      },
+      "checks": [],
+      "edits": [
+        {
+          "before": "//HUMAN_SETMODE_Walk();",
+          "after": "HUMAN_SETMODE_Walk();"
+        }
+      ]
+    },
+    {
+      "id": "alps1-ge08-initial-run",
+      "title": "Alps 1 — ge08-initial-run",
+      "classification": "HISTORIQUE_EXPERIMENTAL",
+      "source": "scripts/alps1/ge_08.scr",
+      "actor": "GE_08",
+      "owner_entry": "missions/alps1/actors.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/alps1/ge_08.scr": {
+          "archive": "Scripts.dta",
+          "size": 5529,
+          "sha256": "e266d619b308bf3782dcf54482ed5f3fe8140308d75164546265f1bf1b55984b"
+        },
+        "missions/alps1/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 5700,
+          "sha256": "ba20d97c390c669c762b080eb2956ef6870566d8d1cae8698155d7793bc7f41b"
+        },
+        "missions/alps1/actors.bin": {
+          "archive": "Patch.dta",
+          "size": 41052,
+          "sha256": "2523c437d5391fdedeb39b3094488fe1a490dc5cad44ad7f2b4397a5c2d8675b"
+        }
+      },
+      "checks": [],
+      "edits": [
+        {
+          "before": "//HUMAN_SETMODE_Run();",
+          "after": "HUMAN_SETMODE_Run();"
+        }
+      ]
+    },
+    {
+      "id": "alps1-ge09-initial-run",
+      "title": "Alps 1 — ge09-initial-run",
+      "classification": "HISTORIQUE_EXPERIMENTAL",
+      "source": "scripts/alps1/ge_09.scr",
+      "actor": "GE_09",
+      "owner_entry": "missions/alps1/actors.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/alps1/ge_09.scr": {
+          "archive": "Scripts.dta",
+          "size": 5509,
+          "sha256": "019fe9b437d6c68717465794bdd06863b0992e3e37ab4ba2b5183d13ba6b9cf6"
+        },
+        "missions/alps1/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 5700,
+          "sha256": "ba20d97c390c669c762b080eb2956ef6870566d8d1cae8698155d7793bc7f41b"
+        },
+        "missions/alps1/actors.bin": {
+          "archive": "Patch.dta",
+          "size": 41052,
+          "sha256": "2523c437d5391fdedeb39b3094488fe1a490dc5cad44ad7f2b4397a5c2d8675b"
+        }
+      },
+      "checks": [],
+      "edits": [
+        {
+          "before": "//HUMAN_SETMODE_Run();",
+          "after": "HUMAN_SETMODE_Run();"
+        }
+      ]
+    },
+    {
+      "id": "alps1-ge17-move-before-final-post",
+      "title": "Alps 1 — ge17-move-before-final-post",
+      "classification": "HISTORIQUE_EXPERIMENTAL",
+      "source": "scripts/alps1/ge_17.scr",
+      "actor": "GE_17",
+      "owner_entry": "missions/alps1/actors.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/alps1/ge_17.scr": {
+          "archive": "Scripts.dta",
+          "size": 2513,
+          "sha256": "9222687af260c0af902f470922d2e8f67f81bb8473bca9edae86d23992281314"
+        },
+        "missions/alps1/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 5700,
+          "sha256": "ba20d97c390c669c762b080eb2956ef6870566d8d1cae8698155d7793bc7f41b"
+        },
+        "missions/alps1/actors.bin": {
+          "archive": "Patch.dta",
+          "size": 41052,
+          "sha256": "2523c437d5391fdedeb39b3094488fe1a490dc5cad44ad7f2b4397a5c2d8675b"
+        },
+        "missions/alps1/check2.bin": {
+          "archive": "missions.dta",
+          "size": 277037,
+          "sha256": "5132139be1dbadab51be0e62b7ae29dff102228444554d9a61e402fcccd4d83b"
+        }
+      },
+      "checks": [
+        {
+          "kind": "nul_strings",
+          "entry": "missions/alps1/check2.bin",
+          "values": [
+            "ge17_02",
+            "ge17_03",
+            "ge17_04"
+          ]
+        }
+      ],
+      "edits": [
+        {
+          "before": "//HUMAN_Move(\"ge17_03\");",
+          "after": "HUMAN_Move(\"ge17_03\");"
+        }
+      ]
+    },
+    {
+      "id": "africa1-card-players-pair",
+      "title": "Africa 1 — paire de joueurs de cartes interrompable",
+      "classification": "MODERNE",
+      "source": "scripts/africa1/af1_24.scr",
+      "actor": "AF1_24",
+      "owner_entry": "missions/africa1/actors.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/africa1/af1_24.scr": {
+          "archive": "Patch.dta",
+          "size": 2220,
+          "sha256": "086d29ab9a30a4167da1561a9f04a816aa40541b5886389e70cb1bc699240f77"
+        },
+        "missions/africa1/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 4622,
+          "sha256": "d37bd79e7d779407884d9cc3329432c0e01f80abb6cf3c1baa6fb8f8293a1d39"
+        },
+        "missions/africa1/actors.bin": {
+          "archive": "Patch.dta",
+          "size": 77797,
+          "sha256": "3eb5c28c0e091b50b3550cb295c71e08ce025291917dfa5bf0d0d4b37513b7a5"
+        },
+        "scripts/africa1/af1_25.scr": {
+          "archive": "Patch.dta",
+          "size": 2194,
+          "sha256": "349ea3720884700646b5c1c16ed27313b782895c65e67aece01a15d01ad69511"
+        }
+      },
+      "checks": [],
+      "edits": [
+        {
+          "before": "  INTEGER Atype\t\t\t\t= 0;",
+          "after": "  INTEGER Atype\t\t\t\t= 0;\n  INTEGER heritage_cards_active = 0;"
+        },
+        {
+          "before": "OnDeath(){",
+          "after": "OnDeath(){\n  SetWhenever(player, false);\n  if (heritage_cards_active)\n  {\n    heritage_cards_active = 0;\n    HUMAN_ACTIVITY_Card(0);\n  }"
+        },
+        {
+          "before": "OnSignal(10){",
+          "after": "OnSignal(10){\n  SetWhenever(player, false);\n  if (heritage_cards_active)\n  {\n    heritage_cards_active = 0;\n    HUMAN_ACTIVITY_Card(0);\n  }"
+        },
+        {
+          "before": "OnAlarm(){",
+          "after": "OnAlarm(){\n  SetWhenever(player, false);\n  if (heritage_cards_active)\n  {\n    heritage_cards_active = 0;\n    HUMAN_ACTIVITY_Card(0);\n  }"
+        },
+        {
+          "before": "Label ACTIVATE:",
+          "after": "Label ACTIVATE:\n  SetWhenever(player, false);"
+        },
+        {
+          "before": "//  HUMAN_ACTIVITY_Card(1);\n//Label LOOP:\n//  HUMAN_ACTIVITY_Card(2);\n//  Delay(1500);\n//  goto LOOP;",
+          "after": "  heritage_cards_active = 1;\n  HUMAN_ACTIVITY_Card(1);\nLabel LOOP:\n  HUMAN_ACTIVITY_Card(2);\n  Delay(1500);\n  goto LOOP;"
+        }
+      ],
+      "additional_changes": [
+        {
+          "source": "scripts/africa1/af1_25.scr",
+          "actor": "AF1_25",
+          "edits": [
+            {
+              "before": "  INTEGER Atype\t\t\t\t= 0;",
+              "after": "  INTEGER Atype\t\t\t\t= 0;\n  INTEGER heritage_cards_active = 0;"
+            },
+            {
+              "before": "OnDeath()\n{",
+              "after": "OnDeath()\n{\n  SetWhenever(player, false);\n  if (heritage_cards_active)\n  {\n    heritage_cards_active = 0;\n    HUMAN_ACTIVITY_Card(0);\n  }"
+            },
+            {
+              "before": "OnSignal(10){",
+              "after": "OnSignal(10){\n  SetWhenever(player, false);\n  if (heritage_cards_active)\n  {\n    heritage_cards_active = 0;\n    HUMAN_ACTIVITY_Card(0);\n  }"
+            },
+            {
+              "before": "OnAlarm(){",
+              "after": "OnAlarm(){\n  SetWhenever(player, false);\n  if (heritage_cards_active)\n  {\n    heritage_cards_active = 0;\n    HUMAN_ACTIVITY_Card(0);\n  }"
+            },
+            {
+              "before": "Label ACTIVATE:",
+              "after": "Label ACTIVATE:\n  SetWhenever(player, false);"
+            },
+            {
+              "before": "//  HUMAN_ACTIVITY_Card(1);\n//Label LOOP:\n//  HUMAN_ACTIVITY_Card(2);\n//  Delay(1500);\n//  goto LOOP;",
+              "after": "  heritage_cards_active = 1;\n  HUMAN_ACTIVITY_Card(1);\nLabel LOOP:\n  HUMAN_ACTIVITY_Card(2);\n  Delay(1500);\n  goto LOOP;"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arctic1-cistern1-particle",
+      "title": "Arctic 1 — citerne 1, particule seule",
+      "classification": "HISTORIQUE_EXPERIMENTAL",
+      "source": "scripts/arctic1/r_arc1a_cisterna1.scr",
+      "actor": "m_nadrz_",
+      "owner_entry": "missions/arctic1/actors.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/arctic1/r_arc1a_cisterna1.scr": {
+          "archive": "Scripts.dta",
+          "size": 278,
+          "sha256": "b9e18ff5e56aa94999c29d5e7d8c46817531cd9f1c3643a3602d6b09de814aa9"
+        },
+        "missions/arctic1/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 4862,
+          "sha256": "fedfb47f89d393f120efb6b2570dc4c5cd019c9b2b78290094e80b3045fa5ea4"
+        },
+        "missions/arctic1/actors.bin": {
+          "archive": "missions.dta",
+          "size": 19916,
+          "sha256": "3b992e9981c35f451ef8e7f33b9c6761238d60178800765565cab2861652961f"
+        }
+      },
+      "checks": [],
+      "edits": [
+        {
+          "before": "//  FRM_CreateParticle(53, MyFRM);",
+          "after": "  FRM_CreateParticle(53, MyFRM);"
+        }
+      ]
+    },
+    {
+      "id": "arctic1-cistern1-sound",
+      "title": "Arctic 1 — citerne 1, son seul",
+      "classification": "HISTORIQUE_EXPERIMENTAL",
+      "source": "scripts/arctic1/r_arc1a_cisterna1.scr",
+      "actor": "m_nadrz_",
+      "owner_entry": "missions/arctic1/actors.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/arctic1/r_arc1a_cisterna1.scr": {
+          "archive": "Scripts.dta",
+          "size": 278,
+          "sha256": "b9e18ff5e56aa94999c29d5e7d8c46817531cd9f1c3643a3602d6b09de814aa9"
+        },
+        "missions/arctic1/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 4862,
+          "sha256": "fedfb47f89d393f120efb6b2570dc4c5cd019c9b2b78290094e80b3045fa5ea4"
+        },
+        "missions/arctic1/actors.bin": {
+          "archive": "missions.dta",
+          "size": 19916,
+          "sha256": "3b992e9981c35f451ef8e7f33b9c6761238d60178800765565cab2861652961f"
+        }
+      },
+      "checks": [],
+      "edits": [
+        {
+          "before": "//  PlaySound(6, 2);",
+          "after": "  PlaySound(6, 2);"
+        }
+      ]
+    },
+    {
+      "id": "africa4-invasion-transition",
+      "title": "Africa 4 — fondu et attente historiques avant invasion",
+      "classification": "HISTORIQUE_EXPERIMENTAL",
+      "source": "scripts/africa4/af3b_organizer.scr",
+      "actor": "dummy_organizer",
+      "owner_entry": "missions/africa4/scene2.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/africa4/af3b_organizer.scr": {
+          "archive": "Patch.dta",
+          "size": 3997,
+          "sha256": "46bf3adc728550785c65095201720468692360d1b72818d4c87a488d9f41744d"
+        },
+        "missions/africa4/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 2639,
+          "sha256": "bfee17872d0aae55afebbe9ebd007450f2482a78ebea2d6889ba57c96727181e"
+        },
+        "missions/africa4/actors.bin": {
+          "archive": "Patch.dta",
+          "size": 35804,
+          "sha256": "2d6392bef32cd15ebbb26eda6398360b07c993c54a59c4c4b61b954b4ce57b0a"
+        },
+        "missions/africa4/scene2.bin": {
+          "archive": "missions.dta",
+          "size": 3761990,
+          "sha256": "14dd52086b2c56cdde594b265e843841979911d1ae1627fd353a02ae955c0c72"
+        }
+      },
+      "checks": [],
+      "edits": [
+        {
+          "before": "//  CSC_FadeOutToColor(200, 0, 0, 0);",
+          "after": "  CSC_FadeOutToColor(200, 0, 0, 0);"
+        },
+        {
+          "before": "//  Delay(1000);",
+          "after": "  Delay(1000);"
+        },
+        {
+          "before": "//  CSC_FadeIn(700);",
+          "after": "  CSC_FadeIn(700);"
+        },
+        {
+          "before": "//Delay(20000);",
+          "after": "Delay(20000);"
+        }
+      ]
+    },
+    {
+      "id": "libye2-destroyed-park-dialogue",
+      "title": "Libye 2 — réplique conditionnelle du parc détruit",
+      "classification": "MODERNE",
+      "source": "scripts/libye2/af2_24_25_speech.scr",
+      "actor": "AF2_24_25_speech",
+      "owner_entry": "missions/libye2/scene2.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/libye2/af2_24_25_speech.scr": {
+          "archive": "SabreSquadron.dta",
+          "size": 1582,
+          "sha256": "f9fe3179451386b0c110ce1831655ec85271c0b0ae30e556569590db7186ddce"
+        },
+        "missions/libye2/scripts.dta": {
+          "archive": "SabreSquadron.dta",
+          "size": 4138,
+          "sha256": "ef5d8b76dec5dc94e300a09e49fd77b6ba1236ede5faa5699dfcdd91c5252ff1"
+        },
+        "missions/libye2/actors.bin": {
+          "archive": "SabreSquadron.dta",
+          "size": 54833,
+          "sha256": "e3413295de02fc67c47173029dc0c393913af68eda4fab116860834b729aa85b"
+        },
+        "missions/libye2/scene2.bin": {
+          "archive": "SabreSquadron.dta",
+          "size": 13202698,
+          "sha256": "fba57a8a5c740a85a7e9490069d750a78eb4ac75b6be998b5dfbe5bb522e0977"
+        },
+        "scripts/libye2/af2_24.scr": {
+          "archive": "SabreSquadron.dta",
+          "size": 1836,
+          "sha256": "2033acbee8518277c4ad6ad5743329d34a4c8d0daa7a82a63c80a8064ea166c8"
+        },
+        "scripts/libye2/af2_25.scr": {
+          "archive": "SabreSquadron.dta",
+          "size": 1683,
+          "sha256": "cc87873c53828c3932a99a12c702dd4b485a5fa1b23267622e1077a8595a58a8"
+        },
+        "scripts/libye2/af2_obj3.scr": {
+          "archive": "SabreSquadron.dta",
+          "size": 1777,
+          "sha256": "19d0bdbe5b98775232c7ce8b2bb5fd52281744a707274abd65688e0010401ff9"
+        }
+      },
+      "checks": [
+        {
+          "kind": "frames",
+          "entry": "missions/libye2/actors.bin",
+          "values": [
+            "AF2_24",
+            "AF2_25",
+            "Opel1",
+            "Opel2",
+            "Opel3",
+            "Opel4",
+            "Opel5",
+            "Opelflak1",
+            "Opelflak2",
+            "la_kubelAf_"
+          ]
+        }
+      ],
+      "edits": [
+        {
+          "before": "Frame af2_24;",
+          "after": "Integer heritage_dialogue_state = 0;\nInteger heritage_phrase_used = 0;\nFrame opel1; FRM_FindFrame(opel1, \"Opel1\");\nFrame opel2; FRM_FindFrame(opel2, \"Opel2\");\nFrame opel3; FRM_FindFrame(opel3, \"Opel3\");\nFrame opel4; FRM_FindFrame(opel4, \"Opel4\");\nFrame opel5; FRM_FindFrame(opel5, \"Opel5\");\nFrame opelflak1; FRM_FindFrame(opelflak1, \"Opelflak1\");\nFrame opelflak2; FRM_FindFrame(opelflak2, \"Opelflak2\");\nFrame kubel; FRM_FindFrame(kubel, \"la_kubelAf_\");\nFrame af2_24;"
+        },
+        {
+          "before": "Whenever start (_PlayerInRange(50))",
+          "after": "Whenever start ((_PlayerInRange(50)) AND (heritage_dialogue_state == 0))"
+        },
+        {
+          "before": "\tSendSignal(af2_24, 2);",
+          "after": "\theritage_dialogue_state = 1;\n\tSetWhenever(start, false);\n\tSendSignal(af2_24, 2);"
+        },
+        {
+          "before": "\tFRM_MorphSpeechDelayed(af2_24, 0, 0, 0);",
+          "after": "\theritage_dialogue_state = 3;\n\tSetWhenever(start, false);\n\tFRM_MorphSpeechDelayed(af2_24, 0, 0, 0);"
+        },
+        {
+          "before": "\tGoTo start;",
+          "after": "\tif (heritage_dialogue_state == 1)\n\t{\n\t\theritage_dialogue_state = 2;\n\t\tGoTo start;\n\t}"
+        },
+        {
+          "before": "//\tFRM_MorphSpeechDelayed(af2_25, 53990023, 2, 41);",
+          "after": "\tif ((heritage_phrase_used == 0) AND (_ACTOR_GetState(af2_24) != 0) AND (_ACTOR_GetState(af2_25) != 0) AND (_ACTOR_GetState(opel1)==0) AND (_ACTOR_GetState(opel2)==0) AND (_ACTOR_GetState(opel3)==0) AND (_ACTOR_GetState(opel4)==0) AND (_ACTOR_GetState(opel5)==0) AND (_ACTOR_GetState(opelflak1)==0) AND (_ACTOR_GetState(opelflak2)==0) AND (_ACTOR_GetState(kubel)==0))\n\t{\n\t\theritage_phrase_used = 1;\n\t\tFRM_MorphSpeechDelayed(af2_25, 53990023, 2, 41);\n\t}"
+        },
+        {
+          "before": "\tFRM_MorphSpeechDelayed(af2_25, 53990024, 2, 41);",
+          "after": "\tFRM_MorphSpeechDelayed(af2_25, 53990024, 2, 41);\n\theritage_dialogue_state = 3;"
+        }
+      ],
+      "asset_evidence": [
+        {
+          "path": "sounds/53990023.wav",
+          "archive": "LangEnglish.dta",
+          "size": 242896,
+          "sha256": "768d89b0fcc7191a270677adfaa053e27bf9bbf16d048555651f7d6afba9cb01"
+        },
+        {
+          "path": "tables/dabing/53990023.dat",
+          "archive": "LangEnglish.dta",
+          "size": 2216,
+          "sha256": "c0c8ce1d16a5f3146df5e2c93279237887f72e942b63dd8e4fdaaa186e34ebea"
+        }
+      ]
+    },
+    {
       "id": "africa5-random-german-face-seed",
       "title": "Africa 5 — départ aléatoire de la palette allemande existante",
       "classification": "MODERNE",

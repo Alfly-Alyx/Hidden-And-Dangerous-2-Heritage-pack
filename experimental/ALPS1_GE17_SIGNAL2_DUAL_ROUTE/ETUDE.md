@@ -55,6 +55,16 @@ Rejet : activation simultanée Move/Téléport, disparition de l'animation,
 absence de `ge17_04`, collision avec ge16, position aléatoire invalide ou
 différence après reprise.
 
+## Recette complète — 26 septembre 2026
+
+`alps1-ge17-move-before-final-post` reconstruit le script de 2511 octets depuis
+la source de 2513 octets, SHA-256
+`9222687af260c0af902f470922d2e8f67f81bb8473bca9edae86d23992281314`.
+Seuls les deux octets de commentaire devant le mouvement vers `ge17_03`
+sont retirés. Acteur, liaison et points 02/03/04 sont vérifiés. Le téléport
+reste commenté; tous les octets de la recherche d'arme et de la fin sont
+conservés. La variante téléport n'est pas promue par cette recette.
+
 ## Sources
 
 - `.analysis/scripts/base/SCRIPTS/ALPS1/ge_17.scr` ;

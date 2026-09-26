@@ -3,7 +3,7 @@
 | ID | Script / emplacement | Release | Variante | Portée du risque |
 | --- | --- | --- | --- | --- |
 | GE04_CROUCH_SNIPER | ge04, après `ge04_sniper` | StandFast + sniper | Crouch + sniper | locale, tir/couverture |
-| GE14_CROUCH_SIGNAL1 | ge14, signal 1 | mode hérité + TurnAt | Crouch + TurnAt | activation |
+| GE14_CROUCH_SIGNAL6 | ge14, signal 6 | mode hérité + TurnAt | Crouch + TurnAt | alerte |
 | GE19_CROUCH_ALARM | ge19, après `ge19_02` | Run/StandFast | Crouch | alarme/navigation |
 | GE19_TURN_NEAR | ge19, pas joueur <4 | fin sans rotation | TurnAtNearestPlayer | locale, fin du script |
 | GE31_RANGE_STANCE_PAIR | ge31, `ge31_02` | délai sans changement | Crouch, délai, Stand | stand de tir |

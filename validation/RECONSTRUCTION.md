@@ -4,7 +4,7 @@ Le [registre expérimental](reconstruction-runtime.json) est séparé du registr
 du paquet stable `runtime-validation.json` et des conversions
 `multiplayer-solo-runtime.json`. Il ne modifie aucun de leurs résultats.
 
-Au 26 septembre 2026 : **27 profils, 165 contrôles, tous pending**. Aucun essai
+Au 26 septembre 2026 : **41 profils, 249 contrôles, tous pending**. Aucun essai
 moteur n'a été effectué par la création du registre ou son audit.
 
 - 24 variantes de scripts : six contrôles chacune;
@@ -131,7 +131,7 @@ Aucun résultat du registre n'est rempli automatiquement.
 ```
 
 La première commande vérifie seulement structure, couverture et preuves présentes.
-Elle réussit avec 165 cas pending, sans annoncer une validation moteur.
+Elle réussit avec 249 cas pending, sans annoncer une validation moteur.
 La deuxième échoue tant que tous les résultats expérimentaux ne sont pas
 enregistrés comme réussis avec leurs preuves. La troisième reste le contrôle
 séparé des 56 essais stables et 21 candidates de conversion.
@@ -168,7 +168,7 @@ pas de relire les empreintes qu'il contient. Un changement d'exécutable, de ZIP
 d'étude, de protocole ou de source rend le dossier obsolète.
 
 Le dossier contient un index, un relevé général et une fiche Markdown/JSON pour
-chacun des 27 profils. Les fiches réunissent :
+chacun des 41 profils. Les fiches réunissent :
 
 - l'étude, les prérequis et les étapes particulières;
 - les six contrôles solo ou sept contrôles coop, sans résultat inventé;
@@ -194,4 +194,4 @@ Ils restent ignorés par Git, notamment parce qu'ils contiennent des chemins loc
 Quatorze tests supplémentaires couvrent cette préparation. Sur ce poste,
 **265 tests réussissent sur 266**, avec un test de création réelle de lien
 symbolique non exécuté faute de privilège Windows. Ce résultat ne valide aucun
-des 165 essais moteur, qui restent en attente.
+des 249 essais moteur, qui restent en attente.

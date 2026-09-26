@@ -1,5 +1,6 @@
 """Native mission deployment/rollback with fabricated bytes, never HD2 execution."""
 import copy
+from contextlib import ExitStack, nullcontext
 import json
 import os
 from pathlib import Path
@@ -54,6 +55,83 @@ class NativeTrialTests(unittest.TestCase):
         (folder / (self.profile['id'] + '.json')).write_bytes(sandbox.json_data(self.preset))
         (self.session / 'PRESETS.json').write_bytes(sandbox.json_data({
             'profiles': [{'profile': self.profile['id'], 'sha256': fingerprint(self.preset)}]}))
+
+    def extension_context(self):
+        index_path = self.session / 'PRESETS.json'
+        index = json.loads(index_path.read_text())
+        index.update(schema_version=1, kind='native_trial_presets', game_launched=False,
+                     environment_sha256=self.preset['environment_sha256'])
+        index_path.write_bytes(sandbox.json_data(index))
+        second = {**copy.deepcopy(self.profile), 'id': 'example-second'}
+        catalog = {self.profile['id']: self.profile, second['id']: second}
+        expected = {key: {'definition_sha256': fingerprint(value)} for key, value in catalog.items()}
+        runtime = {'ok': True, 'test_plan_sha256': {key: 'a' * 64 for key in catalog}}
+        context = ExitStack()
+        context.enter_context(patch.object(deploy, 'supported_client'))
+        context.enter_context(patch.object(deploy, 'audit', return_value=runtime))
+        context.enter_context(patch.object(deploy, 'definitions', return_value=expected))
+        context.enter_context(patch.object(deploy, 'load_catalog', return_value=catalog))
+        context.enter_context(patch.object(deploy, 'ArchiveSources', side_effect=lambda *a, **kw: nullcontext(self.sources)))
+        return context, runtime
+
+    def test_extension_preserves_old_preset_game_and_recovery_index(self):
+        context, _ = self.extension_context()
+        old_bytes = (self.session / 'presets' / (self.profile['id'] + '.json')).read_bytes()
+        old_index = (self.session / 'PRESETS.json').read_bytes()
+        with context:
+            report = deploy.extend_all(self.session, root=self.root)
+            self.assertEqual(report['added'], ['example-second'])
+            self.assertEqual(deploy.extend_all(self.session, root=self.root)['added'], [])
+        self.assertEqual((self.session / 'presets' / (self.profile['id'] + '.json')).read_bytes(), old_bytes)
+        self.assertEqual(next((self.session / 'preset-history').iterdir()).read_bytes(), old_index)
+        self.assertTrue(sandbox.verify(self.session, root=self.root)['ok'])
+        self.assertEqual(deploy.load_preset(self.session, 'example-second')['profile'], 'example-second')
+
+    def test_extension_refuses_changed_existing_protocol(self):
+        context, runtime = self.extension_context()
+        old_index = (self.session / 'PRESETS.json').read_bytes()
+        runtime['test_plan_sha256'][self.profile['id']] = 'b' * 64
+        with context, self.assertRaisesRegex(ValueError, 'protocol changed'):
+            deploy.extend_all(self.session, root=self.root)
+        self.assertEqual((self.session / 'PRESETS.json').read_bytes(), old_index)
+        self.assertFalse((self.session / 'presets/example-second.json').exists())
+
+    def test_interrupted_extension_preserves_index_and_resumes_identical_presets(self):
+        context, _ = self.extension_context()
+        old_index = (self.session / 'PRESETS.json').read_bytes()
+        with context:
+            with patch.object(deploy, 'atomic_json', side_effect=OSError('invented interruption')):
+                with self.assertRaises(OSError):
+                    deploy.extend_all(self.session, root=self.root)
+            self.assertEqual((self.session / 'PRESETS.json').read_bytes(), old_index)
+            report = deploy.extend_all(self.session, root=self.root)
+            self.assertEqual(report['added'], ['example-second'])
+        self.assertTrue(sandbox.verify(self.session, root=self.root)['ok'])
+
+    def test_extension_refuses_active_trial_without_changing_files(self):
+        context, _ = self.extension_context()
+        with context:
+            self.apply()
+            with self.assertRaisesRegex(ValueError, 'active trial'):
+                deploy.extend_all(self.session, root=self.root)
+        self.assertEqual(deploy.status(self.session, root=self.root)['modified_targets'], [])
+
+    def test_selected_rehearsal_requires_safe_separate_report_name(self):
+        for options in ({'profiles': [self.profile['id']]}, {'report_name': '../escape'}):
+            with self.assertRaises(ValueError):
+                deploy.rehearse(self.session, root=self.root, **options)
+
+    def test_apply_rechecks_dialogue_assets_before_any_game_write(self):
+        raw = b'INVENTED AUDIO'
+        self.preset['asset_evidence'] = [{'path': 'sounds/12345678.wav', 'archive': 'LangEnglish.dta',
+                                         'size': len(raw), 'sha256': fingerprint({'not': 'actual bytes'})}]
+        self.persist_preset()
+        self.sources.read_asset = lambda *args: raw
+        with patch.object(deploy, 'ArchiveSources', side_effect=lambda *a, **kw: nullcontext(self.sources)):
+            with self.assertRaisesRegex(ValueError, 'asset changed before application'):
+                self.apply()
+        self.assertFalse((self.session / 'active.json').exists())
+        self.assertTrue(sandbox.verify(self.session, root=self.root)['ok'])
 
     def apply(self, mode='variant'):
         return deploy.apply(self.session, self.profile['id'], mode, root=self.root)

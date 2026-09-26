@@ -128,6 +128,20 @@ La boucle n’ajoute donc ni suspension, ni désactivation d’alarme ou de sign
 Critères d’arrêt : prop orphelin, acteur figé, alarme retardée, boucle non
 interruptible, désynchronisation durable ou survivant jouant indéfiniment seul.
 
+## Paire complète reproductible — 26 septembre 2026
+
+Le profil `africa1-card-players-pair` produit ensemble AF1_24 (2705 octets) et
+AF1_25 (2679 octets), depuis les deux sources Patch épinglées. L'export d'une
+moitié seulement est refusé par le générateur. Le registre et les deux acteurs
+sont contrôlés; aucune liaison supplémentaire n'est créée.
+
+Les sorties alarme/signal 10/mort désarment d'abord la proximité, puis effacent
+le verrou avant Card(0). L'activation désarme également la proximité avant le
+cycle. La cadence historique 1500 est conservée, sans second coordinateur ni
+nouveau signal entre les acteurs. Les réactions commerciales propres à chacun
+restent distinctes. Ce nettoyage moderne nécessite toujours les observations
+de props, de décès et de reprise décrites ci-dessus.
+
 ## Sources internes
 
 - `.analysis/scripts/base/SCRIPTS/AFRICA1/AF1_24.scr` ;

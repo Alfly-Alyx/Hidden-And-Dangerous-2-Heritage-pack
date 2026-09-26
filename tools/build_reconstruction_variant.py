@@ -24,6 +24,25 @@ CATALOG = ROOT / "experimental/reconstruction-variants.json"
 ARCHIVES = ("missions.dta", "Scripts.dta", "Patch.dta", "SabreSquadron.dta")
 ID_PATTERN = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*\Z")
 SHA_PATTERN = re.compile(r"[0-9a-f]{64}\Z")
+ASSET_PATTERN = re.compile(r"(?:sounds/[0-9]{8}\.wav|tables/dabing/[0-9]{8}\.dat)\Z")
+ASSET_ARCHIVES = ("LangEnglish.dta", "SabreSquadron.dta")
+
+
+def asset_specs(profile: dict) -> list[dict]:
+    specs = profile.get("asset_evidence", [])
+    if not isinstance(specs, list):
+        raise ValueError("Asset evidence must be a list")
+    seen = set()
+    for spec in specs:
+        if (not isinstance(spec, dict) or set(spec) != {"path", "archive", "size", "sha256"}
+                or not isinstance(spec["path"], str) or not ASSET_PATTERN.fullmatch(spec["path"])
+                or spec["archive"] not in ASSET_ARCHIVES
+                or type(spec["size"]) is not int or spec["size"] <= 0
+                or not isinstance(spec["sha256"], str) or not SHA_PATTERN.fullmatch(spec["sha256"])
+                or spec["path"] in seen):
+            raise ValueError("Invalid or duplicate pinned dialogue asset")
+        seen.add(spec["path"])
+    return specs
 
 
 def normalized(value: str) -> str:
@@ -102,6 +121,7 @@ def load_catalog(path: Path = CATALOG) -> dict:
         if profile.get("default_profile") != "commercial":
             raise ValueError("The commercial profile must remain the default")
         evidence = profile["evidence"]
+        asset_specs(profile)
         changes = change_specs(profile)
         required = {f"missions/{mission}/scripts.dta", f"missions/{mission}/actors.bin"}
         for change in changes:
@@ -174,7 +194,8 @@ class ArchiveSources:
         if not re.fullmatch(r"[a-z0-9_]+", mission):
             raise ValueError("Invalid source mission name")
         prefixes = (f"missions/{mission}/", f"scripts/{mission}/")
-        return sorted({name for _, index in self.index.values() for name in index
+        return sorted({name for archive in (*ARCHIVES, "PatchX01.dta") if archive in self.index
+                       for name in self.index[archive][1]
                        if name.startswith(prefixes)})
 
     def read(self, name: str) -> tuple[str, bytes]:
@@ -206,6 +227,35 @@ class ArchiveSources:
         result = (archive_name, archive.read(entry))
         self.cache[name] = result
         return result
+
+    def read_asset(self, name: str, archive_name: str) -> bytes:
+        """Read a named audio/lip-sync reference, never export or install it.
+
+        This pins the selected English source, not a claim about all language
+        editions or runtime resource precedence.
+        """
+        if not ASSET_PATTERN.fullmatch(name) or archive_name not in ASSET_ARCHIVES:
+            raise ValueError("Unsupported dialogue asset source")
+        loose = self.game.joinpath(*name.split('/'))
+        if loose.exists():
+            if not self.archives_only:
+                raise ValueError(f"Loose asset override must be reviewed separately: {name}")
+            raw = loose.read_bytes()
+            self.excluded_loose_overrides[name] = {"size": len(raw), "sha256": digest(raw)}
+        if archive_name not in self.index:
+            archive = self.stack.enter_context(DtaArchive(self.game / archive_name))
+            entries = {}
+            for entry in archive.entries:
+                entries.setdefault(normalized(entry.name), []).append(entry)
+            self.index[archive_name] = (archive, entries)
+        archive, index = self.index[archive_name]
+        matches = index.get(name, [])
+        if len(matches) != 1:
+            raise ValueError(f"Missing or ambiguous dialogue asset: {name}")
+        raw = archive.read(matches[0])
+        if loose.exists() and loose.read_bytes() != raw:
+            raise ValueError("Conflicting loose dialogue asset: " + name)
+        return raw
 
 
 def apply_edits(source: bytes, edits: list[dict]) -> bytes:
@@ -242,6 +292,10 @@ def prepare(profile: dict, sources) -> tuple[bytes, dict]:
     if profile.get("additional_changes"):
         raise ValueError("Atomic multi-script profile requires prepare_changes / a laboratory")
     verified = {}
+    for asset in asset_specs(profile):
+        raw = sources.read_asset(asset["path"], asset["archive"])
+        if len(raw) != asset["size"] or digest(raw) != asset["sha256"]:
+            raise ValueError("Pinned dialogue asset changed: " + asset["path"])
     for name, proof in profile["evidence"].items():
         archive, raw = sources.read(name)
         if (archive != proof["archive"] or len(raw) != proof["size"]

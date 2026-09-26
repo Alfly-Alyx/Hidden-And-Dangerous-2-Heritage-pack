@@ -49,6 +49,12 @@ Les noms, marques, cartes, scripts et ressources du jeu restent la propriété d
 
 ## Sources documentaires
 
+Le générateur original `tools/build_modern_asset.py` recoupe le format 4DS v41
+avec les descriptions `4ds.bt` et `ls3d.bt` de hdmaster, RoadTrain et pudingus
+dans [mafia-formats](https://github.com/RoadTrain/mafia-formats), consultées le
+26 septembre 2026. Ces templates ne sont pas redistribués ni traduits dans le
+projet. La géométrie procédurale moderne ne copie aucun asset commercial.
+
 Les liens historiques et techniques sont regroupés dans les rapports du dossier `docs`, notamment :
 
 - RpR Clan pour le jeu en ligne et les mods ;

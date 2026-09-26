@@ -52,3 +52,16 @@ troisième expérience, avec sa propre trace de référence.
 
 Aucun verrou moderne, signal, objectif ou valeur de sauvegarde n'est inventé
 pour contourner ces essais; la version commerciale reste disponible par défaut.
+
+## Script complet du 26 septembre 2026
+
+`africa4-invasion-transition` reconstruit maintenant le script complet depuis
+la source Patch épinglée : 3997 → 3989 octets, quatre préfixes `//` retirés,
+aucun autre octet changé. Le registre, les acteurs et `dummy_organizer` dans
+la scène sont vérifiés. La fermeture de mission native est complète.
+
+La paire compare **commercial contre commercial + transition**. Elle conserve
+donc volontairement le forçage `odvysilali=1` présent dans ce témoin. Elle ne
+doit pas remplacer le script Heritage dans l'installation personnelle. La
+composition avec la conséquence radio Heritage reste une expérience distincte
+à préparer; ce lot ne la déclare pas résolue ni testée.

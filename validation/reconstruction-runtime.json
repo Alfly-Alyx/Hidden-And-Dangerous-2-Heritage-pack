@@ -14,6 +14,626 @@
   },
   "profiles": [
     {
+      "id": "alps1-ge04-crouch-sniper",
+      "mission": "alps1",
+      "title": "Alps 1 — ge04-crouch-sniper",
+      "definition_sha256": "fce32bc4771478d83545f003048888414e659da6b3bcc5b7a31ebdf890c5f4f7",
+      "kind": "script",
+      "study": "experimental/ALPS1_STANCE_VARIANTS_LOW_PRIORITY/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Alarme et arrivée au poste ge04_sniper : comparer visée et couverture à StandFast.",
+        "Comparer alarme, fin d’alarme, mort et sauvegarde avant/pendant/après; routes, signaux et objectifs inchangés.",
+        "Un seul profil à la fois; retour byte-identique au témoin avant toute autre expérience."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "alps1-ge14-crouch-signal6",
+      "mission": "alps1",
+      "title": "Alps 1 — ge14-crouch-signal6",
+      "definition_sha256": "365f958f07ca7e6c2eab355b718a5f03f19de7c312bc5be3093bbfc2ffbf1999",
+      "kind": "script",
+      "study": "experimental/ALPS1_STANCE_VARIANTS_LOW_PRIORITY/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Déclencher le signal 6, pas le signal 1 d’embarquement : comparer posture et rotation sans perturber le half-track.",
+        "Comparer alarme, fin d’alarme, mort et sauvegarde avant/pendant/après; routes, signaux et objectifs inchangés.",
+        "Un seul profil à la fois; retour byte-identique au témoin avant toute autre expérience."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "alps1-ge19-crouch-alarm",
+      "mission": "alps1",
+      "title": "Alps 1 — ge19-crouch-alarm",
+      "definition_sha256": "98df704e4dca7b72dd06caa69b4de0852c38fc130ab4fa4ee11a1a6b71c2af5a",
+      "kind": "script",
+      "study": "experimental/ALPS1_STANCE_VARIANTS_LOW_PRIORITY/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Tir/explosion : comparer arrivée ge19_02 et temps de réaction; ne pas activer la variante de rotation.",
+        "Comparer alarme, fin d’alarme, mort et sauvegarde avant/pendant/après; routes, signaux et objectifs inchangés.",
+        "Un seul profil à la fois; retour byte-identique au témoin avant toute autre expérience."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "alps1-ge19-turn-near",
+      "mission": "alps1",
+      "title": "Alps 1 — ge19-turn-near",
+      "definition_sha256": "841038b714fde57d94a01c13afa6e9254a756d724e4ac5d6553df9711bc45680",
+      "kind": "script",
+      "study": "experimental/ALPS1_STANCE_VARIANTS_LOW_PRIORITY/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Provoquer les pas à moins de quatre unités : comparer la rotation avant EndScript, sans variante accroupie.",
+        "Comparer alarme, fin d’alarme, mort et sauvegarde avant/pendant/après; routes, signaux et objectifs inchangés.",
+        "Un seul profil à la fois; retour byte-identique au témoin avant toute autre expérience."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "alps1-ge31-range-stance-pair",
+      "mission": "alps1",
+      "title": "Alps 1 — ge31-range-stance-pair",
+      "definition_sha256": "a73c49e07e1b405cf4aa7392685c26672cde2798661188e45b70fde8466d569d",
+      "kind": "script",
+      "study": "experimental/ALPS1_STANCE_VARIANTS_LOW_PRIORITY/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Observer le stand de tir : accroupi, attente 4500, debout puis retour ge31_01; les deux transitions sont indissociables.",
+        "Comparer alarme, fin d’alarme, mort et sauvegarde avant/pendant/après; routes, signaux et objectifs inchangés.",
+        "Un seul profil à la fois; retour byte-identique au témoin avant toute autre expérience."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "alps1-ge07-initial-walk",
+      "mission": "alps1",
+      "title": "Alps 1 — ge07-initial-walk",
+      "definition_sha256": "c184cd28690580ab18e8d0effcf44084ff0ba43cf6dd0132819fde0dc6250d6d",
+      "kind": "script",
+      "study": "experimental/ALPS1_STANCE_VARIANTS_LOW_PRIORITY/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Comparer au moins dix cycles des rondes et formations : marche initiale seulement, cinq zones et alarmes conservées.",
+        "Comparer alarme, fin d’alarme, mort et sauvegarde avant/pendant/après; routes, signaux et objectifs inchangés.",
+        "Un seul profil à la fois; retour byte-identique au témoin avant toute autre expérience."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "alps1-ge08-initial-run",
+      "mission": "alps1",
+      "title": "Alps 1 — ge08-initial-run",
+      "definition_sha256": "9efd83d4ca81af76c23bdf309d9d18e26d919551c7977b7c4d6a37c1d7cc218b",
+      "kind": "script",
+      "study": "experimental/ALPS1_STANCE_VARIANTS_LOW_PRIORITY/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Comparer la course initiale de GE_08 dans la formation et ses sorties, sans changer signaux ni itinéraires.",
+        "Comparer alarme, fin d’alarme, mort et sauvegarde avant/pendant/après; routes, signaux et objectifs inchangés.",
+        "Un seul profil à la fois; retour byte-identique au témoin avant toute autre expérience."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "alps1-ge09-initial-run",
+      "mission": "alps1",
+      "title": "Alps 1 — ge09-initial-run",
+      "definition_sha256": "ac9cde87e61df9cd4aa2a9f0476977eed96e327a899e8f71d521ce5ea5faf14b",
+      "kind": "script",
+      "study": "experimental/ALPS1_STANCE_VARIANTS_LOW_PRIORITY/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Comparer la course initiale de GE_09, séparation et dialogue près du rocher; aucun appel vocal ajouté.",
+        "Comparer alarme, fin d’alarme, mort et sauvegarde avant/pendant/après; routes, signaux et objectifs inchangés.",
+        "Un seul profil à la fois; retour byte-identique au témoin avant toute autre expérience."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "alps1-ge17-move-before-final-post",
+      "mission": "alps1",
+      "title": "Alps 1 — ge17-move-before-final-post",
+      "definition_sha256": "9c71ec3509745efb339d8af41af92e1567d6b30de2c17b3aa4bd9caea8812b8a",
+      "kind": "script",
+      "study": "experimental/ALPS1_GE17_SIGNAL2_DUAL_ROUTE/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Signal 2 : observer ge17_03 puis recherche d’arme et ge17_04; téléport historique conservé désactivé.",
+        "Comparer alarme, fin d’alarme, mort et sauvegarde avant/pendant/après; routes, signaux et objectifs inchangés.",
+        "Un seul profil à la fois; retour byte-identique au témoin avant toute autre expérience."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "africa1-card-players-pair",
+      "mission": "africa1",
+      "title": "Africa 1 — paire de joueurs de cartes interrompable",
+      "definition_sha256": "a5d62acb60e968ae1959f75f827ca4e13b3f6e55989b3d6d05499b8169bf36f7",
+      "kind": "script",
+      "study": "experimental/AFRICA1_CARD_PLAYERS_24_25/PROPOSITION.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Observer les deux acteurs assis du témoin, puis dix cycles Card(2) de la paire à 1500 ms, sans nouveau signal de synchronisation.",
+        "Interrompre chaque phase par alarme, signal 10 et mort, séparément pour 24 et 25 : aucune carte orpheline ni retard de réaction.",
+        "Observer le survivant et les entrées décalées dans le rayon 20; rejeter une partie durablement désynchronisée.",
+        "Sauvegarder/reprendre avec cartes sorties puis après interruption; retour aux deux scripts Patch originaux ensemble."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "arctic1-cistern1-particle",
+      "mission": "arctic1",
+      "title": "Arctic 1 — citerne 1, particule seule",
+      "definition_sha256": "185b4f3d9943d256dfb9d28dc38fd2a48e8fe8c1e6b8bd083f9bc4bc05559905",
+      "kind": "script",
+      "study": "experimental/ARCTIC1_CISTERN_EFFECTS_LAB/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Détruire uniquement m_nadrz_ et comparer au témoin: flashes/fumée et attaques audio proches/lointaines.",
+        "Comparer une destruction isolée puis une chaîne, sans modifier les cinq autres citernes.",
+        "Vérifier valeur 101, dégâts, objectifs, sauvegarde/reprise et transition Arctic 3; ne pas cumuler son et particule."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "arctic1-cistern1-sound",
+      "mission": "arctic1",
+      "title": "Arctic 1 — citerne 1, son seul",
+      "definition_sha256": "ff8a6acfa716f0e4ade739f79cc7a5924cd597e24e67318afb4c61ffc737d4f3",
+      "kind": "script",
+      "study": "experimental/ARCTIC1_CISTERN_EFFECTS_LAB/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Détruire uniquement m_nadrz_ et comparer au témoin: flashes/fumée et attaques audio proches/lointaines.",
+        "Comparer une destruction isolée puis une chaîne, sans modifier les cinq autres citernes.",
+        "Vérifier valeur 101, dégâts, objectifs, sauvegarde/reprise et transition Arctic 3; ne pas cumuler son et particule."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "africa4-invasion-transition",
+      "mission": "africa4",
+      "title": "Africa 4 — fondu et attente historiques avant invasion",
+      "definition_sha256": "f7d1293b39116c8fc0aeab7a231972bd065307e2793f38f57296c4f0b5e1b105",
+      "kind": "script",
+      "study": "experimental/AFRICA4_INVASION_TRANSITION_VARIANT/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Comparer le témoin commercial au fondu radio et au départ retardé du premier Opel.",
+        "Vérifier tous les destinataires, signaux, délais ultérieurs et objectifs; le forçage radio commercial reste identique.",
+        "Tester réutilisation radio, autre cinématique et sauvegarde pendant chaque fondu; refuser écran noir ou départ doublé.",
+        "Cette paire commerciale ne qualifie pas la composition avec le module radio Heritage."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
+      "id": "libye2-destroyed-park-dialogue",
+      "mission": "libye2",
+      "title": "Libye 2 — réplique conditionnelle du parc détruit",
+      "definition_sha256": "1ce157ff70a1e848ef57357cd1aa7d51e51a1af4ea26622e2eebe38374d322f9",
+      "kind": "script",
+      "study": "experimental/LIBYE2_DIALOGUE_24_25_CONDITIONAL_53990023/ETUDE.md",
+      "mode": "solo",
+      "prerequisites": [
+        "Copie native isolée uniquement; vérifier les empreintes et le retour arrière avant tout lancement.",
+        "Profil exclusif sur sa mission, témoin commercial et version anglaise épinglée; aucune compatibilité Heritage présumée."
+      ],
+      "steps": [
+        "Comparer parc intact, sept véhicules détruits et huit détruits avec Jeep1 préservée; seule la dernière situation autorise 53990023.",
+        "Détruire le dernier véhicule pendant 53990022; la condition est relue juste avant 23, sans nouvel objectif.",
+        "Interrompre par alarme/mort avant et pendant 23; arrêt des deux voix et embarquement commercial AF2_25 inchangés.",
+        "Répéter proximité et signal 2 avant/pendant/après; une seule séquence et une seule phrase. Tester sauvegarde/reprise aux transitions.",
+        "Écouter voix anglaise et synchronisation labiale; aucune qualification coop ou autre langue dans ce profil solo."
+      ],
+      "results": {
+        "baseline": {
+          "state": "pending",
+          "evidence": null
+        },
+        "effect": {
+          "state": "pending",
+          "evidence": null
+        },
+        "interruption": {
+          "state": "pending",
+          "evidence": null
+        },
+        "objectives": {
+          "state": "pending",
+          "evidence": null
+        },
+        "rollback": {
+          "state": "pending",
+          "evidence": null
+        },
+        "save_load": {
+          "state": "pending",
+          "evidence": null
+        }
+      }
+    },
+    {
       "id": "africa1-af126-safe-idle",
       "mission": "africa1",
       "title": "Africa 1 — sortie moderne de la boucle incomplète AF1_26",

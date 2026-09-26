@@ -1,7 +1,7 @@
 # Variantes reproductibles
 
-État vérifié le **25 septembre 2026** sur la branche
-`codex/reconstruction-phase-1` : vingt-quatre profils, soit vingt-sept scripts dérivés,
+État vérifié le **26 septembre 2026** sur la branche
+`codex/reconstruction-phase-1` : trente-huit profils, soit quarante-deux scripts dérivés,
 ont été construits et
 comparés aux sources commerciales. **Aucun n'est installé ni validé en jeu.**
 
@@ -12,6 +12,26 @@ Git. Le [générateur](../../tools/build_reconstruction_variant.py) les lit sans
 modifier les archives.
 
 ## Résultat de la série
+
+Les vingt-quatre premières variantes détaillées ci-dessous ont été complétées
+par quatorze profils : neuf postures/déplacements Alps 1, deux effets isolés de
+citerne Arctic 1, la transition d'invasion Africa 4, la paire de joueurs de cartes
+Africa 1 et le dialogue conditionnel Libye 2. Le catalogue contient maintenant
+105 sources de mission distinctes et deux ressources de dialogue épinglées.
+Les quatorze ajouts ont été reconstruits dans chacune des trois copies natives;
+leurs 28 cycles témoin/variante de pose, relecture et retrait sont réussis.
+Aucun des nouveaux scénarios n'a été exécuté dans le jeu.
+
+Les preuves spécifiques et scripts concernés figurent dans les études
+[Alps 1](../ALPS1_STANCE_VARIANTS_LOW_PRIORITY/ETUDE.md),
+[GE17](../ALPS1_GE17_SIGNAL2_DUAL_ROUTE/ETUDE.md),
+[citerne](../ARCTIC1_CISTERN_EFFECTS_LAB/ETUDE.md),
+[invasion](../AFRICA4_INVASION_TRANSITION_VARIANT/ETUDE.md),
+[cartes](../AFRICA1_CARD_PLAYERS_24_25/PROPOSITION.md) et
+[dialogue Libye 2](../LIBYE2_DIALOGUE_24_25_CONDITIONAL_53990023/ETUDE.md).
+La paire de cartes s'exporte atomiquement, jamais un joueur isolé. Les variantes
+GE19 sont exclusives. Le fondu Africa 4 garde le forçage radio commercial : sa
+composition avec le module radio Heritage reste un développement distinct.
 
 | Profil | Modification | Octets générés | Étude |
 |---|---|---:|---|
