@@ -52,7 +52,10 @@ rechargement, visée, animation des mains, IA ou synchronisation réseau.
 
 ## Exemplaire privé contrôlé
 
-`.analysis/item-descriptor-labs/BenelliDescriptor_v1`, six fichiers :
+`.analysis/item-descriptor-labs/BenelliDescriptor_v2`, six fichiers. La version
+v1 est conservée ; les binaires sont identiques, le manifeste v2 ajoute les
+[références sonores qualifiées](../RECONSTRUCTION_BACKLOG/REFERENCES_SONORES.md)
+36/54 et refuse une définition différente :
 
 | Fichier désactivé | Taille | SHA-256 |
 |---|---:|---|
@@ -68,7 +71,8 @@ Seuls le code original, les tests synthétiques et la documentation sont publié
 ## Travaux restants avant les seuls essais
 
 1. Réserver et fournir le texte d'inventaire sans collision.
-2. Qualifier les consommateurs de paramètres et leurs références sonores.
+2. Qualifier les autres consommateurs de paramètres et la synchronisation sonore ;
+   les références Benelli aux banques 2/3 sont maintenant établies séparément.
 3. Raccorder la caméra, les mains et les événements FPV.
 4. Compléter l'étude des sauvegardes et de liberté globale d'identifiant.
 5. Construire la transaction additive réversible des tables dans une copie isolée.
@@ -82,4 +86,4 @@ ne permet donc pas d'annoncer « il ne reste que les tests ».
 
 Sans `--output-name`, tout est construit/contrôlé en mémoire. Un nom existant,
 un chemin lié, une source modifiée ou une référence invalide fait refuser l'outil.
-Seize tests synthétiques couvrent l'assembleur et ce laboratoire.
+Dix-sept tests synthétiques couvrent l'assembleur et ce laboratoire.

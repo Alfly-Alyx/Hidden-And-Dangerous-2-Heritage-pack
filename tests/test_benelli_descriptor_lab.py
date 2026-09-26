@@ -14,6 +14,20 @@ from fpv_table import parse as parse_fpv
 from test_item_weapon_descriptor import fixture as weapon_spec
 from test_benelli_table_audit import benelli_table
 from test_items_sav import invented_slot,table as item_table
+from test_sound_definition import chunk,string,bank
+from sound_definition import VARIANT_FIELDS
+
+
+def sound_entry(label,filename):
+    variant=chunk(1300,string(1400,filename)+b''.join(chunk(k,bytes(4)) for k in VARIANT_FIELDS[1:]))
+    return chunk(1200,string(1210,label)+chunk(1310,b'\0')+variant)
+
+
+def sound_fixture():
+    empty=chunk(1200,string(1210,'')+chunk(1310,b'\0'))
+    return chunk(1000,bank('First',b'')+bank('Second',b'')
+                 +bank('Weapon Shooting',empty*36+sound_entry('I Benelli M4','f_bene_a.wav'))
+                 +bank('Weapon Manipulation',empty*54+sound_entry('I Benelli M4 Reload','bene_r.wav')))
 
 
 def baseline():
@@ -39,16 +53,21 @@ class Machine:
 
 
 class BenelliDescriptorLabTests(unittest.TestCase):
-    def prepare(self,tables=None,*,changed_model=False):
+    def prepare(self,tables=None,*,changed_model=False,changed_sound=False):
         models={'PROTOTYPE_BenFPV':b'invented fpv','PROTOTYPE_BenM4':b'invented world'}
         pins={name:(len(raw),lab.sha(raw)) for name,raw in models.items()}
         if changed_model:models['PROTOTYPE_BenFPV']+=b'changed'
-        with patch('item_editor_table.require_row',return_value={'fields':weapon_spec()['primary']['editor_fields'],'sha256':'synthetic'}),\
+        fields=weapon_spec()['primary']['editor_fields'];fields[8]='36';fields[10]='54'
+        sounds=sound_fixture()
+        if changed_sound:sounds=sounds.replace(b'f_bene_a.wav',b'x_bene_a.wav')
+        with patch('item_editor_table.require_row',return_value={'fields':fields,'sha256':'synthetic'}),\
              patch('benelli_fpv_static.derive',return_value=(b'invented derived',{})),\
              patch('build_benelli_fpv_lab.native_assets',return_value=(models,{'synthetic_test_double':True})),\
              patch.object(lab,'MODEL_PINS',pins):
             return lab.prepare(fixture() if tables is None else tables,
-                               {'models/#fpvbeneliaim.4ds':b'invented model','maps/wi_it-benelli.bmp':b'invented icon'},Machine())
+                               {'models/#fpvbeneliaim.4ds':b'invented model','maps/wi_it-benelli.bmp':b'invented icon',
+                                'tables/ingamesounds.def':sounds,'sounds/f_bene_a.wav':b'invented sound',
+                                'sounds/bene_r.wav':b'invented sound'},Machine())
 
     def test_baseline_is_individual_explicit_attributes_not_whole_record(self):
         raw=baseline();fields=weapon_spec()['primary']['editor_fields']
@@ -91,6 +110,11 @@ class BenelliDescriptorLabTests(unittest.TestCase):
         self.assertFalse(report['modern_design_decisions']['text_id_allocated'])
         self.assertIn('inventory_text_allocation',report['pending_requirements'])
         self.assertEqual(tables,before)
+        self.assertEqual([r['index'] for r in report['sound_references']],[36,54])
+        self.assertFalse(report['native_sound_argument_audit_included'])
+
+    def test_changed_sound_reference_is_refused(self):
+        with self.assertRaisesRegex(ValueError,'Changed Benelli sound reference'):self.prepare(changed_sound=True)
 
     def test_occupied_candidate_fails_in_either_layer(self):
         for archive in ('SabreSquadron.dta','PatchX01.dta'):
