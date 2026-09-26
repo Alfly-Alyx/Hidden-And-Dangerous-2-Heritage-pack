@@ -45,8 +45,10 @@ Dans l'émulateur borné, avec l'image 1.12 verrouillée par empreinte :
 
 L'outil prépare un **fragment FPV isolé** contenant ces treize états et leurs
 ressources commerciales Benelli. Le groupe 109 d'origine reste intact. Ni
-`items.sav` ni `FpvAnims.sav` ne sont produits ou modifiés. L'argument 359 reste
-strictement synthétique : il ne devient pas un emplacement globalement réservé.
+`items.sav` ni `FpvAnims.sav` ne sont produits par ce constructeur de descripteur.
+Le [constructeur de tables distinct](TRANSACTION_TABLES.md) les prépare désormais
+en copies complètes désactivées, avec retrait exact vérifié. Le candidat 359 ne
+devient pas pour autant un emplacement globalement réservé ou installé.
 
 Les vérifications natives n'appellent ni chargeur de scène, ni API Windows,
 ni jeu, ni sauvegarde de partie. Elles ne démontrent ni tir effectif,
@@ -78,7 +80,8 @@ Seuls le code original, les tests synthétiques et la documentation sont publié
    les références Benelli aux banques 2/3 sont maintenant établies séparément.
 3. Raccorder la caméra, les mains et les événements FPV.
 4. Compléter l'étude des sauvegardes et de liberté globale d'identifiant.
-5. Construire la transaction additive réversible des tables dans une copie isolée.
+5. Préparer le déploiement isolé et la gestion des surcharges ; la construction
+   binaire réversible des deux tables est maintenant réalisée séparément.
 
 Les essais de comportement en moteur et multijoueur viennent ensuite. Ce lot
 ne permet donc pas d'annoncer « il ne reste que les tests ».
