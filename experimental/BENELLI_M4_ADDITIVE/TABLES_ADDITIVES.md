@@ -2,7 +2,9 @@
 
 État du **26 septembre 2026** : lecteurs stricts réalisés, huit sources
 centrales vérifiées, aucun fichier du jeu modifié. **Pas encore d'entrée Weapon
-additive** : cet audit ne valide ni sauvegarde, ni binding FPV, ni mécanique.
+additive** : cet audit de tables seul ne valide ni sauvegarde, ni liaison FPV,
+ni mécanique. Le [contrôle natif distinct](CONTRAT_NATIF.md) établit maintenant
+la liaison des identifiants et la lecture des descripteurs hors moteur.
 
 ## Ce que l'audit démontre
 
@@ -77,9 +79,11 @@ SHA-256 `b9e781eeb849241616f9598ef5d4e9d9c4b5df16bf033784370fadd697e0bd24`.
 Chaque association est suivie de la valeur brute 100 ; les canaux 3001–3003
 sont vides. Le rôle moteur de ces canaux et nombres n'est pas inventé.
 Le groupe numérique 359 existe dans Sabre, mais ce n'est **pas** une preuve
-qu'il corresponde à l'objet 359. L'hypothèse habituelle « groupe = objet + 100 »
-donnerait 459, qui est absent ; elle reste à qualifier dans le chargeur natif
-avant de fabriquer une liaison additive.
+qu'il corresponde à l'objet 359. Le contrôle natif distinct confirme désormais
+« groupe = objet + 100 » jusqu'au calcul du consommateur : l'objet candidat 359
+exige 459, absent. Les canaux sont consommés dans l'ordre du fichier, et la
+valeur 100 est un seuil de sélection. L'audit de tables seul garde ces preuves
+natives hors de son périmètre ; aucune animation n'est validée en jeu.
 
 ## Noms courts construits pour les modèles
 
@@ -113,6 +117,7 @@ les octets des records commerciaux.
 18 tests synthétiques supplémentaires couvrent capacités, marqueurs vides,
 champs, noms courts, hiérarchie FPV, couches, surcharges, non-allocation et les
 deux alias générés. Avant B2 restent à établir : sérialisation des sauvegardes,
-champ de liaison arme/FPV, liaison munition et interprétation des paramètres.
+liaison munition et interprétation des paramètres. La liaison numérique
+arme/FPV est maintenant établie par un outil distinct, sans chargement de scène.
 Les recettes d'intégration ne sont pas fabriquées à partir d'un record Garand
 copié ou d'une boussole réaffectée.

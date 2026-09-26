@@ -13,6 +13,7 @@
 | `bene_r.wav` | `Sounds.dta` / `IngameSounds.def` | rechargement, 265 818 octets |
 | record `Benelli` / `item_shoot.tbl` | `others.DTA`, offsets 1547–1682 | 135 octets attestés, sémantique numérique non qualifiée |
 | Weapon 9 actuel | table commerciale | boussole livrée, réservée et non modifiable |
+| Liaison des identifiants Item/FPV | client 1.12 possédé, analyse et émulation ciblées | `groupe = slot + 100` confirmé ; pas une validation d'animation en jeu. [Contrat](CONTRAT_NATIF.md). |
 
 ## DÉRIVÉ / INFÉRÉ
 
