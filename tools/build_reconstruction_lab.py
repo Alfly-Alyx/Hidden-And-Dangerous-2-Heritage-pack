@@ -74,6 +74,8 @@ def script_closure(files: dict[str, bytes], mission: str, registry: str = "scrip
 
 
 def plan_lab(profile: dict, sources) -> tuple[dict[str, bytes], dict]:
+    if profile.get('comparison_baseline') is not None:
+        raise ValueError('Native-only comparison baseline: campaign Heritage composition requires original mission paths')
     if qualification_mode(profile) != 'solo':
         raise ValueError('Native-only qualification mode: use the original mission and selected registry')
     changes, variant_report = prepare_changes(profile, sources)

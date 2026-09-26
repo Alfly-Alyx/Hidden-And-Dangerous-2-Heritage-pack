@@ -3,6 +3,230 @@
   "reference_edition": "GOG English Sabre Squadron 1.12",
   "profiles": [
     {
+      "id": "africa4-invasion-transition-heritage-radio",
+      "title": "Africa 4 — transition composée avec le choix radio Heritage",
+      "classification": "HERITAGE_COMPOSITION_EXPERIMENTALE",
+      "source": "scripts/africa4/af3b_organizer.scr",
+      "actor": "dummy_organizer",
+      "owner_entry": "missions/africa4/scene2.bin",
+      "default_profile": "commercial",
+      "runtime_status": "pending",
+      "evidence": {
+        "scripts/africa4/af3b_organizer.scr": {
+          "archive": "Patch.dta",
+          "size": 3997,
+          "sha256": "46bf3adc728550785c65095201720468692360d1b72818d4c87a488d9f41744d"
+        },
+        "missions/africa4/scripts.dta": {
+          "archive": "missions.dta",
+          "size": 2639,
+          "sha256": "bfee17872d0aae55afebbe9ebd007450f2482a78ebea2d6889ba57c96727181e"
+        },
+        "missions/africa4/actors.bin": {
+          "archive": "Patch.dta",
+          "size": 35804,
+          "sha256": "2d6392bef32cd15ebbb26eda6398360b07c993c54a59c4c4b61b954b4ce57b0a"
+        },
+        "missions/africa4/scene2.bin": {
+          "archive": "missions.dta",
+          "size": 3761990,
+          "sha256": "14dd52086b2c56cdde594b265e843841979911d1ae1627fd353a02ae955c0c72"
+        },
+        "scripts/africa4/af3b_dummy_diary.scr": {
+          "archive": "Patch.dta",
+          "size": 2648,
+          "sha256": "5d588eb1f44174bfcadb6c52880040dae7eb428332248ae01b5b69bdde767eca"
+        },
+        "scripts/africa4/af3b_01.scr": {
+          "archive": "Patch.dta",
+          "size": 3390,
+          "sha256": "228d47073a371b6524cda9b92364ae2b7b738d4ecc9eca67d011ce3f218f3194"
+        },
+        "scripts/africa4/af3b_06.scr": {
+          "archive": "Patch.dta",
+          "size": 3400,
+          "sha256": "20c615a1d334e6630140d2bdd1e909030d22c7495a51423b46e4208a720f04c5"
+        },
+        "scripts/africa4/af3b_11.scr": {
+          "archive": "Patch.dta",
+          "size": 4733,
+          "sha256": "1a5e7e786f80e38cac148efa5c994cf0fe0793201209daaf58f1e8344339a44c"
+        },
+        "scripts/africa4/af3b_12.scr": {
+          "archive": "Patch.dta",
+          "size": 4266,
+          "sha256": "d39f2f7bd0aed032346f3043668e21d53c81f7135963132252984a6e79d43840"
+        },
+        "scripts/africa4/af3b_13.scr": {
+          "archive": "Patch.dta",
+          "size": 4495,
+          "sha256": "bc100d4f277519b76e1a8321f30129c49885a1bf8c742bfe019c3a6a3d5219f7"
+        },
+        "scripts/africa4/af3b_14.scr": {
+          "archive": "Patch.dta",
+          "size": 3067,
+          "sha256": "2401c714485743ea477f9e393f0162c98f29d0a5468f9a3ad641d2fb60c782b1"
+        },
+        "scripts/africa4/af3b_15.scr": {
+          "archive": "Patch.dta",
+          "size": 3049,
+          "sha256": "94d1a815a16319bf4fd8c722ade72149a9cbeee0ccd92499b689d69306aa1ab8"
+        },
+        "scripts/africa4/af3b_16.scr": {
+          "archive": "Patch.dta",
+          "size": 3298,
+          "sha256": "958a028facafa16e54a8435b6479f806db9631156c0390cfd64e9fbae82fd7ff"
+        },
+        "scripts/africa4/af3b_17.scr": {
+          "archive": "Patch.dta",
+          "size": 3029,
+          "sha256": "31e50f6445ffade4c821a09e6db20a133b4d8001340dadeeb4b507f26ff5e3b3"
+        },
+        "scripts/africa4/af3b_18.scr": {
+          "archive": "Patch.dta",
+          "size": 3157,
+          "sha256": "e8257926f6e2fc11d667d389aecb0608df403a57d4ad9f1ad90a94e325488707"
+        },
+        "scripts/africa4/af3b_19.scr": {
+          "archive": "Patch.dta",
+          "size": 3268,
+          "sha256": "615a57b1a947f0dab336916f065c8e9fbc42a52c17500439286b9f0e4a02536a"
+        },
+        "scripts/africa4/af3b_20.scr": {
+          "archive": "Patch.dta",
+          "size": 3038,
+          "sha256": "72500231968cf1c47c5655f6371a16c6937aa948fad10889c567ba35ca6da5fa"
+        },
+        "scripts/africa4/af3b_21.scr": {
+          "archive": "Patch.dta",
+          "size": 3098,
+          "sha256": "7490bc78c8904eca9a31bc7d5f8164fd0c11bb0f4a82e38ef1ae0caab38032e7"
+        },
+        "scripts/africa4/af3b_22.scr": {
+          "archive": "Patch.dta",
+          "size": 3321,
+          "sha256": "003a21d4da0f3df9fb6ca21bebad1f9a0148345acad4e89ece39d14b495a93b0"
+        },
+        "scripts/africa4/af3b_23.scr": {
+          "archive": "Patch.dta",
+          "size": 3040,
+          "sha256": "fcbe6fed6d583cdc96901b6d4cb06e224ae4dd7910ad3d5a53e428188c20bd47"
+        },
+        "scripts/africa4/af3b_24.scr": {
+          "archive": "Patch.dta",
+          "size": 3040,
+          "sha256": "ad08157cbc9c4558ab05e825c29e3038e9489e19448038a7b7084e915d273af0"
+        },
+        "scripts/africa4/af3b_25.scr": {
+          "archive": "Patch.dta",
+          "size": 3264,
+          "sha256": "d0a13b36c0ca6180dc2d05d01a1757ece125d319d6253ebcfb51440bcaafb41d"
+        },
+        "scripts/africa4/af3b_31.scr": {
+          "archive": "Patch.dta",
+          "size": 2576,
+          "sha256": "dd05817e8a5146a09653a0ee1b6a11cd8a69c6be5e3013effc0d3a1b4ba29542"
+        },
+        "scripts/africa4/af3b_32.scr": {
+          "archive": "Patch.dta",
+          "size": 2613,
+          "sha256": "271bc3c2bd43d2be13d072a8e77764f1900b091c1d78060ab099af70f5b2679b"
+        },
+        "scripts/africa4/af3b_33.scr": {
+          "archive": "Patch.dta",
+          "size": 2778,
+          "sha256": "17cbf234ea5fce271af79427c05f6bd1731dd3b36faead1180f6b909436e7b2a"
+        },
+        "scripts/africa4/af3b_tankista01.scr": {
+          "archive": "Patch.dta",
+          "size": 1558,
+          "sha256": "db13da115771633debc0356be30db9577b46e4c9980ca9a66b4523282c05357d"
+        },
+        "scripts/africa4/af3b_tankista04.scr": {
+          "archive": "Patch.dta",
+          "size": 1414,
+          "sha256": "0caac59e1c56e6c7fdd67b18c785c0a893a59550634447221e6c6a7d70118d08"
+        },
+        "scripts/africa4/af3b_26.scr": {
+          "archive": "Patch.dta",
+          "size": 2112,
+          "sha256": "de06bd513a44313d344882528847a6b062f4aa1a486b5f6c843f6caaece763a6"
+        },
+        "scripts/africa4/af3b_27.scr": {
+          "archive": "Patch.dta",
+          "size": 2331,
+          "sha256": "f43a76e186d349b40201802469d25a944bd3e049b07331094df9e2d444306e25"
+        },
+        "scripts/africa4/af3b_28.scr": {
+          "archive": "Patch.dta",
+          "size": 2500,
+          "sha256": "a7bd80304b508ee41076dafd0f391f352f0ba780a738f5af383b54f310eb6ce5"
+        },
+        "scripts/africa4/af3b_29.scr": {
+          "archive": "Patch.dta",
+          "size": 2347,
+          "sha256": "30977e83de00092b6e6f73dc276e662a51ed799361b23d16392e118eb00b12ef"
+        },
+        "scripts/africa4/af3b_30.scr": {
+          "archive": "Patch.dta",
+          "size": 2349,
+          "sha256": "8c47ccaadc3f6cef9a622cca1dba8e172bc4a212edc02893e1226543bc5d034b"
+        }
+      },
+      "checks": [],
+      "edits": [
+        {
+          "before": "//  CSC_FadeOutToColor(200, 0, 0, 0);",
+          "after": "  CSC_FadeOutToColor(200, 0, 0, 0);"
+        },
+        {
+          "before": "//  Delay(1000);",
+          "after": "  Delay(1000);"
+        },
+        {
+          "before": "//  CSC_FadeIn(700);",
+          "after": "  CSC_FadeIn(700);"
+        },
+        {
+          "before": "//Delay(20000);",
+          "after": "Delay(20000);"
+        }
+      ],
+      "comparison_baseline": {
+        "id": "heritage-africa4-radio-v1",
+        "source": "scripts/africa4/af3b_organizer.scr",
+        "edits": [
+          {
+            "before": "   odvysilali = 1;\n",
+            "after": ""
+          }
+        ],
+        "module": {
+          "path": "installer/Africa4RadioConsequenceInstaller.cs",
+          "text_sha256": "2736e5f7f928bc4d451f74d1a045bbaabc6af295ceb64a08d2dd91cbf612a1e6"
+        },
+        "external_evidence": {
+          "missions/africa3/actors.bin": {
+            "archive": "missions.dta",
+            "size": 31004,
+            "sha256": "f8f731ec53fdbf3bef2dfbcf1b21c69fcd0500e3a34f3c2326344d022558026e"
+          },
+          "missions/africa3/scripts.dta": {
+            "archive": "missions.dta",
+            "size": 3498,
+            "sha256": "e92d31641c36b3bc96b4d34948c3fce7593b5b1ff373a040cee647491d1e288e"
+          },
+          "scripts/africa3/af3a_19.scr": {
+            "archive": "Patch.dta",
+            "size": 3167,
+            "sha256": "2e8736c272560b90af3659ffb270d979fa672864abdeaf9c43f93cc3b89f0bae"
+          }
+        },
+        "size": 3978,
+        "sha256": "178ceee9b676000d046a5b7b4461e542c9469a5a9497f0514e62218e2b577179"
+      }
+    },
+    {
       "id": "africa5-fan-onuse-oneshot",
       "title": "Africa 5 — ventilateur physique, utilisation explicite",
       "classification": "MODERNE",

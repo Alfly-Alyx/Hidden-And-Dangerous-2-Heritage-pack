@@ -4,10 +4,10 @@ Le [registre expérimental](reconstruction-runtime.json) est séparé du registr
 du paquet stable `runtime-validation.json` et des conversions
 `multiplayer-solo-runtime.json`. Il ne modifie aucun de leurs résultats.
 
-Au 26 septembre 2026 : **49 profils, 298 contrôles, tous pending**. Aucun essai
+Au 26 septembre 2026 : **50 profils, 304 contrôles, tous pending**. Aucun essai
 moteur n'a été effectué par la création du registre ou son audit.
 
-- 43 variantes de scripts solo et deux Carnage : six contrôles chacune;
+- 44 variantes de scripts solo et deux Carnage : six contrôles chacune;
 - un triplet de scripts coop : sept contrôles, dont réseau;
 - trois comparaisons scène/registre coop : sept contrôles chacune, dont réseau;
 - chaque profil pointe vers son étude et contient des étapes propres au
@@ -16,6 +16,11 @@ moteur n'a été effectué par la création du registre ou son audit.
 Le mode solo, Carnage ou coopération est explicite dans chaque protocole. Les
 registres de mission ne sont jamais fusionnés. Un résultat dans ce registre ne
 qualifie pas automatiquement un autre mode ou une conversion coop vers solo.
+
+Une seule paire emploie un témoin composé : transition Africa 4 avec la
+conséquence radio Heritage. Son identité `heritage-africa4-radio-v1` est requise
+dans le protocole et dans les configurations natives. Les autres témoins restent
+commerciaux. Cette comparaison ne qualifie pas l'ensemble du pack Heritage.
 
 ## Avant un essai
 
@@ -132,7 +137,7 @@ Aucun résultat du registre n'est rempli automatiquement.
 ```
 
 La première commande vérifie seulement structure, couverture et preuves présentes.
-Elle réussit avec 298 cas pending, sans annoncer une validation moteur.
+Elle réussit avec 304 cas pending, sans annoncer une validation moteur.
 La deuxième échoue tant que tous les résultats expérimentaux ne sont pas
 enregistrés comme réussis avec leurs preuves. La troisième reste le contrôle
 séparé des 56 essais stables et 21 candidates de conversion.
@@ -169,7 +174,7 @@ pas de relire les empreintes qu'il contient. Un changement d'exécutable, de ZIP
 d'étude, de protocole ou de source rend le dossier obsolète.
 
 Le dossier contient un index, un relevé général et une fiche Markdown/JSON pour
-chacun des 49 profils. Les fiches réunissent :
+chacun des 50 profils. Les fiches réunissent :
 
 - l'étude, les prérequis et les étapes particulières;
 - les six contrôles solo ou sept contrôles coop, sans résultat inventé;
@@ -195,4 +200,4 @@ Ils restent ignorés par Git, notamment parce qu'ils contiennent des chemins loc
 Quatorze tests supplémentaires couvrent cette préparation. Sur ce poste,
 **265 tests réussissent sur 266**, avec un test de création réelle de lien
 symbolique non exécuté faute de privilège Windows. Ce résultat ne valide aucun
-des 298 essais moteur, qui restent en attente.
+des 304 essais moteur, qui restent en attente.

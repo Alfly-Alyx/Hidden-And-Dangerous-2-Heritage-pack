@@ -1,6 +1,6 @@
 # Essais natifs dans des copies indépendantes
 
-Cette procédure couvre les **49 reconstructions déjà définies**, pas l'ensemble
+Cette procédure couvre les **50 reconstructions déjà définies**, pas l'ensemble
 des 180 dossiers de recherche. Elle n'active aucune option de l'installateur
 public et ne transforme pas un prototype en contenu validé.
 
@@ -9,10 +9,11 @@ public et ne transforme pas un prototype en contenu validé.
 Les 20 laboratoires désactivés utilisent des noms de mission distincts et restent
 disponibles. La nouvelle voie d'essai utilise les **missions d'origine** dans une
 copie privée du jeu : aucun remappage de nom, menu expérimental supplémentaire ou
-gestionnaire à lancer. Elle prend en charge les 46 profils de scripts et les trois
-comparaisons de scène coop, soit 49 paires de fichiers témoin/variante. À ce
-point d'étape, les 49 paires sont préparées dans les trois copies, y compris les
-huit derniers ajouts après fermeture indépendante du client externe.
+gestionnaire à lancer. Elle prend en charge les 47 profils de scripts et les trois
+comparaisons de scène coop, soit 50 paires de fichiers témoin/variante. À ce
+point d'étape, 49 paires sont préparées dans les trois copies, y compris les
+huit derniers ajouts après fermeture indépendante du client externe. La paire
+composée Africa 4, cinquantième, attend sa fermeture après réouverture.
 
 Chaque paire comprend les fichiers de la mission et ses scripts commerciaux
 effectifs, issus des archives. La variante ne change que les scripts de sa recette
@@ -144,9 +145,10 @@ dossier seul, font foi pour leur préparation.
 .\.venv\Scripts\python.exe tools\reconstruction_sandbox.py verify --session .analysis\reconstruction-sandboxes\native-trials-20260926
 ```
 
-Une nouvelle répétition complète déploierait, relirait et restaurerait les 49
-témoins et 41 variantes sans préalable moteur, soit **90 cycles de fichiers**.
-Ces 90 cycles ont été effectués en trois séries conservées. La répétition ne
+Une nouvelle répétition complète déploierait, relirait et restaurerait les 50
+témoins et 42 variantes sans préalable moteur, soit **92 cycles de fichiers**.
+90 cycles ont été effectués en trois séries conservées; les deux cycles de
+composition Africa 4 restent à exécuter après fermeture du client. La répétition ne
 contourne pas les huit barrières de témoin réel. Une comparaison finale de tous
 les fichiers du jeu copié doit retrouver exactement le manifeste initial.
 Le rapport `OFFLINE_REHEARSAL.json` conserve les empreintes et journaux, avec
@@ -196,11 +198,11 @@ remplace pas la série historique et annonce explicitement sa sélection.
   `OFFLINE_REHEARSAL-expansion-20260926.json` et
   `OFFLINE_REHEARSAL-props-modes-20260926.json` dans la session hôte. Les données
   commerciales, sauvegardes, fichiers écartés et journaux restent hors de Git.
-- **367 tests Python réussis sur 368 dans la copie de publication**; un test de création de lien symbolique
+- **380 tests Python réussis sur 381 dans la copie de publication**; un test de création de lien symbolique
   n'a pas pu s'exécuter sans privilège Windows. Les liens physiques, les cibles
   modifiées, les interruptions et les restaurations ont leurs tests distincts.
 - **Zéro essai moteur** et aucun lancement de jeu ou d'installateur par ces outils.
-  Les 298 résultats expérimentaux restent `pending`.
+  Les 304 résultats expérimentaux restent `pending`.
 
 Une première tentative d'extension a été refusée **avant écriture** car
 `HD2_SabreSquadron.exe` était ouvert dans une autre installation. Le client a
@@ -209,6 +211,13 @@ et les trois profils d'accessoires Africa 5. Aucun processus n'a été fermé pa
 ces outils et aucune protection contournée.
 
 ## Solo, Carnage et coopération ne sont pas interchangeables
+
+La paire `africa4-invasion-transition-heritage-radio` qualifie un témoin composé
+explicitement identifié, pas un témoin commercial inchangé. Les deux branches
+portent la même conséquence radio Heritage sur l'organisateur; seule la variante
+porte les quatre décommentages de transition. Le registre exige l'identité de
+ce témoin et les manifestes natifs conservent sa provenance commerciale distincte.
+Voir [la composition et son périmètre](../experimental/AFRICA4_INVASION_TRANSITION_VARIANT/COMPOSITION_HERITAGE.md).
 
 Le mode fait partie de la recette et des preuves attendues. Carnage conserve
 `scripts.dta` et les types commerciaux 3/7; la coopération sélectionne seulement

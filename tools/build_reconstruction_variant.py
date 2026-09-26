@@ -18,6 +18,7 @@ import sys
 from dta_archive import DtaArchive
 from menu_gui_audit import parse_4ds_nodes
 from model_instance import MODEL_PATH, resolve_model_child
+from reconstruction_baseline import baseline_spec, prepare_baseline
 from script_binding_audit import parse_bindings, scene_frame_names
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -175,6 +176,7 @@ def load_catalog(path: Path = CATALOG) -> dict:
         evidence = profile["evidence"]
         asset_specs(profile)
         model_checks(profile)
+        baseline_spec(profile)
         changes = change_specs(profile)
         required = {f"missions/{mission}/{registry_name(profile)}", f"missions/{mission}/actors.bin"}
         for change in changes:
@@ -393,7 +395,8 @@ def prepare(profile: dict, sources) -> tuple[bytes, dict]:
             if not present:
                 raise ValueError(f"Missing {check['kind']} prerequisite: {value}")
     source = verified[source_name]
-    variant = apply_edits(source, profile["edits"])
+    baseline, baseline_proof = prepare_baseline(profile, source, sources, apply_edits)
+    variant = apply_edits(baseline, profile["edits"])
     report = {
         "profile": profile["id"], "mission": mission, "actor": profile["actor"],
         "owner_entry": owner_entry,
@@ -418,6 +421,8 @@ def prepare(profile: dict, sources) -> tuple[bytes, dict]:
         report['model_owner_proof'] = model_proof
     if prop_proofs:
         report['model_checks'] = prop_proofs
+    if baseline_proof is not None:
+        report['comparison_baseline'] = baseline_proof
     return variant, report
 
 
@@ -441,6 +446,8 @@ def prepare_changes(profile: dict, sources) -> tuple[dict[str, bytes], dict]:
     for change, item in zip(report['changes'], reports):
         if 'model_owner_proof' in item:
             change['model_owner_proof'] = item['model_owner_proof']
+        if 'comparison_baseline' in item:
+            change['comparison_baseline'] = item['comparison_baseline']
     report["edit_count"] = sum(item["edit_count"] for item in reports)
     return payload, report
 

@@ -170,6 +170,21 @@ class TrialPreparationTests(unittest.TestCase):
             self.collect()
         self.assertFalse(self.output.exists())
 
+    def test_composed_card_labels_heritage_reference_and_native_requirement(self):
+        self.bundle.unlink()
+        baseline = 'heritage-africa4-radio-v1'
+        self.entry['comparison_baseline'] = baseline
+        self.expected[self.profile['id']]['comparison_baseline'] = baseline
+        with patch.object(trials, 'plan_lab', side_effect=ValueError('Native-only comparison baseline: original mission required')):
+            report = self.collect()
+        row = report['profiles'][0]
+        self.assertEqual(row['preparation_status'], 'native_composition_required')
+        self.assertEqual(row['comparison_baseline'], baseline)
+        card = trials.card(row, report).decode('utf-8')
+        self.assertIn('Témoin composé Heritage', card)
+        self.assertIn(baseline, card)
+        self.assertNotIn('missing_script_dependencies', card)
+
     def test_conflicts_are_derived_from_all_atomic_changes(self):
         first, second, third = (copy.deepcopy(self.profile) for _ in range(3))
         first['id'], second['id'], third['id'] = 'first', 'second', 'third'

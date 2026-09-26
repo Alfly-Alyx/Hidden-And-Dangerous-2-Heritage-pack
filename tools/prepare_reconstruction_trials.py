@@ -80,6 +80,8 @@ def collect(root: Path, game: Path, labs: Path, scenes: Path, sources,
         identifier = item['id']
         row = {key: item[key] for key in ('id', 'title', 'kind', 'mission', 'mode', 'study',
                                          'definition_sha256', 'prerequisites', 'steps')}
+        if 'comparison_baseline' in item:
+            row['comparison_baseline'] = item['comparison_baseline']
         row.update(test_plan_sha256=checked['test_plan_sha256'][identifier],
                    incompatible_profiles=incompatible.get(identifier, []),
                    scenarios=[{'id': name, 'instruction': register['common_scenarios'][name],
@@ -100,6 +102,8 @@ def collect(root: Path, game: Path, labs: Path, scenes: Path, sources,
                 except ValueError as error:
                     if str(error).startswith('Native-only qualification mode: '):
                         row['preparation_status'] = 'native_mode_required'
+                    elif str(error).startswith('Native-only comparison baseline: '):
+                        row['preparation_status'] = 'native_composition_required'
                     elif str(error).startswith('Missing script dependencies: '):
                         row['preparation_status'] = 'missing_script_dependencies'
                     else:
@@ -147,6 +151,9 @@ def card(row: dict, report: dict) -> bytes:
              f"Exécutable source : `{report['executable']['sha256']}`.", '',
              '## Avant tout déploiement', '']
     lines += ['- ' + text for text in row['prerequisites'] + row['preparation_obstacles']]
+    if row.get('comparison_baseline'):
+        lines += ['', 'Témoin composé Heritage : `' + row['comparison_baseline']
+                  + '`. Ne pas le confondre avec une référence commerciale inchangée.']
     if row['incompatible_profiles']:
         lines += ['', 'Ne pas combiner avec : ' + ', '.join(
             f'`{p}`' for p in row['incompatible_profiles']) + '.']
