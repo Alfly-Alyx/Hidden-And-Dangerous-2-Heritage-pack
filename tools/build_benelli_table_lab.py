@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Build a PRIVATE disabled full-table Benelli lab; never install or launch.
 
-Only reviewed archive bases are supported. Existing loose central tables are
-NOT overwritten, merged or called equivalent to the archive-based laboratory.
+Reviewed archive bases are retained. An explicit option composes the addition
+onto current loose CENTRAL TABLE snapshots; other overrides remain unqualified.
 """
 from __future__ import annotations
 import argparse
@@ -22,7 +22,7 @@ FPV_SOURCE=('SabreSquadron.dta','tables/fpvanims.sav')
 
 
 def prepare(tables,sources,machine,*,inventory,item_layer,table_machine=None,fpv_machine=None,hands=None,
-            verify_resource_requests=False):
+            verify_resource_requests=False,overlays=None):
     if (table_machine is None)!=(fpv_machine is None):raise ValueError('Both native table oracles are required together')
     if verify_resource_requests and fpv_machine is None:raise ValueError('Resource requests require native table traversal')
     if item_layer not in ITEM_LAYERS:raise ValueError('Unreviewed item layer; Base/Patch cannot host this candidate')
@@ -35,9 +35,15 @@ def prepare(tables,sources,machine,*,inventory,item_layer,table_machine=None,fpv
     if not descriptor_report['modern_design_decisions']['text_id_allocated']:
         raise ValueError('Inventory text remains unresolved')
     descriptor=files['PROTOTYPE_Benelli.item.disabled'];fragment=files['PROTOTYPE_Benelli.fpvgroup.disabled']
-    current,proof=build(tables[item_source],tables[FPV_SOURCE],descriptor,fragment,slot=descriptor_lab.SYNTHETIC_SLOT)
+    selected={'items':tables[item_source],'fpv':tables[FPV_SOURCE]};composition=None
+    if overlays is None:
+        current,proof=build(selected['items'],selected['fpv'],descriptor,fragment,slot=descriptor_lab.SYNTHETIC_SLOT)
+    else:
+        from item_table_overlay import compose
+        current,composition=compose(selected,overlays,descriptor,fragment,slot=descriptor_lab.SYNTHETIC_SLOT)
+        proof=composition['transaction'];selected={**selected,**overlays}
     originals=restore(current,proof)
-    if originals!={'items':tables[item_source],'fpv':tables[FPV_SOURCE]}:
+    if originals!=selected:
         raise ValueError('Full table transaction failed exact reversal')
 
     parsed=parse_items(current['items']);checked=[]
@@ -76,6 +82,7 @@ def prepare(tables,sources,machine,*,inventory,item_layer,table_machine=None,fpv
         'provenance':'ASSEMBLAGE_MODERNE_RESSOURCES_MIXTES',
         'item_source':'::'.join(item_source),'fpv_source':'::'.join(FPV_SOURCE),
         'descriptor_lab':descriptor_report,'transaction':proof,
+        'central_table_overlay_composition':composition,
         'reverse_verified_in_memory':True,
         'native_descriptor_records_checked':len(checked),'native_descriptor_slots_checked':checked,
         'native_whole_table_loader_executed':False,
@@ -122,7 +129,8 @@ def write_lab(output,files,report):
     with (output/'LIRE_AVANT_ESSAI.txt').open('x',encoding='utf-8') as stream:
         stream.write('LABORATOIRE PRIVE DESACTIVE - ASSEMBLAGE MODERNE, PAS UNE ARME VALIDEE.\n'
             'Les tables derivees de vos archives ne doivent pas etre redistribuees.\n'
-            'Aucune surcharge personnelle fusionnee. NE PAS COPIER DANS LE JEU.\n'
+            'Seul le manifeste atteste les surcharges centrales conservees. NE PAS COPIER DANS LE JEU.\n'
+            'Les surcharges des autres ressources ne sont pas fusionnees.\n'
             'Retrait exact verifie en memoire, pas une transaction de deploiement.\n'
             'Sauvegardes, contrats FPV et comportement moteur restent non qualifies.\n')
     # Read back all emitted payloads. Partial output from any failure remains
@@ -141,18 +149,22 @@ def main(argv=None):
     from item_table_oracle import TableOracle
     from fpv_resource_oracle import FpvResourceOracle
     from benelli_fpv_rig_audit import read_hands
+    from item_table_overlay import read_overlays,require_unchanged_overlays,PATHS as OVERLAY_PATHS
     from item_native_contract import SOURCE_SHA
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--game',required=True,type=Path)
     parser.add_argument('--item-layer',required=True,choices=ITEM_LAYERS)
     parser.add_argument('--image',type=Path,default=ROOT/'tmp/stock-menu-analysis.bin')
     parser.add_argument('--archives-only',action='store_true')
+    parser.add_argument('--preserve-central-overrides',action='store_true',
+                        help='Compose only a disabled lab onto current loose central-table snapshots')
     parser.add_argument('--output-name')
     args=parser.parse_args(argv)
     try:
         output=output_directory(args.output_name) if args.output_name else None
         if sha((args.game/'HD2_SabreSquadron.exe').read_bytes())!=SOURCE_SHA:raise ValueError('Unreviewed client')
-        tables,excluded=read_tables(args.game,archives_only=args.archives_only)
+        tables,excluded=read_tables(args.game,archives_only=args.archives_only or args.preserve_central_overrides)
+        overlays=read_overlays(args.game) if args.preserve_central_overrides else None
         manifest=json.loads(MANIFEST.read_text(encoding='utf-8'))
         sources,source_excluded=read_sources(args.game,manifest,archives_only=args.archives_only)
         hands,hand_excluded=read_hands(args.game,archives_only=args.archives_only)
@@ -163,14 +175,18 @@ def main(argv=None):
         image=args.image.read_bytes()
         files,report=prepare(tables,sources,StateOracle(image),inventory=inventory,item_layer=args.item_layer,
                              table_machine=TableOracle(image),fpv_machine=FpvResourceOracle(image),hands=hands,
-                             verify_resource_requests=True)
+                             verify_resource_requests=True,overlays=overlays)
         report['resource_source_pins']=manifest['sources']
         report['excluded_loose_overrides']={**excluded,**source_excluded,**hand_excluded}
+        if overlays is not None:
+            require_unchanged_overlays(args.game,overlays)
+            for key in overlays:report['excluded_loose_overrides'].pop(OVERLAY_PATHS[key].casefold(),None)
         if output:write_lab(output,files,report)
         print(json.dumps({'output':str(output) if output else None,
             **{key:report[key] for key in ('item_source','fpv_source','native_descriptor_records_checked',
                 'reverse_verified_in_memory','installation_allowed','game_modified','pending_requirements')},
             'transaction':report['transaction'],
+            'central_table_overlay_composition':report['central_table_overlay_composition'],
             'separate_hands_variants':len(report['separate_hands_weapon_binding_plan']['hands_variants']),
             'native_animation_resource_requests':len(report['native_animation_resource_requests']),
             'native_table_traversal':{key:{field:result[field] for field in

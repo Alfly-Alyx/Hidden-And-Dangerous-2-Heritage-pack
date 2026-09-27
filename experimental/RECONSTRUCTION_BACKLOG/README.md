@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **629 tests Python réussis sur 630 dans la copie de publication**; un test de lien symbolique non exécuté
+- **641 tests Python réussis sur 642 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -124,6 +124,11 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   treize cas de noms de mains et 156 demandes d'animation contrôlés jusqu'aux
   arguments des chargeurs, sans les appeler. Quinze tests nouveaux ; laboratoires
   v4 avec 39 demandes supplémentaires chacun et contenus désactivés inchangés.
+- [Surcharges centrales](../BENELLI_M4_ADDITIVE/SURCHARGES_CENTRALES.md) : ajout
+  désactivé composé sur les tables personnelles, dix fiches et six groupes
+  personnalisés conservés intégralement. 273 objets/632 références relus par
+  les routines natives et retrait exact en mémoire. Douze tests nouveaux ;
+  déploiement et compatibilité des autres surcharges restent distincts.
 - Trois comparaisons binaires Co_Burgundy1/2/3 supplémentaires reconstruisent
   respectivement douze/deux/dix porteurs et leurs liaisons sans modifier les scripts
   ou sons. Elles restent inertes, hors compte des laboratoires de mission.
