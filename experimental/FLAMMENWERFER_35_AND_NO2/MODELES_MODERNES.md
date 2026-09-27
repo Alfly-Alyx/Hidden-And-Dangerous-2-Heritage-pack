@@ -7,7 +7,9 @@ armes, une tenue animée ni une simulation de lance-flammes.
 **Suite du 27 septembre :** les [six composants indépendants](COMPOSANTS_MODERNES.md)
 sont maintenant construits à partir de ces sources inchangées : pièce tenue,
 sac dorsal et tuyau statique, avec repères locaux et raccords au repos contrôlés.
-Leur tenue animée et la déformation du tuyau restent à réaliser.
+Les [pièces tenues animées](ANIMATIONS_PIECES_TENUES.md) disposent ensuite de
+dix-huit séquences modernes de présentation. Les mains, la tenue par un
+personnage et la déformation du tuyau restent à réaliser.
 
 | Création | Pièces / nœuds | Triangles des deux LOD | Fichier natif |
 |---|---:|---:|---:|
@@ -20,9 +22,10 @@ et une silhouette de pièce tenue distincte. Ces proportions, couleurs, surfaces
 et placements sont des choix artistiques pour le jeu, pas des dimensions
 historiques ni un plan de construction. Aucun mécanisme interne n'est représenté.
 
-Le modèle contient ensemble le sac, la pièce tenue et le tuyau décoratif dans
-une pose de présentation. Il faudra les séparer et les rattacher correctement
-pour une tenue par un personnage ; les repères ne réalisent pas cette liaison.
+Le modèle source contient ensemble le sac, la pièce tenue et le tuyau décoratif
+dans une pose de présentation. Leur séparation est maintenant réalisée, mais
+il reste à les rattacher correctement pour une tenue par un personnage ; les
+repères ne réalisent pas cette liaison.
 Les tuyaux ne se déforment pas. Ni pression, combustible, flamme, collision,
 dégât, bruit, objet d'inventaire ou numéro de munition ne sont liés.
 
