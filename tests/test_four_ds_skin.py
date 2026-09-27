@@ -20,7 +20,7 @@ def fixture():
     def inverse(tx):return struct.pack('<16f',0,1,0,0,-1,0,0,0,0,0,1,0,tx,-1,0,1)
     # Inverse B translation is (-R^-1 * (1,-1,0)) = (-1,-1,0).
     skin=bytes([2])+bbox+bytes([2,0])+inverse(-1)+bbox+inverse(0)+bbox
-    skin+=struct.pack('<I',3)+bytes([0,0,1,128,0,255])
+    skin+=struct.pack('<I',3)+bytes([1,0,2,128,1,255])
     def joint(name,parent,position,q,bone):
         return (struct.pack('<BH3f4f3f',10,parent,*position,*q,1,1,1)+bytes(5)
                 +bytes([len(name)])+name.encode()+b'\0'+struct.pack('<I',bone))
@@ -54,7 +54,8 @@ class SkinRestTests(unittest.TestCase):
     def test_weight_index_nonfinite_and_mismatched_inverse_are_rejected(self):
         original=fixture();root=parse_4ds_nodes(original)['nodes'][0]
         start=len(mesh('Skin'))+root['start'];matrix=start+35
-        changes=[(root['end']-6,b'\x02','weight bone'),
+        changes=[(root['end']-6,b'\x03','weight bone'),
+                 (root['end']-6,b'\x00','weight bone'),
                  (matrix,struct.pack('<f',math.nan),'Nonfinite'),
                  (matrix+12,struct.pack('<f',1),'homogeneous'),
                  (matrix+48,struct.pack('<f',2),'Inverse bind')]

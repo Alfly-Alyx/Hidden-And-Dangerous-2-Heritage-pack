@@ -1,8 +1,9 @@
 """Read-only HD2 single-mesh rest audit, bounded to the reviewed hands layout.
 
 An identity skin root, one non-instanced LOD without extra vertex data, joint
-IDs and one (bone, byte) pair per vertex are required. Weight-byte semantics
-are deliberately NOT inferred. Reports contain no mesh or matrix payloads.
+IDs and one (one-based bone, byte) pair per vertex are required. This rest
+audit does not execute the separate qualified skin kernel or apply weights.
+Reports contain no mesh or matrix payloads.
 """
 import math
 import struct
@@ -25,7 +26,8 @@ def floats(reader,count):
     return values
 
 
-def audit_rest(data):
+def read_reviewed(data):
+    """Validated private data for local calculations; callers must not export it."""
     model=parse_4ds_nodes(data);nodes=model['nodes']
     if (not nodes or nodes[0]['frame_type']!=1 or nodes[0]['visual_type']!=2
             or nodes[0]['parent_id'] or any(n['frame_type']!=10 for n in nodes[1:])):
@@ -40,7 +42,7 @@ def audit_rest(data):
     if reader.u32()!=0:raise ValueError('Extra skin vertex data is not reviewed')
     vertices=reader.u16()
     if not vertices:raise ValueError('Empty skin geometry')
-    floats(reader,8*vertices)
+    vertex_values=floats(reader,8*vertices)
     triangles=0
     for _ in range(reader.u8()):
         count=reader.u16();triangles+=count
@@ -55,14 +57,14 @@ def audit_rest(data):
         bone=struct.unpack_from('<I',data,node['end']-4)[0]
         if bone>=bone_count or bone in joints:raise ValueError('Duplicate or out-of-range bone ID')
         joints[bone]=node;node_bones[node['index']]=bone
-    errors=[]
+    errors=[];matrices=[]
     for bone in range(bone_count):
         node=joints[bone];parent=node['parent_id']
         if parent!=root['index'] and parent not in node_bones:
             raise ValueError('Joint parent outside reviewed skin')
         expected=0 if parent==root['index'] else node_bones[parent]+1
         if parents[bone]!=expected:raise ValueError('Skin parent byte disagrees with joint hierarchy')
-        values=floats(reader,16);floats(reader,8)
+        values=floats(reader,16);floats(reader,8);matrices.append(list(values))
         if any(abs(values[i]-expected)>1e-7 for i,expected in ((3,0),(7,0),(11,0),(15,1))):
             raise ValueError('Invalid homogeneous inverse bind')
         inverse_bind=([[values[i+j*4] for j in range(3)] for i in range(3)],list(values[12:15]))
@@ -73,12 +75,20 @@ def audit_rest(data):
     weights=reader.u32()
     if weights!=vertices:raise ValueError('Only one bone/byte pair per vertex is reviewed')
     pairs=reader.take(2*weights)
-    if any(bone>=bone_count for bone in pairs[::2]):raise ValueError('Skin weight bone outside palette')
+    if any(not 1<=bone<=bone_count for bone in pairs[::2]):raise ValueError('Skin weight bone outside one-based palette')
     if reader.position!=root['end']:raise ValueError('Unparsed skin payload')
-    return {'scope':'reviewed_hd2_identity_root_single_lod_skin_rest',
+    report={'scope':'reviewed_hd2_identity_root_single_lod_skin_rest',
         'vertices':vertices,'triangles':triangles,'bones':bone_count,'weight_pairs':weights,
-        'joint_ids_not_node_ordinals':True,'parent_bytes_verified':True,
+        'joint_ids_not_node_ordinals':True,'parent_bytes_verified':True,'vertex_bone_index_base':1,
         'native_rotation_convention':'xyzw_conjugated_to_active_column_vectors',
         'inverse_bind_max_identity_error':max(errors),'inverse_bind_tolerance':1e-5,
         'inverse_bind_rest_identity_verified':True,'weight_byte_semantics_qualified':False,
         'skin_deformation_qualified':False,'engine_validated':False,'geometry_exported':False}
+    return {'report':report,'vertices':[list(vertex_values[i:i+8]) for i in range(0,len(vertex_values),8)],
+        'pairs':[list(pairs[i:i+2]) for i in range(0,len(pairs),2)],'parents':parents,
+        'inverse_binds':matrices,'joint_node_indices':[joints[i]['index'] for i in range(bone_count)],
+        'nodes':nodes,'rest_world':world}
+
+
+def audit_rest(data):
+    return read_reviewed(data)['report']
