@@ -66,40 +66,47 @@ def validate(names, clips, operations, model_kind=9):
     return parsed, clean
 
 
+def reference_attach_step(state, names, clips, parsed, op):
+    """Advance validated diagnostic state without resetting clocks or owners."""
+    state = deepcopy(state)
+    slots, owners = state['slots'], state['owners']
+    touched = set(state['touched'])
+    slot = slots[op['slot']]; old = slot['clip']; new = op['clip']
+    if old != new:
+        for descriptors in owners.values():
+            descriptors[op['slot']] = None
+        slot['clip'] = new
+    if new is not None:
+        slot.update(active=True, mode=op['mode'] or clips[new]['mode'],
+                    time=0, previous=-40, weight=op['weight'])
+        for index, track in enumerate(parsed[new]['tracks']):
+            node = select_name(names, track['name'])
+            if node is None:
+                continue
+            if node not in owners:
+                owners[node] = [None] * 8; state['allocated'] += 1; touched.add(node)
+            owners[node][op['slot']] = (new, index)
+        state['dirty'] = True
+    elif old is not None:
+        slot['active'] = False
+    # An empty owner can remain while ANY controller slot is active.
+    if (old != new or new is not None) and not any(row['active'] for row in slots):
+        for node in [node for node, ds in owners.items() if not any(ds)]:
+            del owners[node]; state['freed'] += 1
+    state['touched'] = sorted(touched)
+    state['references'] = {key: 1 + sum(row['clip'] == key for row in slots) for key in clips}
+    return state
+
+
 def reference_sequence(names, clips, operations, model_kind=9):
     parsed, operations = validate(names, clips, operations, model_kind)
-    slots = [dict(clip=None, active=False, mode=3, time=17, previous=19,
-                  last_delta=23, weight=.25) for _ in range(8)]
-    owners = {}; dirty = False; allocated = freed = 0; touched = set(); snapshots = []
+    state = {'slots': [dict(clip=None, active=False, mode=3, time=17, previous=19,
+                           last_delta=23, weight=.25) for _ in range(8)],
+             'owners': {}, 'dirty': False, 'allocated': 0, 'freed': 0, 'touched': []}
+    snapshots = []
     for op in operations:
-        slot = slots[op['slot']]; old = slot['clip']; new = op['clip']
-        if old != new:
-            for descriptors in owners.values():
-                descriptors[op['slot']] = None
-            slot['clip'] = new
-        if new is not None:
-            slot.update(active=True, mode=op['mode'] or clips[new]['mode'],
-                        time=0, previous=-40, weight=op['weight'])
-            for index, track in enumerate(parsed[new]['tracks']):
-                node = select_name(names, track['name'])
-                if node is None:
-                    continue
-                if node not in owners:
-                    owners[node] = [None] * 8; allocated += 1; touched.add(node)
-                owners[node][op['slot']] = (new, index)
-            dirty = True
-        elif old is not None:
-            slot['active'] = False
-        # Native pruning first checks every controller active flag. A target
-        # with no descriptors can remain while ANY slot is active.
-        if old != new or new is not None:
-            if not any(row['active'] for row in slots):
-                expired = [node for node, ds in owners.items() if not any(ds)]
-                for node in expired:
-                    del owners[node]; freed += 1
-        snapshots.append(deepcopy({'slots': slots, 'owners': owners, 'dirty': dirty,
-            'allocated': allocated, 'freed': freed, 'touched': sorted(touched),
-            'references': {key: 1 + sum(row['clip'] == key for row in slots) for key in clips}}))
+        state = reference_attach_step(state, names, clips, parsed, op)
+        snapshots.append(state)
     return snapshots
 
 
@@ -226,7 +233,7 @@ class AttachOracle(MathOracle):
             'poses_or_events_evaluated': False, 'scene_loaded': False,
             'library_loaded': False, 'game_started': False}
 
-    def check_state(self, actual, wanted, parsed, clip_pointers, data_pointers, nodes):
+    def check_state(self, actual, wanted, parsed, clip_pointers, data_pointers, nodes, *, node_flags=None):
         if actual[0x404] != int(wanted['dirty']):
             raise ValueError('Attachment dirty flag differs')
         for i, slot in enumerate(wanted['slots']):
@@ -281,7 +288,8 @@ class AttachOracle(MathOracle):
                 if cursor != track['end'] or struct.unpack_from('<H', actual, base+0x22)[0] != 0:
                     raise ValueError('Native attached descriptor/event boundary differs')
         for i, node in enumerate(nodes):
-            if struct.unpack_from('<I', actual, node-self.STATE+0xe0)[0] != (8 | (0x10000000 if i in wanted['touched'] else 0)):
+            expected_flag = node_flags[i] if node_flags is not None else (8 | (0x10000000 if i in wanted['touched'] else 0))
+            if struct.unpack_from('<I', actual, node-self.STATE+0xe0)[0] != expected_flag:
                 raise ValueError('Native animated-node flag differs')
         if (self.alloc_count, self.free_count) != (wanted['allocated'], wanted['freed']):
             raise ValueError('Native owner allocation/release counts differ')

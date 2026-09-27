@@ -68,6 +68,8 @@ Leurs manifestes conservent empreintes, demandes et lectures individuelles.
 La lecture de l'animation n'est pas le chargement/copie de la scène FPV.
 Le contrôleur de poses dense utilise encore sa propre mémoire de clips ; cette
 étape ne prétend pas exécuter chargement, attachement et rendu dans une seule
-instance. Descripteur d'arme, choix réel des mains, transitions, caméra, sons,
+instance. Les [remplacements pendant la lecture](../RECONSTRUCTION_BACKLOG/ENCHAINEMENT_ANIMATIONS_NATIF.md)
+sont contrôlés séparément, sans encore qualifier leur continuité visuelle.
+Descripteur d'arme, choix réel des mains, transitions visuelles, caméra, sons,
 carburant, jet, dégâts, IA, sauvegarde et réseau restent à réaliser ou qualifier.
 Les ressources sont prêtes pour la suite de l'intégration, pas pour installation.
