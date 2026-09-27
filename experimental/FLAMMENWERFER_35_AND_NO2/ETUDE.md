@@ -3,7 +3,10 @@
 État au **27 septembre 2026** : deux [ensembles extérieurs modernes](MODELES_MODERNES.md)
 fabriqués, composants séparés, [pièces tenues animées](ANIMATIONS_PIECES_TENUES.md)
 et [tuyaux visuels déformables](TUYAUX_ANIMES_MODERNES.md), tous désactivés.
-FPV, mains, attaches au personnage et comportements restent à réaliser.
+Des [montages FPV et clips de mains dérivés](MONTAGE_FPV_MODERNE.md) sont
+maintenant construits, avec [associations et lectures natives des animations](RESOLUTION_ANIMATIONS_FPV.md).
+Chargement/copie de scène, caméra, attaches au personnage et comportements
+restent à réaliser ou qualifier.
 Les ressources commerciales partielles sont des références, pas
 des armes à réactiver. Aucun asset commercial n'est recopié.
 
@@ -22,8 +25,9 @@ modèle posé, ni un réservoir.
 
 Les voix conservées prouvent un contexte narratif autour des lance-flammes,
 pas des sons de fonctionnement. Les extérieurs sont maintenant créés ; modèles
-FPV, animations, carburant, jet physique, dégâts et comportement complet
-doivent encore être recréés. Le résultat restera nommé
+FPV et animations sont désormais construits comme candidats désactivés ;
+carburant, jet physique, dégâts et comportement complet doivent encore être
+recréés. Le résultat restera nommé
 « reconstruction moderne expérimentale ».
 
 ## Chemin borné

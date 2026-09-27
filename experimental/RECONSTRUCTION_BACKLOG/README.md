@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **928 tests Python réussis sur 929 dans la copie de publication**; un test de lien symbolique non exécuté
+- **950 tests Python réussis sur 951 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -112,6 +112,14 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   variantes commerciales. Petites rotations natives prises en compte ;
   dix tests nouveaux et quatre planches inspectées. 2 316 mises à jour natives
   persistantes et 4 394 610 sommets contrôlés ; chargement et caméra non qualifiés.
+- [Montages FPV aplatis](../FLAMMENWERFER_35_AND_NO2/MONTAGE_FPV_MODERNE.md) :
+  deux modèles de 38/36 nœuds, 36 clips de 75/73 pistes et quatre planches
+  privées construits ; sélection native du visuel et enfants directs contrôlés.
+  Seize tests nouveaux ; chargement/copie de scène et caméra non qualifiés.
+- [Associations et lectures natives d'animations](../FLAMMENWERFER_35_AND_NO2/RESOLUTION_ANIMATIONS_FPV.md) :
+  quatre laboratoires privés exclusifs, treize états chacun ; 156 demandes
+  et 36 lectures/relocalisations natives vérifiées. Six tests nouveaux ; fichiers
+  et allocations simulés en mémoire, aucune arme activée ou déclarée jouable.
 - [Paramètres de tir](PARAMETRES_TIR.md) : 18 colonnes rapprochées des données
   natives de 40 armes dans quatre couches. Onze différences de paramètres
   conservées sur six fiches, deux symboles FG42 explicitement non résolus.
