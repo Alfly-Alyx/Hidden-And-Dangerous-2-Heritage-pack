@@ -19,7 +19,7 @@ from build_equipment_hand_grips import RECIPE,posed_hand_mesh
 from build_modern_animation_bank import ALIASES
 from build_modern_equipment_hose import digest
 from build_rigid_weapon_fpv_bank import CASES,compile_bank,preview_meshes
-from build_rigid_weapon_hand_bank import BASE_PROFILE,PROFILE,SHORT,configuration,placed_tracks,targets,stow_offset
+from build_rigid_weapon_hand_bank import BASE_PROFILE,PROFILE,SHORT,configuration,placed_tracks,targets,stow_offset,stow_motion
 from convex_contact import planes,surface_measure
 from five_ds import parse_5ds
 from fpv_contact_constraints import wrist_errors,correct
@@ -49,6 +49,7 @@ def load_bank(directory,case,source,hand_raw,profile,compiled):
             or row['hand_source']!=source or row['hand_sha256']!=digest(hand_raw)
             or row['grips']!=grips or row['thumb']!=thumb or row['translation']!=translation
             or row.get('stow_offset',[0,0,0])!=stow_offset(profile,case)
+            or row.get('stow_motion')!=stow_motion(profile,case)
             or set(row['clips'])!=set(ALIASES)):
         raise ValueError('Changed rigid hand build inputs')
     gear_names,_=model_poses(rig);variant='H' if source==HAND_MODELS[0] else 'R';clips={}
@@ -61,7 +62,8 @@ def load_bank(directory,case,source,hand_raw,profile,compiled):
                 or parsed['frame_end']!=parse_5ds(original)['frame_end'] or len(raw)-18>0xf000
                 or {t['name'] for t in parsed['tracks']}!=HAND_NAMES|set(gear_names)):
             raise ValueError('Changed rigid hand clip or target set')
-        expected_gear={t['name']:t['channels'] for t in placed_tracks(original,translation,stow=stow_offset(profile,case),clip_name=name)}
+        expected_gear={t['name']:t['channels'] for t in placed_tracks(original,translation,
+            stow=stow_offset(profile,case),clip_name=name,motion_spec=stow_motion(profile,case))}
         actual_gear={t['name']:t['channels'] for t in parsed['tracks'] if t['name'] not in HAND_NAMES}
         if expected_gear!=actual_gear:raise ValueError('Rigid hand bank changed equipment channels')
         clips[name]=(stem,raw)
@@ -178,7 +180,10 @@ def audit(game,bank_root,suffix,profile,*,native=False,dense=False,archives_only
         'runtime_status':'pending','bank_suffix':suffix,'profile_sha256':digest(json.dumps(profile,sort_keys=True).encode()),
         'mode':'native' if native else 'surface','dense_keys_and_half_keys':native or dense,'selected_cases':list(selected_cases),
         'library_sha256':digest(library) if native else None,'cases':reports,'totals':totals,'max_errors':errors,
-        'excluded_loose_overrides':excluded,'equipment_channels_preserved':True,
+        'excluded_loose_overrides':excluded,'equipment_matches_explicit_modern_profile':True,
+        'non_root_equipment_channels_preserved':True,
+        'equipment_channels_preserved':all(stow_motion(profile,c) is None for c in selected_cases),
+        'stow_motion':{c:stow_motion(profile,c) for c in selected_cases},
         'native_loading_time_pose_palette_executed':native,'native_subsystems_use_separate_emulators':native,
         'identity_hand_root_is_diagnostic_joint':native,'equipment_world_uses_numeric_reference':True,
         'convex_surface_crossings_checked':not native,'native_skin_executed':False,

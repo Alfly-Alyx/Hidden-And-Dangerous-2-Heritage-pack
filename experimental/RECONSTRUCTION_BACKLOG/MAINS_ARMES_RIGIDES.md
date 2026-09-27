@@ -23,8 +23,8 @@ leurs réglages propres. Les alias `PROTOTYPE_FG4PH*`, `FG4PR*`, `MG3PH*`,
 
 Les trois modèles modernes restent **identiques octet par octet** aux modèles
 rigides précédents. Le décalage `[0.07, -0.13, 0.16]` est incorporé uniquement
-aux clés de position `fpv_weapon` ; les autres canaux d'équipement sont
-conservés. La révision v3 ajoute pour MG34 un décalage moderne de rangement
+aux clés de position `fpv_weapon`. Jusqu'à v6, les autres canaux d'équipement
+sont conservés. La révision v3 ajoute pour MG34 un décalage moderne de rangement
 `[0, 0.04, 0.04]`, décroissant linéairement sur `Arm`, croissant sur `Disarm`,
 nul dans les autres clips. Ce changement est explicite et contrôlé ; il ne
 modifie ni les mouvements relatifs des pièces ni les modèles source.
@@ -74,7 +74,7 @@ Le contrôle v3 a confirmé la suppression des collisions d'avant-bras MG34
 sur les échantillons mais a trouvé de nouvelles collisions ZK-383 au repos
 et en visée : le coude corrigé pour le rangement ne convenait pas partout.
 
-**Version candidate actuelle : v4.** Le coude ZK-383 ne change donc que dans
+**Révision v4, non qualifiée.** Le coude ZK-383 ne change donc que dans
 `Arm`/`Disarm`, avec une courbe réversible qui retrouve la prise normale à
 l'arrivée au repos. Les dernières marges de doigts ont été ajustées sans
 changer les modèles. Sur les **162 poses v4**, zéro triangle/cellule pénétrant
@@ -82,7 +82,53 @@ changer les modèles. Sur les **162 poses v4**, zéro triangle/cellule pénétra
 `.analysis/rigid-hand-surfaces-v4-20260927.json`. Les vues rapprochées de sortie
 MG34/ZK-383 de la variante R ont aussi été inspectées. Ce résultat n'établit
 ni prise naturelle, ni absence d'auto-intersection, ni qualité de cadrage.
-Le contrôle dense de toutes les clés/demi-clés est lancé séparément.
+Le contrôle dense v4 est maintenant terminé : **3 094 poses, 94 022 comparaisons
+pose/pièce, aucune pièce omise**. Il révèle des traversées absentes des trois
+instants initiaux : FG42 H/R 852/820 occurrences triangle/cellule, MG34 79/79,
+ZK-383 354/368. FG42 et ZK-383 traversent notamment leurs chargeurs latéraux
+durant les portions intermédiaires de `Arm`/`Disarm`. MG34 conserve de petits
+empiètements aux demi-clés sur la poignée et le manchon. **La v4 n'est donc pas
+qualifiée**, malgré ses 162 premiers échantillons sans traversée. Rapport :
+`.analysis/rigid-hand-surfaces-v4-dense-20260927.json`.
+
+Les propositions suivantes sont conservées comme essais, pas promues comme
+prises correctes :
+
+- **v5 : 100 occurrences** sur 3 094 poses. Les directions de coude à plusieurs
+  repères annulent les collisions aux clés d'auteur, mais leurs transitions
+  créent encore des traversées importantes entre clés. Le raffinement des
+  arêtes sérialisées a épuisé sa borne d'exploration ; il n'a pas été présenté
+  comme une réussite.
+- **v6 : 81 occurrences FG42/R**, zéro pour les cinq autres couples arme/mains
+  sur 3 094 poses, aucune pièce omise. Le coude constant choisi pour FG42 et
+  ZK-383 fait remonter l'avant-bras dans la vue de repos : **variante écartée
+  visuellement**, même là où le compte de collisions est nul. Les petites
+  marges MG34 sont conservées séparément.
+
+**Candidate v7 : mouvement d'arme revu, coudes ordinaires FG42/ZK-383.** Le
+champ moderne `stow_motion` remplace explicitement les seules positions et
+rotations de la racine pendant `Arm`/`Disarm` : mouvement linéaire réversible,
+orientation de la pose prête, décalages FG42 `[0, -0.08, -0.1]` et ZK-383
+`[0, -0.04, -0.15]`. Une extrémité source différente de la pose prête attendue,
+un décalage hors bornes ou une combinaison avec l'ancien décalage additif
+font refuser la construction. Toutes les pistes des pièces, les échelles et
+les autres clips sont conservés ; **les rotations de racine de rangement
+ne sont plus celles des banques modernes précédentes**. Ce changement est
+annoncé dans le manifeste, reproduit par le lecteur indépendant et testé.
+Les premiers aperçus ne montrent plus l'avant-bras élevé. Ils montrent encore
+une partie de l'arme au départ : sortie complète du champ et cadrage moteur
+ne sont pas qualifiés. Le contrôle dense v7 est terminé : **3 094 poses,
+94 022 comparaisons pose/pièce, zéro occurrence triangle/cellule pénétrante,
+aucune pièce omise**. Rapport `.analysis/rigid-hand-surfaces-v7-dense-20260927.json`,
+profil canonique SHA-256
+`58742eb4478344766073ab4e75b8b72c9ead28992726c238b404446090f50634`.
+Cette mesure porte sur les clés et demi-clés des clips bruts, pas sur tous
+les instants continus, les auto-intersections ou les gestes naturels.
+
+`fit_rigid_elbow_path.py` reste un outil de proposition borné : il compare
+les clés puis, sur demande, les quarts/demis/trois-quarts des transitions
+arrondies en float32. Ses contrôles portent sur les faces des bras désignés,
+pas sur toutes les mains ; il ne modifie jamais le profil automatiquement.
 
 Le filtrage accéléré des triangles utilise leurs boîtes complètes, préparées
 une seule fois par pose. Seuls les couples triangle/cellule disjoints sont
@@ -94,6 +140,21 @@ La prise droite ZK-383 garde deux doigts insuffisamment proches. Un second
 ajustement réduisait légèrement l'objectif global mais augmentait la
 pénétration maximale sondée : **il n'est pas adopté**. Un objectif numérique
 plus petit ne constitue pas automatiquement une meilleure prise.
+
+Le solveur autorise maintenant des courbures **modernes indépendantes** pour
+les doigts 1 à 4, sans changer les os des bras, le pouce, les positions ni les
+échelles. Les choix absents conservent exactement l'ancien réglage commun.
+Les tests utilisent un squelette inventé et vérifient qu'un doigt modifié
+ne change que ses trois rotations locales. Le pouce garde son contrat séparé.
+`fit_rigid_finger_curls.py` compare les deux variantes H/R, toutes leurs faces
+et toutes les cellules des pièces ; il ne peut échanger une collision
+supplémentaire contre une meilleure proximité. Sur le seul repos v7, il
+rapproche l'auriculaire du bois d'environ 15,7 mm à 0,154 mm, mais laisse
+l'index à environ 81 mm de la détente. **Cette proposition n'est pas adoptée.**
+Elle révèle que le rapprochement de tous les doigts vers le bois, utilisé
+par le premier ajusteur, ne qualifie pas la position de l'index. Une option
+explicite `--index-to-trigger`, limitée à ZK-383/R, distingue désormais ces
+cibles dans l'ajusteur global ; la prise entière reste à corriger et vérifier.
 
 ## Routines natives et correction de poignets
 
@@ -132,8 +193,22 @@ Pour v4, le correcteur préserve en plus le **plan de coude réellement observé
 dans les poses, au lieu de réimposer un seul repère statique. Cela évite
 d'annuler le coude adapté au mouvement ZK-383. Ses cibles de poignets restent
 inchangées et seules les six rotations de bras peuvent changer. L'audit
-natif complet v4 de cette politique est en cours ; les anciens rapports ne
+natif complet v4 de cette politique est terminé : **54 lectures, 54 séquences,
+3 202 instants, 6 404 palettes et 12 808 observations de poignets**. Écart de
+pose nul ; maximum palette `2,980232239e-7`. Maximum aux clés `1,546438142e-7`,
+entre clés `0,001539700379`, **96 instants hors seuil brut** ; après correction
+`1,526020142e-7`. Rapport `.analysis/rigid-hands-native-corrected-v4-20260927.json`.
+Cela prouve uniquement la correction hors jeu des poignets, ni ses contacts
+de surface corrigés ni son intégration au moteur. Les anciens rapports ne
 sont pas réétiquetés comme preuve de cette nouvelle politique.
+
+Le contrôle natif **v7** vérifie à nouveau les 54 clips, 3 202 instants,
+6 404 palettes et 12 808 observations. Écart de pose nul, maximum palette
+`2,980232239e-7`, poignets aux clés `1,603257649e-7`. Le maximum entre clés
+descend à `0,000451782386`, avec **36 instants hors seuil brut**, contre 96
+en v4. Après correction hors jeu : `1,645983209e-7`. Le seuil `0,0002`
+reste donc en échec pour les clips bruts, sans relèvement ni masquage.
+Rapport `.analysis/rigid-hands-native-corrected-v7-20260927.json`.
 
 ## Associations de ressources
 

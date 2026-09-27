@@ -16,7 +16,7 @@ from benelli_fpv_rig_audit import HAND_MODELS,read_hands
 from build_equipment_hand_grips import RECIPE,posed_hand_mesh
 from build_modern_equipment_hose import digest
 from build_rigid_weapon_fpv_bank import compile_bank,preview_meshes
-from build_rigid_weapon_hand_bank import BASE_PROFILE,PROFILE,configuration,placed_tracks,targets,stow_offset
+from build_rigid_weapon_hand_bank import BASE_PROFILE,PROFILE,configuration,placed_tracks,targets,stow_offset,stow_motion,curl_spec
 from convex_contact import surface_measure
 from hand_pose_ik import author_pose,pinned_skin
 from modern_contact_cells import cells
@@ -43,7 +43,8 @@ def fit(case,side,hands,profile,*,wide=False):
     base=json.loads(BASE_PROFILE.read_text(encoding='utf-8'));spec=json.loads(RECIPE.read_text(encoding='utf-8'))
     grips,thumb,translation,_=configuration(profile,base,spec,case);prepared=[]
     for name,time,obstacles in SCENARIOS[(case,side)]:
-        source=clips[name][1];tracks=placed_tracks(source,translation,stow=stow_offset(profile,case),clip_name=name)
+        source=clips[name][1];tracks=placed_tracks(source,translation,stow=stow_offset(profile,case),clip_name=name,
+                                               motion_spec=stow_motion(profile,case))
         raw=motion._encode_transform_tracks(parse_5ds(source)['frame_end'],tracks,preserve_native_rotations=True,name_validator=lambda n:True)
         volumes=[v for m in preview_meshes(rig,raw,time) if m.name in obstacles for v in cells(m,recipe['parts'])]
         for model in HAND_MODELS:
@@ -59,7 +60,7 @@ def fit(case,side,hands,profile,*,wide=False):
         count=0;area=0;depth=0
         for raw,wanted,faces,volumes in prepared:
             wanted=deepcopy(wanted);wanted[side]['pole']=pole
-            poses,_=author_pose(raw,wanted,{s:{'finger_curl_degrees':g['finger_curl_degrees']} for s,g in grips.items()},
+            poses,_=author_pose(raw,wanted,curl_spec(grips),
                                  arm_rotation_policy='bend_plane')
             mesh=posed_hand_mesh(raw,poses,1)
             for v in volumes:
