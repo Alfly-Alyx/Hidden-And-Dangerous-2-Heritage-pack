@@ -24,7 +24,8 @@
 - [Ensembles monde/sol et volumes dorsaux réalisés](MODELES_MODERNES.md) :
   recettes originales distinctes, deux LOD, cinq matériaux ; statiques et
   désactivés, sans origine commerciale ni validation moteur ;
-- modèles FPV et rattachements third-person à réaliser ;
+- [Modèles FPV aplatis](MONTAGE_FPV_MODERNE.md) réalisés, données géométriques
+  conservées et clips recalculés ; rattachements third-person à réaliser ;
 - [Pièces tenues animées](ANIMATIONS_PIECES_TENUES.md) et
   [tuyaux déformables synchronisés](TUYAUX_ANIMES_MODERNES.md) réalisés comme
   ressources modernes désactivées ; pas d'attache au joueur ni de physique ;
@@ -35,6 +36,9 @@
   calculées et inspectées en privé, puis [36 clips natifs dérivés](ANIMATIONS_MAINS_DERIVEES.md)
   construits avec l'équipement synchronisé ; chargement, caméra et contact des
   pouces restent à qualifier ;
+- [Associations et lecture des animations](RESOLUTION_ANIMATIONS_FPV.md) :
+  quatre variantes exclusives, 156 demandes et 36 lectures natives bornées ;
+  aucun descripteur d'arme, chargement de scène ou slot en jeu créé ;
 - allumage, son continu, extinction et sécurité ;
 - jauge/consommation, recharge, jet, collision, occultation et dégâts ;
 - réactions IA, inventaire, sauvegarde et réseau ;
