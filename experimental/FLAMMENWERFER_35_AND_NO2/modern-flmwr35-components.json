@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "name": "F35",
+  "provenance": "MODERNE",
+  "runtime_status": "pending",
+  "source_model_sha256": "a4b0aa9811cf0f69b1fe678813d933aeec2c4d230ec1a6822952e3ce9f21d3c6",
+  "description": "Original visual equipment decomposition only. No player bone, operational mechanism, fuel, ignition, physics, damage, sound or gameplay. Static presentation hose is separate and must not be treated as a deforming runtime hose.",
+  "components": {
+    "held": {
+      "alias": "PROTOTYPE_F35_Held",
+      "origin_anchor": "MOD_right_hand",
+      "parts": ["MOD_hose_join", "MOD_hand_body", "MOD_forward_tube", "MOD_tip", "MOD_grip", "MOD_guard_bottom", "MOD_guard_front", "MOD_front_handrest", "MOD_rear_cap"],
+      "anchors": ["MOD_muzzle_anchor", "MOD_right_hand", "MOD_left_hand", "MOD_hose_anchor"]
+    },
+    "backpack": {
+      "alias": "PROTOTYPE_F35_Pack",
+      "origin_anchor": "MOD_backpack_anchor",
+      "parts": ["MOD_main_pack", "MOD_side_pack", "MOD_pack_band_lower", "MOD_pack_band_upper", "MOD_frame_left", "MOD_frame_right", "MOD_frame_lower", "MOD_frame_upper", "MOD_strap_left", "MOD_strap_right", "MOD_pack_handle"],
+      "anchors": ["MOD_backpack_anchor"]
+    },
+    "hose": {
+      "alias": "PROTOTYPE_F35_Hose",
+      "origin_anchor": null,
+      "parts": ["MOD_hose"],
+      "anchors": []
+    }
+  }
+}

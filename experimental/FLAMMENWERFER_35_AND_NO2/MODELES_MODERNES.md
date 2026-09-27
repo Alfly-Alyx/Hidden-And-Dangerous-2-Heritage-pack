@@ -4,6 +4,11 @@
 Les deux ensembles visuels sont fabriqués. Ils ne constituent pas encore des
 armes, une tenue animée ni une simulation de lance-flammes.
 
+**Suite du 27 septembre :** les [six composants indépendants](COMPOSANTS_MODERNES.md)
+sont maintenant construits à partir de ces sources inchangées : pièce tenue,
+sac dorsal et tuyau statique, avec repères locaux et raccords au repos contrôlés.
+Leur tenue animée et la déformation du tuyau restent à réaliser.
+
 | Création | Pièces / nœuds | Triangles des deux LOD | Fichier natif |
 |---|---:|---:|---:|
 | [Flammenwerfer 35](modern-flmwr35-world.json) | 21 / 27 | 1504 / 856 | 244661 octets |

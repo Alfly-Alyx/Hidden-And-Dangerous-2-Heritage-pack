@@ -18,6 +18,12 @@ construites : neuf séquences de pièces par arme, aucun mouvement de mains ni
 liaison au personnage. Les animations de personnage et l'intégration fonctionnelle
 restent donc à réaliser ; les modèles statiques précédents ne sont pas écrasés.
 
+Les lance-flammes disposent maintenant de
+[six composants indépendants](../FLAMMENWERFER_35_AND_NO2/COMPOSANTS_MODERNES.md) :
+pièce tenue, sac et tuyau statique pour chaque ensemble. Le recentrage et les
+raccords au repos sont vérifiés ; attaches au personnage et déformation du
+tuyau restent des réalisations nécessaires, pas de simples cases de test.
+
 Pour Benelli, les [tables complètes désactivées](../BENELLI_M4_ADDITIVE/TRANSACTION_TABLES.md)
 et leur retrait exact sont maintenant construits ; les parcours natifs des
 objets et des cellules FPV sont contrôlés en mémoire. Le

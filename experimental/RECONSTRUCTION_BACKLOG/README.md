@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **855 tests Python réussis sur 856 dans la copie de publication**; un test de lien symbolique non exécuté
+- **867 tests Python réussis sur 868 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -76,6 +76,10 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   deux ensembles extérieurs originaux fabriqués, sacs et tuyaux compris,
   21/19 pièces et deux LOD chacun. Huit tests supplémentaires et trois vues
   contrôlées ; ni animation, effet, son, comportement ou tenue en jeu validée.
+- [Composants modernes des lance-flammes](../FLAMMENWERFER_35_AND_NO2/COMPOSANTS_MODERNES.md) :
+  six modèles séparés, pièce tenue/sac/tuyau, géométrie et deux LOD conservés.
+  Origines et raccords au repos vérifiés ; six planches inspectées et douze
+  tests nouveaux. Ni attache au personnage ni déformation du tuyau réalisées.
 - [Animations modernes de pièces](ANIMATIONS_MODERNES.md) : 18 séquences
   FG42/MG34 et leurs compagnons natifs construits, pivots et raccords contrôlés.
   514 poses entières évaluées hors moteur ; deux planches de rechargement

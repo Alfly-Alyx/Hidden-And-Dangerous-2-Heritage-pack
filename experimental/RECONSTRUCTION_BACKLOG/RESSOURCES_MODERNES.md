@@ -54,6 +54,10 @@ Leurs sacs, pièces tenues et tuyaux sont des surfaces décoratives originales,
 pas des mécanismes ni des plans techniques. Huit nouveaux tests couvrent
 notamment les chemins plans ouverts/fermés ; trois vues de chaque ensemble
 sont inspectées. Aucun effet, son, combustible, dégât ou rattachement animé.
+Leurs [six composants](../FLAMMENWERFER_35_AND_NO2/COMPOSANTS_MODERNES.md)
+sont désormais séparés en modèles indépendants, avec géométrie et LOD
+conservés, repères de prise et raccords statiques. Le tuyau n'est pas déformable
+et aucun os de personnage n'est inventé pour masquer ce travail restant.
 
 Une [banque originale de mouvements FG42/MG34](ANIMATIONS_MODERNES.md) est créée :
 neuf séquences par arme sont maintenant écrites en 5DS, liées à des pivots de
