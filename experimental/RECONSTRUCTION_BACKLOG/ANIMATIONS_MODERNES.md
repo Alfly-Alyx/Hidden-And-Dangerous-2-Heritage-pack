@@ -16,6 +16,10 @@ de concordance numérique entre les clés. L'unité temporelle native reste à �
 La [sélection native et les descripteurs](LIAISON_ANIMATION_NATIVE.md) sont
 ensuite contrôlés sur les 63 pistes des deux banques modernes, sans chargeur
 de scène ni validation d'attachement effectif.
+Les bancs ultérieurs d'[attachement](ATTACHEMENT_ANIMATION_NATIF.md) et
+de [contrôleur/poses unifiés](CONTROLEUR_POSES_UNIFIE.md) exécutent maintenant
+ces étapes sur des modèles synthétiques avec les canaux complets. Ils ne
+qualifient toujours pas une scène chargée, les mains ou la jouabilité.
 
 Les recettes [FG42](../FG42/modern-animation-bank.json) et
 [MG34](../MG34_PORTABLE/modern-animation-bank.json) décrivent des mouvements
