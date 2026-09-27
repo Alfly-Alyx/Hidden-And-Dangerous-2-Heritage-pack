@@ -120,6 +120,8 @@ L'[assemblage des poses partielles](POSES_PARTIELLES_NATIVES.md) est maintenant
 recoupé sur un objet synthétique et un domaine restreint. Il confirme notamment
 la normalisation lors de l'application, après l'interpolation non normalisée.
 Restent distincts : initialisation et pilotage réels de ces canaux,
-héritage des poses Benelli en situation réelle, application au modèle chargé, déformation des mains,
+héritage des poses Benelli en situation réelle, application au modèle chargé,
+construction des matrices de peau (le [noyau CPU isolé](DEFORMATION_MAINS_NATIVE.md)
+est désormais recoupé),
 liaison caméra, événements, sons et comportement de l'arme. Aucun prototype
 n'est activé ou promu sur la seule base de ces calculs.

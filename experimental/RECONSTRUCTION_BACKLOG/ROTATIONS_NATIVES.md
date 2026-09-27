@@ -31,8 +31,10 @@ clé initiale ne sont pas complétées : leur héritage demeure à établir.
 
 `tools/four_ds_skin.py` est borné au domaine effectivement examiné : racine
 identité, un LOD non instancié sans données supplémentaires, enfants joints,
-une paire `(identifiant d'os, octet)` par sommet. **La signification de cet
-octet n'est pas encore qualifiée** ; aucun mélange de poids n'est inventé.
+une paire `(indice d'os, octet)` par sommet. Le
+[calcul natif de déformation](DEFORMATION_MAINS_NATIVE.md) établit maintenant
+la base un des indices de sommets et le poids parental `octet / 256`.
+Cet audit de repos reste distinct du nouveau banc de déformation.
 
 La disposition binaire est recoupée avec la référence primaire
 [4ds.bt épinglée](https://github.com/RoadTrain/mafia-formats/blob/13d2ff8b4d58a098438a0b300129d9e7c574e783/4ds.bt).
