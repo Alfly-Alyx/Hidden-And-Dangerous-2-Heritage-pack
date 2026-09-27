@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **1 072 tests Python réussis sur 1 073 dans la copie de publication**; un test de lien symbolique non exécuté
+- **1 097 tests Python réussis sur 1 098 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -168,6 +168,13 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   associations et comportement restent à implémenter ou qualifier.
   Lecture native des 27 clips et 1 601 instants/palettes diagnostiques contrôlés ;
   aucun chargement/copie de modèle en scène ou rendu qualifié.
+- [Mains FG42/MG34/ZK-383](MAINS_ARMES_RIGIDES.md) : 54 clips dérivés privés,
+  1 574 poses d'auteur, prises/pouces/coudes modernes paramétrés et six groupes
+  de ressources construits. 234 demandes et 54 lectures natives effectuées.
+  Contrôle natif v2 : 3 202 instants et 6 404 palettes ; 104 dépassements de
+  seuil bruts entre clés, corrigés hors jeu mais sans raccordement client.
+  Les collisions de surfaces sont mesurées, y compris sur les pièces creuses ;
+  prise droite ZK-383, gestes, cadrage et comportement restent à réaliser/qualifier.
 - [Paramètres de tir](PARAMETRES_TIR.md) : 18 colonnes rapprochées des données
   natives de 40 armes dans quatre couches. Onze différences de paramètres
   conservées sur six fiches, deux symboles FG42 explicitement non résolus.

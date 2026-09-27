@@ -3,7 +3,7 @@
 | Élément | OFFICIEL local | DÉRIVÉ | CRÉATION MODERNE requise | Spéculation |
 | --- | --- | --- | --- | ---: |
 | Garota | aucune ressource exploitable ; nom de préproduction documenté hors chaîne locale | arme rapprochée probable | extérieur moderne statique construit ; mains, deux animations synchronisées, logique de prise, sons, dégâts, IA, sauvegarde, réseau restent à réaliser | maximale pour la restitution du projet original |
-| ZK-383 | aucune ressource locale identifiable | identité visuelle ancienne seulement | extérieur moderne et neuf mouvements de pièces construits ; mains/FPV, icône, gestes coordonnés, événements, sons, Item/Weapon/ammo, comportement, IA, sauvegarde, réseau restent à réaliser | maximale pour la restitution du projet original |
+| ZK-383 | aucune ressource locale identifiable | identité visuelle ancienne seulement | extérieur moderne, neuf mouvements de pièces et banques de mains privées construits ; contacts, cadrage FPV, icône, gestes coordonnés, événements, sons, Item/Weapon/ammo, comportement, IA, sauvegarde, réseau restent à réaliser | maximale pour la restitution du projet original |
 
 ## ABSENCES VÉRIFIÉES PAR NOM
 
@@ -25,4 +25,6 @@ La [banque ZK-383](ANIMATIONS_ZK383_MODERNES.md) conserve les deux LOD et ajoute
 deux pivots, trois pistes et neuf clips. Les contrôles natifs isolés de lecture,
 d'attachement et de pose sont terminés ; rendu et comportement restent non validés.
 Le ZK-383 possède ensuite un [modèle FPV rigide avec neuf clips recalculés](../RECONSTRUCTION_BACKLOG/BANQUES_FPV_RIGIDES.md),
-toujours sans mains ni caméra qualifiée. La Garota n'utilise pas cette banque.
+sans caméra qualifiée. Des [banques de mains privées et associations séparées](../RECONSTRUCTION_BACKLOG/MAINS_ARMES_RIGIDES.md)
+sont ensuite construites ; la prise droite reste imparfaite, les gestes et le
+raccordement moteur ne sont pas réalisés. La Garota n'utilise pas ces banques.

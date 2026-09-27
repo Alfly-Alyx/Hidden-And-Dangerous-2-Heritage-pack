@@ -6,8 +6,8 @@
 |---|---|---|
 | Benelli M4 | Neuf paires FPV entièrement décodées, munition 179 et record `item_shoot` de 135 octets attestés. Modèle extérieur moderne et FPV statique dérivé fabriqués, [banc privé](../BENELLI_M4_ADDITIVE/BANC_FPV.md) réalisé. [Contrat natif](../BENELLI_M4_ADDITIVE/CONTRAT_NATIF.md) : 1 036 descripteurs contrôlés et liaison Item/FPV établie hors moteur. [État/munition](../BENELLI_M4_ADDITIVE/ETAT_ET_MUNITION.md) : 208 associations et état d'objet isolé vérifiés, asymétrie du lecteur conservée comme limite. | Les huit nœuds d'arme sont commerciaux, seul leur extraction/recalage est moderne. Aucun ID réservé : le scan historique de 359 ne suffit pas. Ne jamais écraser l'ID 9. Tables additives, sauvegarde de partie complète et comportement restent à construire/qualifier. |
 | Flammenwerfer 35 / No.2 | Enregistrement allemand officiel; vestige britannique remplacé par Flak TMP. Ensembles modernes, tuyaux animés à deux LOD, poses de mains dérivées et [banques FPV au repère corrigé](../FLAMMENWERFER_35_AND_NO2/REPERES_VUE_SUBJECTIVE.md) construits. | Chargement/copie du modèle, cadrage, prises fines, attache dorsale, mapping de tir, événements et son restent à réaliser/qualifier. IDs additifs non réservés ; ne jamais réutiliser Flak TMP. |
-| FG42 | Enregistrement `item_shoot` officiel mais ancien emplacement 27 réutilisé par un casque. [Extérieur original moderne](../FG42/MODELE_MODERNE.md), 25 pièces, deux LOD et neuf séquences de pièces construits. | Mains et cadrage FPV, événements, comportement et entrée additive à construire ; extérieur et tenue à tester en moteur. Conserver la provenance de la munition. |
-| MG34 portable | Enregistrement officiel mais ancien emplacement 32 réutilisé; munition portable distincte de la munition 211 du montage. [Extérieur original moderne](../MG34_PORTABLE/MODELE_MODERNE.md), 33 pièces, deux LOD et neuf séquences de pièces construits. | Mains et cadrage FPV, événements, comportement et entrée additive à construire ; extérieur à tester. Ne pas confondre portable et montage de char. |
+| FG42 | Enregistrement `item_shoot` officiel mais ancien emplacement 27 réutilisé par un casque. [Extérieur original moderne](../FG42/MODELE_MODERNE.md), 25 pièces, deux LOD, neuf séquences de pièces et banques de mains privées construits. | Contacts continus, gestes, cadrage FPV, événements, comportement et entrée additive à compléter ; extérieur et tenue à tester en moteur. Conserver la provenance de la munition. |
+| MG34 portable | Enregistrement officiel mais ancien emplacement 32 réutilisé; munition portable distincte de la munition 211 du montage. [Extérieur original moderne](../MG34_PORTABLE/MODELE_MODERNE.md), 33 pièces, deux LOD, neuf séquences de pièces et banques de mains privées construits. | Contacts continus, gestes, cadrage FPV, événements, comportement et entrée additive à compléter ; extérieur à tester. Ne pas confondre portable et montage de char. |
 | MG15 / MG81 | Enregistrements conflictuels/réutilisés. | Laboratoire monté seulement, jamais objet d'inventaire tant que les tables ne sont pas résolues. |
 | Vickers K | Déjà actif sur Jeep SAS. | Validation seulement; ne pas en fabriquer une version portable sans ressources. |
 | Garota / ZK383 | Aucun ensemble commercial complet démontré. [Deux extérieurs modernes distincts](../GAROTA_AND_ZK383/MODELES_MODERNES.md), 7/33 pièces et deux LOD ; [neuf mouvements de pièces ZK-383](../GAROTA_AND_ZK383/ANIMATIONS_ZK383_MODERNES.md) construits sans géométrie/animation commerciale. | Mains, gestes coordonnés, interaction Garota, événements, comportement et intégration additive restent à réaliser ; aucun slot réservé. |
@@ -21,6 +21,14 @@ Les [banques FPV rigides FG42/MG34/ZK-383](BANQUES_FPV_RIGIDES.md) sont ensuite
 construites : visuel racine sélectionnable, enfants directs, repère converti,
 27 clips recalculés et 1 547 instants comparés. Aucun mouvement de main,
 cadrage final ou chargement/copie en scène n'est qualifié par cette étape.
+
+Les [54 clips privés de mains FG42/MG34/ZK-383](MAINS_ARMES_RIGIDES.md) ajoutent
+ensuite les deux variantes commerciales de squelette, sans exporter leur
+géométrie. Les prises et trajectoires sont des créations modernes explicites.
+Six groupes isolés ont transmis 234 demandes natives à 54 chargements
+d'animations. Les contrôles de contacts et de poignets conservent leurs
+défauts mesurés ; un correcteur Python hors jeu ne remplace pas son
+raccordement au client. Aucun descripteur ni identifiant n'est alloué.
 
 Les lance-flammes disposent maintenant de
 [six composants indépendants](../FLAMMENWERFER_35_AND_NO2/COMPOSANTS_MODERNES.md) :

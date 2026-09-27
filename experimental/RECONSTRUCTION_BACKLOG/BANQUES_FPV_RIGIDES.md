@@ -98,6 +98,10 @@ Chaque nom de sortie doit être neuf. Le générateur n'a besoin d'aucune archiv
 commerciale ; seul l'audit natif lit la bibliothèque épinglée et exige les
 dépendances privées d'émulation. Aucun lancement ou installation.
 
-Mains, contacts, gestes coordonnés, cadrage, associations et descripteurs
+Étape suivante : les [banques de mains privées et leurs associations](MAINS_ARMES_RIGIDES.md)
+sont maintenant construites séparément, sans modifier ces banques rigides.
+Elles conservent des défauts de contact et ne constituent pas des armes jouables.
+
+Contacts, gestes coordonnés, cadrage, associations complètes et descripteurs
 additifs, événements, sons, comportement, sauvegarde et réseau restent des
 réalisations nécessaires. Les anciens modèles/animations restent intacts.

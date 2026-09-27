@@ -94,15 +94,23 @@ def polygon_area(points):
     return math.sqrt(dot(cross,cross))*.5
 
 
-def surface_measure(points, triangles, support, tolerance=1e-5, *, volume_bounds=None):
+def surface_measure(points, triangles, support, tolerance=1e-5, *, volume_bounds=None, boundary_support=None):
     """Detect crossing triangles even if ALL their vertices are outside.
 
     Depth is a lower bound obtained by clipping inset volumes, using 1e-7
     search resolution and a 1e-14 area cutoff (not an unconditional depth
     accuracy guarantee for arbitrarily thin polygons).
+    With boundary_support, depth refers only to the selected physical planes
+    of this cell, NOT the global nearest-boundary distance of a nonconvex union.
     This checks the supplied surface versus one convex solid only; it does not
     certify complete contact, watertight hands or hand self-intersection.
     """
+    # A decomposed solid has internal cell faces. Clip those at depth zero,
+    # but apply penetration tolerance/depth ONLY to actual exterior faces.
+    # Otherwise a triangle on a cell seam would disappear from both cells.
+    if boundary_support is None:boundary_support=support
+    if not boundary_support or any(plane not in support for plane in boundary_support):
+        raise ValueError('Boundary planes must belong to the convex cell')
     if (type(tolerance) not in (int,float) or not math.isfinite(tolerance)
             or not 0<=tolerance<=.01 or not support):raise ValueError('Invalid surface contact domain')
     if not isinstance(points,(list,tuple)) or not 3<=len(points)<=4096:
@@ -125,22 +133,24 @@ def surface_measure(points, triangles, support, tolerance=1e-5, *, volume_bounds
                 max(triangle[0][j],triangle[1][j],triangle[2][j])<lower[j]
                 or min(triangle[0][j],triangle[1][j],triangle[2][j])>upper[j] for j in range(3)):
             continue
-        interior=clip_polygon(triangle,support,tolerance)
+        region=clip_polygon(triangle,support)
+        interior=clip_polygon(region,boundary_support,tolerance)
         size=polygon_area(interior)
         if size<=1e-14:continue
         count+=1;area+=size
         low=tolerance
-        high=min(max(offset-dot(normal,p) for p in interior) for normal,offset in support)
+        high=min(max(offset-dot(normal,p) for p in interior) for normal,offset in boundary_support)
         if high<low-1e-10:raise ValueError('Invalid inset depth bound')
         # Each upper plane bound is valid for every point of this polygon.
         for _ in range(32):
             if high-low<=1e-7:break
             middle=(low+high)*.5
-            if polygon_area(clip_polygon(interior,support,middle))>1e-14:low=middle
+            if polygon_area(clip_polygon(interior,boundary_support,middle))>1e-14:low=middle
             else:high=middle
         deepest=max(deepest,low)
     return {'triangles':len(triangles),'penetrating_triangles':count,
             'inset_surface_area':area,'max_depth_lower_bound':deepest,
             'penetration_tolerance':tolerance,'inset_area_cutoff':1e-14,
             'depth_search_resolution':1e-7,'surface_crossings_checked':True,
+            'depth_reference':'selected_cell_boundary_planes' if boundary_support!=support else 'convex_solid_planes',
             'full_contact_qualified':False,'hand_self_intersection_checked':False}
