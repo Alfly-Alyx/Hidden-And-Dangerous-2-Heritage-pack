@@ -60,7 +60,7 @@ def read_reviewed(data,*,allow_multiple_lods=False,lod=0,include_faces=False):
             if not 1<=material<=model['material_count']:raise ValueError('Invalid skin material')
             if include_faces:faces.append({'material':material,'triangles':[list(indices[i:i+3]) for i in range(0,len(indices),3)]})
         levels.append((vertices,vertex_values,triangles,faces))
-    bone_count=reader.u8();floats(reader,8)
+    bone_count=reader.u8();base_bounds=list(floats(reader,8))
     if not bone_count or len(nodes)!=bone_count+1:raise ValueError('Skin/joint count mismatch')
     parents=list(reader.take(bone_count))
     joints={};node_bones={}
@@ -68,14 +68,14 @@ def read_reviewed(data,*,allow_multiple_lods=False,lod=0,include_faces=False):
         bone=struct.unpack_from('<I',data,node['end']-4)[0]
         if bone>=bone_count or bone in joints:raise ValueError('Duplicate or out-of-range bone ID')
         joints[bone]=node;node_bones[node['index']]=bone
-    errors=[];matrices=[]
+    errors=[];matrices=[];joint_bounds=[]
     for bone in range(bone_count):
         node=joints[bone];parent=node['parent_id']
         if parent!=root['index'] and parent not in node_bones:
             raise ValueError('Joint parent outside reviewed skin')
         expected=0 if parent==root['index'] else node_bones[parent]+1
         if parents[bone]!=expected:raise ValueError('Skin parent byte disagrees with joint hierarchy')
-        values=floats(reader,16);floats(reader,8);matrices.append(list(values))
+        values=floats(reader,16);joint_bounds.append(list(floats(reader,8)));matrices.append(list(values))
         if any(abs(values[i]-expected)>1e-7 for i,expected in ((3,0),(7,0),(11,0),(15,1))):
             raise ValueError('Invalid homogeneous inverse bind')
         inverse_bind=([[values[i+j*4] for j in range(3)] for i in range(3)],list(values[12:15]))
@@ -103,7 +103,8 @@ def read_reviewed(data,*,allow_multiple_lods=False,lod=0,include_faces=False):
         report.update(scope='reviewed_hd2_identity_root_up_to_two_lod_skin_rest',lod_count=lod_count,selected_lod=lod)
     result={'report':report,'vertices':[list(vertex_values[i:i+8]) for i in range(0,len(vertex_values),8)],
         'pairs':[list(pairs[i:i+2]) for i in range(0,len(pairs),2)],'parents':parents,
-        'inverse_binds':matrices,'joint_node_indices':[joints[i]['index'] for i in range(bone_count)],
+        'inverse_binds':matrices,'base_bounds':base_bounds,'joint_bounds':joint_bounds,
+        'joint_node_indices':[joints[i]['index'] for i in range(bone_count)],
         'nodes':nodes,'rest_world':world}
     if include_faces:result['face_groups']=faces
     return result
