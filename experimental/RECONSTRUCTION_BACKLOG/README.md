@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **792 tests Python réussis sur 793 dans la copie de publication**; un test de lien symbolique non exécuté
+- **802 tests Python réussis sur 803 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -159,6 +159,10 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   parental, rotations/échelles et inverse de repos recoupés sur 748 joints
   synthétiques, puis 74 poses de diagnostic des mains / 76 479 sommets.
   Quatorze tests nouveaux ; aucune sélection de pose commerciale ou scène chargée.
+- [Chaîne d'animation des mains](CHAINE_ANIMATION_MAINS.md) : neuf clips
+  commerciaux × deux mains × cinq instants, 3 330 poses et 93 015 sommets.
+  Pose, matrices et peau raccordées avec départ explicite au repos ; dix tests
+  nouveaux. Initialisation réellement choisie et transitions en jeu non qualifiées.
 - [Demandes de ressources FPV](../BENELLI_M4_ADDITIVE/DEMANDES_RESSOURCES_FPV.md) :
   treize cas de noms de mains et 156 demandes d'animation contrôlés jusqu'aux
   arguments des chargeurs, sans les appeler. Quinze tests nouveaux ; laboratoires
