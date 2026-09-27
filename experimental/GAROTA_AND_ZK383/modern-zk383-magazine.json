@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "name": "PROTOTYPE_HERITAGE_ZK383Magazine",
+  "provenance": "MODERNE",
+  "runtime_status": "pending",
+  "units": "metres",
+  "description": "Original game inventory magazine using the two box-like magazine parts of the modern ZK383 world recipe, reoriented and centered for an independent world object. Artistic geometry only, not manufacturing dimensions or recovered art. No cartridge or operating mechanism is represented.",
+  "axes": "+Y along the modern magazine, +Z up, centered main body",
+  "materials": [
+    {"name":"modern_dark_steel","diffuse":[0.12,0.14,0.15]},
+    {"name":"modern_steel","diffuse":[0.27,0.30,0.31]}
+  ],
+  "parts": [
+    {"name":"MOD_magazine_body","kind":"profile","material":"modern_dark_steel","width":0.170,
+     "outline_yz":[[-0.026,-0.014],[0.026,-0.014],[0.026,0.014],[-0.026,0.014]],
+     "transform":{"rotation_degrees":[0,0,90],"translation":[0,0,0]}},
+    {"name":"MOD_magazine_endplate","kind":"profile","material":"modern_steel","width":0.007,"center_x":-0.088,
+     "outline_yz":[[-0.029,-0.016],[0.029,-0.016],[0.029,0.016],[-0.029,0.016]],
+     "transform":{"rotation_degrees":[0,0,90],"translation":[0,0,0]}}
+  ],
+  "anchors": []
+}

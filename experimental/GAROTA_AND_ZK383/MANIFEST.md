@@ -3,7 +3,7 @@
 | Élément | OFFICIEL local | DÉRIVÉ | CRÉATION MODERNE requise | Spéculation |
 | --- | --- | --- | --- | ---: |
 | Garota | aucune ressource exploitable ; nom de préproduction documenté hors chaîne locale | arme rapprochée probable | extérieur moderne statique construit ; mains, deux animations synchronisées, logique de prise, sons, dégâts, IA, sauvegarde, réseau restent à réaliser | maximale pour la restitution du projet original |
-| ZK-383 | aucune ressource locale identifiable | identité visuelle ancienne seulement | extérieur moderne, neuf mouvements de pièces et banques de mains privées construits ; contacts, cadrage FPV, icône, gestes coordonnés, événements, sons, Item/Weapon/ammo, comportement, IA, sauvegarde, réseau restent à réaliser | maximale pour la restitution du projet original |
+| ZK-383 | aucune ressource locale identifiable | identité visuelle ancienne seulement | [arme et chargeur modernes, icônes, sons, textes et tables privées construits](DESCRIPTEUR_ZK383_MODERNE.md) ; gestes, cadrage, événements, comportement, IA, sauvegarde et réseau restent à réaliser/qualifier | maximale pour la restitution du projet original |
 
 ## ABSENCES VÉRIFIÉES PAR NOM
 
@@ -32,5 +32,7 @@ raccordement moteur ne sont pas réalisés. La Garota n'utilise pas ces banques.
 Deux [effets sonores ZK-383 entièrement originaux](../RECONSTRUCTION_BACKLOG/SONS_MODERNES.md)
 sont synthétisés sous `MOD_ZK383_F/R`. Une copie sonore privée ajoute leurs
 deux références numériques sans changer les entrées existantes et se retire
-exactement. Écoute, descripteur Item, événements et lecture native restent
-non réalisés ; aucun son historique ZK-383 n'est déclaré retrouvé.
+exactement. Les deux références sont ensuite raccordées à un descripteur moderne
+avec sa propre munition, dans [trois assemblages désactivés](DESCRIPTEUR_ZK383_MODERNE.md).
+Écoute, événements et lecture native restent non réalisés ; aucun son historique
+ZK-383 n'est déclaré retrouvé.

@@ -11,6 +11,11 @@ objet jouable, animation de personnage ou fonctionnement d'arme n'est créé.
 Le ZK-383 possède ensuite une [banque de neuf mouvements de pièces](ANIMATIONS_ZK383_MODERNES.md),
 également moderne et désactivée. Elle ne comprend pas encore les mains.
 
+Étape suivante du même jour : [assemblage ZK-383 moderne complet de préparation](DESCRIPTEUR_ZK383_MODERNE.md),
+avec banques de mains privées, sons originaux, icônes, textes, nouveau descripteur
+et munition moderne distincte. Trois copies de tables réversibles sont construites.
+Les absences historiques restent inchangées ; aucune arme fonctionnelle n'est activée.
+
 ## Garota
 
 L'identité provient d'une mention de préproduction, mais l'audit lexical local
@@ -29,8 +34,11 @@ autre pistolet-mitrailleur créerait une approximation, pas une restauration.
 
 ## Décision
 
-Conserver les deux noms comme pistes historiques, sans slot, sans valeurs de
-gameplay et sans placeholder jouable. Les deux projets de géométrie originale
+Conserver les deux noms comme pistes historiques, sans remplacer un objet
+commercial ni présenter des valeurs modernes comme restaurées. Le ZK-383 possède
+maintenant des emplacements synthétiques et des paramètres modernes explicitement
+documentés dans une copie privée ; pas de réservation globale ni arme jouable.
+Les deux projets de géométrie originale
 sont maintenant annoncés comme interprétations modernes. Une référence muséale
 textuelle est attribuée pour la silhouette du ZK-383 ; aucune identité visuelle
 originale de la Garota n'est prétendue. Les deux modules restent séparés même

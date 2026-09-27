@@ -81,7 +81,8 @@ dans les nouvelles tailles de banques, ainsi que douze insertions synthétiques
 ordonnées. **Le chargeur complet de définition, le mixeur et la lecture audio
 ne sont pas exécutés.** Le [descripteur FG42 moderne](../FG42/DESCRIPTEUR_ET_TABLES.md)
 est ensuite raccordé aux indices 55/85 dans un assemblage désactivé, avec
-arguments natifs vérifiés. Le descripteur ZK-383 reste à construire.
+arguments natifs vérifiés. Le [ZK-383 moderne](../GAROTA_AND_ZK383/DESCRIPTEUR_ZK383_MODERNE.md)
+est ensuite raccordé aux indices 56/86, également hors jeu et sans lecture audio.
 
 ## Reproduction et suites
 
@@ -97,6 +98,6 @@ d'émulation. Aucun jeu, installateur ou lecteur audio n'est lancé.
 
 **Dix-huit tests sur données inventées** couvrent le générateur, l'ajout/retrait,
 les alias et les refus du laboratoire. Restent l'écoute et les retouches sonores,
-le chargeur natif complet, le choix de politique symbolique, le descripteur
-ZK-383, les événements de tir/rechargement, les surcharges personnelles et
+le chargeur natif complet, le choix de politique symbolique,
+les événements de tir/rechargement, les surcharges personnelles et
 le déploiement isolé. Les sons ne rendent pas ces armes jouables.
