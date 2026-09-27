@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **842 tests Python réussis sur 843 dans la copie de publication**; un test de lien symbolique non exécuté
+- **855 tests Python réussis sur 856 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -177,6 +177,11 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   sélection du cache et des emplacements, paramètres initiaux et arguments
   d'attachement contrôlés. Douze tests nouveaux. La sélection de 3 après
   occupation de 0/1/2 est conservée, sans preuve d'une collision en jeu.
+- [Contrôleur et poses unifiés](CONTROLEUR_POSES_UNIFIE.md) : attachement,
+  progression du temps et calcul des poses raccordés dans la même mémoire
+  native. 720 mises à jour / 8 706 appels de pose sur les quatre banques,
+  résidu nul ; treize tests nouveaux. Poses persistantes et ordre des fins
+  contrôlés, condition initiale explicite ; chargeur, événements et rendu exclus.
 - [Demandes de ressources FPV](../BENELLI_M4_ADDITIVE/DEMANDES_RESSOURCES_FPV.md) :
   treize cas de noms de mains et 156 demandes d'animation contrôlés jusqu'aux
   arguments des chargeurs, sans les appeler. Quinze tests nouveaux ; laboratoires

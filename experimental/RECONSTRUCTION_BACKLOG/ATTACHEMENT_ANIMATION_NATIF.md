@@ -5,6 +5,10 @@ liaisons internes dans un modèle synthétique. Il dépasse les anciens contrôl
 séparés de [recherche et descripteurs](LIAISON_ANIMATION_NATIVE.md), sans
 prétendre charger une scène ni construire un personnage jouable.
 
+Le [contrôle unifié](CONTROLEUR_POSES_UNIFIE.md) prolonge ensuite ce banc
+par la progression temporelle et les poses dans les mêmes objets émulés.
+Les résultats de cycle de vie ci-dessous restent ceux de l'attachement seul.
+
 ## Ce qui est exécuté et ce qui est fourni
 
 LS3DF est épinglé : 864 256 octets, SHA-256
