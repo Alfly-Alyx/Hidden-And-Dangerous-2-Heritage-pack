@@ -18,6 +18,13 @@ construites : neuf séquences de pièces par arme, aucun mouvement de mains ni
 liaison au personnage. Les animations de personnage et l'intégration fonctionnelle
 restent donc à réaliser ; les modèles statiques précédents ne sont pas écrasés.
 
+Pour Benelli, les [tables complètes désactivées](../BENELLI_M4_ADDITIVE/TRANSACTION_TABLES.md)
+et leur retrait exact sont maintenant construits ; les parcours natifs des
+objets et des cellules FPV sont contrôlés en mémoire. Le
+[plan des mains](../BENELLI_M4_ADDITIVE/MAINS_ET_CIBLES_FPV.md) conserve les
+ressources commerciales retrouvées et 448 correspondances de pistes, sans
+qualifier le skin, les poses partielles, la caméra ou l'installation.
+
 Dossiers existants : `BENELLI_M4_*`, `FG42`, `MG34_PORTABLE`,
 `FLAMMENWERFER_35_AND_NO2`, `GAROTA_AND_ZK383` et
 `WEAPONS_VEHICLES_TRIAGE`.

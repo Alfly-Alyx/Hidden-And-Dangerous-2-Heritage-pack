@@ -53,6 +53,18 @@ class BenelliFullTableLabTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'traversal verification incomplete'):
                 self.prepare(table_machine=table_machine,fpv_machine=fpv_machine)
 
+    def test_structural_hands_plan_does_not_modify_payloads_or_waive_native_rig_work(self):
+        files,before=self.prepare()
+        plan={'scope':'synthetic_rig_plan','native_binding_execution_qualified':False}
+        with patch('benelli_fpv_rig_audit.audit',return_value=plan) as mocked:
+            after,report=self.prepare(hands={'invented':'snapshot'})
+        mocked.assert_called_once()
+        self.assertEqual(after,files)
+        self.assertIsNone(before['separate_hands_weapon_binding_plan'])
+        self.assertEqual(report['separate_hands_weapon_binding_plan'],plan)
+        self.assertIn('fpv_camera_hands_and_events',report['pending_requirements'])
+        self.assertFalse(report['installation_allowed'])
+
     def test_both_archive_variants_prepare_full_disabled_tables_without_claiming_installation(self):
         for layer in lab.ITEM_LAYERS:
             with self.subTest(layer=layer):

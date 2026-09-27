@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **601 tests Python réussis sur 602 dans la copie de publication**; un test de lien symbolique non exécuté
+- **614 tests Python réussis sur 615 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -116,6 +116,10 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   imbriquées et chaînes originales contrôlées ; 278 groupes/614 références dans
   la table Benelli désactivée, cellules inoccupées préservées. Onze tests nouveaux,
   deux laboratoires v2 avec les mêmes contenus ; ni scène ni animation exécutée.
+- [Mains et cibles FPV](../BENELLI_M4_ADDITIVE/MAINS_ET_CIBLES_FPV.md) : deux
+  modèles de mains et trois textures verrouillés, 448 correspondances de pistes
+  sur les neuf animations et deux variantes ; plan joint aux laboratoires v3.
+  Treize tests nouveaux ; skin, héritage des poses partielles et caméra non validés.
 - Trois comparaisons binaires Co_Burgundy1/2/3 supplémentaires reconstruisent
   respectivement douze/deux/dix porteurs et leurs liaisons sans modifier les scripts
   ou sons. Elles restent inertes, hors compte des laboratoires de mission.

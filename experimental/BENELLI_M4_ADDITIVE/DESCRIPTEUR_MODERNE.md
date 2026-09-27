@@ -78,7 +78,9 @@ Seuls le code original, les tests synthétiques et la documentation sont publié
 1. Valider le rendu du texte d'inventaire maintenant préparé, lors des essais natifs.
 2. Qualifier les autres consommateurs de paramètres et la synchronisation sonore ;
    les références Benelli aux banques 2/3 sont maintenant établies séparément.
-3. Raccorder la caméra, les mains et les événements FPV.
+3. Qualifier la liaison native, le skin, la caméra et les événements FPV ;
+   le [plan structurel mains/arme](MAINS_ET_CIBLES_FPV.md) relie maintenant
+   les deux mains commerciales aux neuf animations, sans inventer de poses.
 4. Compléter l'étude des sauvegardes et de liberté globale d'identifiant.
 5. Préparer le déploiement isolé et la gestion des surcharges ; la construction
    binaire réversible des deux tables est maintenant réalisée séparément.
