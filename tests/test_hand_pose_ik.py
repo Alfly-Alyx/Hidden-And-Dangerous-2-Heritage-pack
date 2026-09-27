@@ -1,14 +1,65 @@
 """Modern analytic hand targeting: synthetic numbers, no commercial geometry."""
 import math
+from copy import deepcopy
+import struct
 from pathlib import Path
 import sys
 import unittest
+from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from hand_pose_ik import two_bone,shortest_rotation,bend_plane_rotation,norm,sub,validate_basis,pinned_skin
+from hand_pose_ik import two_bone,shortest_rotation,bend_plane_rotation,norm,sub,validate_basis,pinned_skin,finger_curls
 from model_transform import matvec,determinant
+import hand_pose_ik as ik
 
 
 class HandIKTests(unittest.TestCase):
+    def test_optional_digit_choices_are_absolute_and_detached(self):
+        source={'finger_curl_degrees':[60,45,20],'finger_curl_overrides':{'1':[10,15,5],'4':[55,30,10]}}
+        result=finger_curls(source)
+        self.assertEqual(result,{'1':[10,15,5],'2':[60,45,20],'3':[60,45,20],'4':[55,30,10]})
+        result['1'][0]=90;result['2'][0]=90
+        self.assertEqual(source['finger_curl_overrides']['1'],[10,15,5])
+        self.assertEqual(source['finger_curl_degrees'],[60,45,20]);self.assertEqual(result['3'],[60,45,20])
+        self.assertEqual(finger_curls({'finger_curl_degrees':[-60,-45,-20]}),{str(i):[-60,-45,-20] for i in range(1,5)})
+
+    def test_digit_choice_refuses_thumb_unknown_keys_and_invalid_angles(self):
+        for overrides in ({},{'0':[1,2,3]},{'5':[1,2,3]},{1:[1,2,3]},[],
+                          {'1':[True,0,0]},{'1':[float('nan'),0,0]},{'4':[111,0,0]},{'1':[1,2]}):
+            with self.assertRaises(ValueError):finger_curls({'finger_curl_degrees':[0,0,0],'finger_curl_overrides':overrides})
+        for value in ({},None,{'finger_curl_degrees':[0,0,0],'other':0},{'finger_curl_degrees':[0,float('inf'),0]}):
+            with self.assertRaises(ValueError):finger_curls(value)
+
+    def test_authored_digit_changes_only_its_three_local_rotations_on_invented_skeleton(self):
+        from model_transform import world_transforms
+        raw=bytes(12)+struct.pack('<4f',0,0,0,1);nodes=[]
+        def add(name,parent,position):
+            index=len(nodes)+1
+            nodes.append({'name':name,'index':index,'parent_id':parent,'position':position,
+                          'position_offset':0,'scale':[1,1,1]})
+            return index
+        root=add('a',0,[0,0,0])
+        for side,sign in (('L',-1),('R',1)):
+            upper=add('Bip01 '+side+' UpperArm',root,[sign*.15,0,0])
+            fore=add('Bip01 '+side+' Forearm',upper,[sign*.2,0,0])
+            hand=add('Bip01 '+side+' Hand',fore,[sign*.2,0,0])
+            for digit in range(5):
+                parent=hand
+                for segment in range(2 if digit==0 else 3):
+                    name=f'Bip01 {side} Finger{digit}'+('' if segment==0 else str(segment))
+                    parent=add(name,parent,[sign*.025,.01*digit if segment==0 else 0,0])
+        skin={'nodes':nodes,'rest_world':world_transforms(raw,nodes)}
+        targets={s:{'position':[sign*.4,.1,.08],'rotation':[[1,0,0],[0,1,0],[0,0,1]],
+                    'pole':[sign*.3,-.25,0]} for s,sign in (('L',-1),('R',1))}
+        normal={s:{'finger_curl_degrees':[25,20,10]} for s in ('L','R')}
+        changed=deepcopy(normal);changed['R']['finger_curl_overrides']={'4':[35,40,15]}
+        with patch.object(ik,'pinned_skin',return_value=('invented',skin)):
+            a,_=ik.author_pose(raw,targets,normal,arm_rotation_policy='bend_plane')
+            b,_=ik.author_pose(raw,targets,changed,arm_rotation_policy='bend_plane')
+        expected={'Bip01 R Finger4','Bip01 R Finger41','Bip01 R Finger42'}
+        self.assertEqual({name for name in a if a[name]!=b[name]},expected)
+        for name in a:
+            for key in ('position','scale'):self.assertEqual(a[name][key],b[name][key])
+
     def test_both_lengths_and_pole_side_are_preserved(self):
         elbow=two_bone([0,0,0],[0,.4,0],[1,0,0],.3,.25)
         self.assertAlmostEqual(norm(elbow),.3)

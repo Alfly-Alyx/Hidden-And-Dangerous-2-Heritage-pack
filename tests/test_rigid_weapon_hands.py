@@ -61,6 +61,19 @@ class RigidWeaponHandTests(unittest.TestCase):
             bad=deepcopy(choice);bad.update(change)
             with self.assertRaises(ValueError):hands.adjust(grips,thumb,'L',bad)
 
+    def test_individual_finger_profile_choices_reach_authoring_without_mutation(self):
+        grips,thumb,_,_=hands.configuration(self.profile,self.base,self.spec,'ZK383');before=deepcopy((grips,thumb))
+        choice={'contact_offset_delta':[0,0,0],'rotation_degrees':[0,0,0],
+                'finger_curl_overrides':{'1':[-30,-20,-10],'4':[-25,-40,-15]}}
+        actual,turned=hands.adjust(grips,thumb,'R',choice)
+        self.assertEqual((grips,thumb),before);self.assertEqual(actual['L'],grips['L']);self.assertEqual(turned,thumb)
+        curls=hands.curl_spec(actual)
+        self.assertEqual(curls['R']['finger_curl_overrides'],choice['finger_curl_overrides'])
+        curls['R']['finger_curl_overrides']['4'][0]=0
+        self.assertEqual(actual['R']['finger_curl_overrides']['4'],[-25,-40,-15])
+        for value in ({},{'0':[0,0,0]},{'1':[111,0,0]}):
+            with self.assertRaises(ValueError):hands.adjust(grips,thumb,'R',{**choice,'finger_curl_overrides':value})
+
     def test_placement_changes_only_root_positions_after_float32_roundtrip(self):
         for case,(_,rig,clips,_) in self.compiled.items():
             for stem,raw in clips.values():
@@ -85,7 +98,62 @@ class RigidWeaponHandTests(unittest.TestCase):
         with patch.object(hands,'pinned_skin',return_value=(hands.HAND_MODELS[0],skin)), \
              patch.object(hands,'author_pose',return_value=(poses,{'arms':{'L':{'wrist_error':0},'R':{'wrist_error':0}}})), \
              patch.object(hands,'apply',side_effect=lambda poses,bases,thumb:poses):
-            return hands.compile_hand_bank(case,b'invented source marker',rig,self.compiled[case][2],*cfg[:3])
+            return hands.compile_hand_bank(case,b'invented source marker',rig,self.compiled[case][2],*cfg[:3],
+                stow=hands.stow_offset(self.profile,case),motion_spec=hands.stow_motion(self.profile,case))
+
+    def test_modern_root_motion_preserves_other_channels_and_reverses_at_float32_keys(self):
+        choice={'kind':'linear_ready_orientation','offset':[0,-.08,-.1]};shift=[.07,-.13,.16]
+        for case in ('FG42','ZK383'):
+            roots={}
+            for name in hands.ALIASES:
+                raw=self.compiled[case][2][name][1];original=parse_5ds(raw);end=original['frame_end']
+                normal=hands.placed_tracks(raw,shift)
+                changed=hands.placed_tracks(raw,shift,clip_name=name,motion_spec=choice)
+                if name not in ('Arm','Disarm'):
+                    self.assertEqual(normal,changed);continue
+                for a,b in zip(normal,changed):
+                    if a['name']!='fpv_weapon':self.assertEqual(a,b);continue
+                    self.assertEqual(a['channels']['scale'],b['channels']['scale'])
+                    for key in ('position','rotation'):
+                        self.assertEqual(a['channels'][key]['frames'],b['channels'][key]['frames'])
+                    roots[name]=b['channels']
+                    for frame,value in zip(b['channels']['position']['frames'],b['channels']['position']['values']):
+                        phase=1-frame/end if name=='Arm' else frame/end
+                        self.assertEqual(value,hands.f32_row([x+y*phase for x,y in zip(shift,choice['offset'])],3))
+                    self.assertTrue(all(q==[0,0,0,1] for q in b['channels']['rotation']['values']))
+                encoded=hands.motion._encode_transform_tracks(end,changed,preserve_native_rotations=True,name_validator=lambda n:True)
+                self.assertEqual([{k:t[k] for k in ('name','channels')} for t in parse_5ds(encoded)['tracks']],changed)
+                self.assertEqual(parse_5ds(raw),original)
+            for key in ('position','rotation'):
+                self.assertEqual(roots['Arm'][key]['values'],list(reversed(roots['Disarm'][key]['values'])))
+
+    def test_modern_motion_refuses_ambiguous_missing_or_unbounded_choices(self):
+        choice={'kind':'linear_ready_orientation','offset':[0,-.08,-.1]}
+        raw=self.compiled['FG42'][2]['Arm'][1]
+        for value in ({},[],{'kind':'guessed','offset':[0,0,.1]},
+                      {'kind':'linear_ready_orientation','offset':[0,0,0]},
+                      {'kind':'linear_ready_orientation','offset':[0,0,.36]},
+                      {'kind':'linear_ready_orientation','offset':[True,0,0]},
+                      {'kind':'linear_ready_orientation','offset':[0,math.inf,0]},
+                      {**choice,'extra':0}):
+            with self.assertRaises(ValueError):hands.checked_stow_motion(value)
+        self.assertEqual(hands.checked_stow_motion(choice),choice)
+        self.assertIsNone(hands.checked_stow_motion(None))
+        with self.assertRaises(ValueError):hands.placed_tracks(raw,[0,0,0],motion_spec=choice)
+        with self.assertRaises(ValueError):hands.placed_tracks(raw,[0,0,0],stow=[0,0,.1],clip_name='Arm',motion_spec=choice)
+        bad=deepcopy(self.profile);bad['cases']['FG42'].update(stow_motion=choice,stow_offset=[0,0,.1])
+        with self.assertRaises(ValueError):hands.configuration(bad,self.base,self.spec,'FG42')
+
+    def test_modern_motion_refuses_changed_ready_endpoint(self):
+        raw=self.compiled['FG42'][2]['Arm'][1];parsed=parse_5ds(raw)
+        tracks=[{'name':t['name'],'channels':deepcopy(t['channels'])} for t in parsed['tracks']]
+        choice={'kind':'linear_ready_orientation','offset':[0,-.08,-.1]}
+        for kind,value in (('position',[.001,0,0]),('rotation',[0,0,1,0])):
+            changed=deepcopy(tracks);root=next(t for t in changed if t['name']=='fpv_weapon')
+            root['channels'][kind]['values'][-1]=value
+            altered=hands.motion._encode_transform_tracks(parsed['frame_end'],changed,preserve_native_rotations=True,name_validator=lambda n:True)
+            with self.assertRaisesRegex(ValueError,'ready endpoint'):
+                hands.placed_tracks(altered,[0,0,0],clip_name='Arm',motion_spec=choice)
 
     def test_stow_translation_fades_to_zero_and_only_changes_root_position(self):
         for name in ('Arm','Disarm','Idle1','Rel'):
@@ -112,6 +180,54 @@ class RigidWeaponHandTests(unittest.TestCase):
         for time in (-1,961,True,float('nan')):
             with self.assertRaises(ValueError):hands.elbow_hint(grip,'Arm',time,24)
 
+    def test_piecewise_elbow_path_returns_to_ready_and_reverses_without_changing_other_clips(self):
+        grips,thumb,_,_=hands.configuration(self.profile,self.base,self.spec,'FG42')
+        grips['L'].pop('stow_elbow_path',None)
+        choice={'contact_offset_delta':[0,0,0],'rotation_degrees':[0,0,0],
+                'stow_elbow_path':[[0,-.38,-.03,.13],[.4,-.63,-.28,.13],[1,*grips['L']['elbow_pole']]]}
+        adjusted,_=hands.adjust(grips,thumb,'L',choice);g=adjusted['L']
+        self.assertNotIn('stow_elbow_path',grips['L'])
+        for time in range(0,801,20):
+            for a,b in zip(hands.elbow_hint(g,'Arm',time,20),hands.elbow_hint(g,'Disarm',800-time,20)):
+                self.assertAlmostEqual(a,b,places=14)
+        for a,b in zip(hands.elbow_hint(g,'Arm',800,20),grips['L']['elbow_pole']):self.assertAlmostEqual(a,b,places=14)
+        for name in ('Idle1','Aim','Daim','Rel'):
+            self.assertEqual(hands.elbow_hint(g,name,0,20),grips['L']['elbow_pole'])
+        for path in ([],[[0,0,0,0]],[[.1,0,0,0],[1,0,0,0]],[[0,0,0,0],[1,0,0,0]],
+                     [[0,0,0,0],[float('nan'),0,0,0],[1,*grips['L']['elbow_pole']]],
+                     [[0,2,0,0],[1,*grips['L']['elbow_pole']]],
+                     [[0,0,0,0],[0,0,0,0],[1,*grips['L']['elbow_pole']]]):
+            with self.assertRaises(ValueError):hands.adjust(grips,thumb,'L',{**choice,'stow_elbow_path':path})
+        with self.assertRaises(ValueError):hands.adjust(grips,thumb,'L',{**choice,'stow_elbow_pole':[0,0,0]})
+
+    def test_path_solver_never_trades_collisions_for_hint_smoothness_and_locks_endpoint(self):
+        from fit_rigid_elbow_path import choose_path
+        poles=[[0,0,0],[1,0,0],[0,1,0]]
+        indices,cost=choose_path(poles,[[(0,0),(1,.1),(0,0)],[(1,.1),(0,0),(0,0)],[(0,0),(0,0),(0,0)]],poles[0])
+        self.assertEqual(indices[-1],0);self.assertEqual(cost[:2],(0,0));self.assertEqual(indices,[2,2,0])
+        indices,cost=choose_path(poles,[[(0,0)]*3,[(0,0)]*3],poles[0],blocked={(1,0,0)})
+        self.assertEqual(indices,[1,0]);self.assertEqual(cost[:2],(0,0))
+        with self.assertRaisesRegex(ValueError,'No sampled'):
+            choose_path(poles,[[(0,0)]*3,[(0,0)]*3],poles[0],blocked={(1,k,0) for k in range(3)})
+        with self.assertRaises(ValueError):choose_path(poles,[[(0,0)]],poles[0])
+        with self.assertRaises(ValueError):choose_path(poles,[[(0,float('nan'))]*3],poles[0])
+
+    def test_edge_reference_equals_decoded_two_key_animation(self):
+        from fit_rigid_elbow_path import interpolate_pose
+        from build_equipment_fpv_animation import numeric_world
+        from modern_animation import _encode_transform_tracks
+        left={'invented':{'position':[.123456789,0,0],'rotation':[0,0,0,1],'scale':[1,1,1]}}
+        right=deepcopy(left);right['invented']['rotation']=[0,0,.3826834323650898,.9238795325112867]
+        seeds={'invented':{'position':[0,0,0],'rotation':[0,0,0,1],'scale':[1,1,1]}}
+        channels={k:{'frames':[0,1],'values':[left['invented'][k],right['invented'][k]]} for k in seeds['invented']}
+        raw=_encode_transform_tracks(1,[{'name':'invented','channels':channels}],preserve_native_rotations=True,name_validator=lambda n:True)
+        tracks={t['name']:t['channels'] for t in parse_5ds(raw)['tracks']}
+        for time in (10,20,30):
+            _,expected=numeric_world([{'name':'invented','parent_id':0}],seeds,tracks,time)
+            self.assertEqual(interpolate_pose(left,right,seeds,time),expected)
+        for time in (0,40,True,20.0):
+            with self.assertRaises(ValueError):interpolate_pose(left,right,seeds,time)
+
     def test_private_merge_aliases_and_equipment_preservation_with_invented_poses(self):
         clips,report=self.invented()
         self.assertEqual(len(clips),9);self.assertEqual(report['hand_sha256'],digest(b'invented source marker'))
@@ -120,7 +236,8 @@ class RigidWeaponHandTests(unittest.TestCase):
             self.assertLessEqual(len(stem),19);self.assertTrue(stem.startswith('PROTOTYPE_FG4PH'))
             parsed=parse_5ds(raw);tracks={t['name']:t['channels'] for t in parsed['tracks']}
             self.assertEqual(len(tracks),37+32);self.assertLessEqual(len(raw)-18,0xf000)
-            expected=hands.placed_tracks(self.compiled['FG42'][2][name][1],[.07,-.13,.16])
+            expected=hands.placed_tracks(self.compiled['FG42'][2][name][1],[.07,-.13,.16],
+                clip_name=name,stow=hands.stow_offset(self.profile,'FG42'),motion_spec=hands.stow_motion(self.profile,'FG42'))
             self.assertEqual({k:v for k,v in tracks.items() if k not in hands.HAND_NAMES},
                              {t['name']:t['channels'] for t in expected})
 

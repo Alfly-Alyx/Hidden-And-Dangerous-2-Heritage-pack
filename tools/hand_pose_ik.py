@@ -86,6 +86,25 @@ def pinned_skin(raw):
     return matches[0],read_reviewed(raw)
 
 
+def finger_curls(grip):
+    """Resolve bounded modern per-digit choices without changing the input."""
+    if (not isinstance(grip,dict) or 'finger_curl_degrees' not in grip
+            or set(grip)-{'finger_curl_degrees','finger_curl_overrides'}):
+        raise ValueError('Unexpected modern finger fields')
+    def checked(angles):
+        if (not isinstance(angles,list) or len(angles)!=3
+                or any(type(v) not in (int,float) or not math.isfinite(v) or not -110<=v<=110 for v in angles)):
+            raise ValueError('Unreviewed authored finger curl')
+        return angles[:]
+    base=checked(grip['finger_curl_degrees']);overrides=grip.get('finger_curl_overrides',{})
+    if (not isinstance(overrides,dict) or set(overrides)-{'1','2','3','4'}
+            or ('finger_curl_overrides' in grip and not overrides)):
+        raise ValueError('Unreviewed finger override selection')
+    result={str(i):base[:] for i in range(1,5)}
+    for digit,angles in overrides.items():result[digit]=checked(angles)
+    return result
+
+
 def author_pose(raw,targets,grips,*,arm_rotation_policy='minimal'):
     """Return derived local SRT poses; never export these as original skeleton data.
 
@@ -98,13 +117,10 @@ def author_pose(raw,targets,grips,*,arm_rotation_policy='minimal'):
     desired={};arm_errors={};axes={}
     for side in ('L','R'):
         target=targets[side];grip=grips[side]
-        if set(target)!={'position','rotation','pole'} or set(grip)!={'finger_curl_degrees'}:
+        if set(target)!={'position','rotation','pole'}:
             raise ValueError('Unexpected modern hand target or grip fields')
         wrist=vector(target['position']);turn=validate_basis(target['rotation']);pole=vector(target['pole'])
-        angles=grip['finger_curl_degrees']
-        if (not isinstance(angles,list) or len(angles)!=3
-                or any(type(v) not in (int,float) or not math.isfinite(v) or not -110<=v<=110 for v in angles)):
-            raise ValueError('Unreviewed authored finger curl')
+        curls=finger_curls(grip)
         names=[f'Bip01 {side} '+part for part in ('UpperArm','Forearm','Hand')]
         if any(name not in by_name for name in names):raise ValueError('Missing reviewed arm joint')
         rest=[skin['rest_world'][by_name[name]['index']] for name in names]
@@ -123,7 +139,7 @@ def author_pose(raw,targets,grips,*,arm_rotation_policy='minimal'):
         desired[names[2]]=(matmul(turn,rest[2][0]),wrist)
         arm_errors[side]={'upper_length':norm(upper),'forearm_length':norm(fore),'wrist_target':wrist}
         for finger in range(1,5):
-            for segment,angle in enumerate(angles):
+            for segment,angle in enumerate(curls[str(finger)]):
                 name=f'Bip01 {side} Finger{finger}'+('' if segment==0 else str(segment))
                 if name not in by_name:raise ValueError('Missing reviewed finger joint')
                 basis=skin['rest_world'][by_name[name]['index']][0]

@@ -79,7 +79,11 @@ def adjustment(values,side):
             'thumb':{'opposition_degrees':values[9],'curl_degrees':list(values[10:12])}}
 
 
-def fit(hand_raw,case,side,compiled,profile,*,seed_current_profile=False):
+def fit(hand_raw,case,side,compiled,profile,*,seed_current_profile=False,index_to_trigger=False):
+    if any('finger_curl_overrides' in h for h in profile['cases'][case]['hands'].values()):
+        raise ValueError('Global grip fitter does not support independent finger choices')
+    if type(index_to_trigger) is not bool or (index_to_trigger and (case,side)!=('ZK383','R')):
+        raise ValueError('Unreviewed independent index contact case')
     recipe,rig,clips,_=compiled
     base=json.loads(BASE_PROFILE.read_text(encoding='utf-8'));spec=json.loads(RECIPE.read_text(encoding='utf-8'))
     # Fit absolute adjustments relative to the pinned modern F35 seed.
@@ -90,6 +94,10 @@ def fit(hand_raw,case,side,compiled,profile,*,seed_current_profile=False):
     raw=motion._encode_transform_tracks(60,gear,preserve_native_rotations=True,name_validator=lambda n:True)
     meshes=preview_meshes(rig,raw,0);contact=next(m for m in meshes if m.name==GRIPS[case][side])
     contact_triangles=[[contact.points[i] for i in f] for f in contact.triangles]
+    digit_contacts={i:contact_triangles for i in range(5)}
+    if index_to_trigger:
+        trigger=next(m for m in meshes if m.name=='MOD_trigger')
+        digit_contacts[1]=[[trigger.points[i] for i in face] for face in trigger.triangles]
     volumes=[];unchecked=[]
     for mesh in meshes:
         try:parts=cells(mesh,recipe['parts'])
@@ -118,7 +126,7 @@ def fit(hand_raw,case,side,compiled,profile,*,seed_current_profile=False):
                 if 'Unreachable or singular' not in str(error):raise
                 cache[key]=(math.inf,{'unreachable':True});return cache[key]
             penalty,metrics=probe_penalty(points,indices,faces,volumes,witnesses)
-            gaps=finite_digit_gaps(points,digits,contact_triangles)
+            gaps=[finite_digit_gaps(points,{digit:indices},digit_contacts[digit])[0] for digit,indices in digits.items()]
             score=penalty+sum(g*g for g in gaps)
             cache[key]=(score,{**metrics,'finite_digit_surface_gaps':gaps,'objective':score})
         return cache[key]
@@ -151,6 +159,7 @@ def fit(hand_raw,case,side,compiled,profile,*,seed_current_profile=False):
             if not changed:break
         print(case,side,'fit level',iteration,'objective',score,'evaluations',evaluations,file=sys.stderr,flush=True)
     return {'adjustment':adjustment(best,side),'before':before,'after':evaluate(best)[1],
+        'digit_contact_pieces':{str(i):'MOD_trigger' if i==1 and index_to_trigger else GRIPS[case][side] for i in range(5)},
         'evaluations':evaluations,'private_surface_feedback_counts':feedback,'unchecked_pieces':unchecked,
         'only_primary_hand_variant_idle_pose_checked':True,'auto_promoted':False,'contact_qualified':False}
 
@@ -160,6 +169,7 @@ def main(argv=None):
     parser.add_argument('--archives-only',action='store_true');parser.add_argument('--profile',type=Path,default=PROFILE)
     parser.add_argument('--case',choices=CASES);parser.add_argument('--side',choices=('L','R'))
     parser.add_argument('--seed-current-profile',action='store_true')
+    parser.add_argument('--index-to-trigger',action='store_true')
     parser.add_argument('--json-output',type=Path,required=True);args=parser.parse_args(argv)
     try:
         if args.json_output.exists():raise ValueError('Report exists; use a fresh name')
@@ -167,7 +177,8 @@ def main(argv=None):
         rows={}
         for case in ([args.case] if args.case else CASES):
             compiled=compile_bank(case)
-            rows[case]={s:fit(hands[HAND_MODELS[0]],case,s,compiled,profile,seed_current_profile=args.seed_current_profile)
+            rows[case]={s:fit(hands[HAND_MODELS[0]],case,s,compiled,profile,
+                            seed_current_profile=args.seed_current_profile,index_to_trigger=args.index_to_trigger)
                         for s in ([args.side] if args.side else ('L','R'))}
         report={'schema_version':1,'provenance':'MODERNE','runtime_status':'pending','cases':rows,
             'source_profile_sha256':digest(json.dumps(profile,sort_keys=True).encode()),

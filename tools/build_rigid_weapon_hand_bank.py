@@ -24,7 +24,7 @@ from build_modern_equipment_hose import digest
 from build_rigid_weapon_fpv_bank import CASES,compile_bank as rigid_bank,preview_meshes
 from build_thumb_grip_preview import detail
 from five_ds import parse_5ds
-from hand_pose_ik import author_pose,pinned_skin,validate_basis
+from hand_pose_ik import author_pose,pinned_skin,validate_basis,finger_curls
 from menu_gui_audit import parse_4ds_nodes
 from model_transform import matmul,rotation
 from modern_thumb_pose import apply,turns
@@ -40,10 +40,29 @@ def stow_offset(profile,case):
     return list(offset)
 
 
+def checked_stow_motion(value):
+    """Explicit modern root replacement, not a recovered animation curve."""
+    if value is None:return None
+    if (not isinstance(value,dict) or set(value)!={'kind','offset'}
+            or value['kind']!='linear_ready_orientation'):
+        raise ValueError('Unreviewed modern stow motion')
+    offset=asset.vector(value['offset'])
+    if any(abs(v)>.35 for v in offset) or not any(offset):
+        raise ValueError('Modern stow motion outside authoring domain')
+    return {'kind':value['kind'],'offset':list(offset)}
+
+
+def stow_motion(profile,case):
+    choice=checked_stow_motion(profile['cases'][case].get('stow_motion'))
+    if choice is not None and any(stow_offset(profile,case)):
+        raise ValueError('Ambiguous additive and replacement stow motion')
+    return choice
+
+
 def adjust(grips,thumb,side,adjustment):
     required={'contact_offset_delta','rotation_degrees'}
     if (side not in ('L','R') or not isinstance(adjustment,dict) or not required<=set(adjustment)
-            or set(adjustment)-required-{'finger_curl_degrees','thumb','elbow_pole','stow_elbow_pole'}):
+            or set(adjustment)-required-{'finger_curl_degrees','finger_curl_overrides','thumb','elbow_pole','stow_elbow_pole','stow_elbow_path'}):
         raise ValueError('Unexpected hand adjustment')
     delta=asset.vector(adjustment['contact_offset_delta']);angles=asset.vector(adjustment['rotation_degrees'])
     if any(abs(v)>.1 for v in delta) or any(abs(v)>90 for v in angles):raise ValueError('Rigid hand adjustment outside domain')
@@ -55,6 +74,11 @@ def adjust(grips,thumb,side,adjustment):
         curls=asset.vector(adjustment['finger_curl_degrees'])
         if any(abs(v)>110 for v in curls):raise ValueError('Unreviewed rigid finger curl')
         grips[side]['finger_curl_degrees']=list(curls)
+    if 'finger_curl_overrides' in adjustment:
+        choice={'finger_curl_degrees':grips[side]['finger_curl_degrees'],
+                'finger_curl_overrides':adjustment['finger_curl_overrides']}
+        finger_curls(choice)
+        grips[side]['finger_curl_overrides']=deepcopy(adjustment['finger_curl_overrides'])
     if 'thumb' in adjustment:
         thumb[side]=deepcopy(adjustment['thumb']);turns(thumb)
     for key in ('elbow_pole','stow_elbow_pole'):
@@ -62,6 +86,20 @@ def adjust(grips,thumb,side,adjustment):
         pole=asset.vector(adjustment[key])
         if any(abs(v)>1 for v in pole):raise ValueError('Elbow pole outside authoring domain')
         grips[side][key]=list(pole)
+    if 'stow_elbow_path' in adjustment:
+        if 'stow_elbow_pole' in adjustment:raise ValueError('Ambiguous stow elbow authoring')
+        path=adjustment['stow_elbow_path']
+        if not isinstance(path,list) or not 2<=len(path)<=33:raise ValueError('Invalid stow elbow path')
+        previous=-1
+        for row in path:
+            if (not isinstance(row,list) or len(row)!=4 or type(row[0]) not in (int,float)
+                    or not previous<row[0]<=1):raise ValueError('Invalid stow elbow path phase')
+            if any(abs(v)>1 for v in asset.vector(row[1:])):raise ValueError('Stow elbow path outside domain')
+            previous=row[0]
+        if path[0][0]!=0 or path[-1][0]!=1:raise ValueError('Incomplete stow elbow path')
+        if any(abs(a-b)>1e-7 for a,b in zip(path[-1][1:],grips[side]['elbow_pole'])):
+            raise ValueError('Stow elbow path must return to the ready pole')
+        grips[side]['stow_elbow_path']=deepcopy(path)
     return grips,thumb
 
 
@@ -77,29 +115,45 @@ def configuration(profile,base,spec,case):
         raise ValueError('Unreviewed rigid hand authoring profile')
     grips,thumb=fitted_grips(base,spec,profile['base_grip_case']);row=profile['cases'][case]
     if (not isinstance(row,dict) or not {'model_sha256','translation','hands'}<=set(row)
-            or set(row)-{'model_sha256','translation','hands','stow_offset'}
+            or set(row)-{'model_sha256','translation','hands','stow_offset','stow_motion'}
             or not isinstance(row['hands'],dict) or set(row['hands'])!={'L','R'}
             or not isinstance(row['model_sha256'],str) or not re.fullmatch('[0-9a-f]{64}',row['model_sha256'])):
         raise ValueError('Incomplete rigid hand profile case')
     translation=asset.vector(row['translation'])
     stow_offset(profile,case)
+    stow_motion(profile,case)
     if any(abs(v)>.5 for v in translation):raise ValueError('Rigid hand placement outside authoring domain')
     for side,adjustment in row['hands'].items():
         grips,thumb=adjust(grips,thumb,side,adjustment)
     return grips,thumb,list(translation),row['model_sha256']
 
 
-def placed_tracks(raw,translation,*,stow=(0,0,0),clip_name=None):
+def placed_tracks(raw,translation,*,stow=(0,0,0),clip_name=None,motion_spec=None):
     translation=asset.vector(translation)
     if any(abs(v)>.5 for v in translation):raise ValueError('Rigid placement outside authoring domain')
     if not isinstance(stow,(list,tuple)):raise ValueError('Invalid stow vector')
     stow=asset.vector(list(stow))
     if any(abs(v)>.2 for v in stow) or (any(stow) and clip_name not in ALIASES):
         raise ValueError('Unreviewed stow offset or missing clip identity')
+    motion_spec=checked_stow_motion(motion_spec)
+    if motion_spec is not None and (any(stow) or clip_name not in ALIASES):
+        raise ValueError('Ambiguous modern stow motion or missing clip identity')
     parsed=parse_5ds(raw);tracks=[{'name':t['name'],'channels':deepcopy(t['channels'])} for t in parsed['tracks']]
     selected=[t for t in tracks if t['name']=='fpv_weapon']
     if len(selected)!=1 or 'position' not in selected[0]['channels']:raise ValueError('Missing rigid root placement track')
     channel=selected[0]['channels']['position']
+    if motion_spec is not None and clip_name in ('Arm','Disarm'):
+        root=selected[0]['channels'];end=parsed['frame_end'];ready=end if clip_name=='Arm' else 0
+        if (end<=0 or 'rotation' not in root or ready not in channel['frames']
+                or ready not in root['rotation']['frames']
+                or channel['values'][channel['frames'].index(ready)]!=[0,0,0]
+                or root['rotation']['values'][root['rotation']['frames'].index(ready)]!=[0,0,0,1]):
+            raise ValueError('Modern stow replacement needs a reviewed ready endpoint')
+        channel['values']=[f32_row([a+b*(1-frame/end if clip_name=='Arm' else frame/end)
+                                   for a,b in zip(translation,motion_spec['offset'])],3)
+                           for frame in channel['frames']]
+        root['rotation']['values']=[[0.,0.,0.,1.] for frame in root['rotation']['frames']]
+        return tracks
     channel['values']=[f32_row([a+b+c*((1-frame/parsed['frame_end']) if clip_name=='Arm' else
                           (frame/parsed['frame_end'] if clip_name=='Disarm' else 0))
                           for a,b,c in zip(value,translation,stow)],3)
@@ -109,10 +163,18 @@ def placed_tracks(raw,translation,*,stow=(0,0,0),clip_name=None):
 
 def elbow_hint(grip,clip_name,time,end):
     pole=grip['elbow_pole'][:]
-    if 'stow_elbow_pole' in grip and clip_name in ('Arm','Disarm'):
+    if ('stow_elbow_pole' in grip or 'stow_elbow_path' in grip) and clip_name in ('Arm','Disarm'):
         if type(end) is not int or end<=0 or type(time) not in (int,float) or not 0<=time<=end*40:
             raise ValueError('Unreviewed stow elbow sample')
-        weight=min(1,2*(1-time/(end*40))) if clip_name=='Arm' else min(1,2*time/(end*40))
+        phase=time/(end*40) if clip_name=='Arm' else 1-time/(end*40)
+        if 'stow_elbow_path' in grip:
+            path=grip['stow_elbow_path']
+            for a,b in zip(path,path[1:]):
+                if a[0]<=phase<=b[0]:
+                    fraction=(phase-a[0])/(b[0]-a[0])
+                    return [x+fraction*(y-x) for x,y in zip(a[1:],b[1:])]
+            raise ValueError('Stow elbow path does not cover sample')
+        weight=min(1,2*(1-phase))
         pole=[a+weight*(b-a) for a,b in zip(pole,grip['stow_elbow_pole'])]
     return pole
 
@@ -128,7 +190,12 @@ def targets(rig,tracks,time,grips,*,clip_name=None):
         for side,label in (('L','left'),('R','right'))}
 
 
-def compile_hand_bank(case,hand_raw,rig,source_clips,grips,thumb,translation,*,stow=(0,0,0)):
+def curl_spec(grips):
+    return {side:{key:deepcopy(grip[key]) for key in ('finger_curl_degrees','finger_curl_overrides') if key in grip}
+            for side,grip in grips.items()}
+
+
+def compile_hand_bank(case,hand_raw,rig,source_clips,grips,thumb,translation,*,stow=(0,0,0),motion_spec=None):
     source,skin=pinned_skin(hand_raw);names=[n['name'] for n in skin['nodes']]
     by_name={n['name']:n for n in skin['nodes']}
     bases={name:skin['rest_world'][by_name[name]['index']][0] for name in turns(thumb)}
@@ -136,9 +203,9 @@ def compile_hand_bank(case,hand_raw,rig,source_clips,grips,thumb,translation,*,s
     if (case not in CASES or len(allowed)!=len(names)+len(gear_names) or set(source_clips)!=set(ALIASES)
             or set(names)!=HAND_NAMES):raise ValueError('Unexpected rigid hand bank targets')
     variant='H' if source==HAND_MODELS[0] else 'R';clips={};rows={}
-    curls={s:{'finger_curl_degrees':g['finger_curl_degrees']} for s,g in grips.items()}
+    curls=curl_spec(grips)
     for name,(_,raw) in source_clips.items():
-        end=parse_5ds(raw)['frame_end'];gear=placed_tracks(raw,translation,stow=stow,clip_name=name);samples=[];worst=0
+        end=parse_5ds(raw)['frame_end'];gear=placed_tracks(raw,translation,stow=stow,clip_name=name,motion_spec=motion_spec);samples=[];worst=0
         if {t['name'] for t in gear}!=set(gear_names):raise ValueError('Incomplete rigid source tracks')
         for frame in range(end+1):
             poses,report=author_pose(hand_raw,targets(rig,gear,frame*40,grips,clip_name=name),curls,arm_rotation_policy='bend_plane')
@@ -155,7 +222,8 @@ def compile_hand_bank(case,hand_raw,rig,source_clips,grips,thumb,translation,*,s
             'source_clip_sha256':digest(raw),'frame_end':end,'authored_frames':len(samples),
             'unserialized_authoring_wrist_max_error':worst}
     return clips,{'hand_source':source,'hand_sha256':digest(hand_raw),'model_sha256':digest(rig),
-        'grips':deepcopy(grips),'thumb':deepcopy(thumb),'translation':list(translation),'stow_offset':list(stow),'clips':rows,
+        'grips':deepcopy(grips),'thumb':deepcopy(thumb),'translation':list(translation),'stow_offset':list(stow),
+        'stow_motion':checked_stow_motion(motion_spec),'clips':rows,
         'rest_positions_scales_and_geometry_preserved':True,'finger_contact_qualified':False,
         'reload_hand_gestures_implemented':False,'engine_validated':False}
 
@@ -182,7 +250,8 @@ def build(case,hands,profile,output,with_previews=False):
     if digest(rig)!=expected:raise ValueError('Rigid model differs from hand profile')
     prepared=[]
     for source in HAND_MODELS:
-        clips,row=compile_hand_bank(case,hands[source],rig,source_clips,grips,thumb,translation,stow=stow_offset(profile,case))
+        clips,row=compile_hand_bank(case,hands[source],rig,source_clips,grips,thumb,translation,
+                                   stow=stow_offset(profile,case),motion_spec=stow_motion(profile,case))
         prepared.append((source,clips,row))
     output.mkdir(parents=True,exist_ok=False)
     (output/f'PROTOTYPE_{SHORT[case]}_HandFPV.4ds.disabled').write_bytes(rig)
@@ -192,8 +261,10 @@ def build(case,hands,profile,output,with_previews=False):
     report={'schema_version':1,'case':case,'provenance':PROVENANCE,'runtime_status':'pending','private_only':True,
         'profile_sha256':digest(json.dumps(profile,sort_keys=True).encode()),'source_rigid_bank':source_report,
         'variants':{source:row for source,clips,row in prepared},'modern_equipment_model_unchanged':True,
-        'root_translation_is_clip_only':True,'other_equipment_channels_preserved':True,
-        'stow_offset':stow_offset(profile,case),'stow_curve_is_modern_authoring':any(stow_offset(profile,case)),
+        'root_translation_is_clip_only':True,'other_equipment_channels_preserved':stow_motion(profile,case) is None,
+        'non_root_equipment_channels_preserved':True,'stow_motion':stow_motion(profile,case),
+        'stow_offset':stow_offset(profile,case),
+        'stow_curve_is_modern_authoring':any(stow_offset(profile,case)) or stow_motion(profile,case) is not None,
         'commercial_geometry_exported':False,'original_animation_keys_read':False,
         'initial_grips_seeded_from_modern_F35':True,'source_geometry_modified':False,
         'native_loader_executed':False,'surface_contact_qualified':False,'reload_hand_gestures_implemented':False,
