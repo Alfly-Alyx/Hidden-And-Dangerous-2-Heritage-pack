@@ -1,0 +1,37 @@
+{
+  "schema_version":1,
+  "kind":"modern_rigid_hand_profile",
+  "provenance":"MODERNE",
+  "runtime_status":"pending",
+  "description":"Modern per-weapon grip candidates seeded from our F35 choices and fitted on primary-hand Idle1 surfaces. Still unqualified: residual crossings and separated ZK383 right digits require further authoring. Kinematic feasibility is not natural contact, a reload gesture, or camera calibration. No commercial bone poses or recovered animation keys are stored here.",
+  "source_grip_profile_sha256":"7ab5eac78ff9d29cc36dff8af178a060b593f67d349c8a1a3439daa9ab3bbe6d",
+  "source_grip_digest_mode":"canonical_json",
+  "base_grip_case":"F35",
+  "cases":{
+    "FG42":{
+      "model_sha256":"0ae8254f8ad43678ac7e02086ffc72eff7bb03ba9a1a996eb7e85f432f1062f6",
+      "translation":[0.07,-0.13,0.16],
+      "hands":{
+        "L":{"contact_offset_delta":[0.01,0.025,-0.045],"rotation_degrees":[0,0,0],"finger_curl_degrees":[78.75,65.625,0],"thumb":{"opposition_degrees":38.4375,"curl_degrees":[16.875,60]}},
+        "R":{"contact_offset_delta":[-0.001875,0,0],"rotation_degrees":[17.8125,-2.8125,0],"finger_curl_degrees":[-90,-53.4375,-4.6875],"thumb":{"opposition_degrees":65,"curl_degrees":[-48.75,-58.125]}}
+      }
+    },
+    "MG34":{
+      "model_sha256":"9cc238c77e9a1a38f844977f417e802118026258a27f40103af9d680b076e672",
+      "translation":[0.07,-0.13,0.16],
+      "stow_offset":[0,0.04,0.04],
+      "hands":{
+        "L":{"contact_offset_delta":[-0.011875,0.025,0.04125],"rotation_degrees":[0,0.9375,0],"finger_curl_degrees":[71.25,46.875,7.1875],"thumb":{"opposition_degrees":47.8125,"curl_degrees":[16.875,64.6875]},"elbow_pole":[-0.63,-0.28,-0.12]},
+        "R":{"contact_offset_delta":[-0.0024,-0.0001,0],"rotation_degrees":[3.75,0,-3.75],"finger_curl_degrees":[-75,-73.125,-12.1875],"thumb":{"opposition_degrees":26.25,"curl_degrees":[-37.5,-58.125]}}
+      }
+    },
+    "ZK383":{
+      "model_sha256":"554a5721a39fffc7d65ac94fb4762a7847f233eef4a214bb9376953c4256b6ef",
+      "translation":[0.07,-0.13,0.16],
+      "hands":{
+        "L":{"contact_offset_delta":[0.009375,0.01335,-0.011875],"rotation_degrees":[0.9375,-3.75,0],"finger_curl_degrees":[71.25,74.0625,8.125],"thumb":{"opposition_degrees":65,"curl_degrees":[32.8125,38.4375]},"stow_elbow_pole":[-0.38,-0.03,0.13]},
+        "R":{"contact_offset_delta":[0.0118,-0.03375,-0.039375],"rotation_degrees":[-75,-15,-20.625],"finger_curl_degrees":[-41.25,-69.375,-36.5625],"thumb":{"opposition_degrees":65,"curl_degrees":[-42.1875,-19.6875]}}
+      }
+    }
+  }
+}

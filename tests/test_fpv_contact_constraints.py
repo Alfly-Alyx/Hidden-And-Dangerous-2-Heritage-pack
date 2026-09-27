@@ -4,7 +4,7 @@ from pathlib import Path
 import sys
 import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'tools'))
-from fpv_contact_constraints import ARM_NAMES, replace_arm_rotations, targets, world, wrist_errors
+from fpv_contact_constraints import ARM_NAMES, replace_arm_rotations, targets, world, wrist_errors,observed_elbow_hints,correct
 from build_equipment_hand_animation import IDENTITY
 from animation_attach_audit import invented
 from animation_stream_audit import attach, steps_for
@@ -78,6 +78,31 @@ class ContactConstraintTests(unittest.TestCase):
         rows[0]['poses'][0]['position'][0] = 99
         self.assertNotEqual(rows[1]['poses'][0]['position'][0], 99)
         self.assertEqual(pose['position'], [0,0,0])
+
+    def test_rigid_root_is_explicit_and_equivalent_not_an_implicit_pivot_fallback(self):
+        pose={'position':[.1,.2,.3],'rotation':[0,0,0,1],'scale':[1,1,1]}
+        nodes=[{'name':'fpv_weapon','parent_id':0},{'name':'MOD_left_hand','parent_id':1},
+               {'name':'MOD_right_hand','parent_id':1}]
+        gear=world(nodes,{n['name']:deepcopy(pose) for n in nodes})
+        grips={s:{'rest_to_equipment_rotation':[[1,0,0],[0,1,0],[0,0,1]],'contact_offset':[0,0,0],
+                  'wrist_to_contact_in_rest':[0,0,0],'elbow_pole':[.1,.2,.3]} for s in ('L','R')}
+        rigid=targets(gear,grips,root_name='fpv_weapon')
+        held={**gear,'MOD_held_pivot':gear['fpv_weapon']}
+        self.assertEqual(rigid,targets(held,grips))
+        with self.assertRaises(ValueError):targets(gear,grips)
+        with self.assertRaises(ValueError):targets(held,grips,root_name='Other')
+
+    def test_observed_elbow_policy_changes_only_hints_and_preserves_authored_targets(self):
+        wanted={s:{'position':[.1,.2,.3],'rotation':[[1,0,0],[0,1,0],[0,0,1]],'pole':[0,0,0]} for s in ('L','R')}
+        matrices={f'Bip01 {s} Forearm':IDENTITY[:] for s in ('L','R')}
+        for s in ('L','R'):matrices[f'Bip01 {s} Forearm'][12:15]=[.4,.5,.6]
+        saved=deepcopy((wanted,matrices));result=observed_elbow_hints(wanted,matrices)
+        for s in ('L','R'):
+            self.assertEqual(result[s]['pole'],[.4,.5,.6])
+            for key in ('position','rotation'):self.assertEqual(result[s][key],wanted[s][key])
+        self.assertEqual((wanted,matrices),saved)
+        with self.assertRaises(ValueError):observed_elbow_hints(wanted,{})
+        with self.assertRaises(ValueError):correct(None,None,None,None,preserve_observed_elbow_plane=1)
 
     def test_trace_preserves_slot_order_and_entire_diagnostic_schedule(self):
         pose = {'position': [0,0,0], 'rotation': [0,0,0,1], 'scale': [1,1,1]}

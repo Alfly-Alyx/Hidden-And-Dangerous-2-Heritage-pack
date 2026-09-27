@@ -25,10 +25,12 @@ def world(nodes, poses):
     return dict(zip(names, result['world_matrices']))
 
 
-def targets(equipment_world, grips):
+def targets(equipment_world, grips, *, root_name='MOD_held_pivot'):
     if set(grips) != {'L', 'R'}:
         raise ValueError('Both wrist constraints are required')
-    held = equipment_world['MOD_held_pivot']
+    if root_name not in ('MOD_held_pivot','fpv_weapon') or root_name not in equipment_world:
+        raise ValueError('Unreviewed or absent constraint root')
+    held = equipment_world[root_name]
     basis = [[held[i+4*j] for j in range(3)] for i in range(3)]
     return {side: {'position': wrist_from_native(held, equipment_world['MOD_'+label+'_hand'], grips[side]),
                    'rotation': matmul(basis, grips[side]['rest_to_equipment_rotation']),
@@ -54,7 +56,19 @@ def replace_arm_rotations(poses, authored):
     return result
 
 
-def correct(hand_raw, equipment_nodes, poses, grips):
+def observed_elbow_hints(wanted,hand_world):
+    from hand_pose_ik import vector
+    if set(wanted)!={'L','R'}:raise ValueError('Both observed elbows are required')
+    result=deepcopy(wanted)
+    for side in ('L','R'):
+        name=f'Bip01 {side} Forearm'
+        if name not in hand_world:raise ValueError('Missing observed elbow')
+        result[side]['pole']=vector(hand_world[name][12:15])
+    return result
+
+
+def correct(hand_raw, equipment_nodes, poses, grips, *, root_name='MOD_held_pivot',preserve_observed_elbow_plane=False):
+    if type(preserve_observed_elbow_plane) is not bool:raise ValueError('Invalid observed elbow policy')
     source, skin = pinned_skin(hand_raw)
     hand_names, initial = model_poses(hand_raw)
     gear_names = {node['name'] for node in equipment_nodes}
@@ -65,8 +79,10 @@ def correct(hand_raw, equipment_nodes, poses, grips):
     if (poses['a'] != seeds['a'] or any(poses[name][key] != seeds[name][key]
             for name in hand_names for key in ('position', 'scale'))):
         raise ValueError('Source hand root, positions or scales have changed')
-    wanted = targets(world(equipment_nodes, poses), grips)
-    before = wrist_errors(world(skin['nodes'], poses), wanted)
+    wanted = targets(world(equipment_nodes, poses), grips,root_name=root_name)
+    hand_world=world(skin['nodes'],poses)
+    if preserve_observed_elbow_plane:wanted=observed_elbow_hints(wanted,hand_world)
+    before = wrist_errors(hand_world, wanted)
     authored, _ = author_pose(hand_raw, wanted,
         {side: {'finger_curl_degrees': [0, 0, 0]} for side in ('L', 'R')},
         arm_rotation_policy='bend_plane')

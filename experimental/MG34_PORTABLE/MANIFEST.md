@@ -19,7 +19,8 @@
 - modèle extérieur/sol : [fabriqué](MODELE_MODERNE.md), tenue et moteur non validés ;
 - [neuf animations originales de pièces construites](../RECONSTRUCTION_BACKLOG/ANIMATIONS_MODERNES.md), sans mains ni liaison moteur ;
 - [modèle et clips FPV rigides construits](../RECONSTRUCTION_BACKLOG/BANQUES_FPV_RIGIDES.md), sans mains, cadrage ni copie moteur qualifiés ;
-- compléter le FPV avec les mains ; animations de personnage ; entrée Weapon additive ;
+- [banques de mains privées et associations construites](../RECONSTRUCTION_BACKLOG/MAINS_ARMES_RIGIDES.md) ; prises, trajectoire de sortie et coudes ajustés sans qualification moteur ;
+- cadrage FPV ; gestes de recharge ; animations de personnage ; entrée Weapon additive ;
 - alimentation, cadence, recul, dispersion, dégâts, bipied et rechargement ;
 - mapping sonore vérifié ; inventaire, IA, sauvegarde et réseau.
 

@@ -58,7 +58,12 @@ def group(case,variant,*,view_axes=False,fitted=False):
 
 
 def require_empty_sources(tables,case):
-    slot=SLOTS[case];proof=[]
+    return require_empty_slot(tables,SLOTS[case])
+
+
+def require_empty_slot(tables,slot):
+    if type(slot) is not int or not 359<=slot<=364:raise ValueError('Unreviewed laboratory slot domain')
+    proof=[]
     for archive in ('SabreSquadron.dta','PatchX01.dta'):
         key=(archive,'tables/items.sav');raw=tables[key]
         if (len(raw),digest(raw))!=TABLE_PINS[key]:raise ValueError('Changed pinned item table')
