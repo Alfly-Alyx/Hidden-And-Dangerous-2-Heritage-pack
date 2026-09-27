@@ -17,7 +17,8 @@
 
 - modèle extérieur/sol : [fabriqué](MODELE_MODERNE.md), essai moteur et tenue requis ;
 - [neuf animations originales de pièces construites](../RECONSTRUCTION_BACKLOG/ANIMATIONS_MODERNES.md), sans mains ni liaison moteur ;
-- modèle FPV complet ; icône ; animations de personnage ; sons ;
+- [modèle et clips FPV rigides construits](../RECONSTRUCTION_BACKLOG/BANQUES_FPV_RIGIDES.md), sans mains, cadrage ni copie moteur qualifiés ;
+- compléter le FPV avec les mains ; icône ; animations de personnage ; sons ;
 - entrée Weapon additive et liaison munition ;
 - balistique, chargeur, cadence, recul, dispersion et dégâts ;
 - inventaire, IA, sauvegarde et réseau.

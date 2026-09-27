@@ -39,7 +39,7 @@ def _remap_generated_model(raw):
     parsed = parse_4ds_nodes(raw)
     nodes = parsed['nodes']
     if (parsed['has_animation'] or not nodes or nodes[0]['name'] != 'fpv_weapon'
-            or nodes[0]['frame_type'] != 1 or nodes[0]['visual_type'] != 2
+            or nodes[0]['frame_type'] != 1 or nodes[0]['visual_type'] not in (0, 2)
             or any(not n['properties'].startswith('MODERNE;') for n in nodes)
             or any(n['name'] != 'fpv_weapon' and not n['name'].startswith(('MOD_', 'PROTOTYPE_')) for n in nodes)):
         raise ValueError('Expected marked freshly generated flat FPV equipment')
