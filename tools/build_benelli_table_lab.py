@@ -21,7 +21,7 @@ ITEM_LAYERS=('SabreSquadron.dta','PatchX01.dta')
 FPV_SOURCE=('SabreSquadron.dta','tables/fpvanims.sav')
 
 
-def prepare(tables,sources,machine,*,inventory,item_layer,table_machine=None,fpv_machine=None):
+def prepare(tables,sources,machine,*,inventory,item_layer,table_machine=None,fpv_machine=None,hands=None):
     if (table_machine is None)!=(fpv_machine is None):raise ValueError('Both native table oracles are required together')
     if item_layer not in ITEM_LAYERS:raise ValueError('Unreviewed item layer; Base/Patch cannot host this candidate')
     if inventory is None:raise ValueError('Prepared inventory texts are required for the full-table lab')
@@ -47,6 +47,10 @@ def prepare(tables,sources,machine,*,inventory,item_layer,table_machine=None,fpv
             raise ValueError('Native descriptor verification incomplete')
         checked.append(slot['slot'])
     if descriptor_lab.SYNTHETIC_SLOT not in checked:raise ValueError('Candidate missing from full table')
+    rig_binding=None
+    if hands is not None:
+        from benelli_fpv_rig_audit import audit as audit_rig
+        rig_binding=audit_rig(sources,hands,tables)
     traversal=None
     if table_machine is not None:
         traversal={'items':table_machine.inspect_table(current['items']),
@@ -71,6 +75,7 @@ def prepare(tables,sources,machine,*,inventory,item_layer,table_machine=None,fpv
         'native_descriptor_records_checked':len(checked),'native_descriptor_slots_checked':checked,
         'native_whole_table_loader_executed':False,
         'native_table_traversal':traversal,
+        'separate_hands_weapon_binding_plan':rig_binding,
         'files':{name:fingerprint(raw) for name,raw in files.items()},
         'pending_requirements':[p for p in descriptor_report['pending_requirements'] if p!='additive_table_transaction']
             +['isolated_deployment_transaction_and_override_merge','native_whole_table_loading_tests'],
@@ -129,6 +134,7 @@ def main(argv=None):
     from item_state_oracle import StateOracle
     from item_table_oracle import TableOracle
     from fpv_table_oracle import FpvTableOracle
+    from benelli_fpv_rig_audit import read_hands
     from item_native_contract import SOURCE_SHA
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--game',required=True,type=Path)
@@ -143,20 +149,22 @@ def main(argv=None):
         tables,excluded=read_tables(args.game,archives_only=args.archives_only)
         manifest=json.loads(MANIFEST.read_text(encoding='utf-8'))
         sources,source_excluded=read_sources(args.game,manifest,archives_only=args.archives_only)
+        hands,hand_excluded=read_hands(args.game,archives_only=args.archives_only)
         inventory={'catalogue':json.loads(CATALOGUE.read_text(encoding='utf-8')),
                    'sources':read_text_sources(args.game),
                    'occupied_item_text_ids':occupied_item_text_ids(args.game,tables),
                    'mission_range':(TEXT_ID_START,TEXT_ID_END)}
         image=args.image.read_bytes()
         files,report=prepare(tables,sources,StateOracle(image),inventory=inventory,item_layer=args.item_layer,
-                             table_machine=TableOracle(image),fpv_machine=FpvTableOracle(image))
+                             table_machine=TableOracle(image),fpv_machine=FpvTableOracle(image),hands=hands)
         report['resource_source_pins']=manifest['sources']
-        report['excluded_loose_overrides']={**excluded,**source_excluded}
+        report['excluded_loose_overrides']={**excluded,**source_excluded,**hand_excluded}
         if output:write_lab(output,files,report)
         print(json.dumps({'output':str(output) if output else None,
             **{key:report[key] for key in ('item_source','fpv_source','native_descriptor_records_checked',
                 'reverse_verified_in_memory','installation_allowed','game_modified','pending_requirements')},
             'transaction':report['transaction'],
+            'separate_hands_variants':len(report['separate_hands_weapon_binding_plan']['hands_variants']),
             'native_table_traversal':{key:{field:result[field] for field in
                 (('slots_visited','present_descriptors_checked') if key=='items' else
                  ('groups_visited','populated_channels_checked','unpopulated_cells_unchanged'))}
