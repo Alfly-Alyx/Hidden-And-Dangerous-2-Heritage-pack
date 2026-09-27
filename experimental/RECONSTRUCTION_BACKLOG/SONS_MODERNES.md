@@ -79,7 +79,9 @@ comme des empreintes intégrales d'archives ou une preuve d'ordre de recherche n
 Les routines natives bornées vérifient **quatre recherches numériques valides**
 dans les nouvelles tailles de banques, ainsi que douze insertions synthétiques
 ordonnées. **Le chargeur complet de définition, le mixeur et la lecture audio
-ne sont pas exécutés.** Aucun descripteur Item FG42/ZK-383 n'est encore raccordé.
+ne sont pas exécutés.** Le [descripteur FG42 moderne](../FG42/DESCRIPTEUR_ET_TABLES.md)
+est ensuite raccordé aux indices 55/85 dans un assemblage désactivé, avec
+arguments natifs vérifiés. Le descripteur ZK-383 reste à construire.
 
 ## Reproduction et suites
 
@@ -95,6 +97,6 @@ d'émulation. Aucun jeu, installateur ou lecteur audio n'est lancé.
 
 **Dix-huit tests sur données inventées** couvrent le générateur, l'ajout/retrait,
 les alias et les refus du laboratoire. Restent l'écoute et les retouches sonores,
-le chargeur natif complet, le choix de politique symbolique, les descripteurs
-modernes, les événements de tir/rechargement, les surcharges personnelles et
+le chargeur natif complet, le choix de politique symbolique, le descripteur
+ZK-383, les événements de tir/rechargement, les surcharges personnelles et
 le déploiement isolé. Les sons ne rendent pas ces armes jouables.

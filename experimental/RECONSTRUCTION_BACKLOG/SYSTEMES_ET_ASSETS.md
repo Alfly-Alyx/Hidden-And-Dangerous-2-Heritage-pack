@@ -6,7 +6,7 @@
 |---|---|---|
 | Benelli M4 | Neuf paires FPV entièrement décodées, munition 179 et record `item_shoot` de 135 octets attestés. Modèle extérieur moderne et FPV statique dérivé fabriqués, [banc privé](../BENELLI_M4_ADDITIVE/BANC_FPV.md) réalisé. [Contrat natif](../BENELLI_M4_ADDITIVE/CONTRAT_NATIF.md) : 1 036 descripteurs contrôlés et liaison Item/FPV établie hors moteur. [État/munition](../BENELLI_M4_ADDITIVE/ETAT_ET_MUNITION.md) : 208 associations et état d'objet isolé vérifiés, asymétrie du lecteur conservée comme limite. | Les huit nœuds d'arme sont commerciaux, seul leur extraction/recalage est moderne. Aucun ID réservé : le scan historique de 359 ne suffit pas. Ne jamais écraser l'ID 9. Tables additives, sauvegarde de partie complète et comportement restent à construire/qualifier. |
 | Flammenwerfer 35 / No.2 | Enregistrement allemand officiel; vestige britannique remplacé par Flak TMP. Ensembles modernes, tuyaux animés à deux LOD, poses de mains dérivées et [banques FPV au repère corrigé](../FLAMMENWERFER_35_AND_NO2/REPERES_VUE_SUBJECTIVE.md) construits. | Chargement/copie du modèle, cadrage, prises fines, attache dorsale, mapping de tir, événements et son restent à réaliser/qualifier. IDs additifs non réservés ; ne jamais réutiliser Flak TMP. |
-| FG42 | Enregistrement `item_shoot` officiel mais ancien emplacement 27 réutilisé par un casque. [Extérieur original moderne](../FG42/MODELE_MODERNE.md), 25 pièces, deux LOD, neuf séquences de pièces et banques de mains privées construits. | Contacts continus, gestes, cadrage FPV, événements, comportement et entrée additive à compléter ; extérieur et tenue à tester en moteur. Conserver la provenance de la munition. |
+| FG42 | Enregistrement `item_shoot` officiel mais ancien emplacement 27 réutilisé par un casque. Extérieur original, banques de mains et [assemblage complet de tables privées](../FG42/DESCRIPTEUR_ET_TABLES.md) construits avec icône, textes, sons modernes et munition historique 196. | Aucune activation. Raccordement client, contacts continus, gestes, cadrage, événements et comportement à compléter ; extérieur et tenue à tester en moteur. Sons numériques modernes distincts des symboles historiques. |
 | MG34 portable | Enregistrement officiel mais ancien emplacement 32 réutilisé; munition portable distincte de la munition 211 du montage. [Extérieur original moderne](../MG34_PORTABLE/MODELE_MODERNE.md), 33 pièces, deux LOD, neuf séquences de pièces et banques de mains privées construits. | Contacts continus, gestes, cadrage FPV, événements, comportement et entrée additive à compléter ; extérieur à tester. Ne pas confondre portable et montage de char. |
 | MG15 / MG81 | Enregistrements conflictuels/réutilisés. | Laboratoire monté seulement, jamais objet d'inventaire tant que les tables ne sont pas résolues. |
 | Vickers K | Déjà actif sur Jeep SAS. | Validation seulement; ne pas en fabriquer une version portable sans ressources. |
@@ -37,8 +37,10 @@ n'est alloué dans le jeu.
 La MG34 dispose ensuite d'un [descripteur et de tables privées réversibles](../MG34_PORTABLE/DESCRIPTEUR_ET_TABLES.md),
 sans activation. FG42 et ZK-383 ont chacun deux [effets sonores modernes originaux](SONS_MODERNES.md)
 et des références numériques ajoutées dans une copie privée ; aucun son
-historique absent n'est déclaré retrouvé. Écoute, descripteurs FG42/ZK-383,
-événements et comportement restent à réaliser/qualifier.
+historique absent n'est déclaré retrouvé. Le [descripteur FG42](../FG42/DESCRIPTEUR_ET_TABLES.md)
+et trois copies de tables sont maintenant construits, avec icône originale et
+munition 196 inchangée. Écoute, descripteur ZK-383, événements et comportement
+restent à réaliser/qualifier.
 
 Les lance-flammes disposent maintenant de
 [six composants indépendants](../FLAMMENWERFER_35_AND_NO2/COMPOSANTS_MODERNES.md) :
