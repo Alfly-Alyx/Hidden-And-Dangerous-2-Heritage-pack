@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **670 tests Python réussis sur 671 dans la copie de publication**; un test de lien symbolique non exécuté
+- **686 tests Python réussis sur 687 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -93,6 +93,11 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   relu par les routines natives isolées, munition 179 initialisée à 7 et treize
   liaisons FPV contrôlées. Seize tests nouveaux ; aucune insertion dans les
   tables et comportement moteur non validé. Les textes sont préparés séparément ci-dessous.
+- [Action secondaire Benelli](../BENELLI_M4_ADDITIVE/ACTION_SECONDAIRE.md) :
+  182 fiches commerciales, le descripteur moderne et quatre contrôles synthétiques
+  vérifiés sur leurs branchements natifs isolés ; 48 transitions de paramètre caméra.
+  Le manifeste personnel v2 intègre ce contrôle sans changer ses quatorze fichiers
+  désactivés. Ni opération complète de visée, ni scène ou rendu exécutés.
 - [Références sonores](REFERENCES_SONORES.md) : 14 banques/539 entrées décodées,
   indices de tir/rechargement contrôlés sur 168 fiches commerciales et le
   descripteur moderne Benelli. Benelli 36/54 et MG34 34/38 identifiés, FG42

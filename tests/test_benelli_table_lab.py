@@ -96,6 +96,17 @@ class BenelliFullTableLabTests(unittest.TestCase):
         self.assertFalse(report['loose_overrides_merged']);self.assertFalse(report['installation_allowed'])
         self.assertIn('isolated_deployment_transaction_and_override_merge',report['pending_requirements'])
 
+    def test_secondary_argument_control_preserves_payloads_and_retains_full_aim_validation(self):
+        from test_item_secondary_oracle import Machine as SecondaryMachine
+        files,before=self.prepare();after,report=self.prepare(secondary_machine=SecondaryMachine())
+        self.assertEqual(files,after);self.assertIsNone(before['native_secondary_action_arguments'])
+        self.assertEqual(report['native_secondary_action_arguments']['mode_raw'],5)
+        self.assertIn('complete_secondary_aim_operation_and_rendering',report['pending_requirements'])
+        self.assertIn('fpv_camera_hands_and_events',report['pending_requirements'])
+        self.assertFalse(report['installation_allowed'])
+        with self.assertRaisesRegex(ValueError,'secondary-action receipt'):
+            self.prepare(secondary_machine=SecondaryMachine(lambda r:r.update(native_secondary_paths_match=False)))
+
     def test_both_archive_variants_prepare_full_disabled_tables_without_claiming_installation(self):
         for layer in lab.ITEM_LAYERS:
             with self.subTest(layer=layer):

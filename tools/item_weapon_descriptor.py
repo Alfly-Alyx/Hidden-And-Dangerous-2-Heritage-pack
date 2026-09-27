@@ -46,7 +46,7 @@ def shoot_action(fields):
 
 
 def secondary_action(mode_raw,scalar):
-    """Selector 5, constructor type 4. Mode and scalar meanings stay unqualified."""
+    """Selector 5/type 4. Aim/camera flow is audited separately; no gameplay proof."""
     value=f32(scalar)
     if struct.unpack('<f',value)[0]<=0:raise ValueError('Expected positive secondary scalar')
     return u32(0)+u32(4)+u32(mode_raw)+value
