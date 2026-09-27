@@ -13,7 +13,8 @@ Cet assemblage n'est pas une fiche Benelli historique retrouvée. Il combine :
 - certains **attributs individuels** de la fiche Sabre Side by Side 23 comme
   référence moderne provisoire : poids 2,48 et membres généraux/de catégorie ;
 - une seconde action de même forme que ce témoin, sélecteur 5, mots 0/4/5 et
-  scalaire float32 conservé. Le sens gameplay de ces valeurs reste non qualifié ;
+  scalaire float32 conservé. Les [branchements et arguments caméra](ACTION_SECONDAIRE.md)
+  sont maintenant établis hors moteur ; la visée complète reste non qualifiée ;
 - la munition **179**, établie par sa classe et son consommateur ;
 - le modèle FPV dérivé du jeu `PROTOTYPE_BenFPV`, l'icône commerciale
   `wi_it-benelli` et le modèle extérieur original `PROTOTYPE_BenM4` ;
@@ -42,6 +43,11 @@ Dans l'émulateur borné, avec l'image 1.12 verrouillée par empreinte :
   avec les témoins Sabre et PatchX01 ;
 - les treize indices d'état FPV se relient au groupe **459** pour l'argument
   synthétique 359.
+
+Le contrôle séparé de l'action secondaire établit les arguments de changement
+d'état, le choix d'affichage et la transmission du scalaire à la caméra. Il
+complète le manifeste du laboratoire de tables personnel v2 sans changer les
+octets du descripteur, ni exécuter une opération complète de visée.
 
 L'outil prépare un **fragment FPV isolé** contenant ces treize états et leurs
 ressources commerciales Benelli. Le groupe 109 d'origine reste intact. Ni

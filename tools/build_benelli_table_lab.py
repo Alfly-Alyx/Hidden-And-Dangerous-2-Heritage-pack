@@ -22,7 +22,7 @@ FPV_SOURCE=('SabreSquadron.dta','tables/fpvanims.sav')
 
 
 def prepare(tables,sources,machine,*,inventory,item_layer,table_machine=None,fpv_machine=None,hands=None,
-            verify_resource_requests=False,overlays=None):
+            verify_resource_requests=False,overlays=None,secondary_machine=None):
     if (table_machine is None)!=(fpv_machine is None):raise ValueError('Both native table oracles are required together')
     if verify_resource_requests and fpv_machine is None:raise ValueError('Resource requests require native table traversal')
     if item_layer not in ITEM_LAYERS:raise ValueError('Unreviewed item layer; Base/Patch cannot host this candidate')
@@ -35,6 +35,10 @@ def prepare(tables,sources,machine,*,inventory,item_layer,table_machine=None,fpv
     if not descriptor_report['modern_design_decisions']['text_id_allocated']:
         raise ValueError('Inventory text remains unresolved')
     descriptor=files['PROTOTYPE_Benelli.item.disabled'];fragment=files['PROTOTYPE_Benelli.fpvgroup.disabled']
+    secondary=None
+    if secondary_machine is not None:
+        from item_secondary_oracle import checked_action
+        secondary=checked_action(secondary_machine,descriptor,descriptor_lab.SYNTHETIC_SLOT)
     selected={'items':tables[item_source],'fpv':tables[FPV_SOURCE]};composition=None
     if overlays is None:
         current,proof=build(selected['items'],selected['fpv'],descriptor,fragment,slot=descriptor_lab.SYNTHETIC_SLOT)
@@ -88,9 +92,12 @@ def prepare(tables,sources,machine,*,inventory,item_layer,table_machine=None,fpv
         'native_whole_table_loader_executed':False,
         'native_table_traversal':traversal,
         'native_animation_resource_requests':resource_requests,
+        'native_secondary_action_arguments':secondary,
         'separate_hands_weapon_binding_plan':rig_binding,
         'files':{name:fingerprint(raw) for name,raw in files.items()},
-        'pending_requirements':[p for p in descriptor_report['pending_requirements'] if p!='additive_table_transaction']
+        'pending_requirements':[p for p in descriptor_report['pending_requirements'] if p!='additive_table_transaction'
+            and (p!='secondary_mode_and_scalar_semantics' or secondary is None)]
+            +(['complete_secondary_aim_operation_and_rendering'] if secondary is not None else [])
             +['isolated_deployment_transaction_and_override_merge','native_whole_table_loading_tests'],
         'disabled_table_entry_prepared':True,'disabled_fpv_group_prepared':True,
         'item_slot_allocated_in_game':False,'global_slot_reservation':False,
@@ -148,6 +155,7 @@ def main(argv=None):
     from item_state_oracle import StateOracle
     from item_table_oracle import TableOracle
     from fpv_resource_oracle import FpvResourceOracle
+    from item_secondary_oracle import SecondaryOracle
     from benelli_fpv_rig_audit import read_hands
     from item_table_overlay import read_overlays,require_unchanged_overlays,PATHS as OVERLAY_PATHS
     from item_native_contract import SOURCE_SHA
@@ -175,7 +183,7 @@ def main(argv=None):
         image=args.image.read_bytes()
         files,report=prepare(tables,sources,StateOracle(image),inventory=inventory,item_layer=args.item_layer,
                              table_machine=TableOracle(image),fpv_machine=FpvResourceOracle(image),hands=hands,
-                             verify_resource_requests=True,overlays=overlays)
+                             verify_resource_requests=True,overlays=overlays,secondary_machine=SecondaryOracle(image))
         report['resource_source_pins']=manifest['sources']
         report['excluded_loose_overrides']={**excluded,**source_excluded,**hand_excluded}
         if overlays is not None:
@@ -189,6 +197,7 @@ def main(argv=None):
             'central_table_overlay_composition':report['central_table_overlay_composition'],
             'separate_hands_variants':len(report['separate_hands_weapon_binding_plan']['hands_variants']),
             'native_animation_resource_requests':len(report['native_animation_resource_requests']),
+            'native_secondary_action_arguments':report['native_secondary_action_arguments'],
             'native_table_traversal':{key:{field:result[field] for field in
                 (('slots_visited','present_descriptors_checked') if key=='items' else
                  ('groups_visited','populated_channels_checked','unpopulated_cells_unchanged'))}
