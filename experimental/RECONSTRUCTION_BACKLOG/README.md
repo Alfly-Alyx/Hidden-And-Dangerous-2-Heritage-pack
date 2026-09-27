@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **984 tests Python réussis sur 985 dans la copie de publication**; un test de lien symbolique non exécuté
+- **996 tests Python réussis sur 997 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -119,6 +119,10 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - [Association des os au skin racine](../FLAMMENWERFER_35_AND_NO2/MONTAGE_FPV_MODERNE.md#association-native-des-os-au-skin-racine) :
   les huit os de chaque tuyau sont découverts, triés et rattachés par le code
   natif, avec 77 arbres témoins. Calcul des limites et chargement/copie non exécutés.
+- [Limites natives des tuyaux animés](../FLAMMENWERFER_35_AND_NO2/LIMITES_TUYAUX_ANIMEES.md) :
+  enveloppes calculées à partir des boîtes sérialisées, comparées aux deux LOD
+  déformés pendant les changements de clips : 352 instants, 304 128 sommets,
+  aucun dépassement. Visibilité de scène et rendu non qualifiés.
 - [Associations et lectures natives d'animations](../FLAMMENWERFER_35_AND_NO2/RESOLUTION_ANIMATIONS_FPV.md) :
   quatre laboratoires privés exclusifs, treize états chacun ; 156 demandes
   et 36 lectures/relocalisations natives vérifiées. Six tests nouveaux ; fichiers

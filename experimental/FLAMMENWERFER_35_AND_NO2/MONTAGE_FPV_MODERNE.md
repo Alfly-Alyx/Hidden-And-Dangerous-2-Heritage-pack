@@ -105,6 +105,10 @@ des limites `0x10052330` est également un double explicitement signalé ; il
 n'est **pas exécuté**. Chargement/copie du modèle, palette, skin et rendu restent
 hors de ce banc. Les arbres et les champs hors association sont préservés.
 
+Le [calcul natif des enveloppes animées](LIMITES_TUYAUX_ANIMEES.md) est maintenant
+contrôlé dans un banc séparé : 304 128 sommets des deux LOD restent contenus
+pendant les changements de clips. Il ne remplace pas la copie/visibilité de scène.
+
 ## Reproduction et limites
 
 ```powershell
