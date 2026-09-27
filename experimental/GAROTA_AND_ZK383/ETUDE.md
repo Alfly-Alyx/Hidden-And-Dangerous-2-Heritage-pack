@@ -1,8 +1,13 @@
 # Garota et ZK-383 — reconstructions hautement spéculatives
 
-État : **aucune ressource locale exploitable identifiée**, 15 septembre 2026.
-Aucun modèle, son, objet ou prototype fonctionnel n'est créé et rien n'est
-compilé.
+État historique au 15 septembre 2026 : **aucune ressource commerciale locale
+exploitable identifiée**. Cette absence demeure ; elle n'interdit plus un projet
+original, autorisé explicitement par l'utilisateur le 26 septembre.
+
+Mise à jour du 27 septembre : [deux modèles statiques modernes](MODELES_MODERNES.md)
+distincts sont fabriqués, avec deux LOD et des aperçus inspectés. Leurs recettes
+sont originales ; les fichiers natifs sont privés et désactivés. Aucun son,
+objet jouable, animation de personnage ou fonctionnement d'arme n'est créé.
 
 ## Garota
 
@@ -22,8 +27,10 @@ autre pistolet-mitrailleur créerait une approximation, pas une restauration.
 
 ## Décision
 
-Conserver les deux noms comme pistes historiques, sans slot, sans valeurs et
-sans placeholder jouable. Un futur travail exige d'abord une source attribuable
-ou un projet d'assets originaux annoncé comme interprétation moderne. La Garota
-et le ZK-383 doivent rester deux modules séparés même s'ils partagent ce dossier
-d'étude.
+Conserver les deux noms comme pistes historiques, sans slot, sans valeurs de
+gameplay et sans placeholder jouable. Les deux projets de géométrie originale
+sont maintenant annoncés comme interprétations modernes. Une référence muséale
+textuelle est attribuée pour la silhouette du ZK-383 ; aucune identité visuelle
+originale de la Garota n'est prétendue. Les deux modules restent séparés même
+s'ils partagent ce dossier d'étude. Le reste de l'intégration est à construire,
+pas simplement à tester.

@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **1 034 tests Python réussis sur 1 035 dans la copie de publication**; un test de lien symbolique non exécuté
+- **1 057 tests Python réussis sur 1 058 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -140,10 +140,23 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   Le raccordement du correcteur au moteur reste à réaliser. Mesure de pénétration
   des doigts ajoutée ; première proposition de pouces non promue, car elle
   aggrave certaines intersections. Les banques v1 ne sont pas modifiées.
+- [Prises ajustées modernes](../FLAMMENWERFER_35_AND_NO2/PRISES_AJUSTEES_MODERNES.md) :
+  profil portable sans poses commerciales, flexions et pouces recalculés,
+  36 clips dérivés privés et associations distinctes. Contrôle des triangles
+  traversants ajouté, même lorsque tous leurs sommets sont extérieurs.
+  En v6 : zéro pénétration au seuil de 0,01 mm sur 2 244 poses échantillonnées
+  contre les pièces convexes ; 2 316 instants natifs et 156 demandes de ressources
+  contrôlés. Les pièces non convexes restent explicitement exclues.
+  Les contacts complets et le raccordement du correcteur au moteur restent à réaliser.
 - [Matrices natives de caméra](PROJECTION_CAMERA_NATIVE.md) : setters des deux
   angles et trois matrices de perspective exécutés sur un objet fourni.
   352 cas, dont 88 ultra-larges, écart nul ; sélection réelle du rendu FPV,
   viewport et effets du correctif écran large non qualifiés.
+- [Garota et ZK-383 modernes](../GAROTA_AND_ZK383/MODELES_MODERNES.md) :
+  deux extérieurs distincts créés sans archive commerciale, 7/33 pièces et
+  deux LOD chacun. Six tests nouveaux, empreintes et trois vues contrôlées.
+  Référence muséale textuelle attribuée pour le ZK-383 ; Garota explicitement
+  interprétative. Mains, animations, comportement et intégration restent à réaliser.
 - [Paramètres de tir](PARAMETRES_TIR.md) : 18 colonnes rapprochées des données
   natives de 40 armes dans quatre couches. Onze différences de paramètres
   conservées sur six fiches, deux symboles FG42 explicitement non résolus.

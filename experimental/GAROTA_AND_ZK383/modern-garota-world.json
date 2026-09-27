@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "name": "PROTOTYPE_HERITAGE_GarotaWorld",
+  "provenance": "MODERNE",
+  "runtime_status": "pending",
+  "units": "metres",
+  "description": "Original stylized game prop, not a recovered Garota asset or a historical reconstruction. Two decorative wooden handles and a slack curved cord. Proportions, colours and shape are artistic choices, not manufacturing or use specifications. Static display only; no attack, character interaction, damage, animation or sound.",
+  "axes": "+Y forward, +Z up, +X right; display origin between handles",
+  "materials": [
+    {"name":"modern_wood","diffuse":[0.34,0.19,0.085]},
+    {"name":"modern_wood_end","diffuse":[0.19,0.10,0.044]},
+    {"name":"modern_cord","diffuse":[0.31,0.30,0.25]},
+    {"name":"modern_band","diffuse":[0.16,0.18,0.18]}
+  ],
+  "parts": [
+    {"name":"MOD_left_handle","kind":"rings","material":"modern_wood","segments":16,
+     "sections":[[-0.072,-0.14,0,0.009],[-0.065,-0.14,0,0.013],[0.065,-0.14,0,0.013],[0.072,-0.14,0,0.009]]},
+    {"name":"MOD_right_handle","kind":"rings","material":"modern_wood","segments":16,
+     "sections":[[-0.072,0.14,0,0.009],[-0.065,0.14,0,0.013],[0.065,0.14,0,0.013],[0.072,0.14,0,0.009]]},
+    {"name":"MOD_left_end","kind":"rings","material":"modern_wood_end","segments":16,
+     "sections":[[-0.073,-0.14,0,0.009],[-0.069,-0.14,0,0.011]]},
+    {"name":"MOD_right_end","kind":"rings","material":"modern_wood_end","segments":16,
+     "sections":[[-0.073,0.14,0,0.009],[-0.069,0.14,0,0.011]]},
+    {"name":"MOD_left_band","kind":"rings","material":"modern_band","segments":16,
+     "sections":[[0.041,-0.14,0,0.0135],[0.050,-0.14,0,0.0135]]},
+    {"name":"MOD_right_band","kind":"rings","material":"modern_band","segments":16,
+     "sections":[[0.041,0.14,0,0.0135],[0.050,0.14,0,0.0135]]},
+    {"name":"MOD_slack_cord","kind":"sweep","material":"modern_cord","segments":10,"radius":0.0024,"plane_normal":[0,0,1],
+     "path":[[-0.14,0.065,0],[-0.14,0.095,0],[-0.12,0.135,0],[-0.08,0.171,0],[-0.04,0.190,0],[0,0.196,0],[0.04,0.190,0],[0.08,0.171,0],[0.12,0.135,0],[0.14,0.095,0],[0.14,0.065,0]]}
+  ],
+  "anchors": [
+    {"name":"MOD_left_hand","position":[-0.14,-0.012,0],"purpose":"Modern display marker; not a character bone or an interaction target"},
+    {"name":"MOD_right_hand","position":[0.14,-0.012,0],"purpose":"Modern display marker; not a character bone or an interaction target"}
+  ]
+}

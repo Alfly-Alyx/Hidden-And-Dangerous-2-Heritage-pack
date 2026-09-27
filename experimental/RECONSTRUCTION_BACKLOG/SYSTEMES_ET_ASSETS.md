@@ -10,7 +10,7 @@
 | MG34 portable | Enregistrement officiel mais ancien emplacement 32 réutilisé; munition portable distincte de la munition 211 du montage. [Extérieur original moderne](../MG34_PORTABLE/MODELE_MODERNE.md), 33 pièces, deux LOD et neuf séquences de pièces construits. | Mains et cadrage FPV, événements, comportement et entrée additive à construire ; extérieur à tester. Ne pas confondre portable et montage de char. |
 | MG15 / MG81 | Enregistrements conflictuels/réutilisés. | Laboratoire monté seulement, jamais objet d'inventaire tant que les tables ne sont pas résolues. |
 | Vickers K | Déjà actif sur Jeep SAS. | Validation seulement; ne pas en fabriquer une version portable sans ressources. |
-| Garota / ZK383 | Aucun ensemble commercial complet démontré. | Création moderne clairement étiquetée. |
+| Garota / ZK383 | Aucun ensemble commercial complet démontré. [Deux extérieurs modernes distincts](../GAROTA_AND_ZK383/MODELES_MODERNES.md), 7/33 pièces et deux LOD, construits sans source commerciale. | Mains, animations, interaction, comportement et intégration additive restent à réaliser ; aucun slot réservé. |
 | `PROLEZACKA_GUARD_AI_TEST` | Neuf scripts seulement; aucune mission, ressource ou entrée de registre. | Laboratoire IA moderne, sans restauration de carte ni ajout menu. |
 
 Les [banques de mouvements FG42/MG34](ANIMATIONS_MODERNES.md) sont maintenant
@@ -47,6 +47,10 @@ résout hors jeu le décalage des poignets après mélange : 704 observations,
 écart maximal après correction `1,696e-7` avec palettes natives. Son raccordement
 au client reste à réaliser. Les mesures des doigts révèlent des intersections
 importantes ; la première proposition de pouces reste un essai non promu.
+Les [prises ajustées](../FLAMMENWERFER_35_AND_NO2/PRISES_AJUSTEES_MODERNES.md)
+emploient désormais un profil moderne reproductible, des contrôles de triangles
+et 36 clips dérivés privés. Les associations natives utilisent des alias
+distincts ; cela ne qualifie pas les mélanges, les auto-intersections ou le rendu.
 
 Pour Benelli, les [tables complètes désactivées](../BENELLI_M4_ADDITIVE/TRANSACTION_TABLES.md)
 et leur retrait exact sont maintenant construits ; les parcours natifs des

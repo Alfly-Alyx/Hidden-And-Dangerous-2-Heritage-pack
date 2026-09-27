@@ -94,6 +94,11 @@ et ne prouve pas qu'une main sans pénétration serre effectivement la poignée.
 L'ajustement des paumes, l'orientation par rapport aux poignées inclinées,
 la flexion des doigts et l'opposition des pouces restent en cours.
 
+La [suite avec prises ajustées](PRISES_AJUSTEES_MODERNES.md) ajoute maintenant
+un profil moderne portable, la recherche guidée par surfaces, trente-six clips
+dérivés et des associations natives distinctes. Elle conserve les diagnostics
+ci-dessus comme comparaison et ne raccorde pas encore le correcteur au moteur.
+
 ```powershell
 .\.venv\Scripts\python.exe tools/fpv_transition_contact_audit.py --game 'D:\Games\Hidden and Dangerous 2' --bank-root .analysis/modern-assets --archives-only --native --json-output .analysis/contact-transitions-nouveau.json
 .\.venv\Scripts\python.exe tools/equipment_hand_contact.py --game 'D:\Games\Hidden and Dangerous 2' --bank-root .analysis/modern-assets --archives-only --json-output .analysis/contact-doigts-nouveau.json
