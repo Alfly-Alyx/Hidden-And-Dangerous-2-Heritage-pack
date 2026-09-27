@@ -73,6 +73,8 @@ Empreintes des rigs :
 
 Les [tuyaux déformables synchronisés](TUYAUX_ANIMES_MODERNES.md) sont maintenant
 créés pour ces séquences, avec sac fixe, sans solveur physique ou liaison joueur.
+Les [assemblages unifiés](ASSEMBLAGES_ANIMES.md) réunissent ensuite pièce tenue,
+sac et tuyau dans un modèle à animation unique, toujours désactivé.
 Mains et gestes de personnage, attaches dorsales/joueur/IA,
 transformations FPV, cycle fonctionnel et sonore, effets, entrée additive et
 sauvegarde restent distincts. **Il ne reste pas seulement des tests pour ces armes.**

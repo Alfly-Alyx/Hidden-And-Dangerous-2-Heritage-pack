@@ -45,6 +45,11 @@ Sans nom de sortie, ils contrôlent en mémoire. Avec un nom neuf, leurs sorties
 restent dans `.analysis/modern-assets/`, sous extensions natives désactivées.
 Voir [ressources](RESSOURCES_MODERNES.md) et [animations](ANIMATIONS_MODERNES.md).
 Ni installation ni lancement du jeu ; aucun asset commercial requis.
+Les lance-flammes utilisent ensuite `build_modern_equipment_components.py`,
+`build_modern_equipment_animation.py`, `build_modern_equipment_hose.py` et
+`build_modern_equipment_assembly.py` pour produire composants, mouvements,
+tuyaux skinnés et [assemblages à animation unique](../FLAMMENWERFER_35_AND_NO2/ASSEMBLAGES_ANIMES.md).
+Leurs sorties restent également originales, privées et désactivées.
 
 ## Outils d'archives et de recherche
 

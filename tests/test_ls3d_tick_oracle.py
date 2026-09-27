@@ -4,7 +4,7 @@ from pathlib import Path
 import sys
 import unittest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from ls3d_tick_oracle import TickOracle,reference_tick,validate_ticks,TIME_START
+from ls3d_tick_oracle import TickOracle,reference_tick,validate_ticks,TIME_START,observe_native_poses
 from ls3d_attach_oracle import reference_sequence
 from animation_tick_audit import boundary_steps,controls,audit_cases,bank_cases
 from animation_attach_audit import op,invented
@@ -92,6 +92,20 @@ class TickTests(unittest.TestCase):
 
     def test_unreviewed_library_rejected_before_emulation(self):
         with self.assertRaisesRegex(ValueError,'Unreviewed LS3DF'):TickOracle(b'')
+
+    def test_observer_cannot_mutate_supplied_pose_data(self):
+        poses=[deepcopy(self.seed)];seen=[]
+        def observer(index,delta,data):
+            seen.append((index,delta,deepcopy(data)));data[0]['position'][0]=999;data.clear()
+        observe_native_poses(observer,3,20,poses)
+        self.assertEqual(poses,[self.seed]);self.assertEqual(seen,[(3,20,[self.seed])])
+        observe_native_poses(None,0,0,poses)
+
+    def test_bad_observer_is_rejected_before_emulator_access(self):
+        machine=object.__new__(TickOracle)
+        for observer in (True,'callback',[]):
+            with self.assertRaisesRegex(ValueError,'observer'):
+                machine.sequence_with_ticks([],{},[],[],[],pose_observer=observer)
 
 
 if __name__=='__main__':unittest.main()

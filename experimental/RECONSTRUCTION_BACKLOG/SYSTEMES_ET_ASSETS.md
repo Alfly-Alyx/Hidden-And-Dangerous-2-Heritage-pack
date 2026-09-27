@@ -27,7 +27,9 @@ Leurs [dix-huit mouvements de pièce tenue](../FLAMMENWERFER_35_AND_NO2/ANIMATIO
 sont créés et contrôlés hors moteur, sans mains ni fonctionnement d'arme.
 Les [tuyaux synchronisés déformables](../FLAMMENWERFER_35_AND_NO2/TUYAUX_ANIMES_MODERNES.md)
 sont maintenant créés à deux LOD, avec sac fixe. L'attache libre au personnage,
-le chargement de l'ensemble et les contraintes physiques ne sont pas réalisés.
+le chargement réel de l'ensemble et les contraintes physiques ne sont pas réalisés.
+L'[assemblage en un seul modèle](../FLAMMENWERFER_35_AND_NO2/ASSEMBLAGES_ANIMES.md)
+est maintenant construit, avec neuf clips communs aux pièces et au skin.
 
 Pour Benelli, les [tables complètes désactivées](../BENELLI_M4_ADDITIVE/TRANSACTION_TABLES.md)
 et leur retrait exact sont maintenant construits ; les parcours natifs des

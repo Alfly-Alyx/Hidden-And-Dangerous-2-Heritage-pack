@@ -32,8 +32,14 @@ def unit_quaternion(value):
     return tuple(n/length for n in value)
 
 
-def encode_5ds(clip):
-    """Encode modern active XYZW authoring as native XYZW, never events."""
+def encode_5ds(clip,*,preserve_native_rotations=False):
+    """Encode modern active XYZW authoring as native XYZW, never events.
+
+    The explicit preservation option repacks parsed, freshly generated modern
+    banks without conjugating or renormalizing their serialized rotations.
+    The default authoring path is unchanged.
+    """
+    if type(preserve_native_rotations) is not bool:raise ValueError('Invalid rotation preservation option')
     if (clip.get('provenance')!='MODERNE' or clip.get('runtime_status')!='pending'
             or set(clip)-{'provenance','runtime_status','frame_end','tracks'}):
         raise ValueError('Not an explicitly modern transform clip')
@@ -70,7 +76,10 @@ def encode_5ds(clip):
                 raise ValueError('Modern keys must strictly increase')
             rows=[]
             for value in values:
-                row=conjugate(unit_quaternion(value)) if kind=='rotation' else vector(value)
+                if kind=='rotation':
+                    validated=unit_quaternion(value)
+                    row=vector(value,4) if preserve_native_rotations else conjugate(validated)
+                else:row=vector(value)
                 if kind=='position' and any(abs(v)>10 for v in row):
                     raise ValueError('Modern translation outside reviewed domain')
                 if kind=='scale' and any(not .001<=v<=10 for v in row):

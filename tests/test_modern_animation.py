@@ -56,6 +56,16 @@ class ModernAnimationCodecTests(unittest.TestCase):
         actual=parse_5ds(data)['tracks'][0]['channels']['rotation']['values'][0]
         for a,b in zip(actual,[0,0,-math.sqrt(.5),math.sqrt(.5)]):self.assertAlmostEqual(a,b)
 
+    def test_explicit_native_repacking_keeps_float32_rotation_bits(self):
+        q=list(struct.unpack('<4f',struct.pack('<4f',-.00001745,0,-.00001454,1)))
+        value=clip([channel('rotation',[0],[q])])
+        raw=motion.encode_5ds(value,preserve_native_rotations=True)
+        self.assertEqual(parse_5ds(raw)['tracks'][0]['channels']['rotation']['values'],[q])
+        for option in (1,None,'native'):
+            with self.assertRaises(ValueError):motion.encode_5ds(value,preserve_native_rotations=option)
+        bad=clip([channel('rotation',[0],[[0,0,0,2]])])
+        with self.assertRaises(ValueError):motion.encode_5ds(bad,preserve_native_rotations=True)
+
     def test_unanimated_native_rotation_uses_same_convention_as_wire_keys(self):
         from test_model_instance import mesh,model
         raw=bytearray(model(mesh('Root')))
