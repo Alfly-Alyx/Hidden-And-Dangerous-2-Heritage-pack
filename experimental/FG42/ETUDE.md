@@ -7,13 +7,15 @@ non résolues. Aucune conversion silencieuse en numéros ou en zéro.
 Deux [effets synthétisés originaux](../RECONSTRUCTION_BACKLOG/SONS_MODERNES.md)
 sont maintenant construits sous les nouveaux alias `MOD_FG42_F/R`, avec un
 ajout privé réversible dans les banques numériques. Ils ne résolvent pas
-les symboles historiques et ne sont encore ni écoutés ni raccordés à un Item.
+les symboles historiques. Ils sont maintenant raccordés explicitement à un
+[descripteur moderne privé](DESCRIPTEUR_ET_TABLES.md), sans écoute ni activation.
 
 [Mouvements originaux des pièces](../RECONSTRUCTION_BACKLOG/ANIMATIONS_MODERNES.md) :
 neuf séquences construites, sans mains ni liaison au personnage. Les besoins
 FPV et animations de personnage mentionnés ci-dessous restent ouverts.
 
-État : **fiche de tir attestée, chaîne exploitable absente**, 26 septembre 2026.
+État : **fiche historique attestée, assemblage moderne désactivé construit**,
+27 septembre 2026 ; chaîne de jeu fonctionnelle non qualifiée.
 Aucun prototype d'arme fonctionnelle n'est activé ni intégré aux tables du jeu.
 
 Le [modèle extérieur moderne](MODELE_MODERNE.md) est maintenant fabriqué :
@@ -27,7 +29,9 @@ de 135 octets, noms `FG 42`, `FG42_F`, `FG42_R`. Leurs présences ne prouvent
 pas les fichiers audio correspondants. Les [limites exactes](../RECONSTRUCTION_BACKLOG/TABLES_EDITEUR.md)
 sont contrôlées par le schéma, non par une fenêtre de texte. Aucun modèle,
 icône, animation FPV, son spécifique ni entrée Weapon exploitable n'est identifié.
-Le slot natif 27 est devenu un casque : il reste interdit.
+Le slot natif 27 est devenu un casque : il reste interdit. Le nouvel assemblage
+moderne utilise 362 dans une copie privée, sans réservation globale. Son icône,
+ses textes, sa liaison de munition et ses tables réversibles sont construits.
 
 L'implémentation doit compléter l'ensemble visuel, audio et fonctionnel, choisir
 un slot libre et documenter chaque paramètre comme moderne. Un premier banc ne

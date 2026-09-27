@@ -31,6 +31,20 @@
         "japan": "MG 34 [MODERN]",
         "spanish": "MG 34 [MODERNO]"
       }
+    },
+    {
+      "key": "fg42",
+      "text_id": 21502,
+      "values": {
+        "czech": "FG 42 [MODERNÍ]",
+        "english": "FG 42 [MODERN]",
+        "englishus": "FG 42 [MODERN]",
+        "french": "FG 42 [MODERNE]",
+        "german": "FG 42 [MODERN]",
+        "italian": "FG 42 [MODERNO]",
+        "japan": "FG 42 [MODERN]",
+        "spanish": "FG 42 [MODERNO]"
+      }
     }
   ]
 }

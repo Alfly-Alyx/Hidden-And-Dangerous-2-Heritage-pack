@@ -20,7 +20,7 @@ def labels():return codec.validate(catalogue(),mission_range=(TEXT_ID_START,TEXT
 
 class ModernInventoryTextTests(unittest.TestCase):
     def test_actual_catalogue_is_outside_creator_and_menu_reservations(self):
-        rows=labels();self.assertEqual([r['text_id'] for r in rows],[21500,21501])
+        rows=labels();self.assertEqual([r['text_id'] for r in rows],[21500,21501,21502])
         tree=ast.parse((ROOT/'tools/build_static_custom_menu.py').read_text(encoding='utf-8'))
         values=next(ast.literal_eval(node.value) for node in tree.body if isinstance(node,ast.Assign)
                     and any(isinstance(t,ast.Name) and t.id=='CUSTOM_TEXT_IDS' for t in node.targets))

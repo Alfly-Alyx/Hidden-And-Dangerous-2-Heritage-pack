@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **1 153 tests Python réussis sur 1 154 dans la copie de publication**; un test de lien symbolique non exécuté
+- **1 172 tests Python réussis sur 1 173 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -182,8 +182,9 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   sans échantillon commercial, et une copie de définition sonore additive
   entièrement réversible. 539 entrées / 672 variantes existantes conservées ;
   onze archives examinées, quatre recherches natives d'indices vérifiées.
-  Dix-huit tests inventés ; écoute, chargeur complet, Item et événements restent
-  non réalisés. Les symboles FG42 historiques ne sont pas déclarés résolus.
+  Dix-huit tests inventés ; écoute, chargeur complet et événements restent
+  non réalisés. L'Item FG42 est ensuite assemblé ci-dessous ; les symboles
+  historiques ne sont pas déclarés résolus.
 - [Paramètres de tir](PARAMETRES_TIR.md) : 18 colonnes rapprochées des données
   natives de 40 armes dans quatre couches. Onze différences de paramètres
   conservées sur six fiches, deux symboles FG42 explicitement non résolus.
@@ -203,6 +204,12 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   retrait exact, 272 objets et 277 groupes existants préservés. Les dix objets
   et six groupes modifiés des tables personnelles sont conservés. Seize tests
   synthétiques nouveaux ; fichiers désactivés, contacts et gameplay non qualifiés.
+- [Descripteur et tables FG42](../FG42/DESCRIPTEUR_ET_TABLES.md) : fiche moderne
+  de 508 octets, munition historique 196 initialisée à 20, sons originaux 55/85,
+  icône originale et texte 21502 dans huit langues. Trois préparations privées,
+  273 descripteurs contrôlés chacune, retrait exact et surcharges personnelles
+  conservées. Quinze tests d'assemblage et quatre d'icône ; aucun jeu lancé,
+  raccordements moteur et comportement encore incomplets.
 - [Action secondaire Benelli](../BENELLI_M4_ADDITIVE/ACTION_SECONDAIRE.md) :
   182 fiches commerciales, le descripteur moderne et quatre contrôles synthétiques
   vérifiés sur leurs branchements natifs isolés ; 48 transitions de paramètre caméra.
