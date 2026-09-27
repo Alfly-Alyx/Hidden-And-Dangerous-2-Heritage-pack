@@ -103,6 +103,13 @@ artificiels couvrent des ordres directs/inversés, pas uniquement les transition
 accessibles en jeu. Leur bonne exécution native ne valide donc pas le contact
 visuel ; les transitions et contraintes de mains restent du travail d'implémentation.
 
+Le [correcteur de contact après mélange](CONTACT_MAINS_ET_TRANSITIONS.md)
+localise désormais ce défaut et le ramène sous `1,696e-7` dans les 704
+observations, avec contrôle des palettes natives. Il s'agit d'un calcul
+d'auteur hors jeu, **pas d'un raccordement au client**. Le même dossier mesure
+les intersections des doigts et explique pourquoi la première proposition
+d'opposition des pouces n'est pas retenue comme solution validée.
+
 La découverte des os, le chargement des animations,
 le temps/les poses, les palettes, le skin et les limites utilisent des
 émulateurs distincts ; ce n'est pas un chargement de scène complet.
