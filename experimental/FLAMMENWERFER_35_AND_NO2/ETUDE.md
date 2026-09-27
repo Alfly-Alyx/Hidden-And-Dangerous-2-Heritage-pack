@@ -1,8 +1,10 @@
 # Flammenwerfer 35 et Flamethrower Portable No. 2
 
-État au **26 septembre 2026** : deux [ensembles extérieurs modernes](MODELES_MODERNES.md)
-fabriqués, statiques et désactivés ; FPV, animations et comportements restent
-à réaliser. Les ressources commerciales partielles sont des références, pas
+État au **27 septembre 2026** : deux [ensembles extérieurs modernes](MODELES_MODERNES.md)
+fabriqués, composants séparés, [pièces tenues animées](ANIMATIONS_PIECES_TENUES.md)
+et [tuyaux visuels déformables](TUYAUX_ANIMES_MODERNES.md), tous désactivés.
+FPV, mains, attaches au personnage et comportements restent à réaliser.
+Les ressources commerciales partielles sont des références, pas
 des armes à réactiver. Aucun asset commercial n'est recopié.
 
 Contrôle complémentaire du **26 septembre 2026** : le [parseur des tables](../RECONSTRUCTION_BACKLOG/TABLES_EDITEUR.md)

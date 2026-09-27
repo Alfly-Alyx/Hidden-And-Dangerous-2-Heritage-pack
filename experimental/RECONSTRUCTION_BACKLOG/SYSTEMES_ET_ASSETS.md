@@ -25,6 +25,9 @@ raccords au repos sont vérifiés ; attaches au personnage et déformation du
 tuyau restent des réalisations nécessaires, pas de simples cases de test.
 Leurs [dix-huit mouvements de pièce tenue](../FLAMMENWERFER_35_AND_NO2/ANIMATIONS_PIECES_TENUES.md)
 sont créés et contrôlés hors moteur, sans mains ni fonctionnement d'arme.
+Les [tuyaux synchronisés déformables](../FLAMMENWERFER_35_AND_NO2/TUYAUX_ANIMES_MODERNES.md)
+sont maintenant créés à deux LOD, avec sac fixe. L'attache libre au personnage,
+le chargement de l'ensemble et les contraintes physiques ne sont pas réalisés.
 
 Pour Benelli, les [tables complètes désactivées](../BENELLI_M4_ADDITIVE/TRANSACTION_TABLES.md)
 et leur retrait exact sont maintenant construits ; les parcours natifs des

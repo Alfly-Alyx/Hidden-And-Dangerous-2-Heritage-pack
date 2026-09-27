@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "name": "F2",
+  "provenance": "MODERNE",
+  "runtime_status": "pending",
+  "description": "Original decorative two-LOD hose skin driven by authored held presentation clips with a fixed backpack. Not physical, length-preserving, collision-aware, attached to a player or a functional weapon.",
+  "held_rig_sha256": "d7fff8ff80378350be9487e5720041c6613156bd34c3c85410495bcb54921bab",
+  "held_recipe_sha256": "c9b28b9672e6b3f8d416e2a772e4df495423f7fef3fbe619944048dc8578e660",
+  "method": "independent_ring_frames_smootherstep_fixed_pack_authored_held"
+}

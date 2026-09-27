@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "name": "F35",
+  "provenance": "MODERNE",
+  "runtime_status": "pending",
+  "description": "Original decorative two-LOD hose skin driven by authored held presentation clips with a fixed backpack. Not physical, length-preserving, collision-aware, attached to a player or a functional weapon.",
+  "held_rig_sha256": "ff9a8f3e649f91ef5556fb5dd148c53862985ad6c993d1aa862505e599b9e299",
+  "held_recipe_sha256": "c59d50ca1b2d15a91f8e6521cb9ec2f1d25704d7cd665ef31b4ce4248104701e",
+  "method": "independent_ring_frames_smootherstep_fixed_pack_authored_held"
+}

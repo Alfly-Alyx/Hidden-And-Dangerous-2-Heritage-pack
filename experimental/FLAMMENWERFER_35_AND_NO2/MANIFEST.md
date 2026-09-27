@@ -25,6 +25,9 @@
   recettes originales distinctes, deux LOD, cinq matériaux ; statiques et
   désactivés, sans origine commerciale ni validation moteur ;
 - modèles FPV et rattachements third-person à réaliser ;
+- [Pièces tenues animées](ANIMATIONS_PIECES_TENUES.md) et
+  [tuyaux déformables synchronisés](TUYAUX_ANIMES_MODERNES.md) réalisés comme
+  ressources modernes désactivées ; pas d'attache au joueur ni de physique ;
 - animations joueur et IA ;
 - allumage, son continu, extinction et sécurité ;
 - jauge/consommation, recharge, jet, collision, occultation et dégâts ;
