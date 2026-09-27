@@ -7,8 +7,9 @@ squelette de repos sont ceux des deux [mains commerciales vérifiées](../BENELL
 Les positions cibles, orientations de prise, flexions des doigts et calculs
 des bras sont modernes. **Aucune animation historique n'est prétendue retrouvée.**
 
-À ce stade, les poses sont calculées et inspectées, mais **pas encore encodées
-en clips natifs**. Ce lot ne fournit pas une arme FPV jouable.
+Ce premier lot calcule et inspecte les poses. Leur encodage ultérieur en
+[clips natifs dérivés](ANIMATIONS_MAINS_DERIVEES.md) est documenté séparément.
+Aucun de ces lots ne fournit une arme FPV jouable.
 
 ## Prises et provenance
 
@@ -83,8 +84,9 @@ Empreinte de la recette normalisée :
 
 ## Suites nécessaires
 
-Encoder les mouvements natifs, vérifier leurs poses entre clés et les raccorder
-aux modèles chargés. Affiner pouces et contacts, transitions, caméra et
+Les mouvements sont ensuite [encodés en clips](ANIMATIONS_MAINS_DERIVEES.md).
+Vérifier leurs poses entre clés et les raccorder aux modèles chargés reste un
+contrat distinct. Affiner pouces et contacts, transitions, caméra et
 visibilité ; traiter séparément la tenue joueur/IA et les gestes fonctionnels.
 Effets, sons, fonctionnement, tables additives et sauvegardes restent aussi
 à réaliser. Les poses seules ne signifient pas qu'il ne reste que des tests.

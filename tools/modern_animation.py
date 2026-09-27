@@ -43,8 +43,17 @@ def encode_5ds(clip,*,preserve_native_rotations=False):
     if (clip.get('provenance')!='MODERNE' or clip.get('runtime_status')!='pending'
             or set(clip)-{'provenance','runtime_status','frame_end','tracks'}):
         raise ValueError('Not an explicitly modern transform clip')
-    end=integer(clip['frame_end'],1,65535,'terminal frame')
-    tracks=clip['tracks']
+    return _encode_transform_tracks(clip['frame_end'],clip['tracks'],
+        preserve_native_rotations=preserve_native_rotations,name_validator=NAME.fullmatch)
+
+
+def _encode_transform_tracks(frame_end,tracks,*,preserve_native_rotations,name_validator):
+    """Wire layout only; callers enforce provenance and their exact namespace.
+
+    Not a provenance-bypassing public authoring entry point. The modern and
+    private derived-hand wrappers each validate their own source contract.
+    """
+    end=integer(frame_end,1,65535,'terminal frame')
     if not isinstance(tracks,list) or not 1<=len(tracks)<=256:
         raise ValueError('Invalid modern track count')
     data=bytearray(pack('HH',len(tracks),end)+bytes(8*len(tracks)))
@@ -54,7 +63,7 @@ def encode_5ds(clip,*,preserve_native_rotations=False):
         if not isinstance(track,dict) or set(track)!={'name','channels'}:
             raise ValueError('Invalid modern track')
         name=track['name']
-        if not isinstance(name,str) or not NAME.fullmatch(name) or name.casefold() in names:
+        if not isinstance(name,str) or not name_validator(name) or name.casefold() in names:
             raise ValueError('Invalid or duplicate modern track name')
         names.add(name.casefold())
         channels=track['channels']

@@ -33,6 +33,9 @@ est maintenant construit, avec neuf clips communs aux pièces et au skin.
 Les [poses de mains dérivées](../FLAMMENWERFER_35_AND_NO2/PRISES_MAINS_DERIVEES.md)
 sont ensuite calculées sur les squelettes commerciaux, sans étirer les bras.
 Elles ne sont pas encore une banque native chargée ou une caméra FPV calibrée.
+Les [36 clips dérivés privés](../FLAMMENWERFER_35_AND_NO2/ANIMATIONS_MAINS_DERIVEES.md)
+sont ensuite construits ; leur format et leurs cibles numériques sont
+contrôlés sans les confondre avec le raccordement au modèle chargé.
 
 Pour Benelli, les [tables complètes désactivées](../BENELLI_M4_ADDITIVE/TRANSACTION_TABLES.md)
 et leur retrait exact sont maintenant construits ; les parcours natifs des

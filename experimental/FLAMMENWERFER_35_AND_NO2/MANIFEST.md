@@ -32,8 +32,9 @@
   et neuf clips par ensemble, sac fixe et tuyau/tenue synchronisés hors moteur ;
 - animations joueur et IA ;
 - [Poses modernes de prise sur mains commerciales](PRISES_MAINS_DERIVEES.md)
-  calculées et inspectées en privé ; ni clips natifs de mains, caméra ou contact
-  des pouces qualifiés à ce stade ;
+  calculées et inspectées en privé, puis [36 clips natifs dérivés](ANIMATIONS_MAINS_DERIVEES.md)
+  construits avec l'équipement synchronisé ; chargement, caméra et contact des
+  pouces restent à qualifier ;
 - allumage, son continu, extinction et sécurité ;
 - jauge/consommation, recharge, jet, collision, occultation et dégâts ;
 - réactions IA, inventaire, sauvegarde et réseau ;
