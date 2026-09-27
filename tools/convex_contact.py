@@ -63,3 +63,84 @@ def measure(points, support, tolerance=1e-5):
     return {'samples':len(depths), 'inside':sum(d>tolerance for d in depths),
             'max_depth':max(depths,default=0), 'sum_depth':sum(depths),
             'surface_crossings_checked':False, 'full_contact_qualified':False}
+
+
+def clip_polygon(points, support, depth=0):
+    """Clip a surface polygon to the convex volume inset by a given depth."""
+    polygon=list(points)
+    for normal,offset in support:
+        if not polygon:break
+        result=[];previous=polygon[-1]
+        before=dot(normal,previous)-offset+depth
+        for current in polygon:
+            after=dot(normal,current)-offset+depth
+            if (before<=0)!=(after<=0):
+                ratio=before/(before-after)
+                result.append(tuple(a+ratio*(b-a) for a,b in zip(previous,current)))
+            if after<=0:result.append(current)
+            previous,before=current,after
+        polygon=result
+    return polygon
+
+
+def polygon_area(points):
+    if len(points)<3:return 0
+    origin=points[0];cross=[0.0,0.0,0.0]
+    for a,b in zip(points[1:-1],points[2:]):
+        u,v=sub(a,origin),sub(b,origin)
+        cross[0]+=u[1]*v[2]-u[2]*v[1]
+        cross[1]+=u[2]*v[0]-u[0]*v[2]
+        cross[2]+=u[0]*v[1]-u[1]*v[0]
+    return math.sqrt(dot(cross,cross))*.5
+
+
+def surface_measure(points, triangles, support, tolerance=1e-5, *, volume_bounds=None):
+    """Detect crossing triangles even if ALL their vertices are outside.
+
+    Depth is a lower bound obtained by clipping inset volumes, using 1e-7
+    search resolution and a 1e-14 area cutoff (not an unconditional depth
+    accuracy guarantee for arbitrarily thin polygons).
+    This checks the supplied surface versus one convex solid only; it does not
+    certify complete contact, watertight hands or hand self-intersection.
+    """
+    if (type(tolerance) not in (int,float) or not math.isfinite(tolerance)
+            or not 0<=tolerance<=.01 or not support):raise ValueError('Invalid surface contact domain')
+    if not isinstance(points,(list,tuple)) or not 3<=len(points)<=4096:
+        raise ValueError('Invalid contact surface vertices')
+    points=[vector(p) for p in points]
+    if not isinstance(triangles,(list,tuple)) or not 1<=len(triangles)<=4096:
+        raise ValueError('Invalid contact surface triangles')
+    if volume_bounds is not None:
+        if not isinstance(volume_bounds,(list,tuple)) or len(volume_bounds)!=2:
+            raise ValueError('Invalid contact volume bounds')
+        lower,upper=map(vector,volume_bounds)
+        if any(a>=b for a,b in zip(lower,upper)):raise ValueError('Flat or reversed contact bounds')
+    count=0;deepest=0;area=0
+    for face in triangles:
+        if (not isinstance(face,(list,tuple)) or len(face)!=3
+                or any(type(i) is not int or not 0<=i<len(points) for i in face)):
+            raise ValueError('Invalid contact surface index')
+        triangle=[points[i] for i in face]
+        if volume_bounds is not None and any(
+                max(triangle[0][j],triangle[1][j],triangle[2][j])<lower[j]
+                or min(triangle[0][j],triangle[1][j],triangle[2][j])>upper[j] for j in range(3)):
+            continue
+        interior=clip_polygon(triangle,support,tolerance)
+        size=polygon_area(interior)
+        if size<=1e-14:continue
+        count+=1;area+=size
+        low=tolerance
+        high=min(max(offset-dot(normal,p) for p in interior) for normal,offset in support)
+        if high<low-1e-10:raise ValueError('Invalid inset depth bound')
+        # Each upper plane bound is valid for every point of this polygon.
+        for _ in range(32):
+            if high-low<=1e-7:break
+            middle=(low+high)*.5
+            if polygon_area(clip_polygon(interior,support,middle))>1e-14:low=middle
+            else:high=middle
+        deepest=max(deepest,low)
+    return {'triangles':len(triangles),'penetrating_triangles':count,
+            'inset_surface_area':area,'max_depth_lower_bound':deepest,
+            'penetration_tolerance':tolerance,'inset_area_cutoff':1e-14,
+            'depth_search_resolution':1e-7,'surface_crossings_checked':True,
+            'full_contact_qualified':False,'hand_self_intersection_checked':False}

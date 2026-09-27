@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "kind": "modern_grip_profile",
+  "provenance": "MODERNE",
+  "runtime_status": "pending",
+  "description": "Original authoring parameters, not commercial bone poses. Surface-guided candidate v6, clearances relative to v3: F35 left normal +0.0002, right forward +0.000125 and normal +0.0002; F2 left forward +0.0001, right normal +0.0005125. Margins include measured half-key drift. No source geometry, animation keys, runtime hook, calibrated camera or complete hand contact qualification.",
+  "source_hand_sha256": "5a418cba65daca969417b0d38e0c467bd8b58f49f12260961dc3ee163afe8678",
+  "source_recipe_sha256": "181b7c2b8895cb88ac97594aeddd4d488b7297835bc87b1be04fbe3e53d7ce31",
+  "source_recipe_digest_mode": "canonical_json",
+  "cases": {
+    "F35": {
+      "L": {"parameters": {"normal_shift": 0.03645, "forward_shift": 0.0021875, "tilt_degrees": -15, "finger_base": 71.25, "finger_middle": 64.6875, "finger_tip": 17.5, "thumb_opposition": 38.4375, "thumb_base": 16.875, "thumb_tip": 41.25}},
+      "R": {"parameters": {"normal_shift": 0.02895, "forward_shift": 0.023875, "tilt_degrees": 11.25, "finger_base": 75, "finger_middle": 69.375, "finger_tip": 14.0625, "thumb_opposition": 60, "thumb_base": -33.75, "thumb_tip": -43.125}}
+    },
+    "F2": {
+      "L": {"parameters": {"normal_shift": 0.0259375, "forward_shift": 0.0101, "tilt_degrees": -15.9375, "finger_base": 60, "finger_middle": 45.9375, "finger_tip": 46.875, "thumb_opposition": 11.25, "thumb_base": 0, "thumb_tip": 40.3125}},
+      "R": {"parameters": {"normal_shift": 0.0298875, "forward_shift": 0.024375, "tilt_degrees": 14.0625, "finger_base": 75, "finger_middle": 79.6875, "finger_tip": 1.875, "thumb_opposition": 32.8125, "thumb_base": -41.25, "thumb_tip": 27.1875}}
+    }
+  }
+}

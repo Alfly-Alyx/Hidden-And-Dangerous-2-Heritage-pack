@@ -89,3 +89,10 @@ pièces et inspectées hors moteur. Les mains et raccords au personnage restent
 Les laboratoires de scripts et leurs 304 contrôles moteur restent distincts de
 la validation de ces nouveaux assets. Les contrôles de format et aperçus hors
 moteur ne sont jamais comptés comme essais réussis dans le jeu.
+
+La [Garota et le ZK-383](../GAROTA_AND_ZK383/MODELES_MODERNES.md) disposent
+également de deux extérieurs originaux distincts : sept et trente-trois pièces,
+deux LOD chacun, six tests nouveaux et trois vues inspectées par modèle.
+La Garota est une interprétation artistique sans source visuelle attribuée ;
+le ZK-383 s'appuie sur une notice muséale textuelle citée. Ces ressources
+restent statiques, muettes, sans mains, interaction, slot ni validation moteur.

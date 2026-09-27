@@ -2,7 +2,7 @@ from pathlib import Path
 import sys
 import unittest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from convex_contact import planes,penetration,measure
+from convex_contact import planes,penetration,measure,surface_measure,clip_polygon,polygon_area
 
 
 class ConvexContactTests(unittest.TestCase):
@@ -44,6 +44,41 @@ class ConvexContactTests(unittest.TestCase):
         self.assertFalse(row['surface_crossings_checked'])
         self.assertFalse(row['full_contact_qualified'])
         with self.assertRaises(ValueError): measure([],planes(points,faces),True)
+
+    def test_surface_crossing_detected_when_every_vertex_is_outside(self):
+        points,faces=self.fixture();support=planes(points,faces)
+        triangle=[(-3,-2,0),(3,-2,0),(0,4,0)]
+        self.assertEqual(measure(triangle,support)['inside'],0)
+        result=surface_measure(triangle,[(0,1,2)],support)
+        self.assertEqual(result['penetrating_triangles'],1)
+        self.assertAlmostEqual(result['max_depth_lower_bound'],1,places=6)
+        self.assertAlmostEqual(result['inset_surface_area'],4*(1-1e-5)**2,places=6)
+        self.assertTrue(result['surface_crossings_checked'])
+        self.assertFalse(result['full_contact_qualified'])
+
+    def test_tangent_outside_and_degenerate_surfaces_are_not_penetration(self):
+        points,faces=self.fixture();support=planes(points,faces)
+        for triangle in ([(-3,-2,1),(3,-2,1),(0,4,1)],
+                         [(2,0,0),(2,1,0),(2,0,1)],[(0,0,0)]*3):
+            self.assertEqual(surface_measure(triangle,[(0,1,2)],support)['penetrating_triangles'],0)
+
+    def test_fully_inside_triangle_depth_and_surface_input_refusals(self):
+        points,faces=self.fixture();support=planes(points,faces)
+        triangle=[(-.1,-.1,.75),(.1,-.1,.75),(0,.1,.75)]
+        result=surface_measure(triangle,[(0,1,2)],support)
+        self.assertAlmostEqual(result['max_depth_lower_bound'],.25,places=6)
+        self.assertAlmostEqual(polygon_area(clip_polygon(triangle,support)),.02)
+        with self.assertRaises(ValueError):surface_measure(triangle,[(0,1,4)],support)
+        with self.assertRaises(ValueError):surface_measure(triangle,[(0,1,2)],support,True)
+
+    def test_supplied_exact_volume_bounds_preserve_crossing_result(self):
+        points,faces=self.fixture();support=planes(points,faces)
+        for triangle in ([(-3,-2,0),(3,-2,0),(0,4,0)],[(2,0,0),(2,1,0),(2,0,1)]):
+            expected=surface_measure(triangle,[(0,1,2)],support)
+            self.assertEqual(surface_measure(triangle,[(0,1,2)],support,
+                                             volume_bounds=[(-1,-1,-1),(1,1,1)]),expected)
+        with self.assertRaises(ValueError):
+            surface_measure(points,faces,support,volume_bounds=[(1,1,1),(-1,-1,-1)])
 
 
 if __name__=='__main__': unittest.main()

@@ -3,7 +3,7 @@ from pathlib import Path
 import sys
 import unittest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from build_equipment_fpv_resource_lab import group,STATE_CLIPS,SLOTS
+from build_equipment_fpv_resource_lab import group,prepare,STATE_CLIPS,SLOTS
 from fpv_table import parse
 from item_native_layout import fpv_native_projection
 from fpv_resource_oracle import request_plan
@@ -55,6 +55,29 @@ class EquipmentFPVResourceTests(unittest.TestCase):
     def test_view_axis_option_requires_explicit_boolean(self):
         for value in (0,1,None,'yes'):
             with self.assertRaises(ValueError):group('F35','H',view_axes=value)
+
+    def test_fitted_aliases_keep_all_states_but_never_collide_with_old_banks(self):
+        for case in SLOTS:
+            for hand in ('H','R'):
+                _,old=group(case,hand);_,view=group(case,hand,view_axes=True)
+                raw,new=group(case,hand,view_axes=True,fitted=True)
+                self.assertEqual([r['clip'] for r in new],list(STATE_CLIPS))
+                self.assertEqual(len({r['resource_name'] for r in new}),9)
+                self.assertFalse({r['resource_name'] for r in new}&{r['resource_name'] for r in old+view})
+                projection=fpv_native_projection(parse(raw))
+                for row in new:
+                    self.assertTrue(row['resource_name'].startswith(f'PROTOTYPE_{case}G{hand}'))
+                    self.assertLessEqual(len(row['resource_name'].rsplit('.',1)[0]),19)
+                    for draw in range(101):
+                        self.assertEqual(request_plan(projection,SLOTS[case],row['state_index'],draw)['resource']['name'],row['resource_name'])
+
+    def test_fitted_option_requires_corrected_axes_and_explicit_boolean(self):
+        with self.assertRaises(ValueError):group('F35','H',fitted=True)
+        for value in (0,1,None,'yes'):
+            with self.assertRaises(ValueError):group('F35','H',view_axes=True,fitted=value)
+
+    def test_fitted_prepare_refuses_wrong_axes_before_reading_any_game_resource(self):
+        with self.assertRaises(ValueError):prepare('F35','H',None,None,None,None,None,fitting={})
 
 
 if __name__=='__main__':unittest.main()
