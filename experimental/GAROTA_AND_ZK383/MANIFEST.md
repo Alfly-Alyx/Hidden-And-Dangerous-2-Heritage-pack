@@ -24,3 +24,5 @@ des absences commerciales ci-dessus. Ni réservation d'identifiant ni installati
 La [banque ZK-383](ANIMATIONS_ZK383_MODERNES.md) conserve les deux LOD et ajoute
 deux pivots, trois pistes et neuf clips. Les contrôles natifs isolés de lecture,
 d'attachement et de pose sont terminés ; rendu et comportement restent non validés.
+Le ZK-383 possède ensuite un [modèle FPV rigide avec neuf clips recalculés](../RECONSTRUCTION_BACKLOG/BANQUES_FPV_RIGIDES.md),
+toujours sans mains ni caméra qualifiée. La Garota n'utilise pas cette banque.

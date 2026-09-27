@@ -15,21 +15,24 @@ def geometry(raw, lod=0):
     parsed = parse_4ds_nodes(raw)
     nodes = parsed['nodes']
     if (parsed['has_animation'] or not nodes or nodes[0]['name'] != 'fpv_weapon'
-            or nodes[0]['frame_type'] != 1 or nodes[0]['visual_type'] != 2
+            or nodes[0]['frame_type'] != 1 or nodes[0]['visual_type'] not in (0, 2)
             or nodes[0]['parent_id'] or any(n['parent_id'] != 1 for n in nodes[1:])
             or any(not n['properties'].startswith('MODERNE;') for n in nodes)
             or any(n['name'] != 'fpv_weapon' and not n['name'].startswith(('MOD_', 'PROTOTYPE_')) for n in nodes)
             or len({n['name'] for n in nodes}) != len(nodes)):
         raise ValueError('Expected marked original flat FPV geometry')
     bones = [n for n in nodes if n['frame_type'] == 10]
-    if len(bones) != 8:
-        raise ValueError('Expected eight independent modern hose bones')
-    selected = [nodes[0]]+bones
-    adapter = (raw[:parsed['node_count_offset']]+struct.pack('<H', len(selected))
-               +b''.join(raw[n['start']:n['end']] for n in selected)+b'\0')
-    hose = read_reviewed(adapter, allow_multiple_lods=True, lod=lod, include_faces=True)
+    skinned = nodes[0]['visual_type'] == 2
+    if len(bones) != (8 if skinned else 0):
+        raise ValueError('Expected eight hose joints or a wholly rigid modern bank')
+    hose = None
+    if skinned:
+        selected = [nodes[0]]+bones
+        adapter = (raw[:parsed['node_count_offset']]+struct.pack('<H', len(selected))
+                   +b''.join(raw[n['start']:n['end']] for n in selected)+b'\0')
+        hose = read_reviewed(adapter, allow_multiple_lods=True, lod=lod, include_faces=True)
     meshes = []
-    for node in nodes[1:]:
+    for node in (nodes[1:] if skinned else nodes):
         if node['frame_type'] in (6, 10):
             continue
         if node['frame_type'] != 1 or node['visual_type'] != 0:

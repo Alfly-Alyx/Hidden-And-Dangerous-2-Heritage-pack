@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **1 065 tests Python réussis sur 1 066 dans la copie de publication**; un test de lien symbolique non exécuté
+- **1 072 tests Python réussis sur 1 073 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -161,6 +161,13 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   neuf clips de pièces, deux pivots et 537 poses d'auteur contrôlées ; huit tests
   nouveaux. Neuf lectures natives, 466 opérations d'attachement et 180 instants
   vérifiés, écart de poses nul. Mains, événements et comportement restent à réaliser.
+- [Banques FPV rigides FG42/MG34/ZK-383](BANQUES_FPV_RIGIDES.md) : trois modèles
+  avec racine visuelle et enfants directs, 27 clips recalculés, axes convertis
+  de manière réversible. Comparaison de 1 547 clés/demi-clés, résidu MG34
+  intermédiaire explicitement conservé ; sept tests nouveaux. Mains, cadrage,
+  associations et comportement restent à implémenter ou qualifier.
+  Lecture native des 27 clips et 1 601 instants/palettes diagnostiques contrôlés ;
+  aucun chargement/copie de modèle en scène ou rendu qualifié.
 - [Paramètres de tir](PARAMETRES_TIR.md) : 18 colonnes rapprochées des données
   natives de 40 armes dans quatre couches. Onze différences de paramètres
   conservées sur six fiches, deux symboles FG42 explicitement non résolus.

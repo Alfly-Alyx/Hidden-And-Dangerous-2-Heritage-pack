@@ -17,6 +17,10 @@ Les [banques de mouvements FG42/MG34](ANIMATIONS_MODERNES.md) sont maintenant
 construites : neuf séquences de pièces par arme, aucun mouvement de mains ni
 liaison au personnage. Les animations de personnage et l'intégration fonctionnelle
 restent donc à réaliser ; les modèles statiques précédents ne sont pas écrasés.
+Les [banques FPV rigides FG42/MG34/ZK-383](BANQUES_FPV_RIGIDES.md) sont ensuite
+construites : visuel racine sélectionnable, enfants directs, repère converti,
+27 clips recalculés et 1 547 instants comparés. Aucun mouvement de main,
+cadrage final ou chargement/copie en scène n'est qualifié par cette étape.
 
 Les lance-flammes disposent maintenant de
 [six composants indépendants](../FLAMMENWERFER_35_AND_NO2/COMPOSANTS_MODERNES.md) :
