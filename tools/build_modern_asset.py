@@ -350,12 +350,17 @@ def encode_obj(recipe, meshes):
     return "\n".join(text) + "\n", "\n".join(materials) + "\n"
 
 
-def preview(recipe, meshes, output):
+def preview(recipe, meshes, output,*,labels=None):
     from PIL import Image, ImageDraw
+    if labels is None:labels=("HERITAGE / MODERNE / MODELE EXTERIEUR EXPERIMENTAL",
+                             "Geometrie originale - rendu hors moteur - ni arme jouable, ni animation FPV")
+    if (not isinstance(labels,(tuple,list)) or len(labels)!=2
+            or any(not isinstance(v,str) or not 1<=len(v)<=180 for v in labels)):
+        raise ValueError('Invalid preview provenance labels')
     image = Image.new("RGB", (1600, 900), "#101820")
     draw = ImageDraw.Draw(image)
-    draw.text((36, 24), "HERITAGE / MODERNE / MODELE EXTERIEUR EXPERIMENTAL", fill="#d2b984")
-    draw.text((36, 49), "Geometrie originale - rendu hors moteur - ni arme jouable, ni animation FPV", fill="#b9c5d0")
+    draw.text((36, 24), labels[0], fill="#d2b984")
+    draw.text((36, 49), labels[1], fill="#b9c5d0")
     views = [((35, 100, 1530, 420), (0, 1, 0), (0, 0, 1), "PROFIL"),
              ((35, 515, 1000, 330), (0.30, 0.92, -0.24), (-0.12, 0.28, 0.95), "PERSPECTIVE ORTHOGRAPHIQUE"),
              ((1100, 510, 435, 335), (0, 1, 0), (-1, 0, 0), "DESSUS")]

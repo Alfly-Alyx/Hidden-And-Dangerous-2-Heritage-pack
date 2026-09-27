@@ -6,7 +6,7 @@ import sys
 import unittest
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from four_ds_skin import audit_rest
+from four_ds_skin import audit_rest,read_reviewed
 from menu_gui_audit import parse_4ds_nodes
 from test_model_instance import mesh,model
 
@@ -68,6 +68,14 @@ class SkinRestTests(unittest.TestCase):
         data=bytearray(original);struct.pack_into('<f',data,node['position_offset'],1)
         with self.assertRaisesRegex(ValueError,'identity skin root'):audit_rest(bytes(data))
         with self.assertRaises(ValueError):audit_rest(original[:-1])
+
+    def test_face_groups_are_opt_in_and_do_not_change_default_data(self):
+        normal=read_reviewed(fixture());with_faces=read_reviewed(fixture(),include_faces=True)
+        self.assertNotIn('face_groups',normal)
+        faces=with_faces.pop('face_groups');self.assertEqual(with_faces,normal)
+        self.assertEqual(faces,[{'material':1,'triangles':[[0,1,2]]}])
+        for option in (None,1,'yes'):
+            with self.assertRaises(ValueError):read_reviewed(fixture(),include_faces=option)
 
 
 if __name__=='__main__':unittest.main()

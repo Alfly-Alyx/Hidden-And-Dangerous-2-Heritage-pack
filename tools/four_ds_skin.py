@@ -27,8 +27,9 @@ def floats(reader,count):
     return values
 
 
-def read_reviewed(data,*,allow_multiple_lods=False,lod=0):
+def read_reviewed(data,*,allow_multiple_lods=False,lod=0,include_faces=False):
     """Validated data for local calculations; never export commercial inputs."""
+    if type(include_faces) is not bool:raise ValueError('Invalid skin face option')
     model=parse_4ds_nodes(data);nodes=model['nodes']
     if (not nodes or nodes[0]['frame_type']!=1 or nodes[0]['visual_type']!=2
             or nodes[0]['parent_id'] or any(n['frame_type']!=10 for n in nodes[1:])):
@@ -50,13 +51,15 @@ def read_reviewed(data,*,allow_multiple_lods=False,lod=0):
         vertices=reader.u16()
         if not vertices:raise ValueError('Empty skin geometry')
         vertex_values=floats(reader,8*vertices)
-        triangles=0
+        triangles=0;faces=[]
         for _ in range(reader.u8()):
             count=reader.u16();triangles+=count
             indices=struct.unpack('<'+'H'*(count*3),reader.take(count*6))
             if any(i>=vertices for i in indices):raise ValueError('Skin face index outside vertices')
-            if not 1<=reader.u16()<=model['material_count']:raise ValueError('Invalid skin material')
-        levels.append((vertices,vertex_values,triangles))
+            material=reader.u16()
+            if not 1<=material<=model['material_count']:raise ValueError('Invalid skin material')
+            if include_faces:faces.append({'material':material,'triangles':[list(indices[i:i+3]) for i in range(0,len(indices),3)]})
+        levels.append((vertices,vertex_values,triangles,faces))
     bone_count=reader.u8();floats(reader,8)
     if not bone_count or len(nodes)!=bone_count+1:raise ValueError('Skin/joint count mismatch')
     parents=list(reader.take(bone_count))
@@ -81,14 +84,14 @@ def read_reviewed(data,*,allow_multiple_lods=False,lod=0):
         if error>1e-5:raise ValueError('Inverse bind disagrees with native joint rest transform')
         errors.append(error)
     level_pairs=[]
-    for vertices,_,_ in levels:
+    for vertices,_,_,_ in levels:
         weights=reader.u32()
         if weights!=vertices:raise ValueError('Only one bone/byte pair per vertex is reviewed')
         pairs=reader.take(2*weights)
         if any(not 1<=bone<=bone_count for bone in pairs[::2]):raise ValueError('Skin weight bone outside one-based palette')
         level_pairs.append(pairs)
     if reader.position!=root['end']:raise ValueError('Unparsed skin payload')
-    vertices,vertex_values,triangles=levels[lod];pairs=level_pairs[lod];weights=vertices
+    vertices,vertex_values,triangles,faces=levels[lod];pairs=level_pairs[lod];weights=vertices
     report={'scope':'reviewed_hd2_identity_root_single_lod_skin_rest',
         'vertices':vertices,'triangles':triangles,'bones':bone_count,'weight_pairs':weights,
         'joint_ids_not_node_ordinals':True,'parent_bytes_verified':True,'vertex_bone_index_base':1,
@@ -98,10 +101,12 @@ def read_reviewed(data,*,allow_multiple_lods=False,lod=0):
         'skin_deformation_qualified':False,'engine_validated':False,'geometry_exported':False}
     if allow_multiple_lods:
         report.update(scope='reviewed_hd2_identity_root_up_to_two_lod_skin_rest',lod_count=lod_count,selected_lod=lod)
-    return {'report':report,'vertices':[list(vertex_values[i:i+8]) for i in range(0,len(vertex_values),8)],
+    result={'report':report,'vertices':[list(vertex_values[i:i+8]) for i in range(0,len(vertex_values),8)],
         'pairs':[list(pairs[i:i+2]) for i in range(0,len(pairs),2)],'parents':parents,
         'inverse_binds':matrices,'joint_node_indices':[joints[i]['index'] for i in range(bone_count)],
         'nodes':nodes,'rest_world':world}
+    if include_faces:result['face_groups']=faces
+    return result
 
 
 def audit_rest(data):
