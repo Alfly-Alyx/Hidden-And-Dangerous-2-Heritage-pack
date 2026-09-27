@@ -42,6 +42,12 @@ sont recalculés. Les [associations natives](../FLAMMENWERFER_35_AND_NO2/RESOLUT
 transmettent les 36 nouveaux alias jusqu'au lecteur d'animations contrôlé.
 Ni copie du modèle chargé, ni caméra, ni fonctionnement d'arme ne sont qualifiés.
 
+Le [correcteur de contact](../FLAMMENWERFER_35_AND_NO2/CONTACT_MAINS_ET_TRANSITIONS.md)
+résout hors jeu le décalage des poignets après mélange : 704 observations,
+écart maximal après correction `1,696e-7` avec palettes natives. Son raccordement
+au client reste à réaliser. Les mesures des doigts révèlent des intersections
+importantes ; la première proposition de pouces reste un essai non promu.
+
 Pour Benelli, les [tables complètes désactivées](../BENELLI_M4_ADDITIVE/TRANSACTION_TABLES.md)
 et leur retrait exact sont maintenant construits ; les parcours natifs des
 objets et des cellules FPV sont contrôlés en mémoire. Le

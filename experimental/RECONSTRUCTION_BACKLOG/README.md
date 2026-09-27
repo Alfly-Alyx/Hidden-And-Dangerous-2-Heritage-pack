@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **1 017 tests Python réussis sur 1 018 dans la copie de publication**; un test de lien symbolique non exécuté
+- **1 034 tests Python réussis sur 1 035 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -134,6 +134,12 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   Contrôle natif terminé : 2 668 instants et 5 062 530 sommets, limites respectées.
   Un écart de prise jusqu'à 0,040576 lors des mélanges reste à corriger ; il n'est
   pas masqué par la réussite des vérifications de calcul.
+- [Contraintes de mains après mélange](../FLAMMENWERFER_35_AND_NO2/CONTACT_MAINS_ET_TRANSITIONS.md) :
+  défaut localisé, correcteur de six rotations réalisé hors jeu. Sur 704
+  observations, l'écart est ramené sous `1,696e-7`, palettes natives contrôlées.
+  Le raccordement du correcteur au moteur reste à réaliser. Mesure de pénétration
+  des doigts ajoutée ; première proposition de pouces non promue, car elle
+  aggrave certaines intersections. Les banques v1 ne sont pas modifiées.
 - [Matrices natives de caméra](PROJECTION_CAMERA_NATIVE.md) : setters des deux
   angles et trois matrices de perspective exécutés sur un objet fourni.
   352 cas, dont 88 ultra-larges, écart nul ; sélection réelle du rendu FPV,
