@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **1 097 tests Python réussis sur 1 098 dans la copie de publication**; un test de lien symbolique non exécuté
+- **1 113 tests Python réussis sur 1 114 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -187,6 +187,13 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   relu par les routines natives isolées, munition 179 initialisée à 7 et treize
   liaisons FPV contrôlées. Seize tests nouveaux ; aucune insertion dans les
   tables et comportement moteur non validé. Les textes sont préparés séparément ci-dessous.
+- [Descripteur et tables MG34](../MG34_PORTABLE/DESCRIPTEUR_ET_TABLES.md) : fiche
+  moderne de 508 octets, munition portative 201 initialisée à 75, sons 34/38,
+  libellé 21501 dans huit langues ; deux variantes de mains et cinq laboratoires
+  complets construits. Dans chacun, 273 descripteurs et 500 emplacements parcourus,
+  retrait exact, 272 objets et 277 groupes existants préservés. Les dix objets
+  et six groupes modifiés des tables personnelles sont conservés. Seize tests
+  synthétiques nouveaux ; fichiers désactivés, contacts et gameplay non qualifiés.
 - [Action secondaire Benelli](../BENELLI_M4_ADDITIVE/ACTION_SECONDAIRE.md) :
   182 fiches commerciales, le descripteur moderne et quatre contrôles synthétiques
   vérifiés sur leurs branchements natifs isolés ; 48 transitions de paramètre caméra.

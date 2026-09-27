@@ -17,6 +17,20 @@
         "japan": "Benelli M4 [MODERN]",
         "spanish": "Benelli M4 [MODERNO]"
       }
+    },
+    {
+      "key": "mg34_portable",
+      "text_id": 21501,
+      "values": {
+        "czech": "MG 34 [MODERNÍ]",
+        "english": "MG 34 [MODERN]",
+        "englishus": "MG 34 [MODERN]",
+        "french": "MG 34 [MODERNE]",
+        "german": "MG 34 [MODERN]",
+        "italian": "MG 34 [MODERNO]",
+        "japan": "MG 34 [MODERN]",
+        "spanish": "MG 34 [MODERNO]"
+      }
     }
   ]
 }
