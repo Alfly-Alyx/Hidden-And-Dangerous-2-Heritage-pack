@@ -61,3 +61,8 @@ commerciale. Ils ne constituent pas des essais du chargeur de modèles en jeu.
 
 Ni Item/Weapon ni munition ne sont créés ou réservés. Aucun fichier du jeu
 personnel, table centrale, installateur ou mission n'est modifié.
+
+La [banque de mouvements ZK-383](ANIMATIONS_ZK383_MODERNES.md) est maintenant
+réalisée séparément : neuf clips de pièces, modèle statique inchangé, sans mains,
+événements ni comportement fonctionnel. La liste précédente décrit les limites
+de ces extérieurs ; l'état courant de l'animation est détaillé dans cette suite.

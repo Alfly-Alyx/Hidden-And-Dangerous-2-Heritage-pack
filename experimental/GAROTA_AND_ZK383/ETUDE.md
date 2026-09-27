@@ -8,6 +8,8 @@ Mise à jour du 27 septembre : [deux modèles statiques modernes](MODELES_MODERN
 distincts sont fabriqués, avec deux LOD et des aperçus inspectés. Leurs recettes
 sont originales ; les fichiers natifs sont privés et désactivés. Aucun son,
 objet jouable, animation de personnage ou fonctionnement d'arme n'est créé.
+Le ZK-383 possède ensuite une [banque de neuf mouvements de pièces](ANIMATIONS_ZK383_MODERNES.md),
+également moderne et désactivée. Elle ne comprend pas encore les mains.
 
 ## Garota
 

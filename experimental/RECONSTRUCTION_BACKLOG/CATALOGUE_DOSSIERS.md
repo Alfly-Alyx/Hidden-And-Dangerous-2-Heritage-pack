@@ -141,7 +141,7 @@ Total : **180 dossiers**.
 | [FG42](../FG42/) | `ETUDE.md`, `MANIFEST.md`, `RECONSTRUCTION.plan.disabled` | — |
 | [FLAMMENWERFER_35_AND_NO2](../FLAMMENWERFER_35_AND_NO2/) | `ANIMATIONS_MAINS_DERIVEES.md`, `ANIMATIONS_PIECES_TENUES.md`, `ASSEMBLAGES_ANIMES.md`, `COMPOSANTS_MODERNES.md`, `CONTACT_MAINS_ET_TRANSITIONS.md`, `ETUDE.md`, `LIMITES_TUYAUX_ANIMEES.md`, `MANIFEST.md`, `MODELES_MODERNES.md`, `modern-flmthr2-components.json`, `modern-flmthr2-held-animation.json`, `modern-flmthr2-hose-animation.json`, `modern-flmthr2-world.json`, `modern-flmwr35-components.json`, `modern-flmwr35-held-animation.json`, `modern-flmwr35-hose-animation.json`, `modern-flmwr35-world.json`, `modern-fitted-hand-grips.json`, `modern-hand-grips.json`, `MONTAGE_FPV_MODERNE.md`, `PRISES_AJUSTEES_MODERNES.md`, `PRISES_MAINS_DERIVEES.md`, `RECONSTRUCTION.plan.disabled`, `REPERES_VUE_SUBJECTIVE.md`, `RESOLUTION_ANIMATIONS_FPV.md`, `TUYAUX_ANIMES_MODERNES.md` | — |
 | [FW200_DECOR](../FW200_DECOR/) | `ETUDE.md`, `MANIFEST.md` | — |
-| [GAROTA_AND_ZK383](../GAROTA_AND_ZK383/) | `ETUDE.md`, `MANIFEST.md`, `MODELES_MODERNES.md`, `modern-garota-world.json`, `modern-zk383-world.json`, `RECONSTRUCTION.plan.disabled` | — |
+| [GAROTA_AND_ZK383](../GAROTA_AND_ZK383/) | `ANIMATIONS_ZK383_MODERNES.md`, `ETUDE.md`, `MANIFEST.md`, `MODELES_MODERNES.md`, `modern-garota-world.json`, `modern-zk383-animation.json`, `modern-zk383-world.json`, `RECONSTRUCTION.plan.disabled` | — |
 | [JU52_DECOR_AND_PILOTAGE](../JU52_DECOR_AND_PILOTAGE/) | `ETUDE.md`, `MANIFEST.md`, `PROFILES.plan.disabled` | — |
 | [LA5_DECOR](../LA5_DECOR/) | `ETUDE.md`, `MANIFEST.md` | — |
 | [LI2_DECOR](../LI2_DECOR/) | `ETUDE.md`, `MANIFEST.md` | — |

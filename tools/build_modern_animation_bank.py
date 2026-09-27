@@ -43,7 +43,7 @@ def compile_generated_model(source,meshes,spec):
     This function never reads a path or accepts a commercial loader result.
     """
     if (spec.get('schema_version')!=1 or spec.get('provenance')!='MODERNE'
-            or spec.get('runtime_status')!='pending' or spec.get('name') not in (*CASES,'F35','F2')):
+            or spec.get('runtime_status')!='pending' or spec.get('name') not in (*CASES,'F35','F2','ZK3')):
         raise ValueError('Expected an original unvalidated bank')
     if set(spec)-{'schema_version','name','provenance','runtime_status','description',
                   'preview_fps','model_sha256','groups','clips'}:

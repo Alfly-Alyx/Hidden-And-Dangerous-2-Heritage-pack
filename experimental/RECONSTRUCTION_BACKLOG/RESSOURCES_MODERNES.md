@@ -96,3 +96,6 @@ deux LOD chacun, six tests nouveaux et trois vues inspectées par modèle.
 La Garota est une interprétation artistique sans source visuelle attribuée ;
 le ZK-383 s'appuie sur une notice muséale textuelle citée. Ces ressources
 restent statiques, muettes, sans mains, interaction, slot ni validation moteur.
+Le ZK-383 reçoit ensuite une [banque originale de neuf mouvements de pièces](../GAROTA_AND_ZK383/ANIMATIONS_ZK383_MODERNES.md),
+sans modifier son extérieur. Huit tests nouveaux et des contrôles natifs isolés
+de lecture, d'attachement et de pose ; ni mains, événements ni arme jouable.
