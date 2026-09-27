@@ -83,6 +83,19 @@ class BenelliFullTableLabTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'Incomplete animation'):
             self.prepare(table_machine=SyntheticMachine(),fpv_machine=Both(lambda r:r.update(channel=1)),verify_resource_requests=True)
 
+    def test_current_central_tables_are_preserved_without_waiving_other_override_or_deployment_work(self):
+        from test_item_table_overlay import sources,edited_weight,record
+        from item_table_additive import restore
+        archive,descriptor,fragment=sources();custom={'items':edited_weight(archive['items'])}
+        with patch.object(sys.modules[__name__],'fixture',return_value=(archive['items'],archive['fpv'],descriptor,fragment)):
+            files,report=self.prepare(overlays=custom)
+        pair={'items':files['Tables/items.sav.disabled'],'fpv':files['Tables/FpvAnims.sav.disabled']}
+        self.assertEqual(record(pair['items'],23),record(custom['items'],23))
+        self.assertEqual(restore(pair,report['transaction']),{**archive,**custom})
+        self.assertTrue(report['central_table_overlay_composition']['all_preexisting_central_table_changes_preserved'])
+        self.assertFalse(report['loose_overrides_merged']);self.assertFalse(report['installation_allowed'])
+        self.assertIn('isolated_deployment_transaction_and_override_merge',report['pending_requirements'])
+
     def test_both_archive_variants_prepare_full_disabled_tables_without_claiming_installation(self):
         for layer in lab.ITEM_LAYERS:
             with self.subTest(layer=layer):
