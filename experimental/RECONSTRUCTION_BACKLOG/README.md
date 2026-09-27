@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **641 tests Python réussis sur 642 dans la copie de publication**; un test de lien symbolique non exécuté
+- **649 tests Python réussis sur 650 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -129,6 +129,10 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   personnalisés conservés intégralement. 273 objets/632 références relus par
   les routines natives et retrait exact en mémoire. Douze tests nouveaux ;
   déploiement et compatibilité des autres surcharges restent distincts.
+- [Contrôle des ressources](../BENELLI_M4_ADDITIVE/CONTROLE_RESSOURCES.md) :
+  onze archives, 52 entrées pertinentes dont 18 variantes de textures ; aucun
+  conflit d'alias moderne ni surcharge libre candidate dans les espaces
+  examinés. Huit tests nouveaux ; choix réel des formats/compressions non validé.
 - Trois comparaisons binaires Co_Burgundy1/2/3 supplémentaires reconstruisent
   respectivement douze/deux/dix porteurs et leurs liaisons sans modifier les scripts
   ou sons. Elles restent inertes, hors compte des laboratoires de mission.
@@ -140,17 +144,15 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **Trois copies indépendantes** pour hôte/deux clients : 24 385 fichiers et
   6 508 813 370 octets chacune, même manifeste initial, aucun lien partagé.
   La [voie d'essai native](../../validation/ESSAIS_NATIFS.md) prépare les
-  **49 configurations** dans chacune, sans nouveau menu ni lancement du jeu.
-  Le client ouvert par un autre usage a été fermé indépendamment : les huit
-  derniers profils ont pu être ajoutés, sans fermer de processus ni contourner
-  la protection des copies.
-  La cinquantième paire, transition Africa 4 sur témoin radio Heritage, est
-  construite et contrôlée en mémoire; son ajout attend la fermeture du client
-  externe qui a été rouvert entre-temps.
-- **90 cycles réels de fichiers**, en trois rapports conservés : 49 pour la
-  première série, 28 pour les quatorze ajouts, 13 pour les huit derniers profils.
+  **50 configurations** dans chacune, sans nouveau menu ni lancement du jeu.
+  La transition Africa 4 sur témoin radio Heritage a été ajoutée le 27 septembre,
+  après fermeture indépendante du client externe ; aucun processus fermé par
+  l'agent et aucune protection contournée.
+- **92 cycles réels de fichiers**, en quatre rapports conservés : 49 pour la
+  première série, 28 pour les quatorze ajouts, 13 pour les huit profils suivants,
+  puis deux pour la composition Africa 4.
   La comparaison globale finale
-  retrouve tous les fichiers initiaux. Ces cycles ne sont pas des essais en jeu.
+  retrouve tous les fichiers initiaux dans les trois copies. Ces cycles ne sont pas des essais en jeu.
 
 Ces nombres ne signifient pas que la reconstruction globale est terminée :
 le registre du paquet stable reste à **56 cas pending**, et les 21 candidates

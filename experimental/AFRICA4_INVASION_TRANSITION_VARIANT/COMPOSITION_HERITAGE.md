@@ -72,6 +72,13 @@ protocoles. La paire commerciale et la paire composée sont incompatibles entre
 elles; l'outil n'autorise qu'une configuration active à la fois. Ne pas ajouter
 l'assaut de proximité à cette comparaison.
 
+Le **27 septembre 2026**, la paire a été ajoutée aux trois copies indépendantes,
+qui possèdent désormais les 50 configurations. Sur l'hôte, les deux cycles
+de pose/relecture/retrait du témoin et de la variante ont réussi ; les fichiers
+initiaux ont été intégralement retrouvés. Les deux copies clientes ont aussi
+passé leur comparaison globale. Le rapport privé
+`OFFLINE_REHEARSAL-heritage-radio-20260927.json` annonce zéro essai moteur.
+
 ## Essais restants
 
 Dans chaque branche 20=0/1 : observer d'abord le témoin Heritage, puis la variante.
