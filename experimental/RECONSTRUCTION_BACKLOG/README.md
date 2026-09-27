@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **1 126 tests Python réussis sur 1 127 dans la copie de publication**; un test de lien symbolique non exécuté
+- **1 153 tests Python réussis sur 1 154 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -178,6 +178,12 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   ordinaires ; les variantes v4/v5/v6 refusées restent documentées.
   Le réglage indépendant des doigts est implémenté mais pas encore adopté ;
   prise droite ZK-383, gestes, cadrage et comportement restent à réaliser/qualifier.
+- [Sons FG42/ZK-383 modernes](SONS_MODERNES.md) : quatre effets PCM originaux,
+  sans échantillon commercial, et une copie de définition sonore additive
+  entièrement réversible. 539 entrées / 672 variantes existantes conservées ;
+  onze archives examinées, quatre recherches natives d'indices vérifiées.
+  Dix-huit tests inventés ; écoute, chargeur complet, Item et événements restent
+  non réalisés. Les symboles FG42 historiques ne sont pas déclarés résolus.
 - [Paramètres de tir](PARAMETRES_TIR.md) : 18 colonnes rapprochées des données
   natives de 40 armes dans quatre couches. Onze différences de paramètres
   conservées sur six fiches, deux symboles FG42 explicitement non résolus.

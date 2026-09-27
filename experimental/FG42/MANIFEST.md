@@ -19,7 +19,8 @@
 - [neuf animations originales de pièces construites](../RECONSTRUCTION_BACKLOG/ANIMATIONS_MODERNES.md), sans mains ni liaison moteur ;
 - [modèle et clips FPV rigides construits](../RECONSTRUCTION_BACKLOG/BANQUES_FPV_RIGIDES.md), sans mains, cadrage ni copie moteur qualifiés ;
 - [banques de mains privées et associations construites](../RECONSTRUCTION_BACKLOG/MAINS_ARMES_RIGIDES.md) ; contacts continus, transitions et raccordement du correcteur non qualifiés ;
-- cadrage FPV ; icône ; gestes de recharge ; animations de personnage ; sons ;
+- [deux effets sonores modernes synthétisés et banque privée réversible](../RECONSTRUCTION_BACKLOG/SONS_MODERNES.md) ; écoute, raccordement Item et événements non réalisés ;
+- cadrage FPV ; icône ; gestes de recharge ; animations de personnage ;
 - entrée Weapon additive et liaison munition ;
 - balistique, chargeur, cadence, recul, dispersion et dégâts ;
 - inventaire, IA, sauvegarde et réseau.

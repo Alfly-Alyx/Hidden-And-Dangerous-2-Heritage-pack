@@ -156,6 +156,26 @@ par le premier ajusteur, ne qualifie pas la position de l'index. Une option
 explicite `--index-to-trigger`, limitée à ZK-383/R, distingue désormais ces
 cibles dans l'ajusteur global ; la prise entière reste à corriger et vérifier.
 
+L'ouverture latérale de chaque articulation de base peut ensuite être choisie
+indépendamment, bornée à ±30 degrés ; zéro laisse les anciennes poses identiques.
+L'exploration optionnelle de l'index compare 81 départs bornés plus la graine
+si elle est distincte. Les seules courbures locales ne permettaient pas de
+sortir du minimum précédent. Une contrainte artistique optionnelle de hauteur
+de poignet est aussi disponible, sans prétention anatomique ou historique ;
+son essai a gardé des traversées et n'est pas retenu comme solution.
+
+Une **candidate ZK-383 distincte**, reproduisible avec
+`modern-rigid-hand-grips-zk383-trigger.json`, ajoute la prise réorientée,
+les réglages propres de l'index/annulaire et une marge de 0,2 mm. Son profil
+canonique porte SHA-256
+`c5cfc4d7b161f5da6a94eefb7c30acfc17aa9d004ed9fc9ed08f9c9b109076b4`.
+Les dix-huit clips privés `ZK383_HandFPV_v9` donnent **1 074 poses de surface
+sans traversée, aucune pièce omise**. Les aperçus montrent une main droite
+réorientée avec le poignet plus haut ; naturel de cette posture, ouverture
+de l'index et auto-intersections restent à examiner. **Ce profil ne remplace
+pas le profil par défaut v7 et n'est pas une prise visuellement qualifiée.**
+Rapport `.analysis/rigid-hand-surfaces-zk383-v9-dense-20260927.json`.
+
 ## Routines natives et correction de poignets
 
 `rigid_weapon_hand_audit.py --native` utilise des émulateurs isolés distincts
@@ -209,6 +229,21 @@ descend à `0,000451782386`, avec **36 instants hors seuil brut**, contre 96
 en v4. Après correction hors jeu : `1,645983209e-7`. Le seuil `0,0002`
 reste donc en échec pour les clips bruts, sans relèvement ni masquage.
 Rapport `.analysis/rigid-hands-native-corrected-v7-20260927.json`.
+
+Le mode distinct `--dense --post-blend-surfaces` vérifie désormais les
+surfaces après la correction hors jeu, et non seulement les clips bruts.
+Sur v7 : **3 094 poses corrigées, zéro traversée et aucune pièce omise**,
+maximum de poignet `1,613405173e-7`. Les poses d'entrée sont celles de la
+référence numérique sérialisée ; ce n'est pas un nouveau passage du skin
+natif ou du rendu. Rapport `.analysis/rigid-hand-surfaces-v7-postblend-20260927.json`.
+La racine, les doigts, les pouces, les échelles et l'équipement sont préservés.
+
+La candidate ZK-383 v9 a aussi ses preuves natives propres : **18 lectures,
+18 séquences, 1 110 instants, 2 220 palettes, 4 440 observations**. Écart de
+pose nul ; palette `2,384185791e-7`, poignets aux clés `1,164748190e-7`, entre
+clés `0,0000806768383`, **zéro dépassement du seuil brut**. Après correction
+hors jeu : `1,228679178e-7`. Rapport `.analysis/rigid-hands-native-zk383-v9-20260927.json`.
+Ces chiffres concernent ZK-383 seulement et ne qualifient pas sa posture.
 
 ## Associations de ressources
 

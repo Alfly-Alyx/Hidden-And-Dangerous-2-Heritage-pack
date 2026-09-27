@@ -33,6 +33,16 @@ class RigidWeaponHandTests(unittest.TestCase):
             hands.turns(thumb)
         self.assertEqual((self.profile,self.base,self.spec),before)
 
+    def test_separate_trigger_candidate_keeps_modern_pins_and_does_not_replace_default(self):
+        candidate=json.loads((hands.PROFILE.parent/'modern-rigid-hand-grips-zk383-trigger.json').read_text(encoding='utf-8'))
+        self.assertEqual(digest(json.dumps(candidate,sort_keys=True).encode()),'c5cfc4d7b161f5da6a94eefb7c30acfc17aa9d004ed9fc9ed08f9c9b109076b4')
+        for case in hands.CASES:
+            grips,thumb,_,sha=hands.configuration(candidate,self.base,self.spec,case)
+            self.assertEqual(sha,digest(self.compiled[case][1]));hands.turns(thumb)
+            if case=='ZK383':self.assertEqual(hands.curl_spec(grips)['R']['finger_splay_degrees'],{'1':30})
+            else:self.assertEqual(candidate['cases'][case],self.profile['cases'][case])
+        self.assertNotIn('finger_splay_degrees',self.profile['cases']['ZK383']['hands']['R'])
+
     def test_invalid_profile_provenance_hash_fields_and_ranges_refused(self):
         mutations=(lambda p:p.update(schema_version=True),lambda p:p.update(provenance='OFFICIEL'),
             lambda p:p.update(source_grip_profile_sha256='0'*64),lambda p:p.update(cases=None),
@@ -64,15 +74,18 @@ class RigidWeaponHandTests(unittest.TestCase):
     def test_individual_finger_profile_choices_reach_authoring_without_mutation(self):
         grips,thumb,_,_=hands.configuration(self.profile,self.base,self.spec,'ZK383');before=deepcopy((grips,thumb))
         choice={'contact_offset_delta':[0,0,0],'rotation_degrees':[0,0,0],
-                'finger_curl_overrides':{'1':[-30,-20,-10],'4':[-25,-40,-15]}}
+                'finger_curl_overrides':{'1':[-30,-20,-10],'4':[-25,-40,-15]},'finger_splay_degrees':{'1':15}}
         actual,turned=hands.adjust(grips,thumb,'R',choice)
         self.assertEqual((grips,thumb),before);self.assertEqual(actual['L'],grips['L']);self.assertEqual(turned,thumb)
         curls=hands.curl_spec(actual)
         self.assertEqual(curls['R']['finger_curl_overrides'],choice['finger_curl_overrides'])
+        self.assertEqual(curls['R']['finger_splay_degrees'],{'1':15})
         curls['R']['finger_curl_overrides']['4'][0]=0
         self.assertEqual(actual['R']['finger_curl_overrides']['4'],[-25,-40,-15])
         for value in ({},{'0':[0,0,0]},{'1':[111,0,0]}):
             with self.assertRaises(ValueError):hands.adjust(grips,thumb,'R',{**choice,'finger_curl_overrides':value})
+        for value in ({},{'0':0},{'1':31}):
+            with self.assertRaises(ValueError):hands.adjust(grips,thumb,'R',{**choice,'finger_splay_degrees':value})
 
     def test_placement_changes_only_root_positions_after_float32_roundtrip(self):
         for case,(_,rig,clips,_) in self.compiled.items():

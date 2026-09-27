@@ -28,3 +28,9 @@ Le ZK-383 possède ensuite un [modèle FPV rigide avec neuf clips recalculés](.
 sans caméra qualifiée. Des [banques de mains privées et associations séparées](../RECONSTRUCTION_BACKLOG/MAINS_ARMES_RIGIDES.md)
 sont ensuite construites ; la prise droite reste imparfaite, les gestes et le
 raccordement moteur ne sont pas réalisés. La Garota n'utilise pas ces banques.
+
+Deux [effets sonores ZK-383 entièrement originaux](../RECONSTRUCTION_BACKLOG/SONS_MODERNES.md)
+sont synthétisés sous `MOD_ZK383_F/R`. Une copie sonore privée ajoute leurs
+deux références numériques sans changer les entrées existantes et se retire
+exactement. Écoute, descripteur Item, événements et lecture native restent
+non réalisés ; aucun son historique ZK-383 n'est déclaré retrouvé.
