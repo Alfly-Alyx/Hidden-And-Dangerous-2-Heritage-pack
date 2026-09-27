@@ -54,6 +54,10 @@ emplacement/taux/poids, puis initialise le nouveau poids à zéro et son taux à
 (`0x493186…0x493198`). Sans ce cas, poids 1 et taux zéro
 (`0x4931d3…0x4931e5`). Cette création de transition n'est pas exécutée par
 le présent banc ; l'allocation et le choix de l'emplacement restent distincts.
+Le [banc de sélection](SELECTION_PISTE_FPV.md) contrôle maintenant ce choix
+et ces paramètres initiaux avec branche et liste fournies explicitement.
+L'[attachement LS3DF](ATTACHEMENT_ANIMATION_NATIF.md) est vérifié séparément
+sur les véritables pistes, dans des conteneurs synthétiques.
 
 ## Poids natifs, détachement et rafraîchissement enregistrés
 

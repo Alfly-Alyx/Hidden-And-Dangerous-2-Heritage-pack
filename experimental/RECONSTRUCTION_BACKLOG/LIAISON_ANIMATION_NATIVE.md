@@ -4,6 +4,11 @@
 banques modernes FG42/MG34. Il utilise la même `LS3DF.dll` épinglée que le
 [calcul natif](CALCUL_ANIMATION_NATIF.md), sans la charger sous Windows.
 
+Le banc ultérieur d'[attachement natif](ATTACHEMENT_ANIMATION_NATIF.md)
+exécute désormais la liaison, le redémarrage et le retrait complets avec
+allocation de cibles simulée et bornée. Les résultats historiques ci-dessous
+restent ceux des deux blocs séparés ; aucun chargement réel n'en découle.
+
 ## Deux blocs indépendants, pas un chargement complet
 
 **Sélection de cible : `0x10020320…0x100203c1`.** Le code parcourt une liste
