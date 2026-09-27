@@ -83,6 +83,11 @@ est maintenant intégré : **72 os** et **224 rotations initiales** vérifiés.
 Il corrige notre calcul hors moteur ; la sémantique des octets de poids et la
 déformation native ne sont pas encore établies.
 
+Le [calcul d'animation natif isolé](../RECONSTRUCTION_BACKLOG/CALCUL_ANIMATION_NATIF.md)
+recoupe ensuite 20 220 échantillons de rotation sur les 224 canaux Benelli.
+Il s'arrête avant les mélanges et ne complète aucune piste absente : cette
+preuve ne remplace pas l'héritage des poses partielles ou le skin.
+
 - `tools/benelli_fpv_rig_audit.py` produit le plan privé, les sources et les
   exceptions, sans géométrie ni clés d'animation dans le rapport.
 - `.analysis/benelli-fpv-rig-20260927.json` conserve les correspondances exactes.

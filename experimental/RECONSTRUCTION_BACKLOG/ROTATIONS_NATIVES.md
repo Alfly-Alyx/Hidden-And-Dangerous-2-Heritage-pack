@@ -4,7 +4,9 @@
 est corrigée. Les quaternions natifs XYZW doivent être conjugués pour entrer
 dans notre calcul mathématique actif à vecteurs colonnes : `(-x,-y,-z,w)`.
 L'opération inverse est identique. Ce résultat ne qualifie ni les rotations
-de `scene2.bin`, ni l'interpolation native, ni le skin animé.
+de `scene2.bin`, ni le skin animé. L'interpolation et l'échantillonnage natifs
+sont désormais examinés séparément dans [Calcul natif](CALCUL_ANIMATION_NATIF.md),
+avec leurs propres corpus et limites, sans mélange ni pose complète.
 
 ## Preuves qui ne dépendent pas d'un aller-retour de notre encodeur
 

@@ -9,6 +9,11 @@ remplacent l'encodage des rotations des anciens v1/v2. La
 la frontière du format. Les modèles et quatorze aperçus PNG sont inchangés ;
 les 18 séquences sont réencodées sans changer les mouvements conçus.
 
+Le [calcul natif isolé](CALCUL_ANIMATION_NATIF.md) établit maintenant que
+l'interpolation du moteur ne renormalise pas systématiquement les quaternions.
+Nos aperçus normalisés restent des aides visuelles modernes, pas une preuve
+de concordance numérique entre les clés. L'unité temporelle native reste à établir.
+
 Les recettes [FG42](../FG42/modern-animation-bank.json) et
 [MG34](../MG34_PORTABLE/modern-animation-bank.json) décrivent des mouvements
 originaux de l'arme seule. Elles ne lisent ni modèle, pose, clé, son ou
