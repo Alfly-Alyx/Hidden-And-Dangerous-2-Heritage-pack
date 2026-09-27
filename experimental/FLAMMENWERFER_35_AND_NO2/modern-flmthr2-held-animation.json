@@ -1,0 +1,534 @@
+{
+  "schema_version": 1,
+  "name": "F2",
+  "provenance": "MODERNE",
+  "runtime_status": "pending",
+  "description": "Original held-component presentation motions only. Legacy state names are visual slots: Shot/AimShot are gentle holding loops, Rel lowers and returns the prop, Jammed is a visual inspection gesture. No historical operating procedure, ballistic recoil, functional reload, fuel, pressure, ignition, particles, damage, sound, player hands, backpack/hose motion or camera calibration.",
+  "preview_fps": 24,
+  "model_sha256": "7799824e1da25e40932903eee673b303720a9b6ef3d132a0b73870f9e2375364",
+  "groups": [
+    {
+      "name": "MOD_held_pivot",
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "members": [
+        "MOD_hose_join",
+        "MOD_hand_body",
+        "MOD_forward_tube",
+        "MOD_tip",
+        "MOD_rear_grip",
+        "MOD_front_grip",
+        "MOD_guard_bottom",
+        "MOD_guard_front",
+        "MOD_rear_support",
+        "MOD_rear_plate",
+        "MOD_muzzle_anchor",
+        "MOD_right_hand",
+        "MOD_left_hand",
+        "MOD_hose_anchor"
+      ]
+    }
+  ],
+  "clips": [
+    {
+      "name": "Idle1",
+      "frame_end": 60,
+      "loop": true,
+      "motions": {
+        "MOD_held_pivot": [
+          [
+            0,
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ],
+          [
+            30,
+            [
+              0,
+              0,
+              0.002
+            ],
+            [
+              0.12,
+              0,
+              0.1
+            ]
+          ],
+          [
+            60,
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "name": "Aim",
+      "frame_end": 12,
+      "loop": false,
+      "motions": {
+        "MOD_held_pivot": [
+          [
+            0,
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ],
+          [
+            12,
+            [
+              -0.047,
+              0.031,
+              0.017
+            ],
+            [
+              -1.2,
+              0,
+              -0.6
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "name": "Daim",
+      "frame_end": 12,
+      "loop": false,
+      "motions": {
+        "MOD_held_pivot": [
+          [
+            0,
+            [
+              -0.047,
+              0.031,
+              0.017
+            ],
+            [
+              -1.2,
+              0,
+              -0.6
+            ]
+          ],
+          [
+            12,
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "name": "Arm",
+      "frame_end": 24,
+      "loop": false,
+      "motions": {
+        "MOD_held_pivot": [
+          [
+            0,
+            [
+              0.07,
+              -0.14,
+              -0.21
+            ],
+            [
+              18,
+              0,
+              -10
+            ]
+          ],
+          [
+            14,
+            [
+              0.009,
+              -0.022,
+              -0.035
+            ],
+            [
+              2,
+              0,
+              -1
+            ]
+          ],
+          [
+            24,
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "name": "Disarm",
+      "frame_end": 24,
+      "loop": false,
+      "motions": {
+        "MOD_held_pivot": [
+          [
+            0,
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ],
+          [
+            10,
+            [
+              0.009,
+              -0.022,
+              -0.035
+            ],
+            [
+              2,
+              0,
+              -1
+            ]
+          ],
+          [
+            24,
+            [
+              0.07,
+              -0.14,
+              -0.21
+            ],
+            [
+              18,
+              0,
+              -10
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "name": "Shot",
+      "frame_end": 24,
+      "loop": true,
+      "motions": {
+        "MOD_held_pivot": [
+          [
+            0,
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ],
+          [
+            6,
+            [
+              0.001,
+              0,
+              0.001
+            ],
+            [
+              0.08,
+              0,
+              0.15
+            ]
+          ],
+          [
+            12,
+            [
+              0,
+              0,
+              0.002
+            ],
+            [
+              0.12,
+              0,
+              0
+            ]
+          ],
+          [
+            18,
+            [
+              -0.001,
+              0,
+              0.001
+            ],
+            [
+              0.08,
+              0,
+              -0.15
+            ]
+          ],
+          [
+            24,
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "name": "AimShot",
+      "frame_end": 24,
+      "loop": true,
+      "motions": {
+        "MOD_held_pivot": [
+          [
+            0,
+            [
+              -0.047,
+              0.031,
+              0.017
+            ],
+            [
+              -1.2,
+              0,
+              -0.6
+            ]
+          ],
+          [
+            6,
+            [
+              -0.046,
+              0.031,
+              0.018
+            ],
+            [
+              -1.12,
+              0,
+              -0.45
+            ]
+          ],
+          [
+            12,
+            [
+              -0.047,
+              0.031,
+              0.019
+            ],
+            [
+              -1.08,
+              0,
+              -0.6
+            ]
+          ],
+          [
+            18,
+            [
+              -0.048,
+              0.031,
+              0.018
+            ],
+            [
+              -1.12,
+              0,
+              -0.75
+            ]
+          ],
+          [
+            24,
+            [
+              -0.047,
+              0.031,
+              0.017
+            ],
+            [
+              -1.2,
+              0,
+              -0.6
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "name": "Rel",
+      "frame_end": 64,
+      "loop": false,
+      "motions": {
+        "MOD_held_pivot": [
+          [
+            0,
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ],
+          [
+            16,
+            [
+              0.035,
+              -0.05,
+              -0.04
+            ],
+            [
+              6,
+              10,
+              -12
+            ]
+          ],
+          [
+            36,
+            [
+              0.04,
+              -0.055,
+              -0.07
+            ],
+            [
+              9,
+              6,
+              -10
+            ]
+          ],
+          [
+            48,
+            [
+              0.015,
+              -0.025,
+              -0.035
+            ],
+            [
+              4,
+              2,
+              -4
+            ]
+          ],
+          [
+            64,
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "name": "Jammed",
+      "frame_end": 32,
+      "loop": false,
+      "motions": {
+        "MOD_held_pivot": [
+          [
+            0,
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ],
+          [
+            12,
+            [
+              0.015,
+              -0.025,
+              -0.015
+            ],
+            [
+              3,
+              9,
+              -5
+            ]
+          ],
+          [
+            20,
+            [
+              0.015,
+              -0.025,
+              -0.015
+            ],
+            [
+              3,
+              -3,
+              3
+            ]
+          ],
+          [
+            32,
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

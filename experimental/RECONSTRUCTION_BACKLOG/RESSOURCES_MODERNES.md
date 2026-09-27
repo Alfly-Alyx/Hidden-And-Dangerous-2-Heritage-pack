@@ -58,6 +58,10 @@ Leurs [six composants](../FLAMMENWERFER_35_AND_NO2/COMPOSANTS_MODERNES.md)
 sont désormais séparés en modèles indépendants, avec géométrie et LOD
 conservés, repères de prise et raccords statiques. Le tuyau n'est pas déformable
 et aucun os de personnage n'est inventé pour masquer ce travail restant.
+Les [pièces tenues animées](../FLAMMENWERFER_35_AND_NO2/ANIMATIONS_PIECES_TENUES.md)
+ont maintenant neuf séquences modernes chacune, contrôlées également par
+l'attachement et les poses natifs isolés. Les gestes de présentation ne
+réalisent ni tir, rechargement, main animée ou attache dorsale.
 
 Une [banque originale de mouvements FG42/MG34](ANIMATIONS_MODERNES.md) est créée :
 neuf séquences par arme sont maintenant écrites en 5DS, liées à des pivots de

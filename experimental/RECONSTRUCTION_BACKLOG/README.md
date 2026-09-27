@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **867 tests Python réussis sur 868 dans la copie de publication**; un test de lien symbolique non exécuté
+- **877 tests Python réussis sur 878 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -85,6 +85,11 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   514 poses entières évaluées hors moteur ; deux planches de rechargement
   inspectées avec un rendu de profondeur corrigé. Vingt nouveaux tests.
   Ni mains, événements, sons, caméra FPV ou comportement d'arme réalisés.
+- [Mouvements des pièces tenues lance-flammes](../FLAMMENWERFER_35_AND_NO2/ANIMATIONS_PIECES_TENUES.md) :
+  dix-huit séquences originales, 570 poses entières et deux planches contrôlées.
+  Audit natif : 932 opérations d'attachement, 360 mises à jour et 568 appels
+  de pose, résidu nul ; dix tests nouveaux. Mains, tuyau déformable, caméra et
+  mécanique fonctionnelle restent à réaliser ; les sorties sont désactivées.
 - [Paramètres de tir](PARAMETRES_TIR.md) : 18 colonnes rapprochées des données
   natives de 40 armes dans quatre couches. Onze différences de paramètres
   conservées sur six fiches, deux symboles FG42 explicitement non résolus.

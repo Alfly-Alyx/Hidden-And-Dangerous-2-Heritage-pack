@@ -64,8 +64,10 @@ PNG et un manifeste avec empreintes. Aucun Item, effet ou installation.
 
 ## Suites de réalisation
 
-Créer les mouvements des pièces tenues et des mains, définir les attaches
-joueur/IA et les transformations FPV, puis réaliser une solution de tuyau
+Les [mouvements des pièces tenues](ANIMATIONS_PIECES_TENUES.md) sont maintenant
+créés : dix-huit séquences de présentation, sans mécanique fonctionnelle.
+Créer les mouvements des mains, définir les attaches joueur/IA et les
+transformations FPV, puis réaliser une solution de tuyau
 déformable. Le tuyau de présentation est isolé précisément pour ne pas
 l'annoncer solidaire de deux composants mobiles indépendants. Les événements,
 sons, effet, comportement, entrée additive et sauvegardes restent distincts.

@@ -31,14 +31,24 @@ def euler(value):
 
 
 def compile_bank(recipe,spec):
+    if spec.get('name') not in CASES:raise ValueError('Expected a reviewed complete-model bank')
+    meshes=asset.build_meshes(recipe);source=asset.encode_4ds(recipe,meshes)
+    return compile_generated_model(source,meshes,spec)
+
+
+def compile_generated_model(source,meshes,spec):
+    """Internal shared compiler; callers supply freshly GENERATED modern data.
+
+    Component callers keep mesh-local vertices (not preview-translated ones).
+    This function never reads a path or accepts a commercial loader result.
+    """
     if (spec.get('schema_version')!=1 or spec.get('provenance')!='MODERNE'
-            or spec.get('runtime_status')!='pending' or spec.get('name') not in CASES):
+            or spec.get('runtime_status')!='pending' or spec.get('name') not in (*CASES,'F35','F2')):
         raise ValueError('Expected an original unvalidated bank')
     if set(spec)-{'schema_version','name','provenance','runtime_status','description',
                   'preview_fps','model_sha256','groups','clips'}:
         raise ValueError('Unknown bank fields, including functional bindings')
     fps=motion.integer(spec['preview_fps'],1,60,'authoring preview rate')
-    meshes=asset.build_meshes(recipe);source=asset.encode_4ds(recipe,meshes)
     digest=hashlib.sha256(source).hexdigest()
     if digest!=spec['model_sha256']:raise ValueError('Modern source geometry changed')
     rig,report=motion.rig_model(source,spec['groups'])
@@ -97,7 +107,12 @@ def compile_bank(recipe,spec):
 
 
 def build(recipe,spec,output):
-    rig,clips,meshes,report=compile_bank(recipe,spec)
+    return write_generated_bank(recipe,spec,compile_bank(recipe,spec),output)
+
+
+def write_generated_bank(recipe,spec,compiled,output,contact_label='RELOAD POSES'):
+    """Write a just-compiled original bank; no reads from the personal game."""
+    rig,clips,meshes,report=compiled
     output.mkdir(parents=True,exist_ok=False)
     (output/f"PROTOTYPE_{spec['name']}_Rig.4ds.disabled").write_bytes(rig)
     for name,(stem,animation) in clips.items():
@@ -111,7 +126,7 @@ def build(recipe,spec,output):
     from PIL import Image,ImageDraw
     contact=Image.new('RGB',(1600,1410),'#101820')
     draw=ImageDraw.Draw(contact)
-    draw.text((24,15),f"MODERNE / {spec['name']} / RELOAD POSES / NO PLAYER HANDS / NOT ENGINE VALIDATED",fill='#d4bd80')
+    draw.text((24,15),f"MODERNE / {spec['name']} / {contact_label} / NO PLAYER HANDS / NOT ENGINE VALIDATED",fill='#d4bd80')
     end=report['clips']['Rel']['frame_end']
     for i,frame in enumerate((0,16,32,48,64,80)):
         actual=round(frame*end/80)
