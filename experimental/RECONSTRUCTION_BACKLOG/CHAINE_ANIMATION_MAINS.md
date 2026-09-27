@@ -62,9 +62,13 @@ Résidus maximaux : **zéro** pour les poses, **3,577 × 10⁻⁷** pour les mat
 utilisent uniquement des données inventées et vérifient fenêtres, conservation,
 refus et comptes d'échantillonnage.
 
-Le mode plus dense `half-frames` est disponible. Il examine chaque repère et
-chaque milieu de repère ; son nom ne définit aucune fréquence en secondes.
-Seul un rapport effectivement terminé peut être utilisé comme preuve de ce mode.
+Le rapport terminé `benelli-native-pose-chain-half-frames-20260927.json`
+ajoute le contrôle dense de chaque repère et milieu de repère :
+**1 462 échantillons**, **54 094 poses de nœuds**, **73 600 canaux**,
+**14 300 poses sans canal**, **52 632 joints** et **1 510 977 sommets**.
+Les résidus maximaux sont les mêmes que pour le contrôle des frontières.
+Le nom `half-frames` ne définit aucune fréquence en secondes. Cette densité
+ne change pas la condition initiale de diagnostic ni les limites ci-dessus.
 
 ## Reproduction
 
