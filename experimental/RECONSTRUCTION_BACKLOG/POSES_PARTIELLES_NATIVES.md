@@ -74,6 +74,9 @@ la durée de vie des emplacements, les éventuelles poses supplémentaires et
 le chemin matrice. Il serait donc incorrect de compléter les pistes manquantes
 avec le modèle au repos en prétendant reproduire le moteur. Le skin, la caméra,
 les événements et les interactions entre états d'arme restent séparés.
+La [progression des huit pistes](TEMPS_ANIMATION_NATIF.md) est examinée dans
+un autre banc, sans cibles : les résultats ne sont pas combinés artificiellement
+en une preuve de lecture complète d'animation.
 
 ```powershell
 .\.venv\Scripts\python.exe tools/ls3d_pose_audit.py --library 'D:\Games\Hidden and Dangerous 2\LS3DF.dll' --json-output '.analysis/poses-natives-nouveau.json'

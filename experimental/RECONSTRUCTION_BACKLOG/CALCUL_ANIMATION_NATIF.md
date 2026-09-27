@@ -67,6 +67,8 @@ trois composantes interpolées. Les vecteurs ne sont pas normalisés.
 Le producteur du temps, ses conversions et la vitesse de lecture ne sont pas
 qualifiés. Les 24 images/seconde de nos aperçus modernes restent un choix
 de présentation, sans valeur de preuve sur le jeu.
+Le [contrôleur temporel isolé](TEMPS_ANIMATION_NATIF.md) établit séparément
+le calcul de durée et les limites/boucles, toujours sans qualifier l'horloge.
 
 Le domaine borné accepte 1 à 180 clés ordonnées, repères 0 à 65 535, vecteurs
 de composantes dans [-10, 10], quaternions natifs presque unitaires. L'écart
