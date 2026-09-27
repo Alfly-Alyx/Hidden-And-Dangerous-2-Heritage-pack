@@ -70,8 +70,10 @@ boucles imbriquées et les noms/valeurs chargés. Les laboratoires v2 intègrent
 les deux oracles, avec les mêmes fichiers désactivés qu'en v1. Les ouvertures
 de fichiers, les modèles et les animations restent hors de cette exécution.
 
-Restent la préparation d'un déploiement isolé et la gestion des surcharges,
-les contrats de sauvegarde complète, les paramètres secondaires, les mains,
+La [conservation des tables personnelles](SURCHARGES_CENTRALES.md) et la
+[transaction de fichiers isolée](DEPLOIEMENT_ISOLE.md) sont maintenant réalisées
+séparément. Restent la compatibilité d'autres surcharges, les contrats de
+sauvegarde complète, les paramètres secondaires, les mains,
 la caméra et les événements FPV. Les essais de rendu, de comportement et de
 multijoueur restent ensuite obligatoires. **Ne pas copier ces tables dans le jeu.**
 

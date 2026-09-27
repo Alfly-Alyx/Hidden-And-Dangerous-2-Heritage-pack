@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **649 tests Python réussis sur 650 dans la copie de publication**; un test de lien symbolique non exécuté
+- **670 tests Python réussis sur 671 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -133,6 +133,11 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   onze archives, 52 entrées pertinentes dont 18 variantes de textures ; aucun
   conflit d'alias moderne ni surcharge libre candidate dans les espaces
   examinés. Huit tests nouveaux ; choix réel des formats/compressions non validé.
+- [Déploiement Benelli isolé](../BENELLI_M4_ADDITIVE/DEPLOIEMENT_ISOLE.md) :
+  douze cibles strictes préparées dans les trois copies ; pose/relecture/retrait
+  vérifiés sur l'hôte, 24 385 fichiers initiaux retrouvés. Les deux nouveaux
+  modèles retirés restent récupérables dans l'historique. Vingt et un tests nouveaux ;
+  aucune partie lancée et aucun résultat moteur acquis.
 - Trois comparaisons binaires Co_Burgundy1/2/3 supplémentaires reconstruisent
   respectivement douze/deux/dix porteurs et leurs liaisons sans modifier les scripts
   ou sons. Elles restent inertes, hors compte des laboratoires de mission.
