@@ -1,9 +1,10 @@
 # Libellés d'inventaire modernes et réversibles
 
 **27 septembre 2026.** Le catalogue original `modern-inventory-texts.json`
-réserve **21500–21531 au projet** et prépare maintenant trois libellés : **21500 :
-Benelli M4 [MODERNE]**, **21501 : MG 34 [MODERNE]** et **21502 : FG 42 [MODERNE]**.
-Ces numéros de texte ne réservent pas les slots d'objet 359/363/362 et ne prouvent pas l'absence
+réserve **21500–21531 au projet** et prépare maintenant cinq libellés : **21500 :
+Benelli M4 [MODERNE]**, **21501 : MG 34 [MODERNE]**, **21502 : FG 42 [MODERNE]**,
+**21503 : ZK-383 [MODERNE]**, **21504 : Chargeur ZK-383 - 30 [MODERNE]**.
+Ces numéros de texte ne réservent pas les slots d'objet 359/363/362/364/365 et ne prouvent pas l'absence
 de collision avec tout mod externe. Les laboratoires Benelli historiques
 décrits plus bas conservent leur catalogue à un seul libellé ; ils ne sont pas
 réétiquetés comme sorties du nouveau catalogue.
@@ -18,7 +19,7 @@ la nouvelle plage. Un test vérifie également les identifiants du menu personna
 Avant construction, il vérifie les **quinze tables TEXTY/TEXTY_DD présentes**,
 les identifiants de texte des objets commerciaux dans les quatre couches et
 ceux de la table d'objets libre installée. La recherche conservatrice refuse
-toute occurrence des nombres 21500/21501/21502 comme jetons numériques, même dans un commentaire.
+toute occurrence des nombres 21500 à 21504 comme jetons numériques, même dans un commentaire.
 Elle préfère un faux positif à une réaffectation silencieuse.
 
 Ce contrôle n'est pas présenté comme un parseur universel de TEXTY : les fichiers
@@ -40,8 +41,9 @@ Les ajouts portent un marqueur moderne visible :
 | japan | Benelli M4 [MODERN] | UTF-8, libellé ASCII |
 
 La MG34 et le FG42 reprennent les mêmes marqueurs et encodages, en remplaçant le
-nom Benelli par `MG 34` ou `FG 42`. Un commentaire et les trois lignes modernes
-sont ajoutés à chaque `TEXTY_DD.txt` avec le catalogue actuel (une ou deux lignes
+nom Benelli par `MG 34` ou `FG 42`. Le ZK-383 et son chargeur ont leurs propres
+libellés, avec les mêmes marqueurs. Un commentaire et les cinq lignes modernes
+sont ajoutés à chaque `TEXTY_DD.txt` avec le catalogue actuel (une à trois lignes
 dans les laboratoires précédents, qui restent conservés sans réécriture).
 **Tous les octets initiaux restent inchangés**, y compris textes personnalisés,
 retours de ligne, BOM, encodage et doublons préexistants. Les tailles/empreintes
@@ -76,7 +78,9 @@ Les [laboratoires MG34 v1](../MG34_PORTABLE/DESCRIPTEUR_ET_TABLES.md)
 préparent les deux libellés dans les huit langues et relient uniquement 21501
 au descripteur MG34. Le Benelli conserve 21500 ; les objets 32, 48 et 211 ne
 sont pas réaffectés. Les [laboratoires FG42](../FG42/DESCRIPTEUR_ET_TABLES.md)
-préparent les trois libellés et relient 21502 à leur seul descripteur moderne.
+v2 préparent les trois premiers libellés et relient 21502 à leur seul descripteur moderne.
+Les [laboratoires ZK-383](../GAROTA_AND_ZK383/DESCRIPTEUR_ZK383_MODERNE.md) préparent
+les cinq libellés et relient 21503/21504 aux deux nouveaux objets.
 L'affichage en moteur reste à vérifier.
 
 ## Reproduction

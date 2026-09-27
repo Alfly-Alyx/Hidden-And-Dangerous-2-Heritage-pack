@@ -39,8 +39,10 @@ sans activation. FG42 et ZK-383 ont chacun deux [effets sonores modernes origina
 et des références numériques ajoutées dans une copie privée ; aucun son
 historique absent n'est déclaré retrouvé. Le [descripteur FG42](../FG42/DESCRIPTEUR_ET_TABLES.md)
 et trois copies de tables sont maintenant construits, avec icône originale et
-munition 196 inchangée. Écoute, descripteur ZK-383, événements et comportement
-restent à réaliser/qualifier.
+munition 196 inchangée. Le [ZK-383 moderne](../GAROTA_AND_ZK383/DESCRIPTEUR_ZK383_MODERNE.md)
+dispose ensuite d'une arme et d'une munition moderne distincte, deux icônes et
+trois copies de tables réversibles. Écoute, événements, scène et comportement
+restent à réaliser/qualifier ; la Garota n'utilise pas ces descripteurs.
 
 Les lance-flammes disposent maintenant de
 [six composants indépendants](../FLAMMENWERFER_35_AND_NO2/COMPOSANTS_MODERNES.md) :

@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "provenance": "MODERN_GAME_DESIGN",
+  "status": "prototype_disabled",
+  "case": "ZK383",
+  "description": "Explicit provisional game-category choices, not recovered ZK383 behavior or physical specifications. Shooting scalars start from the MP40 game category; only the identity and original modern audio references differ. A separate modern game magazine has quantity 30. No commercial weapon, ammunition, model or sound is replaced.",
+  "category_weapon_slot": 18,
+  "category_weapon_sha256": "1d29675dbd844952fff28120073d92402798a6e461695e82bc7d668607f3753b",
+  "category_ammo_slot": 187,
+  "category_ammo_sha256": "1124c21a12c8d43a118fc8b04f93250d3fe1393bb903c7bb3861ba19cb8e5cb9",
+  "weapon_slot": 364,
+  "ammo_slot": 365,
+  "ammo_quantity": 30,
+  "shoot_fields": {
+    "2": "ZK 383", "3": 2, "4": 0.800000011920929, "6": 340.0,
+    "8": "MOD_ZK383_F", "10": "MOD_ZK383_R", "12": 11,
+    "24": 2.4000000953674316, "26": 366.0, "28": 30.0, "30": 5.5,
+    "38": 0.10000000149011612, "40": 2.5, "42": 0.5, "46": 1.0,
+    "58": 1, "77": 4294967295, "79": 4294967295
+  }
+}

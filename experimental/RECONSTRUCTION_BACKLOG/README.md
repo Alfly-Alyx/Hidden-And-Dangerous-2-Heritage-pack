@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **1 172 tests Python réussis sur 1 173 dans la copie de publication**; un test de lien symbolique non exécuté
+- **1 195 tests Python réussis sur 1 196 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -210,6 +210,12 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   273 descripteurs contrôlés chacune, retrait exact et surcharges personnelles
   conservées. Quinze tests d'assemblage et quatre d'icône ; aucun jeu lancé,
   raccordements moteur et comportement encore incomplets.
+- [Arme et chargeur ZK-383 modernes](../GAROTA_AND_ZK383/DESCRIPTEUR_ZK383_MODERNE.md) :
+  deux fiches de 508 octets, munition moderne distincte initialisée à 30, modèles
+  originaux, deux icônes, sons 56/86 et textes 21503/21504. Trois préparations,
+  274 descripteurs contrôlés chacune ; retrait des deux ajouts sans groupe FPV
+  fictif pour la munition, surcharges personnelles conservées. 23 tests inventés ;
+  aucun objet historique remplacé, comportement et scène encore incomplets.
 - [Action secondaire Benelli](../BENELLI_M4_ADDITIVE/ACTION_SECONDAIRE.md) :
   182 fiches commerciales, le descripteur moderne et quatre contrôles synthétiques
   vérifiés sur leurs branchements natifs isolés ; 48 transitions de paramètre caméra.

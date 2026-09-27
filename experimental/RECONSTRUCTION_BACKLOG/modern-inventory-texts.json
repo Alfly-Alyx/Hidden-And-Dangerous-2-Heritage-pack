@@ -45,6 +45,26 @@
         "japan": "FG 42 [MODERN]",
         "spanish": "FG 42 [MODERNO]"
       }
+    },
+    {
+      "key": "zk383",
+      "text_id": 21503,
+      "values": {
+        "czech": "ZK-383 [MODERNÍ]", "english": "ZK-383 [MODERN]",
+        "englishus": "ZK-383 [MODERN]", "french": "ZK-383 [MODERNE]",
+        "german": "ZK-383 [MODERN]", "italian": "ZK-383 [MODERNO]",
+        "japan": "ZK-383 [MODERN]", "spanish": "ZK-383 [MODERNO]"
+      }
+    },
+    {
+      "key": "zk383_magazine",
+      "text_id": 21504,
+      "values": {
+        "czech": "ZK-383 - 30 [MODERNÍ]", "english": "ZK-383 magazine - 30 [MODERN]",
+        "englishus": "ZK-383 magazine - 30 [MODERN]", "french": "Chargeur ZK-383 - 30 [MODERNE]",
+        "german": "ZK-383 Magazin - 30 [MODERN]", "italian": "ZK-383 caricatore - 30 [MODERNO]",
+        "japan": "ZK-383 magazine - 30 [MODERN]", "spanish": "ZK-383 cargador - 30 [MODERNO]"
+      }
     }
   ]
 }
