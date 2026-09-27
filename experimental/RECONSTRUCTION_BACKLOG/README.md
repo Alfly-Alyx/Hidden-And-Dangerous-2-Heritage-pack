@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **996 tests Python réussis sur 997 dans la copie de publication**; un test de lien symbolique non exécuté
+- **1 017 tests Python réussis sur 1 018 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -127,6 +127,17 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   quatre laboratoires privés exclusifs, treize états chacun ; 156 demandes
   et 36 lectures/relocalisations natives vérifiées. Six tests nouveaux ; fichiers
   et allocations simulés en mémoire, aucune arme activée ou déclarée jouable.
+- [Repères de vue subjective corrigés](../FLAMMENWERFER_35_AND_NO2/REPERES_VUE_SUBJECTIVE.md) :
+  deux modèles modernes convertis intégralement, 36 clips de mains recalculés,
+  quatre planches privées et associations distinctes. Conversion binaire
+  réversible ; sources commerciales inchangées. Cadrage et prises fines non validés.
+  Contrôle natif terminé : 2 668 instants et 5 062 530 sommets, limites respectées.
+  Un écart de prise jusqu'à 0,040576 lors des mélanges reste à corriger ; il n'est
+  pas masqué par la réussite des vérifications de calcul.
+- [Matrices natives de caméra](PROJECTION_CAMERA_NATIVE.md) : setters des deux
+  angles et trois matrices de perspective exécutés sur un objet fourni.
+  352 cas, dont 88 ultra-larges, écart nul ; sélection réelle du rendu FPV,
+  viewport et effets du correctif écran large non qualifiés.
 - [Paramètres de tir](PARAMETRES_TIR.md) : 18 colonnes rapprochées des données
   natives de 40 armes dans quatre couches. Onze différences de paramètres
   conservées sur six fiches, deux symboles FG42 explicitement non résolus.

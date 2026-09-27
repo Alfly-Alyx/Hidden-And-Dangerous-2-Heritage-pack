@@ -10,6 +10,7 @@ from pathlib import Path
 import struct
 
 from build_equipment_fpv_animation import compile_fpv_bank
+from build_equipment_fpv_view_bank import compile_view_bank
 from build_equipment_hand_animation import PROVENANCE
 from build_equipment_hand_grips import RECIPE
 from build_modern_equipment_assembly import ROOT,CASES
@@ -33,11 +34,12 @@ STATE_CLIPS=('Idle1','Idle1','Shot','Shot','AimShot','AimShot','Rel','Jammed','A
 def chunk(kind,payload):return struct.pack('<HI',kind,6+len(payload))+payload
 
 
-def group(case,variant):
+def group(case,variant,*,view_axes=False):
     if case not in CASES or variant not in ('H','R'):raise ValueError('Unknown equipment/hand variant')
+    if type(view_axes) is not bool:raise ValueError('Invalid view-axis choice')
     states=[];bindings=[]
     for index,clip in enumerate(STATE_CLIPS):
-        stem=f'PROTOTYPE_{case}{variant}{ALIASES[clip]}'
+        stem=f"PROTOTYPE_{case}{'V' if view_axes else ''}{variant}{ALIASES[clip]}"
         if len(stem)>19:raise ValueError('Animation alias exceeds modern native name bound')
         name=stem+'.I3D';resource_paths(name)
         entry=chunk(1000,name.encode('ascii')+b'\0')+struct.pack('<I',100)
@@ -69,18 +71,19 @@ def require_empty_sources(tables,case):
     return proof
 
 
-def prepare(case,variant,hands,spec,tables,table_machine,load_machine):
-    fragment,bindings=group(case,variant);availability=require_empty_sources(tables,case)
+def prepare(case,variant,hands,spec,tables,table_machine,load_machine,*,view_axes=False):
+    fragment,bindings=group(case,variant,view_axes=view_axes);availability=require_empty_sources(tables,case)
     hand=HAND_MODELS[0 if variant=='H' else 1]
-    rig,clips,bank=compile_fpv_bank(case,hands[hand],spec)
+    compiler=compile_view_bank if view_axes else compile_fpv_bank
+    rig,clips,bank=compiler(case,hands[hand],spec)
     loaded=table_machine.inspect_table(fragment)
     if (loaded.get('table_sha256')!=digest(fragment)
             or loaded.get('native_nested_traversal_matches') is not True
             or loaded.get('native_strings_and_values_match') is not True):
         raise ValueError('Native fragment traversal incomplete')
     requests=inspect_loaded_requests(table_machine,fragment,SLOTS[case])
-    loads={};files={f'PROTOTYPE_{case}_FPV.4ds.disabled':rig,
-        f'PROTOTYPE_{case}{variant}.fpvgroup.disabled':fragment}
+    loads={};files={f"PROTOTYPE_{case}_FPV{'View' if view_axes else ''}.4ds.disabled":rig,
+        f"PROTOTYPE_{case}{'V' if view_axes else ''}{variant}.fpvgroup.disabled":fragment}
     for clip,(stem,raw) in clips.items():
         aliases={row['resource_name'] for row in bindings if row['clip']==clip}
         if aliases!={stem+'.I3D'}:raise ValueError('Association differs from emitted animation alias')
@@ -92,7 +95,8 @@ def prepare(case,variant,hands,spec,tables,table_machine,load_machine):
             raise ValueError('Native animation load incomplete')
         loads[clip]=receipt;files[stem+'.5ds.disabled']=raw
     return files,{'schema_version':1,'case':case,'hand_variant':variant,'provenance':PROVENANCE,
-        'scope':'private_disabled_flat_fpv_resource_associations','runtime_status':'pending',
+        'scope':'private_disabled_corrected_view_resource_associations' if view_axes else 'private_disabled_flat_fpv_resource_associations',
+        'runtime_status':'pending','corrected_view_axes':view_axes,
         'synthetic_slot':SLOTS[case],'isolated_group':SLOTS[case]+100,
         'archive_availability_only':availability,'state_bindings':bindings,'derived_bank':bank,
         'native_fpv_fragment_traversal':loaded,'native_animation_requests':requests,'native_animation_loads':loads,
@@ -110,6 +114,7 @@ def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--case',choices=CASES,required=True);parser.add_argument('--hand',choices=('H','R'),required=True)
     parser.add_argument('--game',type=Path,required=True);parser.add_argument('--archives-only',action='store_true')
+    parser.add_argument('--view-axes',action='store_true',help='Use the separate corrected-axis model and rebaked hand clips')
     parser.add_argument('--image',type=Path,default=ROOT/'tmp/stock-menu-analysis.bin');parser.add_argument('--output-name')
     args=parser.parse_args(argv)
     try:
@@ -118,7 +123,8 @@ def main(argv=None):
         hands,excluded_hands=read_hands(args.game,archives_only=args.archives_only)
         tables,excluded_tables=read_tables(args.game,archives_only=args.archives_only)
         files,report=prepare(args.case,args.hand,hands,json.loads(RECIPE.read_text(encoding='utf-8')),tables,
-            FpvResourceOracle(args.image.read_bytes()),AnimationLoadOracle((args.game/'LS3DF.dll').read_bytes()))
+            FpvResourceOracle(args.image.read_bytes()),AnimationLoadOracle((args.game/'LS3DF.dll').read_bytes()),
+            view_axes=args.view_axes)
         report.update(source_executable_sha256=SOURCE_SHA,private_image_sha256=IMAGE_SHA,
             excluded_loose_overrides={'hands':excluded_hands,'tables':excluded_tables})
         if output:
