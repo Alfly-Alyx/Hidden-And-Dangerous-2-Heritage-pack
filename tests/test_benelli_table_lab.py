@@ -65,6 +65,24 @@ class BenelliFullTableLabTests(unittest.TestCase):
         self.assertIn('fpv_camera_hands_and_events',report['pending_requirements'])
         self.assertFalse(report['installation_allowed'])
 
+    def test_resource_argument_checks_follow_loading_and_leave_payloads_and_pending_rig_work_intact(self):
+        from test_item_table_oracle import SyntheticMachine
+        from test_fpv_table_oracle import Machine as FpvMachine
+        from test_fpv_resource_oracle import ResourceMachine
+        class Both(ResourceMachine,FpvMachine):
+            def inspect_table(self,raw):
+                ResourceMachine.inspect_table(self,raw)
+                return FpvMachine().inspect_table(raw)
+        files,before=self.prepare();machine=Both()
+        after,report=self.prepare(table_machine=SyntheticMachine(),fpv_machine=machine,verify_resource_requests=True)
+        self.assertEqual(after,files);self.assertIsNone(before['native_animation_resource_requests'])
+        self.assertEqual(len(report['native_animation_resource_requests']),39)
+        self.assertEqual(report['pending_requirements'],before['pending_requirements'])
+        self.assertFalse(report['installation_allowed'])
+        with self.assertRaisesRegex(ValueError,'require native table'):self.prepare(verify_resource_requests=True)
+        with self.assertRaisesRegex(ValueError,'Incomplete animation'):
+            self.prepare(table_machine=SyntheticMachine(),fpv_machine=Both(lambda r:r.update(channel=1)),verify_resource_requests=True)
+
     def test_both_archive_variants_prepare_full_disabled_tables_without_claiming_installation(self):
         for layer in lab.ITEM_LAYERS:
             with self.subTest(layer=layer):
