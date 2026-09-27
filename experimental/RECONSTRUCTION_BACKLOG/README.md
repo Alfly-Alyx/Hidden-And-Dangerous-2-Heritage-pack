@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **1 057 tests Python réussis sur 1 058 dans la copie de publication**; un test de lien symbolique non exécuté
+- **1 065 tests Python réussis sur 1 066 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -157,6 +157,10 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   deux LOD chacun. Six tests nouveaux, empreintes et trois vues contrôlées.
   Référence muséale textuelle attribuée pour le ZK-383 ; Garota explicitement
   interprétative. Mains, animations, comportement et intégration restent à réaliser.
+- [Animations modernes ZK-383](../GAROTA_AND_ZK383/ANIMATIONS_ZK383_MODERNES.md) :
+  neuf clips de pièces, deux pivots et 537 poses d'auteur contrôlées ; huit tests
+  nouveaux. Neuf lectures natives, 466 opérations d'attachement et 180 instants
+  vérifiés, écart de poses nul. Mains, événements et comportement restent à réaliser.
 - [Paramètres de tir](PARAMETRES_TIR.md) : 18 colonnes rapprochées des données
   natives de 40 armes dans quatre couches. Onze différences de paramètres
   conservées sur six fiches, deux symboles FG42 explicitement non résolus.

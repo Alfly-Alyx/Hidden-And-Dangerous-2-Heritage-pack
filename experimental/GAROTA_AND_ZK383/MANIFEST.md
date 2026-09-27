@@ -3,7 +3,7 @@
 | Élément | OFFICIEL local | DÉRIVÉ | CRÉATION MODERNE requise | Spéculation |
 | --- | --- | --- | --- | ---: |
 | Garota | aucune ressource exploitable ; nom de préproduction documenté hors chaîne locale | arme rapprochée probable | extérieur moderne statique construit ; mains, deux animations synchronisées, logique de prise, sons, dégâts, IA, sauvegarde, réseau restent à réaliser | maximale pour la restitution du projet original |
-| ZK-383 | aucune ressource locale identifiable | identité visuelle ancienne seulement | extérieur moderne statique construit ; mains/FPV, icône, animations, sons, Item/Weapon/ammo, comportement, IA, sauvegarde, réseau restent à réaliser | maximale pour la restitution du projet original |
+| ZK-383 | aucune ressource locale identifiable | identité visuelle ancienne seulement | extérieur moderne et neuf mouvements de pièces construits ; mains/FPV, icône, gestes coordonnés, événements, sons, Item/Weapon/ammo, comportement, IA, sauvegarde, réseau restent à réaliser | maximale pour la restitution du projet original |
 
 ## ABSENCES VÉRIFIÉES PAR NOM
 
@@ -20,3 +20,7 @@ Les recettes `modern-garota-world.json` et `modern-zk383-world.json` portent
 modèle ; aucune ressource commerciale lue par la génération. Les
 [références, empreintes, contrôles et limites](MODELES_MODERNES.md) sont séparés
 des absences commerciales ci-dessus. Ni réservation d'identifiant ni installation.
+
+La [banque ZK-383](ANIMATIONS_ZK383_MODERNES.md) conserve les deux LOD et ajoute
+deux pivots, trois pistes et neuf clips. Les contrôles natifs isolés de lecture,
+d'attachement et de pose sont terminés ; rendu et comportement restent non validés.
