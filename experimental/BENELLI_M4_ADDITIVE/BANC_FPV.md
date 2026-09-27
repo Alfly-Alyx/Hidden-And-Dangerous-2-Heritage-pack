@@ -4,6 +4,11 @@
 intégralement et modèle statique construit. **Aucune arme jouable ni validation
 en moteur.** Ce banc est distinct des 50 profils de missions et de leurs essais.
 
+**Correctif du 27 septembre :** le nouveau lot **BenelliFPV_v6** corrige la
+[convention des rotations natives](../RECONSTRUCTION_BACKLOG/ROTATIONS_NATIVES.md).
+L'empreinte `0c54e499…` ci-dessous documente les anciens lots ; la version
+actuelle porte `c445e8ff…`. Six octets changent, pas les sommets ou matériaux.
+
 ## Réalisation
 
 - `tools/five_ds.py` lit strictement les pistes de transformations 5DS v122 :
@@ -128,7 +133,7 @@ extraction, provenances, refus, audit sonore et HTML ; trois tests JavaScript
 contrôlent les sélecteurs, bornes et absence de lecture automatique.
 
 À qualifier avant l'arme jouable : rendu du banc, écoute, mains/skin, convention
-des transformations 5DS, timing FPV, compatibilité du modèle statique, tables
+des transformations 5DS pendant la lecture native, timing FPV, compatibilité du modèle statique, tables
 additives et sauvegardes. **Aucun Item n'est créé, aucun numéro n'est réservé,
 le slot 9 et la boussole sont intacts.** B0 reste partiel ; les deux ressources
 statiques de B1 sont fabriquées mais non validées en moteur ; B2–B4 restent à

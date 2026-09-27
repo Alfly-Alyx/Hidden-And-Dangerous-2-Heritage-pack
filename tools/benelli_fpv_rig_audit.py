@@ -8,13 +8,15 @@ from __future__ import annotations
 import argparse
 from contextlib import ExitStack
 import json
+import struct
 from pathlib import Path
 import sys
 
 from dta_archive import DtaArchive
 from fpv_rig_binding import bind
 from menu_gui_audit import parse_4ds_nodes
-from model_transform import world_transforms
+from model_transform import world_transforms,rotation
+from four_ds_skin import audit_rest
 from five_ds import parse_5ds
 from build_benelli_fpv_lab import read_sources,MANIFEST,STATES,textures,sha
 from benelli_fpv_static import derive
@@ -31,6 +33,32 @@ HAND_PINS={
 HAND_MODELS=('models/fpv_hands.4ds','models/fpv_hands_r.4ds')
 HAND_ARCHIVES=('models.dta','Maps.dta','Maps_U.dta','others.DTA','LangEnglish.dta',
                'Patch.dta','SabreSquadron.dta','PatchX01.dta')
+
+
+def initial_rotation_agreement(model_data,animation_data):
+    """Independently stored model and initial key must encode the same rotation.
+
+    This does not infer missing channels, later poses or native interpolation.
+    Quaternion antipodes are equivalent; no raw keys leave this report.
+    """
+    model=parse_4ds_nodes(model_data);clip=parse_5ds(animation_data)
+    nodes={node['name']:node for node in model['nodes']}
+    if len(nodes)!=len(model['nodes']):raise ValueError('Ambiguous rotation target names')
+    errors=[]
+    for track in clip['tracks']:
+        channel=track['channels'].get('rotation')
+        if channel is None or channel['frames'][0]!=0:continue
+        if track['name'] not in nodes:raise ValueError('Missing initial rotation target')
+        node=nodes[track['name']]
+        a=rotation(struct.unpack_from('<4f',model_data,node['position_offset']+12))
+        b=rotation(channel['values'][0])
+        error=max(abs(a[i][j]-b[i][j]) for i in range(3) for j in range(3))
+        if error>1e-5:raise ValueError('Initial 5DS rotation differs from its 4DS counterpart')
+        errors.append(error)
+    if not errors:raise ValueError('No initial rotation samples to compare')
+    return {'rotation_samples_compared':len(errors),'max_matrix_error':max(errors),
+            'tolerance':1e-5,'same_serialized_rotation_convention':True,
+            'partial_pose_inheritance_qualified':False,'animation_keys_exported':False}
 
 
 def read_hands(game,*,archives_only=False):
@@ -72,6 +100,8 @@ def audit(sources,hands,tables):
         if (len(raw),sha(raw))!=(size,digest):raise ValueError('Changed pinned hands payload')
     static,derivation=derive(sources['models/#fpvbeneliaim.4ds'])
     weapon=parse_4ds_nodes(static);world_transforms(static,weapon['nodes'])
+    paired_rotations={state:initial_rotation_agreement(sources['models/#fpvbeneli'+state+'.4ds'],
+                         sources['models/#fpvbeneli'+state+'.5ds']) for state in STATES}
     variants={}
     texture_candidates={}
     for name in hands:
@@ -91,6 +121,7 @@ def audit(sources,hands,tables):
             binding=bind(model['nodes'],weapon['nodes'],animation_model['nodes'],clip['tracks'])
             clips[state]={'frame_end':clip['frame_end'],'track_count':clip['track_count'],**binding}
         variants[hand_name]={'size':len(raw),'sha256':sha(raw),'node_count':model['node_count'],
+            'skin_rest_audit':audit_rest(raw),
             'material_texture_sources':{name:texture_candidates[name][0] for name in material_textures},
             'native_texture_namespace_or_compression_selection_qualified':False,'clips':clips}
     references={}
@@ -107,6 +138,7 @@ def audit(sources,hands,tables):
         'provenance':'COMMERCIAL_HANDS_AND_CLIPS_WITH_MODERN_WEAPON_EXTRACTION',
         'hand_source_pins':{name:{'archive':pin[0],'size':pin[1],'sha256':pin[2]} for name,pin in HAND_PINS.items()},
         'static_weapon':{'size':len(static),'sha256':sha(static),'derivation':derivation},
+        'paired_initial_rotation_agreement':paired_rotations,
         'hands_variants':variants,'commercial_item_references':references,
         'non_class2_reference_slots':{archive:[s['slot'] for s in slots if s['kind']!=2]
                                      for archive,slots in references.items()},
@@ -114,7 +146,7 @@ def audit(sources,hands,tables):
         'native_binding_execution_qualified':False,'skin_deformation_qualified':False,
         'camera_and_animation_events_qualified':False,'game_started':False,'game_modified':False,
         'playable_weapon':False,'geometry_or_animation_keys_exported':False,
-        'pending':['native_model_and_animation_name_binding','skin_deformation_and_rest_pose',
+        'pending':['native_model_and_animation_name_binding','skin_weight_byte_semantics_and_deformation',
                    'partial_track_pose_inheritance','camera_and_event_timing','native_texture_search_and_compression']}
 
 

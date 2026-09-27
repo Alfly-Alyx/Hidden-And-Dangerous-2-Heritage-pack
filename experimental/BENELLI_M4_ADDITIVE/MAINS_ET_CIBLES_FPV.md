@@ -78,6 +78,11 @@ liaison des joints, le skin ou le rendu.
 
 ## Livrables et limites
 
+Le [contrôle indépendant des rotations et matrices de repos](../RECONSTRUCTION_BACKLOG/ROTATIONS_NATIVES.md)
+est maintenant intégré : **72 os** et **224 rotations initiales** vérifiés.
+Il corrige notre calcul hors moteur ; la sémantique des octets de poids et la
+déformation native ne sont pas encore établies.
+
 - `tools/benelli_fpv_rig_audit.py` produit le plan privé, les sources et les
   exceptions, sans géométrie ni clés d'animation dans le rapport.
 - `.analysis/benelli-fpv-rig-20260927.json` conserve les correspondances exactes.
@@ -87,7 +92,7 @@ liaison des joints, le skin ou le rendu.
   son intégration ; aucune installation n'est autorisée par ce contrôle.
 
 Restent à qualifier : liaison native effective par nom, déformation du skin,
-poses de repos et héritage des pistes partielles, caméra, événements et
+application native des poses de repos et héritage des pistes partielles, caméra, événements et
 synchronisation. Les sauvegardes et le déploiement isolé restent des contrats
 séparés. Les animations et les mains Benelli n'ont pas à être inventées pour
 combler un manque supposé : les ressources vérifiées existent déjà.

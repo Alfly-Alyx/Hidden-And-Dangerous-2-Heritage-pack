@@ -62,6 +62,11 @@ rechargement, visée, animation des mains, IA ou synchronisation réseau.
 
 ## Exemplaire privé contrôlé
 
+**Version actuelle : BenelliDescriptor_v4.** Le [correctif de rotation native](../RECONSTRUCTION_BACKLOG/ROTATIONS_NATIVES.md)
+remplace uniquement le modèle FPV par l'empreinte `c445e8ff…`. Le tableau v3
+suivant est conservé comme historique ; le descripteur de 508 octets et les
+autres fichiers restent identiques.
+
 `.analysis/item-descriptor-labs/BenelliDescriptor_v3`, quatorze fichiers. Les
 versions v1/v2 sont conservées. Le manifeste v2 avait ajouté les
 [références sonores qualifiées](../RECONSTRUCTION_BACKLOG/REFERENCES_SONORES.md)

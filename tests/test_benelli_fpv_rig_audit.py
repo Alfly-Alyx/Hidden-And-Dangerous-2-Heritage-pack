@@ -1,4 +1,6 @@
 import copy
+import math
+import struct
 from pathlib import Path
 import sys
 import tempfile
@@ -37,6 +39,8 @@ class BenelliHandsAuditTests(unittest.TestCase):
         for slot,kind,name in ((114,2,'Uniform'),(270,1,'Anomalous owner')):
             raw=bytearray(invented_slot(name=name,kind=kind));raw[8:28]=b'FPV_hands_r'.ljust(20,b'\0');slots[slot]=bytes(raw)
         with patch.object(audit,'HAND_PINS',pins),patch.object(audit,'derive',return_value=(b'static',{'invented':True})),\
+             patch.object(audit,'audit_rest',return_value={'invented':True}),\
+             patch.object(audit,'initial_rotation_agreement',return_value={'invented':True}),\
              patch.object(audit,'parse_4ds_nodes',side_effect=model),patch.object(audit,'world_transforms'),\
              patch.object(audit,'textures',side_effect=textures),patch.object(audit,'parse_5ds',return_value={
                  'frame_end':60,'track_count':45,'tracks':[{'name':node['name']} for node in animated_nodes]}):
@@ -91,6 +95,30 @@ class BenelliHandsAuditTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             for mutation in (duplicate,missing,changed,shadow):
                 with self.subTest(mutation=mutation.__name__),self.assertRaises(ValueError):self.read(Path(temp),mutation)
+
+
+class PairedRotationTests(unittest.TestCase):
+    def fixture(self,opposite=False,antipode=False,frame=0):
+        from test_model_instance import mesh,model
+        from test_five_ds import invented_clip
+        raw=bytearray(model(mesh('Root')));node=audit.parse_4ds_nodes(raw)['nodes'][0]
+        value=[0,0,math.sqrt(.5),math.sqrt(.5)]
+        struct.pack_into('<4f',raw,node['position_offset']+12,*value)
+        if opposite:value[2]*=-1
+        if antipode:value=[-v for v in value]
+        return bytes(raw),invented_clip([('Root',{'rotation':([frame],[value])})])
+
+    def test_model_and_initial_key_use_same_native_convention_including_antipodes(self):
+        for antipode in (False,True):
+            report=audit.initial_rotation_agreement(*self.fixture(antipode=antipode))
+            self.assertEqual(report['rotation_samples_compared'],1)
+            self.assertLess(report['max_matrix_error'],1e-7)
+            self.assertFalse(report['animation_keys_exported'])
+            self.assertFalse(report['partial_pose_inheritance_qualified'])
+
+    def test_opposite_or_absent_initial_rotation_cannot_claim_agreement(self):
+        with self.assertRaisesRegex(ValueError,'differs'):audit.initial_rotation_agreement(*self.fixture(opposite=True))
+        with self.assertRaisesRegex(ValueError,'No initial'):audit.initial_rotation_agreement(*self.fixture(frame=1))
 
 
 if __name__=='__main__':unittest.main()

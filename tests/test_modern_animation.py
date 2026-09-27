@@ -43,10 +43,27 @@ class ModernAnimationCodecTests(unittest.TestCase):
         description=[{'name':n,'channels':{k:{'frames':f,'values':[list(row) for row in v]}
                                            for k,(f,v) in channels.items()}} for n,channels in tracks]
         data=motion.encode_5ds(clip(description))
-        self.assertEqual(data,invented_clip(tracks))
+        native=copy.deepcopy(tracks)
+        native[0][1]['rotation']=([0,10],[(0,0,0,1),(0,-1,0,0)])
+        self.assertEqual(data,invented_clip(native))
         parsed=parse_5ds(data)
         self.assertIsNone(parsed['frame_rate'])
         self.assertFalse(parsed['engine_validated'])
+
+    def test_active_rotation_is_conjugated_at_wire_boundary(self):
+        value=[0,0,math.sqrt(.5),math.sqrt(.5)]
+        data=motion.encode_5ds(clip([channel('rotation',[0],[value])]))
+        actual=parse_5ds(data)['tracks'][0]['channels']['rotation']['values'][0]
+        for a,b in zip(actual,[0,0,-math.sqrt(.5),math.sqrt(.5)]):self.assertAlmostEqual(a,b)
+
+    def test_unanimated_native_rotation_uses_same_convention_as_wire_keys(self):
+        from test_model_instance import mesh,model
+        raw=bytearray(model(mesh('Root')))
+        node=parse_4ds_nodes(raw)['nodes'][0]
+        struct.pack_into('<4f',raw,node['position_offset']+12,0,0,math.sqrt(.5),math.sqrt(.5))
+        animation=motion.encode_5ds(clip([channel('position',[0],[[0,0,0]])]))
+        actual=point(motion.pose(bytes(raw),animation,0)[1],[1,0,0])
+        for a,b in zip(actual,[0,-1,0]):self.assertAlmostEqual(a,b)
 
     def test_invalid_provenance_unknown_events_and_duplicate_names_are_refused(self):
         bad=[]
@@ -150,4 +167,3 @@ class ModernRigidPivotTests(unittest.TestCase):
 
 
 if __name__=='__main__':unittest.main()
-
