@@ -90,6 +90,10 @@ preuve ne remplace pas l'héritage des poses partielles ou le skin.
 L'[assemblage sur objet synthétique](../RECONSTRUCTION_BACKLOG/POSES_PARTIELLES_NATIVES.md)
 établit ensuite que les canaux sans contributeur conservent l'état déjà présent.
 L'origine réelle de cet état et le pilotage des pistes Benelli restent à vérifier.
+La [sélection native des noms et descripteurs](../RECONSTRUCTION_BACKLOG/LIAISON_ANIMATION_NATIVE.md)
+recoupe maintenant les deux variantes de mains sur les huit emplacements.
+L'arrêt avant l'attachement et l'allocation reste explicite : le champ de
+liaison complète des anciens plans n'est pas transformé en succès moteur.
 
 - `tools/benelli_fpv_rig_audit.py` produit le plan privé, les sources et les
   exceptions, sans géométrie ni clés d'animation dans le rapport.

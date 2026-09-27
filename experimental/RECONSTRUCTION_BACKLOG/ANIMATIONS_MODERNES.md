@@ -13,6 +13,9 @@ Le [calcul natif isolé](CALCUL_ANIMATION_NATIF.md) établit maintenant que
 l'interpolation du moteur ne renormalise pas systématiquement les quaternions.
 Nos aperçus normalisés restent des aides visuelles modernes, pas une preuve
 de concordance numérique entre les clés. L'unité temporelle native reste à établir.
+La [sélection native et les descripteurs](LIAISON_ANIMATION_NATIVE.md) sont
+ensuite contrôlés sur les 63 pistes des deux banques modernes, sans chargeur
+de scène ni validation d'attachement effectif.
 
 Les recettes [FG42](../FG42/modern-animation-bank.json) et
 [MG34](../MG34_PORTABLE/modern-animation-bank.json) décrivent des mouvements

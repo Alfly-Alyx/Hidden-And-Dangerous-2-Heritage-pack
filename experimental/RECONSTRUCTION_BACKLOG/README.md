@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **743 tests Python réussis sur 744 dans la copie de publication**; un test de lien symbolique non exécuté
+- **752 tests Python réussis sur 753 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -142,6 +142,10 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   objet synthétique recoupent les huit emplacements, l'ordre des mélanges,
   les canaux absents et la normalisation finale. Douze tests nouveaux ;
   chargement réel du modèle et pilotage Benelli non qualifiés.
+- [Sélection native des cibles](LIAISON_ANIMATION_NATIVE.md) : 1 022 recherches
+  exactes et 4 088 préparations de canaux contrôlées sur Benelli/deux mains et
+  FG42/MG34 modernes ; 22 témoins natifs et neuf tests nouveaux. L'attachement
+  effectif, l'allocation et le chargement de scène ne sont pas exécutés.
 - [Demandes de ressources FPV](../BENELLI_M4_ADDITIVE/DEMANDES_RESSOURCES_FPV.md) :
   treize cas de noms de mains et 156 demandes d'animation contrôlés jusqu'aux
   arguments des chargeurs, sans les appeler. Quinze tests nouveaux ; laboratoires
