@@ -114,7 +114,10 @@ arrêts avant mélange et refus des reçus incomplets ou non finis.
 Chaque nom de rapport doit être neuf : aucun résultat antérieur n'est écrasé.
 Ces outils lisent l'installation personnelle, sans l'écrire.
 
-Restent distincts : assemblage des canaux, poids et priorités de mélange,
-héritage des poses partielles, application au modèle, déformation des mains,
+L'[assemblage des poses partielles](POSES_PARTIELLES_NATIVES.md) est maintenant
+recoupé sur un objet synthétique et un domaine restreint. Il confirme notamment
+la normalisation lors de l'application, après l'interpolation non normalisée.
+Restent distincts : initialisation et pilotage réels de ces canaux,
+héritage des poses Benelli en situation réelle, application au modèle chargé, déformation des mains,
 liaison caméra, événements, sons et comportement de l'arme. Aucun prototype
 n'est activé ou promu sur la seule base de ces calculs.

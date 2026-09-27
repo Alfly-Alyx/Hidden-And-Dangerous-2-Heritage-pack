@@ -87,6 +87,9 @@ Le [calcul d'animation natif isolé](../RECONSTRUCTION_BACKLOG/CALCUL_ANIMATION_
 recoupe ensuite 20 220 échantillons de rotation sur les 224 canaux Benelli.
 Il s'arrête avant les mélanges et ne complète aucune piste absente : cette
 preuve ne remplace pas l'héritage des poses partielles ou le skin.
+L'[assemblage sur objet synthétique](../RECONSTRUCTION_BACKLOG/POSES_PARTIELLES_NATIVES.md)
+établit ensuite que les canaux sans contributeur conservent l'état déjà présent.
+L'origine réelle de cet état et le pilotage des pistes Benelli restent à vérifier.
 
 - `tools/benelli_fpv_rig_audit.py` produit le plan privé, les sources et les
   exceptions, sans géométrie ni clés d'animation dans le rapport.
