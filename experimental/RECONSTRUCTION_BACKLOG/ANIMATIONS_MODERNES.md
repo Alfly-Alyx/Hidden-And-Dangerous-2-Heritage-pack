@@ -3,6 +3,12 @@
 **MODERNE, 26 septembre 2026. Dix-huit séquences construites et désactivées ;
 compatibilité moteur, mains et arme jouable non validées.**
 
+**Correction du 27 septembre :** les lots `FG42_Motion_v3` et `MG34_Motion_v3`
+remplacent l'encodage des rotations des anciens v1/v2. La
+[preuve 4DS/5DS indépendante](ROTATIONS_NATIVES.md) établit la conjugaison à
+la frontière du format. Les modèles et quatorze aperçus PNG sont inchangés ;
+les 18 séquences sont réencodées sans changer les mouvements conçus.
+
 Les recettes [FG42](../FG42/modern-animation-bank.json) et
 [MG34](../MG34_PORTABLE/modern-animation-bank.json) décrivent des mouvements
 originaux de l'arme seule. Elles ne lisent ni modèle, pose, clé, son ou
@@ -101,4 +107,3 @@ les prises et la tenue extérieure ; ajouter les événements et sons ; établir
 les entrées additives et les comportements d'arme. Ensuite seulement qualifier
 les chargements 4DS/5DS, les transitions natives, sauvegardes et hôte/client.
 Les slots réutilisés par les casques restent intacts.
-

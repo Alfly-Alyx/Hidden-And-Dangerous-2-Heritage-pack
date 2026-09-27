@@ -13,7 +13,7 @@ import struct
 from build_modern_asset import finite, vector, node_header, pack
 from five_ds import parse_5ds, FLAGS
 from menu_gui_audit import parse_4ds_nodes
-from model_transform import affine, compose, point
+from model_transform import native_affine, conjugate, compose, point
 
 NAME=re.compile(r'[A-Za-z][A-Za-z0-9_]{0,62}\Z')
 
@@ -33,7 +33,7 @@ def unit_quaternion(value):
 
 
 def encode_5ds(clip):
-    """Encode only explicitly modern finite transform channels, never events."""
+    """Encode modern active XYZW authoring as native XYZW, never events."""
     if (clip.get('provenance')!='MODERNE' or clip.get('runtime_status')!='pending'
             or set(clip)-{'provenance','runtime_status','frame_end','tracks'}):
         raise ValueError('Not an explicitly modern transform clip')
@@ -70,7 +70,7 @@ def encode_5ds(clip):
                 raise ValueError('Modern keys must strictly increase')
             rows=[]
             for value in values:
-                row=unit_quaternion(value) if kind=='rotation' else vector(value)
+                row=conjugate(unit_quaternion(value)) if kind=='rotation' else vector(value)
                 if kind=='position' and any(abs(v)>10 for v in row):
                     raise ValueError('Modern translation outside reviewed domain')
                 if kind=='scale' and any(not .001<=v<=10 for v in row):
@@ -190,7 +190,7 @@ def pose(data,animation,frame):
                 'scale':node['scale']}
         for kind,channel in channels.items():
             values[kind]=sample_channel(channel,frame,kind=='rotation')
-        local=affine(values['position'],values['rotation'],values['scale'])
+        local=native_affine(values['position'],values['rotation'],values['scale'])
         parent=node['parent_id']
         if parent and parent not in transforms:raise ValueError('Non-topological modern hierarchy')
         transforms[node['index']]=compose(transforms[parent],local) if parent else local
@@ -209,4 +209,3 @@ def animated_meshes(recipe,meshes,rig,animation,frame):
                                 [tuple(point(transforms[node['index']],p)) for p in mesh.points],
                                 list(mesh.triangles)) for mesh in pair))
     return result
-

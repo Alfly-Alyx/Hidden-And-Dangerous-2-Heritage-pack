@@ -1,4 +1,9 @@
-"""Finite 4DS XYZW transforms for offline inspection, not scene2 conventions."""
+"""Finite active column-vector math, with explicit 4DS/5DS XYZW boundaries.
+
+Native quaternions use the conjugate of our active mathematical rotation.
+The convention is independently checked against the hands' inverse binds.
+It does not establish scene2, skin weights or animation playback semantics.
+"""
 import math
 import struct
 
@@ -35,6 +40,18 @@ def inverse(matrix):
 def affine(position, quaternion, scale):
     if not all(math.isfinite(v) for v in (*position,*scale)): raise ValueError('Nonfinite transform')
     return ([[v*scale[j] for j,v in enumerate(row)] for row in rotation(quaternion)], list(position))
+
+
+def conjugate(q):
+    """Convert native <-> active XYZW, canonicalizing signed zero on export."""
+    if len(q)!=4 or not all(math.isfinite(v) for v in q):
+        raise ValueError('Expected finite XYZW quaternion')
+    return [(-v if i<3 else v) if v else 0.0 for i,v in enumerate(q)]
+
+
+def native_affine(position, quaternion, scale):
+    """Read a serialized 4DS/5DS rotation into active column-vector math."""
+    return affine(position,conjugate(quaternion),scale)
 
 
 def compose(parent, child):
@@ -85,7 +102,13 @@ def decompose(transform, tolerance=1e-5):
 
 
 def node_transform(data,node):
-    return affine(node['position'],struct.unpack_from('<4f',data,node['position_offset']+12),node['scale'])
+    return native_affine(node['position'],struct.unpack_from('<4f',data,node['position_offset']+12),node['scale'])
+
+
+def decompose_native(transform, tolerance=1e-5):
+    """Decompose active math into position, native XYZW, scale, residual."""
+    position,q,scale,error=decompose(transform,tolerance)
+    return position,conjugate(q),scale,error
 
 
 def world_transforms(data,nodes):

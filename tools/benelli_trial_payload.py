@@ -19,6 +19,9 @@ from reconstruction_sandbox import destination
 
 AUDIT_FILES={'PROTOTYPE_Benelli.item.disabled','PROTOTYPE_Benelli.fpvgroup.disabled'}
 TABLE_FILES={'Tables/items.sav.disabled':'items','Tables/FpvAnims.sav.disabled':'fpv'}
+# Historical six-byte rotation error: readable only to restore or retire an
+# already prepared trial, never accepted by a new preparation or application.
+RETIRED_MODEL_PINS={'PROTOTYPE_BenFPV':(61351,'0c54e499b6b6b434b3bdd02ed78cc2f7f99b304d44e162e11e787d323234300f')}
 
 
 def target_map(names):
@@ -50,7 +53,8 @@ def read_targets(game,mapping):
     return before
 
 
-def prepare(files,manifest,before):
+def prepare(files,manifest,before,*,_allow_retired_models=False):
+    if type(_allow_retired_models) is not bool:raise ValueError('Invalid restoration-only model policy')
     mapping=target_map(files)
     if (not isinstance(files,dict) or any(not isinstance(raw,bytes) for raw in files.values())
             or not isinstance(before,dict) or set(before)!=set(mapping.values())
@@ -73,7 +77,9 @@ def prepare(files,manifest,before):
         raise ValueError('Audit fragments do not describe the table addition')
     for stem,pin in MODEL_PINS.items():
         raw=files[stem+'.4ds.disabled']
-        if (len(raw),fingerprint(raw)['sha256'])!=pin:raise ValueError('Changed reviewed modern model')
+        actual=(len(raw),fingerprint(raw)['sha256'])
+        if actual!=pin and not (_allow_retired_models and actual==RETIRED_MODEL_PINS.get(stem)):
+            raise ValueError('Changed or retired reviewed modern model; refresh the disabled preset')
         if before['Models/'+stem+'.4ds'] is not None:raise ValueError('Modern model target already exists; not overwritten')
     composition=manifest.get('central_table_overlay_composition')
     source_kinds=composition['selected_source'] if composition else {key:'reviewed_archive' for key in ('items','fpv')}

@@ -1,5 +1,6 @@
 """Actual file transactions on invented independent copies, never HD2 execution."""
 import json
+import copy
 from pathlib import Path
 import sys
 import tempfile
@@ -132,6 +133,55 @@ class BenelliDeploymentTests(unittest.TestCase):
         data['plan']['files'][0]['after']['size']+=1;path.write_bytes(sandbox.json_data(data))
         with self.assertRaisesRegex(ValueError,'plan no longer matches'):self.apply()
         self.assertFalse((self.session/'active.json').exists());self.assertTrue(self.verified())
+
+    def revised_lab(self):
+        old=copy.deepcopy(payload.MODEL_PINS)
+        raw=self.files['PROTOTYPE_BenFPV.4ds.disabled']+b' new rotation'
+        new={**old,'PROTOTYPE_BenFPV':(len(raw),payload.fingerprint(raw)['sha256'])}
+        (self.lab/'PROTOTYPE_BenFPV.4ds.disabled').write_bytes(raw)
+        manifest=copy.deepcopy(self.manifest)
+        manifest['files']['PROTOTYPE_BenFPV.4ds.disabled']=payload.fingerprint(raw)
+        (self.lab/'MANIFEST.json').write_text(json.dumps(manifest))
+        return old,new
+
+    def test_retired_model_refuses_application_but_previous_active_trial_is_restorable(self):
+        self.prepare();self.apply();old,new=self.revised_lab()
+        with patch.object(payload,'MODEL_PINS',new),patch.object(payload,'RETIRED_MODEL_PINS',old):
+            self.restore();self.assertTrue(self.verified())
+            with self.assertRaisesRegex(ValueError,'retired'):self.apply()
+            self.assertFalse((self.session/'active.json').exists())
+
+    def test_inactive_refresh_preserves_exact_previous_preset_and_rechecks_new_payload(self):
+        self.prepare();previous=(self.session/deploy.PRESET).read_bytes();old,new=self.revised_lab()
+        with patch.object(payload,'MODEL_PINS',new),patch.object(payload,'RETIRED_MODEL_PINS',old):
+            result=deploy.prepare(self.session,self.lab,root=self.root,replace_inactive=True)
+            self.assertEqual((self.session/result['retired_preset']).read_bytes(),previous)
+            self.assertTrue(self.verified());self.assertFalse((self.session/'active.json').exists())
+            self.apply();self.restore();self.assertTrue(self.verified())
+            with self.assertRaisesRegex(ValueError,'already current'):
+                deploy.prepare(self.session,self.lab,root=self.root,replace_inactive=True)
+
+    def test_refresh_refuses_active_modified_or_corrupt_previous_state(self):
+        self.prepare();self.apply();old,new=self.revised_lab()
+        with self.assertRaisesRegex(ValueError,'active experiment'):
+            deploy.prepare(self.session,self.lab,root=self.root,replace_inactive=True)
+        self.restore();preset=(self.session/deploy.PRESET).read_bytes()
+        path=self.session/'game/Tables/items.sav';path.write_bytes(path.read_bytes()+b'later edit')
+        with patch.object(payload,'MODEL_PINS',new),patch.object(payload,'RETIRED_MODEL_PINS',old):
+            with self.assertRaisesRegex(ValueError,'target changed'):
+                deploy.prepare(self.session,self.lab,root=self.root,replace_inactive=True)
+            self.assertEqual((self.session/deploy.PRESET).read_bytes(),preset)
+        self.assertFalse((self.session/'retired-presets').exists())
+
+    def test_distinct_rehearsal_report_retains_earlier_results_and_refuses_unsafe_names(self):
+        self.prepare();deploy.rehearse(self.session,root=self.root)
+        previous=(self.session/'BENELLI_OFFLINE_REHEARSAL.json').read_bytes()
+        deploy.rehearse(self.session,root=self.root,report_name='BENELLI_OFFLINE_REHEARSAL_v2.json')
+        self.assertEqual((self.session/'BENELLI_OFFLINE_REHEARSAL.json').read_bytes(),previous)
+        for name in ('../report.json','active.json','BENELLI_OFFLINE_REHEARSAL_/x.json'):
+            with self.assertRaisesRegex(ValueError,'report name'):
+                deploy.rehearse(self.session,root=self.root,report_name=name)
+        self.assertTrue(self.verified())
 
 
 if __name__=='__main__':unittest.main()

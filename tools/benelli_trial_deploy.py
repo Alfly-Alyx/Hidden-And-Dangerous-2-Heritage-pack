@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 from pathlib import Path
 import sys
 import uuid
@@ -24,11 +25,19 @@ PRESET='BENELLI_TRIAL.json'
 KIND='benelli_trial_transaction'
 
 
-def prepare(session,lab,*,root=ROOT):
+def prepare(session,lab,*,root=ROOT,replace_inactive=False):
+    if type(replace_inactive) is not bool:raise ValueError('Invalid inactive refresh policy')
     session,ready,manifest=load_session(session,root);idle_game();supported_client(session)
     with operation(session):
         if destination(session,'active.json').exists():raise ValueError('Restore the active experiment before Benelli preparation')
-        if destination(session,PRESET).exists():raise ValueError('Benelli preset already exists; not overwritten')
+        previous=None;previous_raw=None
+        if destination(session,PRESET).exists():
+            if not replace_inactive:raise ValueError('Benelli preset already exists; not overwritten')
+            previous_raw=destination(session,PRESET).read_bytes()
+            previous,_,_=load_preset(session,ready,_allow_retired_models=True)
+            if any(current(session,row['path'])!=row['before'] for row in previous['plan']['files']):
+                raise ValueError('A previous Benelli target changed; inactive refresh refused')
+        elif replace_inactive:raise ValueError('No prepared Benelli preset to refresh')
         check_environment(session,ready,manifest)
         files,lab_manifest,mapping=payload.load_lab(lab)
         assets=asset_audit(session/'game')
@@ -42,13 +51,25 @@ def prepare(session,lab,*,root=ROOT):
         preset={'schema_version':1,'kind':'disabled_benelli_trial_preset','environment_sha256':ready['manifest_sha256'],
                 'lab_manifest':lab_manifest,'lab_files':stored,'plan':plan,'asset_preflight':assets,
                 'game_launched':False,'payloads_activated':False}
-        write_new(destination(session,PRESET),json_data(preset))
+        retired=None
+        if previous is not None:
+            if json_data(previous['lab_manifest'])==json_data(lab_manifest):raise ValueError('Benelli preset already current')
+            if destination(session,PRESET).read_bytes()!=previous_raw:raise ValueError('Preset changed during refresh')
+            retired='retired-presets/benelli-'+uuid.uuid4().hex+'.json'
+            saved=destination(session,retired);saved.parent.mkdir(parents=True,exist_ok=True)
+            write_new(saved,previous_raw) # Preserve exact original before atomic replacement.
+            preset['supersedes_preset_sha256']=fingerprint(previous)
+            preset['retired_preset']=retired
+            idle_game()
+            atomic_json(session,PRESET,preset)
+        else:write_new(destination(session,PRESET),json_data(preset))
         load_preset(session,ready)
         return {'status':'disabled_benelli_preset_prepared','files':len(after),
+                'retired_preset':retired,
                 'game_launched':False,'payloads_activated':False,'playable_weapon':False}
 
 
-def load_preset(session,ready):
+def load_preset(session,ready,*,_allow_retired_models=False):
     preset=json.loads(destination(session,PRESET).read_text(encoding='utf-8'))
     if (preset.get('schema_version')!=1 or preset.get('kind')!='disabled_benelli_trial_preset'
             or preset.get('environment_sha256')!=ready['manifest_sha256']):raise ValueError('Invalid Benelli preset identity')
@@ -59,7 +80,7 @@ def load_preset(session,ready):
             or len({row['path'].casefold() for row in rows})!=len(rows)):
         raise ValueError('Invalid Benelli target set')
     before={row['path']:blob(session,row['before']) if row['before'] is not None else None for row in rows}
-    after,plan=payload.prepare(files,preset['lab_manifest'],before)
+    after,plan=payload.prepare(files,preset['lab_manifest'],before,_allow_retired_models=_allow_retired_models)
     if json_data(plan)!=json_data(preset['plan']):raise ValueError('Benelli file plan no longer matches checked payloads')
     if preset['asset_preflight'].get('no_candidate_collisions') is not True:raise ValueError('Unqualified preset resource preflight')
     return preset,before,after
@@ -97,7 +118,7 @@ def created_directories(session,rows):
 
 
 def restore_locked(session,ready):
-    preset,_,_=load_preset(session,ready)
+    preset,_,_=load_preset(session,ready,_allow_retired_models=True)
     journal=json.loads(destination(session,'active.json').read_text(encoding='utf-8'))
     if (journal.get('schema_version')!=1 or journal.get('kind')!=KIND
             or not isinstance(journal.get('transaction'),str) or not re_transaction(journal['transaction'])
@@ -175,9 +196,11 @@ def restore(session,*,root=ROOT):
     with operation(session):return restore_locked(session,ready)
 
 
-def rehearse(session,*,root=ROOT):
+def rehearse(session,*,root=ROOT,report_name='BENELLI_OFFLINE_REHEARSAL.json'):
+    if not isinstance(report_name,str) or not re.fullmatch(r'BENELLI_OFFLINE_REHEARSAL(?:_[A-Za-z0-9-]{1,48})?\.json',report_name):
+        raise ValueError('Invalid Benelli rehearsal report name')
     session,_,_=load_session(session,root);idle_game()
-    output=destination(session,'BENELLI_OFFLINE_REHEARSAL.json')
+    output=destination(session,report_name)
     if output.exists():raise FileExistsError('Benelli rehearsal report already exists')
     if not verify_clone(session,root=root)['ok']:raise ValueError('Benelli rehearsal requires the unmodified initial copy')
     applied=apply(session,root=root);restored=restore(session,root=root)
@@ -192,13 +215,19 @@ def rehearse(session,*,root=ROOT):
 
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action',choices=('prepare','apply','restore','rehearse'))
+    parser.add_argument('action',choices=('prepare','refresh','apply','restore','rehearse'))
     parser.add_argument('--session',type=Path,required=True)
     parser.add_argument('--lab',type=Path)
+    parser.add_argument('--report-name')
     args=parser.parse_args(argv)
-    if (args.action=='prepare')!=(args.lab is not None):parser.error('--lab is required only for prepare')
+    if (args.action in ('prepare','refresh'))!=(args.lab is not None):parser.error('--lab is required only for prepare/refresh')
+    if args.report_name is not None and args.action!='rehearse':parser.error('--report-name is only for rehearse')
     try:
-        result=prepare(args.session,args.lab) if args.action=='prepare' else globals()[args.action](args.session)
+        if args.action in ('prepare','refresh'):
+            result=prepare(args.session,args.lab,replace_inactive=args.action=='refresh')
+        elif args.action=='rehearse' and args.report_name is not None:
+            result=rehearse(args.session,report_name=args.report_name)
+        else:result=globals()[args.action](args.session)
         print(json.dumps(result,ensure_ascii=False,indent=2));return 0
     except (OSError,ValueError,KeyError,TypeError) as error:
         print('Benelli isolated trial refused: '+str(error),file=sys.stderr);return 1

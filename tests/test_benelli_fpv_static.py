@@ -1,4 +1,5 @@
 from pathlib import Path
+import math
 import struct
 import sys
 import unittest
@@ -27,6 +28,17 @@ def source():
 
 
 class StaticFpvTests(unittest.TestCase):
+    def test_rebase_native_quarter_turn_independently_checked(self):
+        raw=bytearray(source());nodes=parse_4ds_nodes(raw)['nodes']
+        root,magazine=nodes[0],nodes[-1]
+        struct.pack_into('<3f4f',raw,root['position_offset'],0,0,0,0,0,math.sqrt(.5),math.sqrt(.5))
+        struct.pack_into('<3f4f',raw,magazine['position_offset'],1,0,0,math.sqrt(.5),0,0,math.sqrt(.5))
+        out,_=derive(bytes(raw));node=parse_4ds_nodes(out)['nodes'][-1]
+        transform=node_transform(out,node)
+        # inverse(native Z+90) * native X+90: (0,1,0) -> (0,1,-1).
+        from model_transform import point
+        for a,b in zip(point(transform,[0,1,0]),[0,1,-1]):self.assertAlmostEqual(a,b,places=6)
+
     def test_eight_nodes_materials_and_geometry_kept_but_not_companion_animation(self):
         raw=source(); out,proof=derive(raw)
         old,new=parse_4ds_nodes(raw),parse_4ds_nodes(out)

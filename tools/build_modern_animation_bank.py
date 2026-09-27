@@ -90,6 +90,7 @@ def compile_bank(recipe,spec):
              'recipe_sha256':hashlib.sha256(json.dumps(spec,sort_keys=True).encode()).hexdigest(),
              'rig':report,'clips':reports,'preview_fps':fps,'native_fps_known':False,
              'interpolation':'MODERN_LOCAL_ABSOLUTE_LINEAR_POSITION_SHORTEST_ARC_SLERP',
+             'rotation_encoding':'active_xyzw_authoring_conjugated_to_native_xyzw',
              'commercial_assets_read':False,'game_modified':False,'game_launched':False,
              'player_hands':False,'player_skeleton_binding':False,'playable_weapon':False,
              'event_tracks':False,'sounds':False,'damage':False,'item_allocated':False}

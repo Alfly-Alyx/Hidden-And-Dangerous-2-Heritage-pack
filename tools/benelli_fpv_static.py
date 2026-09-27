@@ -7,7 +7,7 @@ import struct
 
 from menu_gui_audit import parse_4ds_nodes, FourDsReader
 from model_instance import visual_geometry
-from model_transform import compose, invert, decompose, node_transform, world_transforms, point
+from model_transform import compose, invert, decompose_native, node_transform, world_transforms, point
 
 NAMES = {'fpv_weapon','gunlock','cock','blsdum','cardum','shdum','shell01','magazine'}
 
@@ -44,7 +44,7 @@ def derive(data):
             if node['index']==root['index']:
                 position,q,scale,error=[0,0,0],[0,0,0,1],[1,1,1],0
             else:
-                position,q,scale,error=decompose(compose(root_inverse,node_transform(data,node)))
+                position,q,scale,error=decompose_native(compose(root_inverse,node_transform(data,node)))
             struct.pack_into('<3f4f3f',raw,node['position_offset']-node['start'],*position,*q,*scale)
             residuals[node['name']]=error
         output.extend(raw)
@@ -57,6 +57,7 @@ def derive(data):
                     'removed_joint_nodes':sum(n['frame_type']==10 for n in parsed['nodes'] if n not in selected),
                     'material_bytes_preserved':output[:parsed['node_count_offset']]==data[:parsed['node_count_offset']],
                     'root_decomposition_residuals':residuals,
+                    'rotation_convention':'native_xyzw_conjugated_to_active_column_vectors',
                     'playable_weapon':False,'animation_compatibility':'pending',
                     'runtime_status':'pending','commercial_vertices_redistributed':False}
 

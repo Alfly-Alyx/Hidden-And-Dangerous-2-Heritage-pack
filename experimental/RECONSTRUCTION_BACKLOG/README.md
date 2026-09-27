@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **686 tests Python réussis sur 687 dans la copie de publication**; un test de lien symbolique non exécuté
+- **702 tests Python réussis sur 703 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -125,6 +125,13 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   modèles de mains et trois textures verrouillés, 448 correspondances de pistes
   sur les neuf animations et deux variantes ; plan joint aux laboratoires v3.
   Treize tests nouveaux ; skin, héritage des poses partielles et caméra non validés.
+- [Rotations natives corrigées](ROTATIONS_NATIVES.md) : 72 matrices de repos
+  et 224 rotations initiales recoupées indépendamment. Modèle Benelli et
+  18 animations modernes reconstruits ; géométrie, tables et textes préservés.
+  Seize tests nouveaux et voie sûre de renouvellement des préparations inactives.
+  Trois nouveaux cycles Benelli de pose/retrait retrouvent les 24 385 fichiers
+  initiaux de chaque copie ; les anciennes préparations restent récupérables.
+  La déformation des mains et le comportement moteur ne sont pas encore qualifiés.
 - [Demandes de ressources FPV](../BENELLI_M4_ADDITIVE/DEMANDES_RESSOURCES_FPV.md) :
   treize cas de noms de mains et 156 demandes d'animation contrôlés jusqu'aux
   arguments des chargeurs, sans les appeler. Quinze tests nouveaux ; laboratoires

@@ -20,7 +20,7 @@ from fpv_table import parse as parse_fpv
 
 ROOT=Path(__file__).resolve().parents[1]
 SYNTHETIC_SLOT=359
-MODEL_PINS={'PROTOTYPE_BenFPV':(61351,'0c54e499b6b6b434b3bdd02ed78cc2f7f99b304d44e162e11e787d323234300f'),
+MODEL_PINS={'PROTOTYPE_BenFPV':(61351,'c445e8ff1c96da33317e7eeafe14f18277b9650e8c796e1078396eab6e3ef85b'),
             'PROTOTYPE_BenM4':(207614,'6bc815610019739adc101d3e00319fa7819dd3d436b05e66d0521d258f291c8c')}
 PENDING=('inventory_text_allocation','remaining_shoot_consumer_semantics_and_audio_timing',
          'secondary_mode_and_scalar_semantics','fpv_camera_hands_and_events',

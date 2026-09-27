@@ -5,6 +5,12 @@ réalisés. Le paquet personnel désactivé est préparé dans les trois copies
 d'essai ; un cycle complet sur l'hôte a retrouvé tous les fichiers initiaux.
 **Ce contrôle ne lance pas le jeu et ne rend pas l'arme validée ou jouable.**
 
+**Actualisation :** les trois préparations utilisent maintenant le paquet
+`BenelliTables_Personal_v4`, après [correction des rotations](../RECONSTRUCTION_BACKLOG/ROTATIONS_NATIVES.md).
+Les préparations antérieures sont archivées dans `retired-presets/`, leurs
+contenus et sauvegardes conservés. Les anciens modèles ne peuvent plus être
+appliqués ; une ancienne transaction reste restaurable.
+
 ## Douze cibles, pas quatorze
 
 | Cibles | Nombre | Traitement |
@@ -65,6 +71,20 @@ et les fichiers hors périmètre restent intacts.
 
 ## Commandes et limites
 
+Trois cycles supplémentaires sur la version corrigée sont terminés : hôte,
+client 1 et client 2 retrouvent chacun leurs **24 385 fichiers initiaux**, sans
+modification ni fichier supplémentaire. Leurs nouveaux rapports privés
+`BENELLI_OFFLINE_REHEARSAL_rotations-v2.json` préservent le rapport historique.
+Les historiques sont respectivement `b3d39234592f49c9895c5f85c9da4f69`,
+`1cd5478ae52f4a0e9d5215cbc6ae70eb` et `17b8f3060a8f41beada111dcf71a0d8f`.
+Aucune activation n'est laissée en place. Quatre tests synthétiques de plus
+couvrent le renouvellement, le refus des anciens modèles, la restauration
+historique et la conservation des rapports.
+
+Pour une nouvelle préparation ou répétition, adapter les noms aux dossiers
+neufs. Les commandes historiques ci-dessous ne sont pas une invitation à
+réappliquer l'ancien modèle :
+
 ```powershell
 .\.venv\Scripts\python.exe tools/benelli_trial_deploy.py prepare --session '.analysis/reconstruction-sandboxes/native-trials-20260926' --lab '.analysis/item-table-labs/BenelliTables_Personal_v1'
 .\.venv\Scripts\python.exe tools/benelli_trial_deploy.py rehearse --session '.analysis/reconstruction-sandboxes/native-trials-20260926'
@@ -73,6 +93,11 @@ et les fichiers hors périmètre restent intacts.
 Ces commandes ont déjà été effectuées ; un preset ou rapport existant n'est pas
 écrasé. `apply` maintient une pose expérimentale sans lancer le jeu, et `restore`
 retire cette pose. Ils restent confinés à une copie indépendante vérifiée.
+
+`refresh --lab <laboratoire-corrigé>` renouvelle uniquement une préparation
+inactive et vérifiée, en archivant l'ancienne avant remplacement atomique.
+`rehearse --report-name BENELLI_OFFLINE_REHEARSAL_nom-neuf.json` conserve un
+nouveau résultat sans effacer les précédents ; chemins libres refusés.
 
 Les manifestes historiques du laboratoire conservent leurs exigences au moment
 de la construction ; la preuve de transaction se trouve dans le rapport de
