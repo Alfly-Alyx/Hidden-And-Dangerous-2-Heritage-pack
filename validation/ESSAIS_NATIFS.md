@@ -10,10 +10,10 @@ Les 20 laboratoires désactivés utilisent des noms de mission distincts et rest
 disponibles. La nouvelle voie d'essai utilise les **missions d'origine** dans une
 copie privée du jeu : aucun remappage de nom, menu expérimental supplémentaire ou
 gestionnaire à lancer. Elle prend en charge les 47 profils de scripts et les trois
-comparaisons de scène coop, soit 50 paires de fichiers témoin/variante. À ce
-point d'étape, 49 paires sont préparées dans les trois copies, y compris les
-huit derniers ajouts après fermeture indépendante du client externe. La paire
-composée Africa 4, cinquantième, attend sa fermeture après réouverture.
+comparaisons de scène coop, soit 50 paires de fichiers témoin/variante. Les
+**50 paires sont préparées dans les trois copies** depuis le 27 septembre.
+La paire composée Africa 4 a pu être ajoutée après fermeture indépendante
+du client externe, sans arrêter de processus ni contourner de protection.
 
 Chaque paire comprend les fichiers de la mission et ses scripts commerciaux
 effectifs, issus des archives. La variante ne change que les scripts de sa recette
@@ -147,8 +147,8 @@ dossier seul, font foi pour leur préparation.
 
 Une nouvelle répétition complète déploierait, relirait et restaurerait les 50
 témoins et 42 variantes sans préalable moteur, soit **92 cycles de fichiers**.
-90 cycles ont été effectués en trois séries conservées; les deux cycles de
-composition Africa 4 restent à exécuter après fermeture du client. La répétition ne
+Les 92 cycles ont été effectués en quatre séries conservées, dont les deux
+cycles de composition Africa 4 le 27 septembre. La répétition ne
 contourne pas les huit barrières de témoin réel. Une comparaison finale de tous
 les fichiers du jeu copié doit retrouver exactement le manifeste initial.
 Le rapport `OFFLINE_REHEARSAL.json` conserve les empreintes et journaux, avec
@@ -184,20 +184,24 @@ Une répétition ciblée exige un nom de rapport distinct, par exemple :
 `--select-profile` se répète pour plusieurs profils. Le nouveau rapport ne
 remplace pas la série historique et annonce explicitement sa sélection.
 
-## Préparation effectivement vérifiée le 26 septembre 2026
+## Préparation effectivement vérifiée les 26 et 27 septembre 2026
 
 - Trois copies indépendantes ont été créées, chacune avec 24 385 fichiers,
   6 508 813 370 octets et le même manifeste initial.
-- Les 49 configurations ont été reconstruites dans chacune des trois copies;
+- Les 50 configurations ont été reconstruites dans chacune des trois copies;
   leurs empreintes de protocole correspondent toutes au registre actuel.
-- Les **49 premiers cycles**, puis **28** et **13 cycles supplémentaires** ont été effectués
-  sur l'hôte, dans trois opérations distinctes. Tous les retours
+- Les **49 premiers cycles**, puis **28**, **13** et **2 cycles supplémentaires** ont été effectués
+  sur l'hôte, dans quatre opérations distinctes. Tous les retours
   arrière ont réussi; la comparaison globale finale retrouve exactement les
   fichiers initiaux, sans ajout résiduel ni contenu changé.
 - Les rapports locaux sont `OFFLINE_REHEARSAL.json`,
   `OFFLINE_REHEARSAL-expansion-20260926.json` et
-  `OFFLINE_REHEARSAL-props-modes-20260926.json` dans la session hôte. Les données
+  `OFFLINE_REHEARSAL-props-modes-20260926.json`, puis
+  `OFFLINE_REHEARSAL-heritage-radio-20260927.json` dans la session hôte. Les données
   commerciales, sauvegardes, fichiers écartés et journaux restent hors de Git.
+- Le contrôle global du 27 septembre retrouve les **24 385 fichiers initiaux**
+  dans chacune des trois copies, sans fichier modifié ou ajouté. Aucune
+  expérience ne demeure active après la répétition.
 - **380 tests Python réussis sur 381 dans la copie de publication**; un test de création de lien symbolique
   n'a pas pu s'exécuter sans privilège Windows. Les liens physiques, les cibles
   modifiées, les interruptions et les restaurations ont leurs tests distincts.
