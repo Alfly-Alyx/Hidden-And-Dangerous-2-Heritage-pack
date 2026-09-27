@@ -75,6 +75,11 @@ réutilisent explicitement la géométrie et le squelette commerciaux vérifiés
 elles sont **dérivées modernes**, pas des mains originales nouvellement créées.
 Le solveur et les choix de prise sont modernes ; les aperçus sans textures
 commerciales restent privés. Les modèles sources sont inchangés.
+Leurs [36 clips natifs](../FLAMMENWERFER_35_AND_NO2/ANIMATIONS_MAINS_DERIVEES.md)
+sont également des ressources dérivées privées : ils contiennent les
+transformations de repos source et les mouvements modernes calculés.
+Une même animation pilote mains, tenue et tuyau ; aucun modèle de mains
+ni clip commercial n'est exporté, et le chargement FPV reste à réaliser.
 
 Une [banque originale de mouvements FG42/MG34](ANIMATIONS_MODERNES.md) est créée :
 neuf séquences par arme sont maintenant écrites en 5DS, liées à des pivots de

@@ -54,6 +54,10 @@ Leurs sorties restent également originales, privées et désactivées.
 épinglées et produit seulement des [aperçus dérivés privés](../FLAMMENWERFER_35_AND_NO2/PRISES_MAINS_DERIVEES.md)
 avec poses de prise modernes. Il ne crée ni modèle commercial redistribuable
 ni animation FPV native à ce stade.
+`build_equipment_hand_animation.py` encode ensuite les [clips dérivés privés](../FLAMMENWERFER_35_AND_NO2/ANIMATIONS_MAINS_DERIVEES.md),
+avec prises adaptées au calcul natif. `hand_animation_native_audit.py`
+contrôle leur lecture persistante, puis palettes, skins et raccords ;
+aucun de ces outils ne lance le jeu ou n'installe les ressources.
 
 ## Outils d'archives et de recherche
 

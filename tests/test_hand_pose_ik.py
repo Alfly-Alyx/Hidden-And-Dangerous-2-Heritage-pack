@@ -4,7 +4,7 @@ from pathlib import Path
 import sys
 import unittest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from hand_pose_ik import two_bone,shortest_rotation,norm,sub,validate_basis,pinned_skin
+from hand_pose_ik import two_bone,shortest_rotation,bend_plane_rotation,norm,sub,validate_basis,pinned_skin
 from model_transform import matvec,determinant
 
 
@@ -42,6 +42,16 @@ class HandIKTests(unittest.TestCase):
 
     def test_unreviewed_commercial_input_refused_before_parsing(self):
         with self.assertRaisesRegex(ValueError,'Unreviewed'):pinned_skin(b'not a commercial model')
+
+    def test_bend_plane_rotation_maps_bone_and_resolves_antipodal_twist(self):
+        for target in ([1,0,0],[-1,0,0],[0,1,0],[.6,.8,0]):
+            matrix=bend_plane_rotation([1,0,0],target,[0,0,1])
+            validate_basis(matrix)
+            for a,b in zip(matvec(matrix,[1,0,0]),target):self.assertAlmostEqual(a,b)
+            self.assertEqual(matvec(matrix,[0,0,1]),[0,0,1])
+
+    def test_bend_plane_rotation_refuses_collinear_hint(self):
+        with self.assertRaises(ValueError):bend_plane_rotation([1,0,0],[0,1,0],[0,1,0])
 
 
 if __name__=='__main__':unittest.main()

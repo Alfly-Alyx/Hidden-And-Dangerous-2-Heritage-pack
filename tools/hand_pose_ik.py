@@ -70,6 +70,15 @@ def validate_basis(value):
     return value
 
 
+def bend_plane_rotation(start,end,normal):
+    """Resolve bone-axis twist with the arm's bending plane, not an antipode."""
+    def frame(direction,hint):
+        x=unit(vector(direction));hint=vector(hint)
+        z=unit([a-dot(hint,x)*b for a,b in zip(hint,x)]);y=cross(z,x)
+        return transpose([x,y,z])
+    return matmul(frame(end,normal),transpose(frame(start,[0,0,1])))
+
+
 def pinned_skin(raw):
     digest=hashlib.sha256(raw).hexdigest()
     matches=[name for name in HAND_MODELS if (len(raw),digest)==HAND_PINS[name][1:]]
@@ -77,12 +86,13 @@ def pinned_skin(raw):
     return matches[0],read_reviewed(raw)
 
 
-def author_pose(raw,targets,grips):
+def author_pose(raw,targets,grips,*,arm_rotation_policy='minimal'):
     """Return derived local SRT poses; never export these as original skeleton data.
 
     Targets contain wrist world position, hand rest-to-target active rotation
     and elbow pole. Four fingers use modern curls; thumb stays at source rest.
     """
+    if arm_rotation_policy not in ('minimal','bend_plane'):raise ValueError('Unreviewed arm rotation policy')
     source,skin=pinned_skin(raw);nodes=skin['nodes'];by_name={n['name']:n for n in nodes}
     if set(targets)!={'L','R'} or set(grips)!={'L','R'}:raise ValueError('Both hand targets are required')
     desired={};arm_errors={};axes={}
@@ -100,8 +110,16 @@ def author_pose(raw,targets,grips):
         rest=[skin['rest_world'][by_name[name]['index']] for name in names]
         upper=sub(rest[1][1],rest[0][1]);fore=sub(rest[2][1],rest[1][1])
         elbow=two_bone(rest[0][1],wrist,pole,norm(upper),norm(fore))
-        desired[names[0]]=(matmul(shortest_rotation(upper,sub(elbow,rest[0][1])),rest[0][0]),rest[0][1])
-        desired[names[1]]=(matmul(shortest_rotation(fore,sub(wrist,elbow)),rest[1][0]),elbow)
+        upper_target=sub(elbow,rest[0][1]);fore_target=sub(wrist,elbow)
+        if arm_rotation_policy=='bend_plane':
+            normal=unit(cross(upper_target,fore_target))
+            if side=='R':normal=[-v for v in normal]
+            upper_turn=bend_plane_rotation(upper,upper_target,normal)
+            fore_turn=bend_plane_rotation(fore,fore_target,normal)
+        else:
+            upper_turn=shortest_rotation(upper,upper_target);fore_turn=shortest_rotation(fore,fore_target)
+        desired[names[0]]=(matmul(upper_turn,rest[0][0]),rest[0][1])
+        desired[names[1]]=(matmul(fore_turn,rest[1][0]),elbow)
         desired[names[2]]=(matmul(turn,rest[2][0]),wrist)
         arm_errors[side]={'upper_length':norm(upper),'forearm_length':norm(fore),'wrist_target':wrist}
         for finger in range(1,5):
@@ -135,6 +153,7 @@ def author_pose(raw,targets,grips):
         if row['wrist_error']>5e-6:raise ValueError('Authored hand missed its target')
     return poses,{'schema_version':1,'provenance':'DERIVE_MODERNE_SUR_SQUELETTE_COMMERCIAL',
         'hand_source':source,'hand_sha256':hashlib.sha256(raw).hexdigest(),'arms':arm_errors,
+        'arm_rotation_policy':arm_rotation_policy,
         'max_local_position_residual':max_position_change,'max_local_scale_residual':max_scale_change,
         'rest_positions_and_scales_preserved':True,'original_geometry_modified':False,
         'original_animation_keys_read':False,'thumb_pose_authored':False,'finger_contact_qualified':False,
