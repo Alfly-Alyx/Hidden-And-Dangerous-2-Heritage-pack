@@ -67,8 +67,8 @@ PNG et un manifeste avec empreintes. Aucun Item, effet ou installation.
 Les [mouvements des pièces tenues](ANIMATIONS_PIECES_TENUES.md) sont maintenant
 créés : dix-huit séquences de présentation, sans mécanique fonctionnelle.
 Créer les mouvements des mains, définir les attaches joueur/IA et les
-transformations FPV, puis réaliser une solution de tuyau
-déformable. Le tuyau de présentation est isolé précisément pour ne pas
-l'annoncer solidaire de deux composants mobiles indépendants. Les événements,
+transformations FPV. Une [solution visuelle de tuyau déformable](TUYAUX_ANIMES_MODERNES.md)
+est maintenant créée séparément, pour les séquences connues avec sac fixe.
+Elle ne lie pas deux composants librement mobiles à un personnage. Les événements,
 sons, effet, comportement, entrée additive et sauvegardes restent distincts.
 Il ne reste donc pas seulement des tests pour ces deux armes.

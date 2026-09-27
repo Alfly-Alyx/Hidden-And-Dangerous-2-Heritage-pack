@@ -13,7 +13,7 @@ Ce repère n'est pas un os de personnage ni une calibration de caméra.
 
 | Étiquette native | Fin, en indice de trame | Contenu moderne |
 |---|---:|---|
-| Idle1 | 60 | Tenue immobile, boucle |
+| Idle1 | 60 | Tenue légèrement mobile, boucle |
 | Aim / Daim | 12 / 12 | Levée et retour de présentation |
 | Arm / Disarm | 24 / 24 | Entrée et sortie de présentation |
 | Shot / AimShot | 24 / 24 | Tenue légèrement mobile, boucles sans tir |
@@ -71,7 +71,9 @@ Empreintes des rigs :
 
 ## Réalisations encore nécessaires
 
-Mains et gestes de personnage, attaches dorsales/joueur/IA, tuyau déformable,
+Les [tuyaux déformables synchronisés](TUYAUX_ANIMES_MODERNES.md) sont maintenant
+créés pour ces séquences, avec sac fixe, sans solveur physique ou liaison joueur.
+Mains et gestes de personnage, attaches dorsales/joueur/IA,
 transformations FPV, cycle fonctionnel et sonore, effets, entrée additive et
 sauvegarde restent distincts. **Il ne reste pas seulement des tests pour ces armes.**
 L'installation personnelle, les tables, Flak TMP et les munitions 207/208 ne

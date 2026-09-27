@@ -9,7 +9,8 @@ sont maintenant construits à partir de ces sources inchangées : pièce tenue,
 sac dorsal et tuyau statique, avec repères locaux et raccords au repos contrôlés.
 Les [pièces tenues animées](ANIMATIONS_PIECES_TENUES.md) disposent ensuite de
 dix-huit séquences modernes de présentation. Les mains, la tenue par un
-personnage et la déformation du tuyau restent à réaliser.
+personnage restent à réaliser. Les [tuyaux animés](TUYAUX_ANIMES_MODERNES.md)
+sont ensuite créés séparément pour ces séquences avec sac fixe, sans physique.
 
 | Création | Pièces / nœuds | Triangles des deux LOD | Fichier natif |
 |---|---:|---:|---:|

@@ -62,6 +62,10 @@ Les [pièces tenues animées](../FLAMMENWERFER_35_AND_NO2/ANIMATIONS_PIECES_TENU
 ont maintenant neuf séquences modernes chacune, contrôlées également par
 l'attachement et les poses natifs isolés. Les gestes de présentation ne
 réalisent ni tir, rechargement, main animée ou attache dorsale.
+Leurs [tuyaux déformables](../FLAMMENWERFER_35_AND_NO2/TUYAUX_ANIMES_MODERNES.md)
+sont ensuite construits comme skins à deux LOD, avec dix-huit clips synchronisés
+et un sac fixe. La géométrie reste moderne et inchangée au repos ; aucune
+simulation physique ni liaison à un squelette de personnage n'est introduite.
 
 Une [banque originale de mouvements FG42/MG34](ANIMATIONS_MODERNES.md) est créée :
 neuf séquences par arme sont maintenant écrites en 5DS, liées à des pivots de
