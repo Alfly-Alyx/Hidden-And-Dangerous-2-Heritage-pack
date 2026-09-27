@@ -3,7 +3,9 @@
 **27 septembre 2026.** Le noyau CPU de déformation est désormais reproduit
 et comparé au code natif. Il reçoit des matrices déjà préparées : la
 construction de ces matrices depuis une animation et un modèle chargé reste
-une étape distincte, non qualifiée par ce banc.
+une étape distincte, non qualifiée par ce banc. Le
+[banc de palette](PALETTE_MAINS_NATIVE.md) examine désormais leur assemblage
+depuis des poses locales fournies et une hiérarchie de joints synthétique.
 
 ## Correction du lecteur : deux bases d'indices différentes
 
@@ -100,6 +102,7 @@ indicateurs de déformation restent faux, car il n'exécute pas ces nouveaux
 contrôles. Le rapport dédié qualifie uniquement le noyau CPU sur les entrées
 décrites, pas la peau animée complète.
 
-Restent notamment l'assemblage natif des matrices de la hiérarchie, les poses
-initiales réellement choisies, les transitions, la liaison caméra, les sons,
+L'assemblage natif des matrices est maintenant recoupé séparément dans le
+domaine des mains. Restent notamment les poses initiales réellement choisies,
+les transitions, la liaison caméra, les sons,
 les événements et les essais dans le moteur. Aucun prototype n'est activé.
