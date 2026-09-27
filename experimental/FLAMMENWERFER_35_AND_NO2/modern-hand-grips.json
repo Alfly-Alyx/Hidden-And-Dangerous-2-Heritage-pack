@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "provenance": "MODERNE_SUR_SOURCE_COMMERCIALE",
+  "runtime_status": "pending",
+  "description": "Authored grip targets and finger bends only. Original commercial hand geometry and rest skeleton remain private, unchanged and explicitly derived. No recovered animation, calibrated camera, functional weapon or player/AI attachment is claimed.",
+  "assembly_sha256": {
+    "F35": "ed213eee76c286aa9858f7d0f6e6210950fa0f0cd6566e253058d6dc40c73751",
+    "F2": "c64d8b70809d7a760603c84cdffd6487199b27d5beb3f140d08e9a6226612055"
+  },
+  "equipment_translation": [0, 0.14, -0.16],
+  "hands": {
+    "R": {
+      "rest_to_equipment_rotation": [[0,-1,0],[1,0,0],[0,0,1]],
+      "wrist_to_contact_in_rest": [0.065,0,0],
+      "contact_offset": [0.023,0,0],
+      "elbow_pole": [0.38,-0.12,-0.28],
+      "finger_curl_degrees": [90,45,30]
+    },
+    "L": {
+      "rest_to_equipment_rotation": [[-1,0,0],[0,0,1],[0,1,0]],
+      "wrist_to_contact_in_rest": [-0.065,0,0],
+      "contact_offset": [0,0,-0.028],
+      "elbow_pole": [-0.38,-0.12,-0.28],
+      "finger_curl_degrees": [-90,-45,-25]
+    }
+  },
+  "case_overrides": {
+    "F2": {
+      "L": {
+        "rest_to_equipment_rotation": [[0,1,0],[-1,0,0],[0,0,1]],
+        "contact_offset": [-0.023,0,-0.02]
+      }
+    }
+  }
+}

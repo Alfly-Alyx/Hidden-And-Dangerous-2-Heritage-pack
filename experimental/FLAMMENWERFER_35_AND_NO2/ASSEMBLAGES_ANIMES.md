@@ -86,8 +86,10 @@ Empreintes :
 
 ## Travail restant
 
-Mains, gestes joueur/IA, attaches dorsales et transformations FPV restent à
-construire. Le tuyau ne résout ni collisions, longueur fixe ou positions
+Les [poses de prise sur mains commerciales](PRISES_MAINS_DERIVEES.md) sont
+maintenant calculées et inspectées séparément ; leur encodage natif et leur
+raccordement FPV restent à réaliser. Gestes joueur/IA, attaches dorsales et
+transformations de caméra restent à construire. Le tuyau ne résout ni collisions, longueur fixe ou positions
 arbitraires. Événements, cycle fonctionnel, sons, effets, tables additives et
 sauvegardes restent distincts. Les modèles ne remplacent ni Flak TMP ni une
 arme installée ; aucune partie n'est lancée. **Il ne reste pas seulement des tests.**

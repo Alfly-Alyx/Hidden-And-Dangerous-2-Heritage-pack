@@ -31,6 +31,9 @@
 - [Assemblages à animation unique](ASSEMBLAGES_ANIMES.md) réalisés : un modèle
   et neuf clips par ensemble, sac fixe et tuyau/tenue synchronisés hors moteur ;
 - animations joueur et IA ;
+- [Poses modernes de prise sur mains commerciales](PRISES_MAINS_DERIVEES.md)
+  calculées et inspectées en privé ; ni clips natifs de mains, caméra ou contact
+  des pouces qualifiés à ce stade ;
 - allumage, son continu, extinction et sécurité ;
 - jauge/consommation, recharge, jet, collision, occultation et dégâts ;
 - réactions IA, inventaire, sauvegarde et réseau ;

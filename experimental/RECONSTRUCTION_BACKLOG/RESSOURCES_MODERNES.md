@@ -70,6 +70,11 @@ Les [modèles unifiés](../FLAMMENWERFER_35_AND_NO2/ASSEMBLAGES_ANIMES.md)
 regroupent ensuite ces trois composants ; une seule banque pilote pièce tenue
 et tuyau dans la même horloge native isolée. Le chargement réel et les mains
 restent distincts de cette construction.
+Les [prises de mains](../FLAMMENWERFER_35_AND_NO2/PRISES_MAINS_DERIVEES.md)
+réutilisent explicitement la géométrie et le squelette commerciaux vérifiés :
+elles sont **dérivées modernes**, pas des mains originales nouvellement créées.
+Le solveur et les choix de prise sont modernes ; les aperçus sans textures
+commerciales restent privés. Les modèles sources sont inchangés.
 
 Une [banque originale de mouvements FG42/MG34](ANIMATIONS_MODERNES.md) est créée :
 neuf séquences par arme sont maintenant écrites en 5DS, liées à des pivots de

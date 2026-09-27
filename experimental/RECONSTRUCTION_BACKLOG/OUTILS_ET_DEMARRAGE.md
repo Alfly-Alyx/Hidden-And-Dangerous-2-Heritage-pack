@@ -50,6 +50,10 @@ Les lance-flammes utilisent ensuite `build_modern_equipment_components.py`,
 `build_modern_equipment_assembly.py` pour produire composants, mouvements,
 tuyaux skinnés et [assemblages à animation unique](../FLAMMENWERFER_35_AND_NO2/ASSEMBLAGES_ANIMES.md).
 Leurs sorties restent également originales, privées et désactivées.
+`build_equipment_hand_grips.py` est distinct : il lit les mains commerciales
+épinglées et produit seulement des [aperçus dérivés privés](../FLAMMENWERFER_35_AND_NO2/PRISES_MAINS_DERIVEES.md)
+avec poses de prise modernes. Il ne crée ni modèle commercial redistribuable
+ni animation FPV native à ce stade.
 
 ## Outils d'archives et de recherche
 
