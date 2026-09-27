@@ -34,6 +34,8 @@ Neuf clips par modèle reprennent les durées et états visuels du lot tenu,
 avec neuf pistes de transformations chacun. `Shot`/`AimShot` n'émettent rien ;
 `Rel` reste un abaissement/retour, pas un rechargement fonctionnel.
 Les couples tuyau/pièce tenue ne sont **pas encore chargés ensemble par le jeu**.
+Un [assemblage natif unifié](ASSEMBLAGES_ANIMES.md) est ensuite construit et
+contrôlé hors moteur : une seule animation pilote les deux composants.
 
 ## Contrôles
 
@@ -88,8 +90,8 @@ Empreintes :
 
 Cette solution couvre les séquences modernes connues avec un sac fixe.
 Elle n'est pas un solveur de positions arbitraires : ni longueur constante,
-collision, gravité ou réaction au déplacement du sac. L'intégration des modèles
-dans un ensemble chargé, les attaches joueur/IA, les mains et la caméra restent
+collision, gravité ou réaction au déplacement du sac. Le fichier d'assemblage
+unifié est maintenant construit, mais son chargement réel, les attaches joueur/IA, les mains et la caméra restent
 nécessaires. Visibilité, éclairage, transitions et comportement moteur restent
 à qualifier ; effets, sons, consommation, dégâts et sauvegardes à réaliser.
 Il ne reste donc pas seulement des tests pour ces deux armes.

@@ -26,6 +26,17 @@ def validate_ticks(initial, names, deltas):
     return poses
 
 
+def observe_native_poses(observer,index,delta,poses):
+    """Optional local diagnostic consumer; it receives detached data only.
+
+    This is NOT a game callback. No emulated address or writable state is given
+    to the observer. Callers must not export commercial model poses.
+    """
+    if observer is not None:
+        if not callable(observer):raise ValueError('Invalid native pose observer')
+        observer(index,delta,deepcopy(poses))
+
+
 def reference_tick(state, poses, flags, parsed, delta):
     """Pose samples the advanced time BEFORE the controller wraps/deactivates."""
     if type(delta) is not int or not 0 <= delta <= 10000:
@@ -65,7 +76,8 @@ class TickOracle(AttachOracle):
         self.visited.add(address)
         if address==POSE_START:self.pose_calls+=1
 
-    def sequence_with_ticks(self,names,clips,operations,initial,deltas,model_kind=9):
+    def sequence_with_ticks(self,names,clips,operations,initial,deltas,model_kind=9,*,pose_observer=None):
+        if pose_observer is not None and not callable(pose_observer):raise ValueError('Invalid native pose observer')
         parsed,operations=validate_attachment(names,clips,operations,model_kind)
         poses=validate_ticks(initial,names,deltas)
         attachment=super().sequence(names,clips,operations,model_kind)
@@ -99,14 +111,17 @@ class TickOracle(AttachOracle):
                 if self.uc.reg_read(self.reg.UC_X86_REG_EIP)!=self.STOP:raise ValueError('Tick instruction/time budget exhausted')
                 if self.uc.reg_read(self.reg.UC_X86_REG_ESP)!=stack+8:raise ValueError('Tick calling convention differs')
             finally:self.phase=None;self.writes=()
-            actual=bytes(self.uc.mem_read(self.STATE,self.STATE_SIZE));error=0
+            actual=bytes(self.uc.mem_read(self.STATE,self.STATE_SIZE));error=0;actual_poses=[]
             for index,node in enumerate(nodes):
+                observed={}
                 for kind,offset,width in (('position',0xb0,3),('rotation',0xc0,4),('scale',0xd0,3)):
                     values=struct.unpack_from('<'+'f'*width,actual,node-self.STATE+offset)
+                    observed[kind]=list(values)
                     if any(not math.isfinite(value) for value in values):raise ValueError('Nonfinite native tick pose')
                     error=max(error,max(abs(a-b) for a,b in zip(values,expected['poses'][index][kind])))
                 if struct.unpack_from('<I',actual,node-self.STATE+0xe0)[0]!=expected['flags'][index]:
                     raise ValueError('Native tick pose flags differ')
+                actual_poses.append(observed)
             if error>2e-6:raise ValueError('Native attached tick pose differs from independent reference')
             for index,slot in enumerate(expected['state']['slots']):
                 offset=0x400+index*0x1c
@@ -121,6 +136,7 @@ class TickOracle(AttachOracle):
             reports.append({'delta':delta,'controller_processed':expected['controller_processed'],
                 'pose_calls':self.pose_calls,'written_channels':expected['written_channels'],
                 'active_slots':sum(slot['active'] for slot in state['slots']),'max_error':error})
+            observe_native_poses(pose_observer,len(reports)-1,delta,actual_poses)
         return {'attachment':attachment,'ticks':reports,'max_error':max_error,
             'native_attached_time_pose_checked':True,'same_native_memory_across_phases':True,
             'full_original_channels_sampled':True,'initial_pose_is_explicit_seed':True,

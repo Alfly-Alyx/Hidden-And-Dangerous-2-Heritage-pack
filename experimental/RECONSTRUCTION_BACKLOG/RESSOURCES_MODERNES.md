@@ -66,6 +66,10 @@ Leurs [tuyaux déformables](../FLAMMENWERFER_35_AND_NO2/TUYAUX_ANIMES_MODERNES.m
 sont ensuite construits comme skins à deux LOD, avec dix-huit clips synchronisés
 et un sac fixe. La géométrie reste moderne et inchangée au repos ; aucune
 simulation physique ni liaison à un squelette de personnage n'est introduite.
+Les [modèles unifiés](../FLAMMENWERFER_35_AND_NO2/ASSEMBLAGES_ANIMES.md)
+regroupent ensuite ces trois composants ; une seule banque pilote pièce tenue
+et tuyau dans la même horloge native isolée. Le chargement réel et les mains
+restent distincts de cette construction.
 
 Une [banque originale de mouvements FG42/MG34](ANIMATIONS_MODERNES.md) est créée :
 neuf séquences par arme sont maintenant écrites en 5DS, liées à des pivots de

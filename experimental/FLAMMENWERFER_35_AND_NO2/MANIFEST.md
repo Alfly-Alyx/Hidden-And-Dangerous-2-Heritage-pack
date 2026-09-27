@@ -28,6 +28,8 @@
 - [Pièces tenues animées](ANIMATIONS_PIECES_TENUES.md) et
   [tuyaux déformables synchronisés](TUYAUX_ANIMES_MODERNES.md) réalisés comme
   ressources modernes désactivées ; pas d'attache au joueur ni de physique ;
+- [Assemblages à animation unique](ASSEMBLAGES_ANIMES.md) réalisés : un modèle
+  et neuf clips par ensemble, sac fixe et tuyau/tenue synchronisés hors moteur ;
 - animations joueur et IA ;
 - allumage, son continu, extinction et sécurité ;
 - jauge/consommation, recharge, jet, collision, occultation et dégâts ;
