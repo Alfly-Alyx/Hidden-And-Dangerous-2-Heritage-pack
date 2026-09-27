@@ -70,12 +70,31 @@ def load_bank(directory,case,source,hand_raw,profile,compiled):
     return rig,clips,grips
 
 
-def surface(hand_raw,rig,clip,time,parts):
+def sampled_hand_pose(hand_raw,rig,clip,time,*,corrected_grips=None):
     _,skin=pinned_skin(hand_raw);names,seeds=model_poses(hand_raw)
     parsed=parse_5ds(clip)
     if type(time) is not int or not 0<=time<=parsed['frame_end']*40:raise ValueError('Invalid surface sample time')
     tracks={t['name']:t['channels'] for t in parsed['tracks']}
     _,poses=numeric_world(skin['nodes'],dict(zip(names,seeds)),tracks,time)
+    correction=None
+    if corrected_grips is not None:
+        gear_names,gear_seeds=model_poses(rig);gear_nodes=parse_4ds_nodes(rig)['nodes']
+        if set(names)&set(gear_names):raise ValueError('Ambiguous corrected surface targets')
+        _,equipment=numeric_world(gear_nodes,dict(zip(gear_names,gear_seeds)),tracks,time)
+        combined,correction=correct(hand_raw,gear_nodes,{**poses,**equipment},corrected_grips,
+                                    root_name='fpv_weapon',preserve_observed_elbow_plane=True)
+        if (correction.get('finger_poses_preserved') is not True
+                or correction.get('equipment_poses_preserved') is not True
+                or correction.get('source_rest_transforms_preserved') is not True
+                or correction.get('changed_channels')!='six_arm_rotations_only'
+                or correction.get('engine_hook_implemented') is not False):
+            raise ValueError('Incomplete corrected surface receipt')
+        poses={name:combined[name] for name in names}
+    return poses,correction
+
+
+def surface(hand_raw,rig,clip,time,parts,*,corrected_grips=None):
+    poses,correction=sampled_hand_pose(hand_raw,rig,clip,time,corrected_grips=corrected_grips)
     hand=posed_hand_mesh(hand_raw,poses,1);prepared=prepare_surface(hand.points,hand.triangles);checked={};unchecked={}
     for mesh in preview_meshes(rig,clip,time):
         if mesh.name in checked or mesh.name in unchecked:raise ValueError('Ambiguous rigid surface piece')
@@ -91,16 +110,19 @@ def surface(hand_raw,rig,clip,time,parts):
             'all_input_triangle_cells':measurement['all_input_triangle_cells'],
             'depth_is_cell_boundary_plane_metric_not_global_nonconvex_distance':len(volumes)>1,
             'penetration_tolerance':1e-5,'inset_area_cutoff':1e-14,'depth_search_resolution':1e-7}
-    return {'pieces':checked,'unchecked_pieces':unchecked,
+    return {'pieces':checked,'unchecked_pieces':unchecked,'offline_wrist_correction':correction,
         'penetrating_triangles_sum_over_pieces':sum(r['penetrating_triangles'] for r in checked.values()),
         'max_depth_lower_bound':max((r['max_depth_lower_bound'] for r in checked.values()),default=0)}
 
 
-def audit(game,bank_root,suffix,profile,*,native=False,dense=False,archives_only=False,selected_cases=CASES):
+def audit(game,bank_root,suffix,profile,*,native=False,dense=False,archives_only=False,selected_cases=CASES,
+          post_blend_surfaces=False):
     suffix_checked(suffix)
     if (not isinstance(selected_cases,(tuple,list)) or not selected_cases or len(set(selected_cases))!=len(selected_cases)
             or set(selected_cases)-set(CASES)):raise ValueError('Unreviewed rigid hand case selection')
     if native and dense:raise ValueError('Native mode is already dense; --dense is for surfaces')
+    if type(post_blend_surfaces) is not bool or (post_blend_surfaces and (native or not dense)):
+        raise ValueError('Post-blend surfaces require the dense surface mode')
     hands,excluded=read_hands(game,archives_only=archives_only)
     totals=dict(loads=0,sequences=0,ticks=0,wrist_targets=0,native_hand_palettes=0,surface_samples=0,
                 raw_half_key_ticks_over_limit=0,offline_corrected_poses=0)
@@ -171,14 +193,20 @@ def audit(game,bank_root,suffix,profile,*,native=False,dense=False,archives_only
                     row.update(load=receipt,ticks=len(deltas),max_errors=per_clip,raw_half_key_exceedances=exceeded)
                 else:
                     times=range(0,end*40+1,20) if dense else sorted({0,end*20,end*40})
-                    row['samples']=[{'time':t,**surface(hands[source],rig,raw,t,compiled[0]['parts'])} for t in times]
+                    row['samples']=[{'time':t,**surface(hands[source],rig,raw,t,compiled[0]['parts'],
+                        corrected_grips=grips if post_blend_surfaces else None)} for t in times]
                     totals['surface_samples']+=len(row['samples'])
+                    if post_blend_surfaces:
+                        totals['offline_corrected_poses']+=len(row['samples'])
+                        errors['wrist_after_offline_correction']=max(errors['wrist_after_offline_correction'],
+                            *(max(s['offline_wrist_correction']['after'].values()) for s in row['samples']))
                 rows[name]=row
                 print(case,source,name,'native' if native else 'surface','checked',file=sys.stderr,flush=True)
             reports[case][source]={'hand_sha256':digest(hands[source]),'model_sha256':digest(rig),'clips':rows}
     return {'schema_version':1,'scope':'private_rigid_weapon_hand_audit','provenance':PROVENANCE,
         'runtime_status':'pending','bank_suffix':suffix,'profile_sha256':digest(json.dumps(profile,sort_keys=True).encode()),
-        'mode':'native' if native else 'surface','dense_keys_and_half_keys':native or dense,'selected_cases':list(selected_cases),
+        'mode':'native' if native else ('post_blend_surface' if post_blend_surfaces else 'surface'),
+        'dense_keys_and_half_keys':native or dense,'selected_cases':list(selected_cases),
         'library_sha256':digest(library) if native else None,'cases':reports,'totals':totals,'max_errors':errors,
         'excluded_loose_overrides':excluded,'equipment_matches_explicit_modern_profile':True,
         'non_root_equipment_channels_preserved':True,
@@ -189,7 +217,9 @@ def audit(game,bank_root,suffix,profile,*,native=False,dense=False,archives_only
         'convex_surface_crossings_checked':not native,'native_skin_executed':False,
         'raw_half_key_wrist_limit':.0002,'raw_half_key_wrist_limit_passed':totals['raw_half_key_ticks_over_limit']==0 if native else None,
         'offline_six_arm_rotation_correction_verified':native,'corrected_poses_written_to_bank':False,
-        'offline_correction_preserves_observed_elbow_plane':native,
+        'offline_correction_preserves_observed_elbow_plane':native or post_blend_surfaces,
+        'post_blend_surface_checks':post_blend_surfaces,
+        'post_blend_surface_pose_source':'numeric_reference_then_offline_six_arm_correction' if post_blend_surfaces else None,
         'decomposed_surface_counts_may_repeat_triangles_and_depth_is_cell_local':not native,
         'renderer_or_model_clone_executed':False,'commercial_geometry_exported':False,
         'original_animation_keys_read':False,'source_geometry_modified':False,
@@ -204,12 +234,14 @@ def main(argv=None):
     parser.add_argument('--bank-suffix',required=True);parser.add_argument('--profile',type=Path,default=PROFILE)
     parser.add_argument('--archives-only',action='store_true');parser.add_argument('--native',action='store_true')
     parser.add_argument('--dense',action='store_true');parser.add_argument('--json-output',type=Path,required=True)
+    parser.add_argument('--post-blend-surfaces',action='store_true')
     parser.add_argument('--case',choices=CASES,action='append')
     args=parser.parse_args(argv)
     try:
         if args.json_output.exists():raise ValueError('Report exists; use a fresh name')
         report=audit(args.game,args.bank_root,args.bank_suffix,json.loads(args.profile.read_text(encoding='utf-8')),
-                     native=args.native,dense=args.dense,archives_only=args.archives_only,selected_cases=args.case or CASES)
+                     native=args.native,dense=args.dense,archives_only=args.archives_only,selected_cases=args.case or CASES,
+                     post_blend_surfaces=args.post_blend_surfaces)
         with args.json_output.open('x',encoding='utf-8') as stream:json.dump(report,stream,indent=2);stream.write('\n')
         print(json.dumps({k:v for k,v in report.items() if k!='cases'},indent=2));return 0
     except (OSError,ValueError,KeyError,ImportError) as error:

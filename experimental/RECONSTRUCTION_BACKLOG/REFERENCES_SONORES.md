@@ -63,6 +63,12 @@ Pour MG34, ce lot établit la **référence de fichier**, pas encore l'audit PCM
 de ces WAV. FG42 conserve les deux symboles **FG42_F / FG42_R**, explicitement
 non résolus. Ils ne sont ni remplacés par zéro ni affectés au son d'une autre arme.
 
+Compléments ultérieurs distincts : le [laboratoire MG34 portable](../MG34_PORTABLE/DESCRIPTEUR_ET_TABLES.md)
+contrôle désormais ses WAV PCM et leur liaison au descripteur ; les
+[sons FG42/ZK-383 modernes](SONS_MODERNES.md) sont entièrement synthétisés sous
+de nouveaux alias. Leur ajout numérique réversible ne résout toujours pas
+les deux anciens symboles FG42 et n'emprunte aucun échantillon d'une autre arme.
+
 ## Raccordement et limites
 
 `BenelliDescriptor_v2` reconstruit le laboratoire avec ces associations dans son

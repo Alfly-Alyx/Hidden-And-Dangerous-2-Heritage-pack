@@ -24,7 +24,7 @@ from build_modern_equipment_hose import digest
 from build_rigid_weapon_fpv_bank import CASES,compile_bank as rigid_bank,preview_meshes
 from build_thumb_grip_preview import detail
 from five_ds import parse_5ds
-from hand_pose_ik import author_pose,pinned_skin,validate_basis,finger_curls
+from hand_pose_ik import author_pose,pinned_skin,validate_basis,finger_curls,finger_splay
 from menu_gui_audit import parse_4ds_nodes
 from model_transform import matmul,rotation
 from modern_thumb_pose import apply,turns
@@ -62,7 +62,8 @@ def stow_motion(profile,case):
 def adjust(grips,thumb,side,adjustment):
     required={'contact_offset_delta','rotation_degrees'}
     if (side not in ('L','R') or not isinstance(adjustment,dict) or not required<=set(adjustment)
-            or set(adjustment)-required-{'finger_curl_degrees','finger_curl_overrides','thumb','elbow_pole','stow_elbow_pole','stow_elbow_path'}):
+            or set(adjustment)-required-{'finger_curl_degrees','finger_curl_overrides','finger_splay_degrees',
+                                        'thumb','elbow_pole','stow_elbow_pole','stow_elbow_path'}):
         raise ValueError('Unexpected hand adjustment')
     delta=asset.vector(adjustment['contact_offset_delta']);angles=asset.vector(adjustment['rotation_degrees'])
     if any(abs(v)>.1 for v in delta) or any(abs(v)>90 for v in angles):raise ValueError('Rigid hand adjustment outside domain')
@@ -79,6 +80,9 @@ def adjust(grips,thumb,side,adjustment):
                 'finger_curl_overrides':adjustment['finger_curl_overrides']}
         finger_curls(choice)
         grips[side]['finger_curl_overrides']=deepcopy(adjustment['finger_curl_overrides'])
+    if 'finger_splay_degrees' in adjustment:
+        finger_splay(adjustment)
+        grips[side]['finger_splay_degrees']=deepcopy(adjustment['finger_splay_degrees'])
     if 'thumb' in adjustment:
         thumb[side]=deepcopy(adjustment['thumb']);turns(thumb)
     for key in ('elbow_pole','stow_elbow_pole'):
@@ -191,7 +195,7 @@ def targets(rig,tracks,time,grips,*,clip_name=None):
 
 
 def curl_spec(grips):
-    return {side:{key:deepcopy(grip[key]) for key in ('finger_curl_degrees','finger_curl_overrides') if key in grip}
+    return {side:{key:deepcopy(grip[key]) for key in ('finger_curl_degrees','finger_curl_overrides','finger_splay_degrees') if key in grip}
             for side,grip in grips.items()}
 
 

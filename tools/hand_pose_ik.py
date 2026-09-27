@@ -89,7 +89,7 @@ def pinned_skin(raw):
 def finger_curls(grip):
     """Resolve bounded modern per-digit choices without changing the input."""
     if (not isinstance(grip,dict) or 'finger_curl_degrees' not in grip
-            or set(grip)-{'finger_curl_degrees','finger_curl_overrides'}):
+            or set(grip)-{'finger_curl_degrees','finger_curl_overrides','finger_splay_degrees'}):
         raise ValueError('Unexpected modern finger fields')
     def checked(angles):
         if (not isinstance(angles,list) or len(angles)!=3
@@ -103,6 +103,17 @@ def finger_curls(grip):
     result={str(i):base[:] for i in range(1,5)}
     for digit,angles in overrides.items():result[digit]=checked(angles)
     return result
+
+
+def finger_splay(grip):
+    """Independent base-joint spread; zero preserves the existing curl path."""
+    if not isinstance(grip,dict):raise ValueError('Invalid finger splay specification')
+    values=grip.get('finger_splay_degrees',{})
+    if (not isinstance(values,dict) or set(values)-{'1','2','3','4'}
+            or ('finger_splay_degrees' in grip and not values)
+            or any(type(v) not in (int,float) or not math.isfinite(v) or not -30<=v<=30 for v in values.values())):
+        raise ValueError('Unreviewed authored finger splay')
+    return {str(i):values.get(str(i),0) for i in range(1,5)}
 
 
 def author_pose(raw,targets,grips,*,arm_rotation_policy='minimal'):
@@ -120,7 +131,7 @@ def author_pose(raw,targets,grips,*,arm_rotation_policy='minimal'):
         if set(target)!={'position','rotation','pole'}:
             raise ValueError('Unexpected modern hand target or grip fields')
         wrist=vector(target['position']);turn=validate_basis(target['rotation']);pole=vector(target['pole'])
-        curls=finger_curls(grip)
+        curls=finger_curls(grip);splay=finger_splay(grip)
         names=[f'Bip01 {side} '+part for part in ('UpperArm','Forearm','Hand')]
         if any(name not in by_name for name in names):raise ValueError('Missing reviewed arm joint')
         rest=[skin['rest_world'][by_name[name]['index']] for name in names]
@@ -145,6 +156,10 @@ def author_pose(raw,targets,grips,*,arm_rotation_policy='minimal'):
                 basis=skin['rest_world'][by_name[name]['index']][0]
                 axis=unit(matvec(transpose(basis),[0,0,1]));half=math.radians(angle)/2
                 axes[name]=rotation([*[v*math.sin(half) for v in axis],math.cos(half)])
+                if segment==0 and splay[str(finger)]:
+                    spread_axis=unit(matvec(transpose(basis),[0,1,0]));half=math.radians(splay[str(finger)])/2
+                    spread=rotation([*[v*math.sin(half) for v in spread_axis],math.cos(half)])
+                    axes[name]=matmul(axes[name],spread)
     world={};poses={};max_position_change=0;max_scale_change=0
     for node in nodes:
         parent=node['parent_id'];local=node_transform(raw,node)

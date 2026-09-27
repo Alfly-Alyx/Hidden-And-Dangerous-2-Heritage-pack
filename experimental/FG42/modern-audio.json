@@ -1,0 +1,24 @@
+{
+  "schema_version":1,
+  "case":"FG42",
+  "provenance":"MODERNE_SYNTHESE_ORIGINALE",
+  "runtime_status":"pending",
+  "description":"Original procedural game-sound candidates, not a recording or reconstruction of a historical firearm. No borrowed samples. Layer timings are independent artistic choices, not recovered animation events or physical specifications. FG42_F and FG42_R remain unresolved historical symbols.",
+  "sample_rate_hz":22050,
+  "effects":{
+    "shot":{"stem":"MOD_FG42_F","duration_seconds":0.6,"seed":4242001,"layers":[
+      {"at":0,"length":0.1,"gain":0.45,"attack":0.0005,"decay":0.018,"tone_hz":[1800,500],"noise_mix":0.9,"noise_smoothing":0.9},
+      {"at":0.002,"length":0.28,"gain":0.30,"attack":0.001,"decay":0.055,"tone_hz":[180,55],"noise_mix":0.25,"noise_smoothing":0.12},
+      {"at":0.018,"length":0.50,"gain":0.15,"attack":0.004,"decay":0.13,"tone_hz":[470,120],"noise_mix":0.95,"noise_smoothing":0.16},
+      {"at":0.062,"length":0.1,"gain":0.10,"attack":0.0005,"decay":0.012,"tone_hz":[1500,650],"noise_mix":0.45,"noise_smoothing":0.8}
+    ]},
+    "reload":{"stem":"MOD_FG42_R","duration_seconds":3.2,"seed":4242002,"layers":[
+      {"at":0.12,"length":0.14,"gain":0.16,"attack":0.001,"decay":0.03,"tone_hz":[1800,700],"noise_mix":0.35,"noise_smoothing":0.7},
+      {"at":0.44,"length":0.24,"gain":0.12,"attack":0.006,"decay":0.09,"tone_hz":[400,160],"noise_mix":0.95,"noise_smoothing":0.23},
+      {"at":1.30,"length":0.32,"gain":0.09,"attack":0.008,"decay":0.12,"tone_hz":[300,120],"noise_mix":0.95,"noise_smoothing":0.15},
+      {"at":1.64,"length":0.18,"gain":0.22,"attack":0.001,"decay":0.035,"tone_hz":[1100,380],"noise_mix":0.4,"noise_smoothing":0.55},
+      {"at":2.32,"length":0.22,"gain":0.16,"attack":0.002,"decay":0.06,"tone_hz":[700,220],"noise_mix":0.75,"noise_smoothing":0.5},
+      {"at":2.62,"length":0.18,"gain":0.23,"attack":0.0008,"decay":0.028,"tone_hz":[1900,600],"noise_mix":0.45,"noise_smoothing":0.85}
+    ]}
+  }
+}

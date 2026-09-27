@@ -7,7 +7,7 @@ import sys
 import unittest
 from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from hand_pose_ik import two_bone,shortest_rotation,bend_plane_rotation,norm,sub,validate_basis,pinned_skin,finger_curls
+from hand_pose_ik import two_bone,shortest_rotation,bend_plane_rotation,norm,sub,validate_basis,pinned_skin,finger_curls,finger_splay
 from model_transform import matvec,determinant
 import hand_pose_ik as ik
 
@@ -28,6 +28,13 @@ class HandIKTests(unittest.TestCase):
             with self.assertRaises(ValueError):finger_curls({'finger_curl_degrees':[0,0,0],'finger_curl_overrides':overrides})
         for value in ({},None,{'finger_curl_degrees':[0,0,0],'other':0},{'finger_curl_degrees':[0,float('inf'),0]}):
             with self.assertRaises(ValueError):finger_curls(value)
+
+    def test_optional_splay_refuses_thumb_overrotation_and_nonfinite_values(self):
+        self.assertEqual(finger_splay({}),{str(i):0 for i in range(1,5)})
+        self.assertEqual(finger_splay({'finger_splay_degrees':{'1':15,'4':-20}}),{'1':15,'2':0,'3':0,'4':-20})
+        for value in ({},{'0':10},{'5':10},{1:10},[],{'1':31},{'1':True},{'4':float('nan')}):
+            with self.assertRaises(ValueError):finger_splay({'finger_splay_degrees':value})
+        with self.assertRaises(ValueError):finger_splay(None)
 
     def test_authored_digit_changes_only_its_three_local_rotations_on_invented_skeleton(self):
         from model_transform import world_transforms
@@ -52,13 +59,20 @@ class HandIKTests(unittest.TestCase):
                     'pole':[sign*.3,-.25,0]} for s,sign in (('L',-1),('R',1))}
         normal={s:{'finger_curl_degrees':[25,20,10]} for s in ('L','R')}
         changed=deepcopy(normal);changed['R']['finger_curl_overrides']={'4':[35,40,15]}
+        spread=deepcopy(normal);spread['R']['finger_splay_degrees']={'1':15}
+        zero=deepcopy(normal);zero['R']['finger_splay_degrees']={'1':0}
         with patch.object(ik,'pinned_skin',return_value=('invented',skin)):
             a,_=ik.author_pose(raw,targets,normal,arm_rotation_policy='bend_plane')
             b,_=ik.author_pose(raw,targets,changed,arm_rotation_policy='bend_plane')
+            c,_=ik.author_pose(raw,targets,spread,arm_rotation_policy='bend_plane')
+            d,_=ik.author_pose(raw,targets,zero,arm_rotation_policy='bend_plane')
         expected={'Bip01 R Finger4','Bip01 R Finger41','Bip01 R Finger42'}
         self.assertEqual({name for name in a if a[name]!=b[name]},expected)
+        self.assertEqual({name for name in a if a[name]!=c[name]},{'Bip01 R Finger1'})
+        self.assertEqual(a,d)
         for name in a:
-            for key in ('position','scale'):self.assertEqual(a[name][key],b[name][key])
+            for key in ('position','scale'):
+                self.assertEqual(a[name][key],b[name][key]);self.assertEqual(a[name][key],c[name][key])
 
     def test_both_lengths_and_pole_side_are_preserved(self):
         elbow=two_bone([0,0,0],[0,.4,0],[1,0,0],.3,.25)

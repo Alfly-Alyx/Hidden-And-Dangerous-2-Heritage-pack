@@ -8,6 +8,7 @@ automatic profile promotion, game launch or contact qualification.
 import argparse
 from copy import deepcopy
 import json
+import itertools
 import math
 from pathlib import Path
 import sys
@@ -20,7 +21,7 @@ from build_rigid_weapon_fpv_bank import compile_bank,preview_meshes
 from build_rigid_weapon_hand_bank import BASE_PROFILE,PROFILE,RECIPE,configuration,placed_tracks,targets,curl_spec
 from fit_modern_grip_candidates import digit_indices
 from fit_rigid_weapon_grips import finite_digit_gaps
-from hand_pose_ik import author_pose,pinned_skin,finger_curls
+from hand_pose_ik import author_pose,pinned_skin,finger_curls,finger_splay
 from modern_contact_cells import cells,prepare_surface,measure_surface_cells
 from modern_thumb_pose import apply,turns
 from five_ds import parse_5ds
@@ -31,7 +32,10 @@ CONTACTS={'1':'MOD_trigger','2':'MOD_stock','3':'MOD_stock','4':'MOD_stock'}
 
 def refine(seed,evaluate):
     """Never trade a new crossing for a better proximity score."""
-    finger_curls({'finger_curl_degrees':seed})
+    if not isinstance(seed,list) or len(seed) not in (3,4):raise ValueError('Invalid finger search shape')
+    finger_curls({'finger_curl_degrees':seed[:3]})
+    if len(seed)==4:finger_splay({'finger_splay_degrees':{'1':seed[3]}})
+    bounds=[(-110,110)]*3+([(-30,30)] if len(seed)==4 else [])
     def checked(values):
         cost=evaluate(values)
         if (not isinstance(cost,tuple) or len(cost)!=2 or type(cost[0]) is not int or cost[0]<0
@@ -42,15 +46,24 @@ def refine(seed,evaluate):
     for step in (15,7.5,3.75,1.875,.9375):
         for sweep in range(3):
             changed=False
-            for axis in range(3):
-                for value in (max(-110,best[axis]-step),min(110,best[axis]+step)):
+            for axis,(lo,hi) in enumerate(bounds):
+                for value in (max(lo,best[axis]-step),min(hi,best[axis]+step)):
                     trial=best[:];trial[axis]=value;candidate=checked(trial)
                     if candidate<cost:best,cost,changed=trial,candidate,True
             if not changed:break
     return best,cost
 
 
-def fit(hands,profile):
+def index_seeds(seed):
+    if not isinstance(seed,list) or len(seed)!=4:raise ValueError('Index grid requires curls and splay')
+    finger_curls({'finger_curl_degrees':seed[:3]});finger_splay({'finger_splay_degrees':{'1':seed[3]}})
+    return [seed[:]]+[list(row) for row in itertools.product((-90,-45,0),(-90,-45,0),(-90,-45,0),(-30,0,30))
+                       if list(row)!=seed]
+
+
+def fit(hands,profile,*,with_splay=False,index_grid=False):
+    if type(with_splay) is not bool:raise ValueError('Invalid splay search policy')
+    if type(index_grid) is not bool or (index_grid and not with_splay):raise ValueError('Index grid requires splay search')
     recipe,rig,clips,_=compile_bank('ZK383')
     grips,thumb,translation,_=configuration(profile,json.loads(BASE_PROFILE.read_text(encoding='utf-8')),
                                            json.loads(RECIPE.read_text(encoding='utf-8')),'ZK383')
@@ -73,7 +86,8 @@ def fit(hands,profile):
         def measure(values):
             key=tuple(values)
             if key not in cache:
-                trial=deepcopy(chosen);trial['R'].setdefault('finger_curl_overrides',{})[digit]=values[:]
+                trial=deepcopy(chosen);trial['R'].setdefault('finger_curl_overrides',{})[digit]=values[:3]
+                if with_splay:trial['R'].setdefault('finger_splay_degrees',{})[digit]=values[3]
                 variants={}
                 for source,hand,bases,digits in prepared:
                     poses,_=author_pose(hand,wanted,trial,arm_rotation_policy='bend_plane')
@@ -86,13 +100,20 @@ def fit(hands,profile):
                       sum(v['finite_digit_gap']**2 for v in variants.values()))
                 cache[key]=(cost,variants)
             return cache[key][0]
-        seed=finger_curls(chosen['R'])[digit];measure(seed);initial=deepcopy(cache[tuple(seed)][1])
-        values,cost=refine(seed,measure)
-        chosen['R'].setdefault('finger_curl_overrides',{})[digit]=values
+        seed=finger_curls(chosen['R'])[digit]+([finger_splay(chosen['R'])[digit]] if with_splay else [])
+        measure(seed);initial=deepcopy(cache[tuple(seed)][1])
+        candidates=index_seeds(seed) if digit=='1' and index_grid else [seed]
+        start=min(candidates,key=lambda values:(*measure(values),sum((a-b)**2 for a,b in zip(values,seed))))
+        values,cost=refine(start,measure)
+        chosen['R'].setdefault('finger_curl_overrides',{})[digit]=values[:3]
+        if with_splay:chosen['R'].setdefault('finger_splay_degrees',{})[digit]=values[3]
         rows[digit]={'contact_piece':CONTACTS[digit],'before':initial,'after':cache[tuple(values)][1],
-                     'angles':values,'cost':list(cost),'evaluations':len(cache)}
+                     'angles':values,'cost':list(cost),'evaluations':len(cache),
+                     'refinement_seed':start,'starting_candidates':len(candidates)}
         print('ZK383 R digit',digit,json.dumps(rows[digit]),file=sys.stderr,flush=True)
     return {'finger_curl_overrides':chosen['R']['finger_curl_overrides'],'digits':rows,
+        'finger_splay_degrees':chosen['R'].get('finger_splay_degrees'),
+        'individual_base_spread_authored':with_splay,
         'input_curls':before,'all_equipment_pieces_checked':True,'all_hand_faces_checked':True,
         'both_hand_variants_checked':True,'idle_sample_time':0,'self_intersection_checked':False,
         'serialized_animation_contacts_checked':False,'camera_qualified':False,'auto_promoted':False}
@@ -101,13 +122,16 @@ def fit(hands,profile):
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--game',type=Path,required=True)
     parser.add_argument('--archives-only',action='store_true');parser.add_argument('--profile',type=Path,default=PROFILE)
+    parser.add_argument('--splay',action='store_true')
+    parser.add_argument('--index-grid',action='store_true')
     parser.add_argument('--json-output',type=Path,required=True);args=parser.parse_args(argv)
     try:
         if args.json_output.exists():raise ValueError('Use a fresh finger report')
         profile=json.loads(args.profile.read_text(encoding='utf-8'));hands,excluded=read_hands(args.game,archives_only=args.archives_only)
         report={'schema_version':1,'provenance':'MODERNE','runtime_status':'pending','case':'ZK383','side':'R',
             'profile_sha256':digest(json.dumps(profile,sort_keys=True).encode()),'excluded_loose_overrides':excluded,
-            'result':fit(hands,profile),'commercial_geometry_exported':False,'commercial_poses_exported':False,
+            'result':fit(hands,profile,with_splay=args.splay,index_grid=args.index_grid),
+            'commercial_geometry_exported':False,'commercial_poses_exported':False,
             'game_started':False,'game_modified':False,'contact_qualified':False}
         with args.json_output.open('x',encoding='utf-8') as stream:json.dump(report,stream,indent=2);stream.write('\n')
         return 0

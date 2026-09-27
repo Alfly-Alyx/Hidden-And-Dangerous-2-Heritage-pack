@@ -28,7 +28,17 @@ géométrie. Les prises et trajectoires sont des créations modernes explicites.
 Six groupes isolés ont transmis 234 demandes natives à 54 chargements
 d'animations. Les contrôles de contacts et de poignets conservent leurs
 défauts mesurés ; un correcteur Python hors jeu ne remplace pas son
-raccordement au client. Aucun descripteur ni identifiant n'est alloué.
+raccordement au client. Les surfaces v7 sont maintenant contrôlées avant et
+après correction sur 3 094 poses, sans traversée ; 36 instants natifs gardent
+un écart brut de poignet hors seuil. Une candidate ZK-383 distincte passe ses
+contrôles numériques mais reste à revoir visuellement. Aucun identifiant
+n'est alloué dans le jeu.
+
+La MG34 dispose ensuite d'un [descripteur et de tables privées réversibles](../MG34_PORTABLE/DESCRIPTEUR_ET_TABLES.md),
+sans activation. FG42 et ZK-383 ont chacun deux [effets sonores modernes originaux](SONS_MODERNES.md)
+et des références numériques ajoutées dans une copie privée ; aucun son
+historique absent n'est déclaré retrouvé. Écoute, descripteurs FG42/ZK-383,
+événements et comportement restent à réaliser/qualifier.
 
 Les lance-flammes disposent maintenant de
 [six composants indépendants](../FLAMMENWERFER_35_AND_NO2/COMPOSANTS_MODERNES.md) :

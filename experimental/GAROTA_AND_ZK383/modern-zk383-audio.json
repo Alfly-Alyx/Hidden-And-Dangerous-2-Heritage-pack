@@ -1,0 +1,24 @@
+{
+  "schema_version":1,
+  "case":"ZK383",
+  "provenance":"MODERNE_SYNTHESE_ORIGINALE",
+  "runtime_status":"pending",
+  "description":"Original procedural sound-design candidates for the modern visual interpretation. No historical sound is claimed or sampled. Chosen durations and events are artistic only and are not synchronized to gameplay or animations.",
+  "sample_rate_hz":22050,
+  "effects":{
+    "shot":{"stem":"MOD_ZK383_F","duration_seconds":0.45,"seed":383001,"layers":[
+      {"at":0,"length":0.08,"gain":0.40,"attack":0.0004,"decay":0.014,"tone_hz":[2200,700],"noise_mix":0.88,"noise_smoothing":0.95},
+      {"at":0.002,"length":0.20,"gain":0.24,"attack":0.0008,"decay":0.043,"tone_hz":[230,70],"noise_mix":0.3,"noise_smoothing":0.15},
+      {"at":0.014,"length":0.36,"gain":0.11,"attack":0.003,"decay":0.09,"tone_hz":[540,180],"noise_mix":0.95,"noise_smoothing":0.2},
+      {"at":0.04,"length":0.09,"gain":0.11,"attack":0.0005,"decay":0.01,"tone_hz":[2100,800],"noise_mix":0.4,"noise_smoothing":0.8}
+    ]},
+    "reload":{"stem":"MOD_ZK383_R","duration_seconds":3.2,"seed":383002,"layers":[
+      {"at":0.10,"length":0.12,"gain":0.15,"attack":0.001,"decay":0.027,"tone_hz":[1900,800],"noise_mix":0.4,"noise_smoothing":0.8},
+      {"at":0.38,"length":0.25,"gain":0.11,"attack":0.006,"decay":0.085,"tone_hz":[500,170],"noise_mix":0.95,"noise_smoothing":0.25},
+      {"at":1.26,"length":0.25,"gain":0.10,"attack":0.008,"decay":0.095,"tone_hz":[350,150],"noise_mix":0.95,"noise_smoothing":0.18},
+      {"at":1.62,"length":0.16,"gain":0.21,"attack":0.001,"decay":0.03,"tone_hz":[1400,500],"noise_mix":0.45,"noise_smoothing":0.65},
+      {"at":2.28,"length":0.19,"gain":0.14,"attack":0.002,"decay":0.05,"tone_hz":[900,280],"noise_mix":0.7,"noise_smoothing":0.6},
+      {"at":2.57,"length":0.15,"gain":0.21,"attack":0.0008,"decay":0.023,"tone_hz":[2300,750],"noise_mix":0.45,"noise_smoothing":0.9}
+    ]}
+  }
+}

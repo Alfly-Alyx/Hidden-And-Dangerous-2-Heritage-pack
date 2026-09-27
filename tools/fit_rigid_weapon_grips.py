@@ -79,11 +79,20 @@ def adjustment(values,side):
             'thumb':{'opposition_degrees':values[9],'curl_degrees':list(values[10:12])}}
 
 
-def fit(hand_raw,case,side,compiled,profile,*,seed_current_profile=False,index_to_trigger=False):
-    if any('finger_curl_overrides' in h for h in profile['cases'][case]['hands'].values()):
+def stock_wrist_allowed(wrist,translation):
+    """Explicit artistic half-spaces, not a recovered pose or anatomical proof."""
+    from hand_pose_ik import vector
+    wrist,translation=vector(wrist),vector(translation)
+    return wrist[1]<=translation[1]-.02 and wrist[2]<=translation[2]-.12
+
+
+def fit(hand_raw,case,side,compiled,profile,*,seed_current_profile=False,index_to_trigger=False,stock_posture=False):
+    if any(set(h)&{'finger_curl_overrides','finger_splay_degrees'} for h in profile['cases'][case]['hands'].values()):
         raise ValueError('Global grip fitter does not support independent finger choices')
     if type(index_to_trigger) is not bool or (index_to_trigger and (case,side)!=('ZK383','R')):
         raise ValueError('Unreviewed independent index contact case')
+    if type(stock_posture) is not bool or (stock_posture and not index_to_trigger):
+        raise ValueError('Stock posture requires the explicit ZK383 index contact')
     recipe,rig,clips,_=compiled
     base=json.loads(BASE_PROFILE.read_text(encoding='utf-8'));spec=json.loads(RECIPE.read_text(encoding='utf-8'))
     # Fit absolute adjustments relative to the pinned modern F35 seed.
@@ -112,7 +121,10 @@ def fit(hand_raw,case,side,compiled,profile,*,seed_current_profile=False,index_t
 
     def points_for(values):
         chosen,turned=adjust(grips,thumb,side,adjustment(values,side))
-        poses,_=author_pose(hand_raw,targets(rig,gear,0,chosen),
+        wanted=targets(rig,gear,0,chosen)
+        if stock_posture and not stock_wrist_allowed(wanted[side]['position'],translation):
+            raise ValueError('Modern stock wrist posture outside authoring domain')
+        poses,_=author_pose(hand_raw,wanted,
             {s:{'finger_curl_degrees':g['finger_curl_degrees']} for s,g in chosen.items()},arm_rotation_policy='bend_plane')
         return posed_hand_mesh(hand_raw,apply(poses,bases,turned),1).points
 
@@ -123,8 +135,10 @@ def fit(hand_raw,case,side,compiled,profile,*,seed_current_profile=False,index_t
             evaluations+=1
             try:points=points_for(values)
             except ValueError as error:
-                if 'Unreachable or singular' not in str(error):raise
-                cache[key]=(math.inf,{'unreachable':True});return cache[key]
+                if 'Unreachable or singular' in str(error):reason='unreachable'
+                elif str(error)=='Modern stock wrist posture outside authoring domain':reason='outside_modern_posture'
+                else:raise
+                cache[key]=(math.inf,{reason:True});return cache[key]
             penalty,metrics=probe_penalty(points,indices,faces,volumes,witnesses)
             gaps=[finite_digit_gaps(points,{digit:indices},digit_contacts[digit])[0] for digit,indices in digits.items()]
             score=penalty+sum(g*g for g in gaps)
@@ -144,6 +158,7 @@ def fit(hand_raw,case,side,compiled,profile,*,seed_current_profile=False,index_t
         adjustment(seed,side)
     best=seed;score=evaluate(best)[0]
     if not math.isfinite(score):best=initial[:];score=evaluate(best)[0]
+    if not math.isfinite(score):raise ValueError('No feasible initial grip candidate')
     before=evaluate(initial)[1];feedback=[]
     for iteration,(linear,angular) in enumerate(((.01,15),(.005,7.5),(.0025,3.75),(.00125,1.875),(.000625,.9375))):
         if iteration>=2:
@@ -160,6 +175,8 @@ def fit(hand_raw,case,side,compiled,profile,*,seed_current_profile=False,index_t
         print(case,side,'fit level',iteration,'objective',score,'evaluations',evaluations,file=sys.stderr,flush=True)
     return {'adjustment':adjustment(best,side),'before':before,'after':evaluate(best)[1],
         'digit_contact_pieces':{str(i):'MOD_trigger' if i==1 and index_to_trigger else GRIPS[case][side] for i in range(5)},
+        'modern_stock_posture':{'max_wrist_y_relative_to_placement':-.02,
+                                'max_wrist_z_relative_to_placement':-.12} if stock_posture else None,
         'evaluations':evaluations,'private_surface_feedback_counts':feedback,'unchecked_pieces':unchecked,
         'only_primary_hand_variant_idle_pose_checked':True,'auto_promoted':False,'contact_qualified':False}
 
@@ -170,6 +187,7 @@ def main(argv=None):
     parser.add_argument('--case',choices=CASES);parser.add_argument('--side',choices=('L','R'))
     parser.add_argument('--seed-current-profile',action='store_true')
     parser.add_argument('--index-to-trigger',action='store_true')
+    parser.add_argument('--stock-posture',action='store_true')
     parser.add_argument('--json-output',type=Path,required=True);args=parser.parse_args(argv)
     try:
         if args.json_output.exists():raise ValueError('Report exists; use a fresh name')
@@ -178,7 +196,8 @@ def main(argv=None):
         for case in ([args.case] if args.case else CASES):
             compiled=compile_bank(case)
             rows[case]={s:fit(hands[HAND_MODELS[0]],case,s,compiled,profile,
-                            seed_current_profile=args.seed_current_profile,index_to_trigger=args.index_to_trigger)
+                            seed_current_profile=args.seed_current_profile,index_to_trigger=args.index_to_trigger,
+                            stock_posture=args.stock_posture)
                         for s in ([args.side] if args.side else ('L','R'))}
         report={'schema_version':1,'provenance':'MODERNE','runtime_status':'pending','cases':rows,
             'source_profile_sha256':digest(json.dumps(profile,sort_keys=True).encode()),
