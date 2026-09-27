@@ -90,3 +90,7 @@ La chaîne joint→palette→peau est qualifiée **sur ces entrées et dans ce d
 La sélection des poses par les animations Benelli, leur initialisation réelle,
 les transitions, la caméra, les événements, les sons et le rendu du jeu demeurent
 distincts. Aucun prototype n'est activé ou déclaré jouable.
+
+Le [raccordement aux canaux Benelli](CHAINE_ANIMATION_MAINS.md) est maintenant
+contrôlé séparément avec une pose initiale de diagnostic explicitement fournie,
+sans revendiquer la politique d'initialisation ou les transitions du client.
