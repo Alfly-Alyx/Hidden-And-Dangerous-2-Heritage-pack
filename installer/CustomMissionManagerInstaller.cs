@@ -176,6 +176,8 @@ namespace HD2CommunityInstaller
             string manager = InstallerCore.SafeGameTarget(
                 gamePath, "HD2-Custom-Mission-Manager.exe");
             ValidateFile(Files[0], File.ReadAllBytes(manager));
+            SoloMissionAdaptationInstaller.RepairExplorationModifiedTrees(
+                gamePath, journal, prepared, progress);
 
             List<string> outputs = new List<string>(MenuRuntimeFiles);
             string textRoot = InstallerCore.SafeGameTarget(gamePath, "Text");
@@ -257,6 +259,12 @@ namespace HD2CommunityInstaller
         internal static string RunManager(
             string manager, params string[] arguments)
         {
+            return RunManagerWithProgress(manager, null, arguments);
+        }
+
+        internal static string RunManagerWithProgress(
+            string manager, Action<string> onOutput, params string[] arguments)
+        {
             ProcessStartInfo start = new ProcessStartInfo {
                 FileName = manager,
                 Arguments = String.Join(" ", arguments.Select(QuoteArgument)),
@@ -274,7 +282,11 @@ namespace HD2CommunityInstaller
                 StringBuilder output = new StringBuilder();
                 StringBuilder error = new StringBuilder();
                 process.OutputDataReceived += delegate(object sender, DataReceivedEventArgs data) {
-                    if (data.Data != null) output.AppendLine(data.Data);
+                    if (data.Data != null)
+                    {
+                        output.AppendLine(data.Data);
+                        if (onOutput != null) onOutput(data.Data);
+                    }
                 };
                 process.ErrorDataReceived += delegate(object sender, DataReceivedEventArgs data) {
                     if (data.Data != null) error.AppendLine(data.Data);

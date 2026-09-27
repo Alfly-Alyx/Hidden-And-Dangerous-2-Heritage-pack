@@ -177,12 +177,15 @@ namespace HD2CommunityInstaller
             int written = 0;
             long flags = 0;
             long boundaries = 0;
+            Dictionary<string, string> managedTrees = ManagedMissionTreeInventory.ReadHashes(gamePath);
             foreach (string tree in Directory.GetFiles(
                 missionsRoot, "tree.klz", SearchOption.AllDirectories))
             {
                 string target = Path.GetFullPath(tree);
                 if (!target.StartsWith(gameRoot, StringComparison.OrdinalIgnoreCase))
                     throw new InvalidDataException("Arbre de mission hors du dossier du jeu.");
+                // The custom-mission manager owns and checks these exact file hashes.
+                if (managedTrees.ContainsKey(target)) continue;
                 byte[] data = File.ReadAllBytes(target);
                 TreePatchStats stats = TreeKlzPatcher.Patch(data);
                 if (stats.ChangedItems == 0) continue;

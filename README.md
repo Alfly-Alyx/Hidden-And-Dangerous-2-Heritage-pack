@@ -75,6 +75,8 @@ The report tells the story of the findings: cut content, mission variants, Londo
 
 ## Current status
 
+Version **0.10.1** corrects reinstalling the custom mission menu and shows progress while the 11 solo adaptations are created. The adaptations remain in their own menu category. Free exploration leaves their manager-owned mission files intact; the original solo missions are unchanged.
+
 Version **0.10.0** consolidates:
 
 - exact detection of features that are already installed;

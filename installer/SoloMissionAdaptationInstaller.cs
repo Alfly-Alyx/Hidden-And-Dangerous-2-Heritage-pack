@@ -91,11 +91,12 @@ namespace HD2CommunityInstaller
             {
                 InstallerCore.Report(progress,
                     "Creation des 11 adaptations solo depuis les archives du jeu...");
-                string export = CustomMissionManagerInstaller.RunManager(
-                    manager, "--export-heritage-solo", gamePath, stage);
+                string export = CustomMissionManagerInstaller.RunManagerWithProgress(
+                    manager, progress, "--export-heritage-solo", gamePath, stage);
                 ValidateStage(stage);
                 CopyPackages(stage, gamePath, journal, prepared);
-                InstallerCore.Report(progress, export.Trim());
+                if (!String.IsNullOrWhiteSpace(export))
+                    InstallerCore.Log(export.Trim());
                 InstallerCore.Report(progress,
                     "Onze adaptations pretes pour le menu Adaptations multijoueur.");
             }
@@ -105,6 +106,57 @@ namespace HD2CommunityInstaller
             }
         }
 
+        public static void RepairExplorationModifiedTrees(
+            string gamePath, StateJournal journal, HashSet<string> prepared,
+            Action<string> progress)
+        {
+            Dictionary<string, string> managed =
+                ManagedMissionTreeInventory.ReadHashes(gamePath);
+            int repaired = 0;
+            foreach (Adaptation adaptation in Adaptations)
+            {
+                string package = InstallerCore.SafeGameTarget(
+                    gamePath, "CustomMissions/" + adaptation.PackageFolder);
+                if (!OwnedPackage(package, adaptation.Id)) continue;
+                string relative = "Missions/" + adaptation.MissionDirectory + "/tree.klz";
+                string target = InstallerCore.SafeGameTarget(gamePath, relative);
+                string expectedHash;
+                if (!managed.TryGetValue(target, out expectedHash)
+                    || !File.Exists(target)) continue;
+                string source = Path.Combine(package, "payload", "Missions",
+                    adaptation.MissionDirectory, "tree.klz");
+                if (!File.Exists(source)) continue;
+                byte[] original = File.ReadAllBytes(source);
+                if (!String.Equals(CmpInstaller.ComputeSha256(original), expectedHash,
+                        StringComparison.OrdinalIgnoreCase)) continue;
+                byte[] current = File.ReadAllBytes(target);
+                if (current.SequenceEqual(original)) continue;
+                byte[] patched = (byte[])original.Clone();
+                TreeKlzPatcher.Patch(patched);
+                // Only undo the exact transformation made by the older setup.
+                // Any other user edit remains untouched for the manager to report.
+                if (!current.SequenceEqual(patched)) continue;
+
+                InstallerCore.PrepareTarget(
+                    gamePath, relative, target, journal, prepared);
+                string temporary = target + ".hd2pack.tmp";
+                try
+                {
+                    File.WriteAllBytes(temporary, original);
+                    File.Copy(temporary, target, true);
+                    journal.RecordHash(relative, CmpInstaller.ComputeSha256(target));
+                }
+                finally
+                {
+                    if (File.Exists(temporary)) File.Delete(temporary);
+                }
+                repaired++;
+            }
+            if (repaired > 0)
+                InstallerCore.Report(progress,
+                    "Missions personnalisees remises sous gestion apres exploration libre : "
+                    + repaired + ".");
+        }
         private static void ValidateStage(string stage)
         {
             HashSet<string> expected = new HashSet<string>(
