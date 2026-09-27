@@ -82,9 +82,11 @@ Seuls le code original, les tests synthétiques et la documentation sont publié
    le [plan structurel mains/arme](MAINS_ET_CIBLES_FPV.md) relie maintenant
    les deux mains commerciales aux neuf animations, sans inventer de poses.
 4. Compléter l'étude des sauvegardes et de liberté globale d'identifiant.
-5. Préparer le déploiement isolé et la gestion des surcharges ; la construction
-   binaire réversible des deux tables et la [conservation des tables personnelles](SURCHARGES_CENTRALES.md)
-   sont réalisées séparément. Les surcharges d'autres ressources restent à traiter.
+5. Qualifier les autres surcharges et l'intégration moteur ; la construction
+   binaire réversible, la [conservation des tables personnelles](SURCHARGES_CENTRALES.md)
+   et le [déploiement isolé avec retrait vérifié](DEPLOIEMENT_ISOLE.md) sont réalisés.
+   Le contrôle des ressources constate l'absence de conflit dans l'instantané étudié,
+   sans généraliser la compatibilité à d'autres installations.
 
 Les essais de comportement en moteur et multijoueur viennent ensuite. Ce lot
 ne permet donc pas d'annoncer « il ne reste que les tests ».

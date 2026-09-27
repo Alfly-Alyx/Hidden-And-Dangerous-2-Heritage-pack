@@ -66,4 +66,6 @@ disponibles. Sans nom de sortie, seule une construction en mémoire a lieu.
 Les textes conservent déjà leur propre instantané multilingue. Les surcharges
 de **modèles, textures, sons et autres ressources** restent un autre contrat :
 elles ne sont ni fusionnées ni considérées compatibles par cette option.
-La transaction de fichiers dans une copie isolée reste à réaliser séparément.
+La [transaction de fichiers dans une copie isolée](DEPLOIEMENT_ISOLE.md) est
+désormais réalisée et vérifiée séparément ; elle n'autorise pas l'installation
+dans le jeu personnel ni ne valide le comportement du prototype.
