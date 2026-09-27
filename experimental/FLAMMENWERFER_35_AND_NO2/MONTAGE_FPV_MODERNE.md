@@ -77,11 +77,40 @@ avec aperçus sont `F35_FlatFPV_Motion_v2` et `F2_FlatFPV_Motion_v2`, sous
 par empreinte contre ceux du rapport ; aucun résultat n'est déduit des seuls
 tests de référence.
 
+## Association native des os au skin racine
+
+Le banc `ls3d_skin_binding_oracle.py` exécute la découverte des os
+`0x100527d0..0x1005295e`, sa descente récursive et les consultations de type
+visuel `0x10057050`. La hiérarchie après chargement reste fournie explicitement,
+mais le parcours, le tri par identifiant d'os et l'écriture du propriétaire de
+chaque joint sont effectués par les instructions natives.
+
+Les deux modèles retrouvent leurs **huit os**, dans l'ordre 0–7, tous rattachés
+au skin racine. Les autres pièces ne sont pas confondues avec les os : 20/18
+consultations natives du type de visuel pour F35/No. 2. Aucun skin imbriqué ne
+coupe leur parcours. Le contrôle de 77 arbres synthétiques couvre aussi les
+identifiants réordonnés, chaînes de 64 joints, absence de géométrie et skins
+imbriqués ; 49 associations réussies totalisent 550 os. Onze tests supplémentaires.
+
+Point important : un skin imbriqué arrête **la boucle des frères de son niveau**,
+pas uniquement la descente dans ses enfants. Ce comportement natif est conservé
+dans la référence ; il n'est pas présent dans les deux montages aplatis.
+Identifiants dupliqués, trous dans les os collectés et hiérarchies hors domaine
+sont refusés, sans créer des entrées de palette nulles.
+
+Rapport privé : `.analysis/skin-binding-native-20260927.json`, avec les mêmes
+empreintes de modèles que ci-dessus. Il s'agit d'un skin neuf : libération du
+pointeur nul et allocation bornée de son tableau sont des doubles. Le calcul
+des limites `0x10052330` est également un double explicitement signalé ; il
+n'est **pas exécuté**. Chargement/copie du modèle, palette, skin et rendu restent
+hors de ce banc. Les arbres et les champs hors association sont préservés.
+
 ## Reproduction et limites
 
 ```powershell
 .\.venv\Scripts\python.exe tools/build_equipment_fpv_animation.py --case F35 --game 'D:\Games\Hidden and Dangerous 2' --archives-only --previews --output-name F35_FlatFPV_nouveau
 .\.venv\Scripts\python.exe tools/fpv_flat_animation_native_audit.py --game 'D:\Games\Hidden and Dangerous 2' --archives-only --json-output '.analysis/fpv-flat-native_nouveau.json'
+.\.venv\Scripts\python.exe tools/skin_binding_audit.py --library 'D:\Games\Hidden and Dangerous 2\LS3DF.dll' --json-output '.analysis/skin-binding_nouveau.json'
 ```
 
 Les [associations et lectures d'animations](RESOLUTION_ANIMATIONS_FPV.md) sont
