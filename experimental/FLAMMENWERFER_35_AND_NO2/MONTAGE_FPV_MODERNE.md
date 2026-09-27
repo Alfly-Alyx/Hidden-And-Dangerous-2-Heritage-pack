@@ -4,6 +4,10 @@
 construits. Ils remplacent la hiérarchie d'auteur par une hiérarchie compatible
 avec la sélection observée dans le client. **Ce n'est pas une arme jouable.**
 
+Les [banques au repère de vue subjective corrigé](REPERES_VUE_SUBJECTIVE.md)
+constituent désormais l'étape suivante. Ce document conserve les empreintes
+et résultats de l'aplatissement initial, sans les attribuer aux nouvelles banques.
+
 ## Contrainte trouvée dans le client
 
 Le chargeur d'objet `0x7df970` demande `fpv_weapon` avec le masque **1**, qui
