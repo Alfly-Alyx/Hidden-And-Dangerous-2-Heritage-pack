@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **950 tests Python réussis sur 951 dans la copie de publication**; un test de lien symbolique non exécuté
+- **973 tests Python réussis sur 974 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -221,6 +221,14 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   native. 720 mises à jour / 8 706 appels de pose sur les quatre banques,
   résidu nul ; treize tests nouveaux. Poses persistantes et ordre des fins
   contrôlés, condition initiale explicite ; chargeur, événements et rendu exclus.
+- [Décision de transition](SELECTION_PISTE_FPV.md#décision-amont-et-copie-de-la-piste-précédente) :
+  3 112 cas, 2 852 consultations natives d'activité et 1 308 copies de piste
+  précédente. Capacité de liste préparée ; attachement/rafraîchissement simulés.
+- [Enchaînements en mémoire persistante](ENCHAINEMENT_ANIMATIONS_NATIF.md) :
+  attachement, poids, lecture et remplacement de clips sans réinitialisation des
+  poses. Huit scénarios sur quatre banques de lance-flammes : 1 152 opérations,
+  352 avancées et 25 456 calculs de pose, écart nul. Décision cliente et chargeur
+  encore séparés ; contacts pendant les mélanges, scène et rendu non qualifiés.
 - [Demandes de ressources FPV](../BENELLI_M4_ADDITIVE/DEMANDES_RESSOURCES_FPV.md) :
   treize cas de noms de mains et 156 demandes d'animation contrôlés jusqu'aux
   arguments des chargeurs, sans les appeler. Quinze tests nouveaux ; laboratoires

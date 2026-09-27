@@ -9,7 +9,8 @@ L'image privée du client 1.12 est épinglée : SHA-256
 Le banc entre soit à `0x493186` (mélange), soit à `0x4931d3` (immédiat),
 puis s'arrête à `0x493291`. **La branche d'entrée et la liste d'anciennes
 pistes sont fournies explicitement.** La décision amont et l'ajout dans
-cette liste ne sont pas exécutés.
+cette liste ne sont pas exécutés par ce premier banc ; leur contrôle séparé
+est décrit plus bas.
 
 ## Comportement vérifié
 
@@ -53,5 +54,39 @@ supplémentaires protègent calculs, refus et limites d'exécution/écriture.
 
 L'image et le rapport sont privés ; un nom neuf est exigé. Aucun jeu ni
 installateur n'est lancé. La sélection des états par les actions du joueur,
-la décision de mélanger, les ressources réellement chargées et la continuité
+les ressources réellement chargées et la continuité
 visuelle restent des obligations distinctes.
+
+## Décision amont et copie de la piste précédente
+
+Le nouveau `fpv_transition_decision_oracle.py` entre à `0x492f8e` et exécute
+la décision cliente ainsi que `IsAnimationActive` (`0x10034600..0x1003462b`)
+dans la DLL épinglée. L'activité est lue dans un contrôleur synthétique ; elle
+n'est plus remplacée par une réponse de méthode simulée. La capacité de la
+liste est préparée avec une place libre, ce qui exclut son agrandissement.
+
+En l'absence de clip, le chemin immédiat ne consulte pas l'activité. Un clip
+inactif ou un contrôleur absent entraîne aussi le chemin immédiat. Un clip
+actif est copié par les instructions natives dans la liste précédente : ses
+16 octets (identifiant, piste, taux et poids) sont conservés, **y compris un
+taux nul**. Le nouveau clip commence alors à poids zéro et taux 5. Les anciens
+enregistrements et le contrôleur restent intacts. La recherche de piste garde
+la règle 0/1/2 puis 3 non vérifié, sans correction silencieuse.
+
+Rapport privé `.analysis/fpv-transition-decision-20260927.json` : **3 112 cas**,
+**2 852 consultations natives**, **1 308 ajouts natifs**. Objets 0/359/360/361/499,
+13 états, quatre canaux, tous les sous-ensembles distincts de pistes précédentes
+pour chacun des huit emplacements courants, et permutations de 0/1/2/3. Les
+152 sélections synthétiques de la piste 3 déjà occupée ne prouvent toujours pas
+qu'une telle collision est accessible dans une partie. Onze tests supplémentaires
+protègent les références et gardes d'exécution/écriture.
+
+L'attachement et le rafraîchissement restent enregistrés par des doubles dans
+ce banc ; l'allocateur est interdit, pas simulé. Le
+[banc de lecture persistante](ENCHAINEMENT_ANIMATIONS_NATIF.md) exécute ensuite
+attachement/poids/lecture dans une autre instance, avec un calendrier explicite.
+Les deux preuves ne constituent pas encore la chaîne cliente complète.
+
+```powershell
+.\.venv\Scripts\python.exe tools/fpv_transition_decision_audit.py --image 'tmp/stock-menu-analysis.bin' --library 'D:\Games\Hidden and Dangerous 2\LS3DF.dll' --json-output '.analysis/decision-transition-nouveau.json'
+```

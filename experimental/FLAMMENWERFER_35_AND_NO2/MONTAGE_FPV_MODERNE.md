@@ -87,6 +87,9 @@ tests de référence.
 Les [associations et lectures d'animations](RESOLUTION_ANIMATIONS_FPV.md) sont
 traitées séparément. Il reste le chargement du modèle, sa copie native et la
 répartition effective des transformations entre skin racine et rendu ; puis
-caméra, contacts fins des doigts, transitions en lecture, événements et mécanique.
+caméra, contacts fins des doigts, transitions visuelles, événements et mécanique.
+Les [changements de clips pendant la lecture](../RECONSTRUCTION_BACKLOG/ENCHAINEMENT_ANIMATIONS_NATIF.md)
+sont désormais contrôlés dans une même mémoire, sans encore qualifier les
+contacts ou le rendu pendant les mélanges.
 Le sac reste fixe : ni attache dorsale joueur/IA ni physique du tuyau ne sont
 réalisées. Les gestes Rel/Jammed ne rechargent et ne débloquent encore rien.
