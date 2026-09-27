@@ -71,6 +71,11 @@ de modèle FPV d'objet `0x7df970` recherche notamment les noms **fpv_weapon** et
 **magazine**, tous deux conservés dans le modèle dérivé. Ces observations
 n'équivalent pas à l'exécution des appels de scène ou à leur validation.
 
+Le [contrôle des demandes de ressources](DEMANDES_RESSOURCES_FPV.md) exécute
+désormais la transformation du nom de mains et la préparation des demandes
+d'animation, en s'arrêtant avant les chargeurs. Il ne valide toujours pas la
+liaison des joints, le skin ou le rendu.
+
 ## Livrables et limites
 
 - `tools/benelli_fpv_rig_audit.py` produit le plan privé, les sources et les
