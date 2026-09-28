@@ -247,6 +247,47 @@ Ces chiffres concernent ZK-383 seulement et ne qualifient pas sa posture.
 
 ## Associations de ressources
 
+### MG34 v10 : sortie/rangement linéaires — 28 septembre 2026
+
+Le profil séparé `modern-rigid-hand-grips-mg34-linear.json` remplace seulement
+le mouvement de racine MG34 dans Arm/Disarm par une translation moderne
+`[0,-0.04,-0.12]`, orientation de prise conservée. Les prises, doigts, coudes,
+modèles, autres clips et profils FG42/ZK-383 ne changent pas. Empreinte JSON
+canonique : `87d9f527feec4f2e7dcfdfad9e761782fbe4c8f83afdc08bd92a08609b2c9c91`.
+Le profil général v7 demeure disponible ; les anciens rapports restent historiques.
+
+La banque privée `MG34_HandFPV_v10` comporte 18 clips et 16 aperçus. Les vues
+Arm/Idle et les détails Arm ont été examinés ; le cadrage reste diagnostique
+et la posture n'est pas déclarée naturelle ou qualifiée en jeu.
+
+- Surfaces brutes : **1 010 poses, 33 330 contrôles pose/pièce, zéro traversée,
+  aucune des 33 pièces omise**. Rapport `.analysis/rigid-hand-surfaces-mg34-v10-dense-20260928.json`.
+- Natif isolé : **18 lectures, 18 séquences, 1 046 instants, 2 092 palettes,
+  4 184 observations**. Écart pose nul ; palette `2,980232239e-7`, poignets aux
+  clés `1,603257649e-7`, entre clés `0,0000622360041` : **zéro dépassement**
+  du seuil inchangé `0,0002`, contre 36 pour MG34 v7. Après correction hors
+  jeu, `1,645983209e-7`. Rapport `.analysis/rigid-hands-native-mg34-v10-20260928.json`.
+
+Cette amélioration n'établit pas la continuité pendant le mélange de clips.
+`rigid_hand_transition_audit.py` contrôle séparément 13 couples d'animations,
+trois phases d'interruption (début, milieu, fin), cinq poids et le détachement
+de la source. Ces horaires sont des **entrées diagnostiques**, pas des
+transitions toutes démontrées atteignables dans le client.
+
+Sur MG34 v10, les deux variantes totalisent **78 séquences, 546 instants,
+1 092 palettes, 2 184 observations**. **72 instants dépassent le seuil brut**,
+maximum `0,009477966838` lors d'une interruption Arm → Idle. Le correcteur
+hors jeu ramène le maximum à `1,527600945e-7` ; poses natives/référence identiques,
+palette `2,384185791e-7`. Rapport `.analysis/rigid-hand-transitions-mg34-v10-native-20260928.json`.
+Les surfaces mélangées ne sont pas contrôlées par ce banc. Le correcteur n'est
+pas installé, les poses corrigées ne sont pas réécrites dans la banque.
+
+```powershell
+.\.venv\Scripts\python.exe tools/rigid_hand_transition_audit.py --game 'D:\Games\Hidden and Dangerous 2' --archives-only --bank-root .analysis/modern-assets --bank-suffix HandFPV_v10 --profile experimental/RECONSTRUCTION_BACKLOG/modern-rigid-hand-grips-mg34-linear.json --case MG34 --native --json-output .analysis/mg34-transitions-neuves.json
+```
+
+### Groupes isolés antérieurs
+
 `build_rigid_weapon_resource_lab.py` prépare six groupes isolés, une variante
 de mains à la fois. Treize états sélectionnent les neuf clips ; les états
 inutilisés ont des canaux vides, sans faux événements de tir ou de recharge.

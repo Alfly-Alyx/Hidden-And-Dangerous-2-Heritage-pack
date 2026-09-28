@@ -100,8 +100,23 @@ atomique sur disque, une migration de sauvegarde ou une permission d'installatio
 
 ## Reproduction et réalisations restantes
 
+**Actualisation du 28 septembre 2026 :** le profil par défaut de ce constructeur
+est désormais `modern-rigid-hand-grips-mg34-linear.json`, utilisé avec la banque
+privée **MG34_HandFPV_v10**. La correction Arm/Disarm supprime les 36 dépassements
+bruts entre clés de v7 ; 1 010 poses de surface, zéro traversée et aucune pièce
+omise. Les mélanges de clips gardent des écarts distincts, documentés dans
+[l'audit des mains](../RECONSTRUCTION_BACKLOG/MAINS_ARMES_RIGIDES.md).
+
+Trois nouveaux laboratoires, `MG34_Tables_PatchX_H_v2`, `MG34_Tables_Sabre_R_v2`
+et `MG34_Tables_Current_H_v2`, ont été construits et contrôlés : **25 fichiers,
+273 descripteurs, 39 demandes de ressources et 9 lectures d'animations chacun**.
+Le retrait exact est vérifié ; les anciennes données et les surcharges personnelles
+sont conservées. Le catalogue de textes commun contient maintenant les cinq
+libellés 21500–21504 ; cela n'ajoute pas les autres armes aux tables MG34.
+Les laboratoires v1 ne sont pas écrasés ni présentés comme corrigés.
+
 ```powershell
-.\.venv\Scripts\python.exe tools/build_mg34_descriptor_lab.py --game 'D:\Games\Hidden and Dangerous 2' --archives-only --hand H --bank .analysis/modern-assets/MG34_HandFPV_v4 --profile .analysis/rigid-hand-profile-v4-20260927.json --inventory-texts --item-layer PatchX01.dta --preserve-central-overrides --output-name MG34_Tables_Neuves
+.\.venv\Scripts\python.exe tools/build_mg34_descriptor_lab.py --game 'D:\Games\Hidden and Dangerous 2' --archives-only --hand H --bank .analysis/modern-assets/MG34_HandFPV_v10 --inventory-texts --item-layer PatchX01.dta --preserve-central-overrides --output-name MG34_Tables_Neuves
 ```
 
 Les archives, mains et dépendances d'émulation sont locales et privées. Le
