@@ -127,10 +127,11 @@ class SharedPoseMemory(PersistentArmCommitOracle):
 class UnifiedHandPoseOracle(AnimationStreamOracle):
     STATE_SIZE=0x40000
 
-    def __init__(self,library,compiled_commit,solver):
+    def __init__(self,library,compiled_commit,solver,target_preparer=None):
         self.bridge=None
         super().__init__(library)
         self.bridge=SharedPoseMemory(self,compiled_commit);self.solver=solver
+        self.target_preparer=target_preparer
 
     def on_code(self,uc,address,size,context):
         if self.bridge is not None and self.bridge.phase is not None:
@@ -206,7 +207,7 @@ class UnifiedHandPoseOracle(AnimationStreamOracle):
             if kind!='tick':continue
             raw=dict(zip(names,observed));reference_raw=dict(zip(names,poses))
             corrected,receipt=correct_compiled(hand,gear_nodes,raw,grips,self.solver,
-                root_name='fpv_weapon',preserve_observed_elbow_plane=True)
+                root_name='fpv_weapon',preserve_observed_elbow_plane=True,target_preparer=self.target_preparer)
             reference_result,_=reference_correct(hand,gear_nodes,reference_raw,grips,
                 root_name='fpv_weapon',preserve_observed_elbow_plane=True)
             replacements=[]
@@ -226,6 +227,7 @@ class UnifiedHandPoseOracle(AnimationStreamOracle):
             wrists=wrist_errors(dict(zip(hn,matrices)),wanted)
             if max(wrists.values())>5e-6:raise ValueError('Unified corrected wrist target missed')
             samples.append({'step':index,'delta':step['delta'],'native_pose_calls':self.pose_calls,
+                'compiled_target_preparation':receipt['compiled_target_preparation'],
                 'before':receipt['before'],'after':wrists,**chain})
         return {'steps':len(steps),'samples':samples,'max_native_pose_error':max_pose_error,
                 'max_solver_rotation_error':max_rotation_error,'ticks':len(samples),
@@ -233,4 +235,5 @@ class UnifiedHandPoseOracle(AnimationStreamOracle):
                 'native_animation_compiled_commit_refresh_palette_same_memory':True,
                 'poses_seeded_only_before_first_operation':True,'reference_corrected_poses_carried_independently':True,
                 'solver_cpu_separate':True,'client_hook_implemented':False,'loaded_scene_qualified':False,
+                'target_preparation_compiled':self.target_preparer is not None,
                 'owning_visual_bounds_evaluated':False,'game_started':False}

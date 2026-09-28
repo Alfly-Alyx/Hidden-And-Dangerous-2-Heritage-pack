@@ -7,6 +7,7 @@ from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
 import unified_hand_pose_oracle as oracle
 import unified_hand_pose_audit as audit
+from native_hand_targets import BINARY_SHA as TARGET_SHA
 
 
 class UnifiedHandPoseTests(unittest.TestCase):
@@ -53,6 +54,18 @@ class UnifiedHandPoseTests(unittest.TestCase):
     def test_shared_machine_rejects_unpinned_code_before_accessing_parent(self):
         for raw in (b'',b'MZ',bytearray(oracle.BINARY_SIZE),bytes(oracle.BINARY_SIZE)):
             with self.assertRaisesRegex(ValueError,'commit image'):oracle.SharedPoseMemory(None,raw)
+
+    def test_compiled_targets_are_counted_only_with_complete_receipts(self):
+        row=self.row();row['target_preparation_compiled']=True
+        receipt={'status':0,'compiled_sha256':TARGET_SHA,'input_unchanged':True,
+            'output_and_scratch_guards_unchanged':True,'failed_output_unchanged':True,
+            'native_cdecl_preserved':True,'game_started':False,'client_hook_implemented':False,'max_input_error':1e-8}
+        row['samples'][0]['compiled_target_preparation']=receipt
+        totals=audit.summarize([row]);self.assertEqual(totals['compiled_target_calls'],1)
+        self.assertEqual(totals['max_target_input_error'],1e-8)
+        for mode,value in ((False,receipt),(True,None),(1,receipt),(True,{**receipt,'input_unchanged':False})):
+            row['target_preparation_compiled']=mode;row['samples'][0]['compiled_target_preparation']=value
+            with self.assertRaises(ValueError):audit.summarize([row])
 
     def test_target_identity_and_case_rejected_before_native_operations(self):
         machine=object.__new__(oracle.UnifiedHandPoseOracle)

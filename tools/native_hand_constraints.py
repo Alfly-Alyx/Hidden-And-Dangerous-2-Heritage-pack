@@ -130,7 +130,7 @@ class ArmSolverOracle:
             'operating_system_or_game_called':False,'engine_hook_implemented':False}
 
 
-def correct_compiled(hand,equipment_nodes,poses,grips,machine,*,root_name='fpv_weapon',preserve_observed_elbow_plane=True):
+def correct_compiled(hand,equipment_nodes,poses,grips,machine,*,root_name='fpv_weapon',preserve_observed_elbow_plane=True,target_preparer=None):
     if root_name!='fpv_weapon' or preserve_observed_elbow_plane is not True:
         raise ValueError('Unreviewed compiled correction policy')
     source,skin=pinned_skin(hand);names,initial=model_poses(hand);seeds=dict(zip(names,initial))
@@ -150,8 +150,14 @@ def correct_compiled(hand,equipment_nodes,poses,grips,machine,*,root_name='fpv_w
     hand_world=world(skin['nodes'],poses)
     wanted=observed_elbow_hints(targets(world(equipment_nodes,poses),grips,root_name='fpv_weapon'),hand_world)
     before=wrist_errors(hand_world,wanted);authored={};receipts={}
-    for side in ('L','R'):
-        values,receipt=machine.solve(arm_input(skin,side,wanted[side]),1 if side=='L' else -1)
+    prepared=None;preparation_receipt=None
+    if target_preparer is not None:
+        from native_hand_targets import preparation_inputs,checked_prepare
+        data,reference=preparation_inputs(skin,equipment_nodes,poses,grips)
+        prepared,preparation_receipt=checked_prepare(target_preparer,data,reference)
+    for index,side in enumerate(('L','R')):
+        inputs=prepared[60*index:60*(index+1)] if prepared is not None else arm_input(skin,side,wanted[side])
+        values,receipt=machine.solve(inputs,1 if side=='L' else -1)
         if receipt['status']!=0:raise ValueError(f"Compiled arm solver refused {side} correction: status {receipt['status']}")
         receipts[side]=receipt
         for i,part in enumerate(('UpperArm','Forearm','Hand')):
@@ -162,6 +168,7 @@ def correct_compiled(hand,equipment_nodes,poses,grips,machine,*,root_name='fpv_w
     return result,{'hand_source':source,'before':before,'after':after,'changed_channels':'six_arm_rotations_only',
         'finger_poses_preserved':True,'equipment_poses_preserved':True,'source_rest_transforms_preserved':True,
         'compiled_arm_receipts':receipts,'correction_is_compiled_x86':True,
+        'compiled_target_preparation':preparation_receipt,
         'engine_hook_implemented':False,'runtime_status':'pending'}
 
 
