@@ -73,7 +73,7 @@ def check_pose(values,expected):
     return error
 
 
-def audit_bank(hand,rig,bank,grips,*,stream=None,palette=None,corrector=None):
+def audit_bank(hand,rig,bank,grips,*,stream=None,palette=None,corrector=None,committer=None):
     if corrector is None:corrector=correct
     if not callable(corrector):raise ValueError('Invalid transition corrector')
     if (stream is None)!=(palette is None):raise ValueError('Both native transition subsystems required')
@@ -82,6 +82,7 @@ def audit_bank(hand,rig,bank,grips,*,stream=None,palette=None,corrector=None):
     if set(hn)&set(gn):raise ValueError('Ambiguous transition targets')
     names,initial=hn+gn,hi+gi
     hnodes=parse_4ds_nodes(hand)['nodes'];gnodes=parse_4ds_nodes(rig)['nodes']
+    commit_stats={'poses':0,'rotations':0,'local_rebuilds':0,'owner_changes':0,'max_matrix_error':0}
     clips={k:{'data':v[1],'mode':1} for k,v in bank.items()}
     totals=dict(sequences=0,ticks=0,wrist_observations=0,raw_ticks_over_limit=0,native_palettes=0)
     maxima=dict(before=0,after=0,stream=0,palette=0);sequences=[];worst=None
@@ -99,6 +100,19 @@ def audit_bank(hand,rig,bank,grips,*,stream=None,palette=None,corrector=None):
                 after,receipt=corrector(hand,gnodes,before,grips,root_name='fpv_weapon',
                                       preserve_observed_elbow_plane=True)
                 correction_receipt(receipt)
+                if committer is not None:
+                    from fpv_contact_constraints import ARM_NAMES
+                    indices=[i for i,n in enumerate(hnodes) if n['name'] in ARM_NAMES]
+                    committed=committer.exercise([{**before[n['name']],'parent':n['parent_id']-1} for n in hnodes],
+                        [IDENTITY]*len(hnodes),indices,[after[hnodes[i]['name']]['rotation'] for i in indices])
+                    if (committed['status']!=0 or committed['committed_rotations']!=6
+                            or not committed['compiled_commit_native_refresh_palette_same_memory']
+                            or not committed['inputs_and_other_pose_channels_preserved']):
+                        raise ValueError('Incomplete persistent commit receipt')
+                    commit_stats['poses']+=1;commit_stats['rotations']+=6
+                    commit_stats['local_rebuilds']+=committed['local_rotations_rebuilt']
+                    commit_stats['owner_changes']+=committed['owner_change_counter']
+                    commit_stats['max_matrix_error']=max(commit_stats['max_matrix_error'],committed['max_matrix_error'])
                 if palette is not None:
                     wanted=targets(world(gnodes,before),grips,root_name='fpv_weapon')
                     for label,poses in (('before',before),('after',after)):
@@ -130,30 +144,37 @@ def audit_bank(hand,rig,bank,grips,*,stream=None,palette=None,corrector=None):
             totals['sequences']+=1
         print(source+' -> '+target+' checked',file=sys.stderr,flush=True)
     return {'totals':totals,'max_errors':maxima,'worst_before':worst,'sequences':sequences,
+            'persistent_compiled_commit':commit_stats if committer is not None else None,
             'raw_wrist_limit':LIMIT,'raw_wrist_limit_passed':totals['raw_ticks_over_limit']==0}
 
 
-def audit(game,bank_root,suffix,profile,*,selected_cases=CASES,archives_only=False,native=False,compiled_solver=None):
+def audit(game,bank_root,suffix,profile,*,selected_cases=CASES,archives_only=False,native=False,compiled_solver=None,compiled_commit=None):
     suffix_checked(suffix)
     if (not isinstance(selected_cases,(list,tuple)) or not selected_cases
             or len(set(selected_cases))!=len(selected_cases) or set(selected_cases)-set(CASES)):
         raise ValueError('Unreviewed transition case selection')
     if type(native) is not bool:raise ValueError('Invalid native transition mode')
+    if compiled_commit is not None and (not native or compiled_solver is None):
+        raise ValueError('Persistent commit requires native mode and the compiled solver')
     corrector=None
     if compiled_solver is not None:
         from native_hand_constraints import ArmSolverOracle,ComparedCorrector
         corrector=ComparedCorrector(ArmSolverOracle(compiled_solver.read_bytes()))
-    stream=palette=None;library=None
+    stream=palette=committer=None;library=None;commit_sha=None
     if native:
         from ls3d_animation_stream_oracle import AnimationStreamOracle
         from ls3d_palette_oracle import PaletteOracle
         library=(game/'LS3DF.dll').read_bytes();stream=AnimationStreamOracle(library);palette=PaletteOracle(library)
+    if compiled_commit is not None:
+        from native_arm_pose_commit import PersistentArmCommitOracle
+        commit_raw=compiled_commit.read_bytes();committer=PersistentArmCommitOracle(library,commit_raw)
+        commit_sha=digest(commit_raw)
     hands,excluded=read_hands(game,archives_only=archives_only);cases={}
     for case in selected_cases:
         compiled=compile_bank(case);cases[case]={}
         for source in HAND_MODELS:
             rig,bank,grips=load_bank(bank_root/(case+'_'+suffix),case,source,hands[source],profile,compiled)
-            result=audit_bank(hands[source],rig,bank,grips,stream=stream,palette=palette,corrector=corrector)
+            result=audit_bank(hands[source],rig,bank,grips,stream=stream,palette=palette,corrector=corrector,committer=committer)
             cases[case][source]={'hand_sha256':digest(hands[source]),'model_sha256':digest(rig),
                                 'clips':{k:digest(v[1]) for k,v in bank.items()},**result}
             print(case+' / '+source+' transitions checked',file=sys.stderr,flush=True)
@@ -165,6 +186,9 @@ def audit(game,bank_root,suffix,profile,*,selected_cases=CASES,archives_only=Fal
         'native_stream_and_palette_executed':native,'native_subsystems_use_separate_emulators':native,
         'correction_is_offline_python':compiled_solver is None,'engine_hook_implemented':False,
         'compiled_correction':corrector.report() if corrector is not None else None,
+        'compiled_commit_sha256':commit_sha,
+        'commit_refresh_palette_share_memory':committer is not None,
+        'animation_tick_and_commit_share_memory':False,'visual_bounds_refreshed':False,
         'client_transition_decision_executed':False,'diagnostic_orders_proven_reachable_in_client':False,
         'continuous_time_or_all_weights_proven':False,'surfaces_checked':False,'skin_or_renderer_executed':False,
         'native_loader_executed':False,'commercial_geometry_exported':False,'derived_poses_exported':False,
@@ -178,12 +202,13 @@ def main(argv=None):
     parser.add_argument('--case',choices=CASES,action='append');parser.add_argument('--archives-only',action='store_true')
     parser.add_argument('--native',action='store_true');parser.add_argument('--json-output',type=Path,required=True)
     parser.add_argument('--compiled-solver',type=Path,help='Private original compiled arm solver, compared to Python')
+    parser.add_argument('--compiled-commit',type=Path,help='Private original pose commit, followed by persistent native refresh/palette')
     args=parser.parse_args(argv)
     try:
         if args.json_output.exists():raise ValueError('Report exists; use a fresh name')
         report=audit(args.game,args.bank_root,args.bank_suffix,json.loads(args.profile.read_text(encoding='utf-8')),
                      selected_cases=args.case or CASES,archives_only=args.archives_only,native=args.native,
-                     compiled_solver=args.compiled_solver)
+                     compiled_solver=args.compiled_solver,compiled_commit=args.compiled_commit)
         with args.json_output.open('x',encoding='utf-8') as output:json.dump(report,output,indent=2);output.write('\n')
         print(json.dumps({c:{s:{k:r[k] for k in ('totals','max_errors','raw_wrist_limit_passed')}
                              for s,r in variants.items()} for c,variants in report['cases'].items()},indent=2));return 0
