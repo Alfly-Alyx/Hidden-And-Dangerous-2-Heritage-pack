@@ -74,6 +74,7 @@ dans une destination neuve, puis reprendre la commande du banc unifié avec
 Les binaires et rapports privés restent exclus du dépôt.
 
 La collecte des poses et l'orchestration demeurent du code de diagnostic Python.
-Les trois composants C ne constituent pas encore un module intégré unique.
+La construction isolée présentée ici reste disponible ; les trois composants
+sont maintenant aussi [assemblés dans une image unique](CORRECTION_MAINS_COMPILEE_UNIFIEE.md).
 Ni hook, scène chargée, enveloppe du visuel, temps par frame, caméra ou
 comportement jouable ne sont qualifiés par ce travail.

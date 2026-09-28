@@ -72,12 +72,15 @@ class SharedPoseMemory(PersistentArmCommitOracle):
         self.uc.mem_write(self.SOURCE,bytes(source));self.uc.mem_write(self.NODES,bytes(arena))
         self.source=bytes(source)
 
-    def apply_and_refresh(self,poses,replacements):
+    def apply_and_refresh(self,poses,replacements,*,already_committed=False):
         before=bytes(self.uc.mem_read(self.NODES,self.NODES_SIZE))
         indices=self.indices;offsets=[i*0x200 for i in indices]
         snapshots=[list(struct.unpack_from('<4f',before,at+0xc0)) for at in offsets]
         flags=[struct.unpack_from('<I',before,at+0xe0)[0] for at in offsets]
-        if self.commit(offsets,snapshots,replacements,flags)!=0:raise ValueError('Shared arm commit refused')
+        if already_committed:
+            if any(struct.pack('<4f',*a)!=struct.pack('<4f',*b) for a,b in zip(snapshots,replacements)):
+                raise ValueError('Compiled pipeline poses changed before native refresh')
+        elif self.commit(offsets,snapshots,replacements,flags)!=0:raise ValueError('Shared arm commit refused')
         before_refresh=bytes(self.uc.mem_read(self.NODES,self.NODES_SIZE))
         expected_refresh=reference_refresh(before_refresh,self.parents)
         writes=[(self.NODES+i*0x200+at,self.NODES+i*0x200+at+4)
@@ -127,18 +130,25 @@ class SharedPoseMemory(PersistentArmCommitOracle):
 class UnifiedHandPoseOracle(AnimationStreamOracle):
     STATE_SIZE=0x40000
 
-    def __init__(self,library,compiled_commit,solver,target_preparer=None):
-        self.bridge=None
+    def __init__(self,library,compiled_commit,solver,target_preparer=None,pipeline_raw=None):
+        if pipeline_raw is not None and (solver is not None or target_preparer is not None):
+            raise ValueError('Use the compiled pipeline or separate numerical processors, not both')
+        self.bridge=None;self.pipeline=None
         super().__init__(library)
         self.bridge=SharedPoseMemory(self,compiled_commit);self.solver=solver
         self.target_preparer=target_preparer
+        if pipeline_raw is not None:
+            from native_hand_pipeline import HandPipelineOracle
+            self.pipeline=HandPipelineOracle(pipeline_raw,self)
 
     def on_code(self,uc,address,size,context):
+        if self.pipeline is not None and self.pipeline.active:return self.pipeline.on_code(uc,address,size,context)
         if self.bridge is not None and self.bridge.phase is not None:
             return self.bridge.on_code(uc,address,size,context)
         return super().on_code(uc,address,size,context)
 
     def on_write(self,uc,access,address,size,value,context):
+        if self.pipeline is not None and self.pipeline.active:return self.pipeline.on_write(uc,access,address,size,value,context)
         if self.bridge is not None and self.bridge.phase is not None:
             return self.bridge.on_write(uc,access,address,size,value,context)
         return super().on_write(uc,access,address,size,value,context)
@@ -206,8 +216,12 @@ class UnifiedHandPoseOracle(AnimationStreamOracle):
             state,poses,flags=expected['state'],expected['poses'],expected['flags'];max_pose_error=max(max_pose_error,error)
             if kind!='tick':continue
             raw=dict(zip(names,observed));reference_raw=dict(zip(names,poses))
-            corrected,receipt=correct_compiled(hand,gear_nodes,raw,grips,self.solver,
-                root_name='fpv_weapon',preserve_observed_elbow_plane=True,target_preparer=self.target_preparer)
+            if self.pipeline is not None:
+                from native_hand_pipeline import correct_pipeline
+                corrected,receipt=correct_pipeline(hand,gear_nodes,raw,grips,self.pipeline)
+            else:
+                corrected,receipt=correct_compiled(hand,gear_nodes,raw,grips,self.solver,
+                    root_name='fpv_weapon',preserve_observed_elbow_plane=True,target_preparer=self.target_preparer)
             reference_result,_=reference_correct(hand,gear_nodes,reference_raw,grips,
                 root_name='fpv_weapon',preserve_observed_elbow_plane=True)
             replacements=[]
@@ -218,7 +232,7 @@ class UnifiedHandPoseOracle(AnimationStreamOracle):
                 if difference>2e-6:raise ValueError(f'Unified solver differs at step {index}, {name}: matrix error {difference:.12g}')
                 max_rotation_error=max(max_rotation_error,difference);replacements.append(q)
                 poses[i]={**poses[i],'rotation':ref}
-            updated,matrices,chain=self.bridge.apply_and_refresh(observed,replacements)
+            updated,matrices,chain=self.bridge.apply_and_refresh(observed,replacements,already_committed=self.pipeline is not None)
             # The next native call observes these same objects. Reference
             # rotations are carried independently, never replaced by C output.
             arena=bytes(self.uc.mem_read(self.STATE,self.STATE_SIZE))
@@ -228,12 +242,14 @@ class UnifiedHandPoseOracle(AnimationStreamOracle):
             if max(wrists.values())>5e-6:raise ValueError('Unified corrected wrist target missed')
             samples.append({'step':index,'delta':step['delta'],'native_pose_calls':self.pose_calls,
                 'compiled_target_preparation':receipt['compiled_target_preparation'],
+                'compiled_pipeline':receipt.get('compiled_pipeline'),
                 'before':receipt['before'],'after':wrists,**chain})
         return {'steps':len(steps),'samples':samples,'max_native_pose_error':max_pose_error,
                 'max_solver_rotation_error':max_rotation_error,'ticks':len(samples),
                 'bootstrap':bootstrap,'owner_allocations':self.alloc_count,'owner_releases':self.free_count,
                 'native_animation_compiled_commit_refresh_palette_same_memory':True,
                 'poses_seeded_only_before_first_operation':True,'reference_corrected_poses_carried_independently':True,
-                'solver_cpu_separate':True,'client_hook_implemented':False,'loaded_scene_qualified':False,
-                'target_preparation_compiled':self.target_preparer is not None,
+                'solver_cpu_separate':self.pipeline is None,'client_hook_implemented':False,'loaded_scene_qualified':False,
+                'compiled_pipeline_shared_memory':self.pipeline is not None,
+                'target_preparation_compiled':self.pipeline is not None or self.target_preparer is not None,
                 'owning_visual_bounds_evaluated':False,'game_started':False}

@@ -15,6 +15,7 @@ from five_ds import parse_5ds
 from menu_gui_audit import parse_4ds_nodes
 from native_hand_constraints import ArmSolverOracle
 from native_hand_targets import validate_receipt
+from native_hand_pipeline import validate_receipt as validate_pipeline_receipt
 from rigid_hand_transition_audit import PAIRS,schedule,LIMIT
 from rigid_weapon_hand_audit import load_bank,suffix_checked
 from unified_hand_pose_oracle import UnifiedHandPoseOracle
@@ -31,15 +32,18 @@ def retention_schedule():
 def summarize(rows):
     if not isinstance(rows,list) or not rows:raise ValueError('Missing unified reports')
     total={'sequences':len(rows),'ticks':0,'native_pose_calls':0,'compiled_arm_calls':0,
-           'compiled_target_calls':0,'max_target_input_error':0,
+           'compiled_target_calls':0,'compiled_pipeline_calls':0,'max_target_input_error':0,
            'committed_rotations':0,'local_rebuilds':0,'clean_ticks_without_native_pose':0,
            'raw_ticks_over_limit':0,'max_before':0,'max_after':0,'max_matrix_error':0,
            'max_native_pose_error':0,'max_solver_rotation_error':0,'owner_allocations':0,'owner_releases':0}
     for row in rows:
         compiled_targets=row.get('target_preparation_compiled',False)
         if type(compiled_targets) is not bool:raise ValueError('Invalid target preparation mode')
+        pipeline=row.get('compiled_pipeline_shared_memory',False)
+        if (type(pipeline) is not bool or row.get('solver_cpu_separate') is not (not pipeline)
+                or (pipeline and not compiled_targets)):raise ValueError('Invalid compiled pipeline memory mode')
         if (any(row.get(k) is not True for k in ('native_animation_compiled_commit_refresh_palette_same_memory',
-                'poses_seeded_only_before_first_operation','reference_corrected_poses_carried_independently','solver_cpu_separate'))
+                'poses_seeded_only_before_first_operation','reference_corrected_poses_carried_independently'))
                 or any(row.get(k) is not False for k in ('client_hook_implemented','loaded_scene_qualified',
                     'owning_visual_bounds_evaluated','game_started'))
                 or type(row.get('ticks')) is not int or not isinstance(row.get('samples'),list)
@@ -56,7 +60,12 @@ def summarize(rows):
             total[key]+=value
         for sample in row['samples']:
             preparation=sample.get('compiled_target_preparation')
-            if compiled_targets:
+            if pipeline:
+                if preparation is not None:raise ValueError('Pipeline also reported a separate target processor')
+                total['max_target_input_error']=max(total['max_target_input_error'],validate_pipeline_receipt(sample.get('compiled_pipeline')))
+                total['compiled_target_calls']+=1;total['compiled_pipeline_calls']+=1
+            elif sample.get('compiled_pipeline') is not None:raise ValueError('Unexpected compiled pipeline receipt')
+            elif compiled_targets:
                 total['max_target_input_error']=max(total['max_target_input_error'],validate_receipt(preparation))
                 total['compiled_target_calls']+=1
             elif preparation is not None:raise ValueError('Unexpected compiled target receipt')
@@ -81,15 +90,20 @@ def summarize(rows):
     return total
 
 
-def audit(game,bank_root,suffix,profile,compiled_solver,compiled_commit,case,*,archives_only=False,compiled_targets=None):
+def audit(game,bank_root,suffix,profile,compiled_solver,compiled_commit,case,*,archives_only=False,compiled_targets=None,compiled_pipeline=None):
     if case not in CASES:raise ValueError('Unreviewed unified weapon')
     suffix_checked(suffix)
-    library=(game/'LS3DF.dll').read_bytes();solver_raw=compiled_solver.read_bytes();commit_raw=compiled_commit.read_bytes()
+    if (compiled_pipeline is None and compiled_solver is None) or (compiled_pipeline is not None
+            and (compiled_solver is not None or compiled_targets is not None)):
+        raise ValueError('Choose a compiled pipeline or a separate solver and optional target processor')
+    library=(game/'LS3DF.dll').read_bytes();commit_raw=compiled_commit.read_bytes()
+    solver_raw=compiled_solver.read_bytes() if compiled_solver is not None else None
+    pipeline_raw=compiled_pipeline.read_bytes() if compiled_pipeline is not None else None
     preparer=None;target_raw=None
     if compiled_targets is not None:
         from native_hand_targets import TargetPreparationOracle
         target_raw=compiled_targets.read_bytes();preparer=TargetPreparationOracle(target_raw)
-    machine=UnifiedHandPoseOracle(library,commit_raw,ArmSolverOracle(solver_raw),preparer)
+    machine=UnifiedHandPoseOracle(library,commit_raw,ArmSolverOracle(solver_raw) if solver_raw is not None else None,preparer,pipeline_raw)
     hands,excluded=read_hands(game,archives_only=archives_only);compiled=compile_bank(case);variants={}
     for source in HAND_MODELS:
         hand=hands[source]
@@ -108,11 +122,13 @@ def audit(game,bank_root,suffix,profile,compiled_solver,compiled_commit,case,*,a
             'transition_totals':summarize(rows),'retention':retention,'retention_totals':summarize([retention])}
         print(source+': zero-delta, zero-weight and full-detach retention checked',file=sys.stderr,flush=True)
     return {'schema_version':1,'scope':'private_unified_native_rigid_hand_memory','case':case,
-        'runtime_status':'pending','library_sha256':digest(library),'compiled_solver_sha256':digest(solver_raw),
+        'runtime_status':'pending','library_sha256':digest(library),'compiled_solver_sha256':digest(solver_raw) if solver_raw is not None else None,
         'compiled_commit_sha256':digest(commit_raw),'profile_sha256':digest(json.dumps(profile,sort_keys=True).encode()),
         'compiled_targets_sha256':digest(target_raw) if target_raw is not None else None,
+        'compiled_pipeline_sha256':digest(pipeline_raw) if pipeline_raw is not None else None,
         'excluded_loose_overrides':excluded,'variants':variants,
-        'animation_commit_refresh_palette_share_memory':True,'solver_cpu_separate':True,
+        'animation_commit_refresh_palette_share_memory':True,'solver_cpu_separate':pipeline_raw is None,
+        'compiled_pipeline_shares_animation_cpu_and_memory':pipeline_raw is not None,
         'hand_root_is_diagnostic_joint':True,'owning_visual_is_supplied_record':True,
         'post_tick_control_is_diagnostic_host_code':True,'client_hook_implemented':False,
         'client_transition_orders_proven_reachable':False,'loaded_scene_qualified':False,
@@ -122,16 +138,17 @@ def audit(game,bank_root,suffix,profile,compiled_solver,compiled_commit,case,*,a
 
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
-    for name in ('game','bank-root','profile','compiled-solver','compiled-commit','json-output'):
+    for name in ('game','bank-root','profile','compiled-commit','json-output'):
         parser.add_argument('--'+name,type=Path,required=True)
     parser.add_argument('--bank-suffix',required=True);parser.add_argument('--case',choices=CASES,required=True)
     parser.add_argument('--compiled-targets',type=Path)
+    parser.add_argument('--compiled-solver',type=Path);parser.add_argument('--compiled-pipeline',type=Path)
     parser.add_argument('--archives-only',action='store_true');args=parser.parse_args(argv)
     try:
         if args.json_output.exists():raise ValueError('Use a fresh unified report path')
         report=audit(args.game,args.bank_root,args.bank_suffix,json.loads(args.profile.read_text(encoding='utf-8')),
             args.compiled_solver,args.compiled_commit,args.case,archives_only=args.archives_only,
-            compiled_targets=args.compiled_targets)
+            compiled_targets=args.compiled_targets,compiled_pipeline=args.compiled_pipeline)
         with args.json_output.open('x',encoding='utf-8') as out:json.dump(report,out,indent=2);out.write('\n')
         print(json.dumps({s:{k:v[k] for k in ('transition_totals','retention_totals')}
                          for s,v in report['variants'].items()},indent=2));return 0
