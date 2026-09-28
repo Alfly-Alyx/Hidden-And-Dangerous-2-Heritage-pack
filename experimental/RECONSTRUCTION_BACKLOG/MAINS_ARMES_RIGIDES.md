@@ -247,6 +247,11 @@ Ces chiffres concernent ZK-383 seulement et ne qualifient pas sa posture.
 
 ## Associations de ressources
 
+Le [correcteur compilé original](CORRECTEUR_BRAS_COMPILE.md) a été comparé
+séparément sur les 546 poses de transition MG34 v10 : 1 092 appels x86,
+six rotations concordantes avec la référence, poignets corrigés à moins de
+`1,64e-7`. Il reste hors moteur et ne remplace pas les preuves de raccordement.
+
 ### MG34 v10 : sortie/rangement linéaires — 28 septembre 2026
 
 Le profil séparé `modern-rigid-hand-grips-mg34-linear.json` remplace seulement
