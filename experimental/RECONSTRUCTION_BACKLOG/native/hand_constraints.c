@@ -30,6 +30,15 @@ static int unit(const double *a,double *v) {
     return 1;
 }
 static void transpose(const double *a,double *t) { int i,j; for(i=0;i<3;i++) for(j=0;j<3;j++) t[3*i+j]=a[3*j+i]; }
+static int inverse(const double *m,double *out) {
+    double a=m[0],b=m[1],c=m[2],d=m[3],e=m[4],f=m[5],g=m[6],h=m[7],i=m[8];
+    double det=a*(e*i-f*h)-b*(d*i-f*g)+c*(d*h-e*g);
+    if(absolute(det)<1e-12) return 0;
+    out[0]=(e*i-f*h)/det;out[1]=(c*h-b*i)/det;out[2]=(b*f-c*e)/det;
+    out[3]=(f*g-d*i)/det;out[4]=(a*i-c*g)/det;out[5]=(c*d-a*f)/det;
+    out[6]=(d*h-e*g)/det;out[7]=(b*g-a*h)/det;out[8]=(a*e-b*d)/det;
+    return 1;
+}
 static void mul(const double *a,const double *b,double *v) {
     int i,j,k; for(i=0;i<3;i++) for(j=0;j<3;j++) {
         v[3*i+j]=0; for(k=0;k<3;k++) v[3*i+j]+=a[3*i+k]*b[3*k+j];
@@ -103,7 +112,11 @@ EXPORT int __attribute__((cdecl)) Hd2SolveArm(const double *in,unsigned count,in
     if(!bend(upper,ut,normal,turns[0]) || !bend(fore,ft,normal,turns[1])) return 5;
     mul(turns[0],in,wanted[0]); mul(turns[1],in+12,wanted[1]); mul(in+48,in+24,wanted[2]);
     for(i=0;i<3;i++) {
-        transpose(i ? wanted[i-1] : in+36,parent); mul(parent,wanted[i],local);
+        /* Nearly orthonormal commercial rest bases retain scale residuals.
+         * Transpose is not their inverse; its small bias accumulates when a
+         * corrected pose supplies the next elbow-plane observation. */
+        if(!inverse(i ? wanted[i-1] : in+36,parent)) return 5;
+        mul(parent,wanted[i],local);
         if(!quaternion(local,result+4*i)) return 5;
     }
     for(j=0;j<12;j++) out[j]=result[j];

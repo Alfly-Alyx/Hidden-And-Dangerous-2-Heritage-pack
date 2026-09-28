@@ -94,5 +94,17 @@ class NativeHandConstraintTests(unittest.TestCase):
                     for q in result:self.assertAlmostEqual(sum(v*v for v in q),1,places=12)
                 self.assertEqual(values,saved)
 
+    def test_tiny_scale_residual_bias_cannot_pass_the_invented_comparison(self):
+        class BiasedSolver:
+            calls=0
+            def solve(self,values,side):
+                self.calls+=1
+                q=[v for row in builder.reference_arm(values,side) for v in row]
+                if self.calls>12:q[0]+=1e-8
+                return q,{'status':0}
+        machine=BiasedSolver()
+        with self.assertRaisesRegex(ValueError,'independent reference'):builder.synthetic_audit(machine)
+        self.assertEqual(machine.calls,13)
+
 
 if __name__=='__main__':unittest.main()
