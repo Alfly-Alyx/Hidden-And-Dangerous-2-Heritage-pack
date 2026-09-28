@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **1 217 tests Python réussis sur 1 218 dans la copie de publication**; un test de lien symbolique non exécuté
+- **1 225 tests Python réussis sur 1 226 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -220,6 +220,11 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   originale sans import système ; vingt cas x86 inventés, puis 1 092 appels
   sur 546 poses MG34 H/R comparés au calcul indépendant. Poignets après
   correction à moins de `1,64e-7`. Aucun hook moteur ni chargement Windows.
+- [Application des rotations et caches](CORRECTEUR_BRAS_COMPILE.md#application-compilée-et-caches-persistants--28-septembre-2026) :
+  composant C original avec validation des six os avant écriture, puis
+  rafraîchissement récursif et nouvelle palette natives dans une même mémoire.
+  Trois arbres inventés et huit refus vérifiés, puis 546 poses MG34 H/R et
+  3 276 rotations/matrices locales contrôlées, sans scène chargée ni hook.
 - [Préparation commune FG42/MG34/ZK-383](ASSEMBLAGE_ARMES_COMMUN.md) : fusion
   réversible sans écrasement des ajouts indépendants ; 61 fichiers privés,
   276 descripteurs, 117 demandes de ressources et 27 lectures d'animations.
