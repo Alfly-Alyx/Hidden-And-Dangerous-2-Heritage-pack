@@ -8,6 +8,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
 import unified_hand_pose_oracle as oracle
 import unified_hand_pose_audit as audit
 from native_hand_targets import BINARY_SHA as TARGET_SHA
+from native_hand_pipeline import BINARY_SHA as PIPELINE_SHA,EXPECTED_CALLS
 
 
 class UnifiedHandPoseTests(unittest.TestCase):
@@ -73,6 +74,25 @@ class UnifiedHandPoseTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'target identities'):machine.run(None,[],[],{},[],[],{})
         with self.assertRaisesRegex(ValueError,'weapon'):audit.audit(None,None,'bad',None,None,None,'Other')
         with self.assertRaisesRegex(ValueError,'suffix'):audit.audit(None,None,'bad',None,None,None,'MG34')
+
+    def test_pipeline_summary_requires_shared_cpu_and_counts_every_compiled_stage(self):
+        row=self.row();row.update(target_preparation_compiled=True,compiled_pipeline_shared_memory=True,solver_cpu_separate=False)
+        receipt={'status':0,'compiled_sha256':PIPELINE_SHA,'compiled_calls':dict(EXPECTED_CALLS),
+            'inputs_unchanged':True,'unrelated_arena_unchanged':True,'failed_arena_unchanged':True,
+            'workspace_guard_unchanged':True,'native_cdecl_preserved':True,'shared_animation_arena':True,
+            'client_hook_implemented':False,'game_started':False,'max_input_error':0}
+        row['samples'][0]['compiled_pipeline']=receipt;result=audit.summarize([row])
+        self.assertEqual(result['compiled_pipeline_calls'],1);self.assertEqual(result['compiled_arm_calls'],2)
+        self.assertEqual(result['compiled_target_calls'],1);self.assertEqual(result['committed_rotations'],6)
+        for key,value in (('solver_cpu_separate',True),('target_preparation_compiled',False),('compiled_pipeline_shared_memory',False)):
+            with self.assertRaises(ValueError):audit.summarize([{**row,key:value}])
+        row['samples'][0]['compiled_pipeline']=None
+        with self.assertRaises(ValueError):audit.summarize([row])
+
+    def test_pipeline_and_separate_processors_cannot_be_silently_combined(self):
+        with self.assertRaisesRegex(ValueError,'not both'):oracle.UnifiedHandPoseOracle(None,None,object(),pipeline_raw=b'')
+        with self.assertRaisesRegex(ValueError,'not both'):oracle.UnifiedHandPoseOracle(None,None,None,object(),b'')
+        with self.assertRaisesRegex(ValueError,'Choose'):audit.audit(None,None,'HandFPV_v10',None,None,None,'MG34')
 
 
 if __name__=='__main__':unittest.main()

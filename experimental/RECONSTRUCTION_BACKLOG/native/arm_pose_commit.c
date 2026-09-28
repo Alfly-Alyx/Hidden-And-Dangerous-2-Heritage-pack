@@ -3,7 +3,9 @@
  * inputs. All six snapshots are checked before any arena write. This is not
  * a cross-thread atomic transaction and does not discover live game pointers.
  */
+#ifndef HD2_HAND_PIPELINE
 int __attribute__((stdcall)) _dllstart(void *module,unsigned reason,void *reserved) { return 0; }
+#endif
 static unsigned word(const unsigned char *p) {
     return (unsigned)p[0]|((unsigned)p[1]<<8)|((unsigned)p[2]<<16)|((unsigned)p[3]<<24);
 }

@@ -9,7 +9,9 @@
  * and valid for their declared sizes. Failure never writes output. Scratch
  * is provided explicitly rather than reserving a large unprobed x86 stack.
  */
+#ifndef HD2_HAND_PIPELINE
 int __attribute__((stdcall)) _dllstart(void *module,unsigned reason,void *reserved) { return 0; }
+#endif
 static int finite_bound(double v,double bound) { return v==v && v>=-bound && v<=bound; }
 static void product(const float *a,const float *b,float *out) {
     int r,c,k;double sum;

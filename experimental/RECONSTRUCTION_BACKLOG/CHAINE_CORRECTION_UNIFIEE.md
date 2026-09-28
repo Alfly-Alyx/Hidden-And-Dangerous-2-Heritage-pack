@@ -115,3 +115,9 @@ sons et jouabilité ne sont pas qualifiés par ce contrôle de mémoire.
 Le [calcul des cibles sur buffers bornés](CIBLES_MAINS_COMPILEES.md) dispose
 désormais d'une implémentation C indépendante ; sa collecte d'entrées et son
 appel restent orchestrés par le banc Python, pas par un hook dans le jeu.
+
+Le [mode à correction entièrement compilée](CORRECTION_MAINS_COMPILEE_UNIFIEE.md)
+réunit désormais les trois composants dans une image et un processeur partagés
+avec les nœuds animés. Le mode historique à solveur séparé décrit dans les
+premiers résultats est conservé comme référence ; aucune preuve de hook ou
+de modèle chargé n'est ajoutée par cet assemblage.

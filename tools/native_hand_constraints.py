@@ -130,7 +130,7 @@ class ArmSolverOracle:
             'operating_system_or_game_called':False,'engine_hook_implemented':False}
 
 
-def correct_compiled(hand,equipment_nodes,poses,grips,machine,*,root_name='fpv_weapon',preserve_observed_elbow_plane=True,target_preparer=None):
+def correction_context(hand,equipment_nodes,poses,*,root_name='fpv_weapon',preserve_observed_elbow_plane=True):
     if root_name!='fpv_weapon' or preserve_observed_elbow_plane is not True:
         raise ValueError('Unreviewed compiled correction policy')
     source,skin=pinned_skin(hand);names,initial=model_poses(hand);seeds=dict(zip(names,initial))
@@ -147,6 +147,12 @@ def correct_compiled(hand,equipment_nodes,poses,grips,machine,*,root_name='fpv_w
         b=native_affine([0,0,0],seeds[name]['rotation'],[1,1,1])[0]
         if max(abs(a[i][j]-b[i][j]) for i in range(3) for j in range(3))>2e-6:
             raise ValueError('Compiled correction requires resting clavicles')
+    return source,skin
+
+
+def correct_compiled(hand,equipment_nodes,poses,grips,machine,*,root_name='fpv_weapon',preserve_observed_elbow_plane=True,target_preparer=None):
+    source,skin=correction_context(hand,equipment_nodes,poses,root_name=root_name,
+        preserve_observed_elbow_plane=preserve_observed_elbow_plane)
     hand_world=world(skin['nodes'],poses)
     wanted=observed_elbow_hints(targets(world(equipment_nodes,poses),grips,root_name='fpv_weapon'),hand_world)
     before=wrist_errors(hand_world,wanted);authored={};receipts={}
