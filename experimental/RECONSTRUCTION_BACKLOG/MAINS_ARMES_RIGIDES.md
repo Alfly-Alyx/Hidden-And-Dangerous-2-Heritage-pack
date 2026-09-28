@@ -316,6 +316,9 @@ uniquement ; aucun lancement ou installation n'est effectué.
 
 Restent des réalisations : prise droite ZK-383, contacts fins et
 auto-intersections, gestes distincts de recharge/enrayage, transitions,
-raccordement du correcteur, chargement/copie FPV en scène, cadrage, associations
-et descripteurs additifs complets, événements, sons, comportement, inventaire,
+raccordement du correcteur, chargement/copie FPV en scène, cadrage, événements,
+lecture des sons, comportement, inventaire,
 IA, sauvegarde et réseau. La Garota n'est pas couverte par ces banques.
+Les descripteurs et associations sont désormais réunis dans une
+[préparation commune désactivée](ASSEMBLAGE_ARMES_COMMUN.md) ; cela ne réalise
+pas leurs raccordements de jeu.

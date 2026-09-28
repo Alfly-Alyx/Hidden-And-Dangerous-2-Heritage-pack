@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **1 202 tests Python réussis sur 1 203 dans la copie de publication**; un test de lien symbolique non exécuté
+- **1 209 tests Python réussis sur 1 210 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -216,6 +216,11 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   273 descripteurs contrôlés chacune, retrait exact et surcharges personnelles
   conservées. Quinze tests d'assemblage et quatre d'icône ; aucun jeu lancé,
   raccordements moteur et comportement encore incomplets.
+- [Préparation commune FG42/MG34/ZK-383](ASSEMBLAGE_ARMES_COMMUN.md) : fusion
+  réversible sans écrasement des ajouts indépendants ; 61 fichiers privés,
+  276 descripteurs, 117 demandes de ressources et 27 lectures d'animations.
+  Treize ressources partagées identiques, sources et variantes obligatoirement
+  communes ; sept tests synthétiques. Aucune installation ni qualification en jeu.
 - [Arme et chargeur ZK-383 modernes](../GAROTA_AND_ZK383/DESCRIPTEUR_ZK383_MODERNE.md) :
   deux fiches de 508 octets, munition moderne distincte initialisée à 30, modèles
   originaux, deux icônes, sons 56/86 et textes 21503/21504. Trois préparations,
