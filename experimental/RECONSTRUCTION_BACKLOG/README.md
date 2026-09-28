@@ -1,6 +1,6 @@
 # Registre maître des reconstructions expérimentales
 
-Inventaire initial : **2026-09-19**. Dernière mise à jour : **2026-09-27**.
+Inventaire initial : **2026-09-19**. Dernière mise à jour : **2026-09-28**.
 
 Branche de travail actuelle : `codex/reconstruction-phase-1`.
 La préparation de `codex/experimental-reconstruction-inventory` a été intégrée
@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **1 195 tests Python réussis sur 1 196 dans la copie de publication**; un test de lien symbolique non exécuté
+- **1 202 tests Python réussis sur 1 203 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -178,6 +178,10 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   ordinaires ; les variantes v4/v5/v6 refusées restent documentées.
   Le réglage indépendant des doigts est implémenté mais pas encore adopté ;
   prise droite ZK-383, gestes, cadrage et comportement restent à réaliser/qualifier.
+  Variante MG34 v10 : mouvement de sortie/rangement corrigé, zéro dépassement
+  sur 1 046 instants natifs et zéro traversée sur 1 010 poses / 33 pièces.
+  Le nouveau banc de transitions distingue 72 écarts bruts sur 546 instants,
+  corrigés hors jeu seulement ; aucun raccordement moteur n'est revendiqué.
 - [Sons FG42/ZK-383 modernes](SONS_MODERNES.md) : quatre effets PCM originaux,
   sans échantillon commercial, et une copie de définition sonore additive
   entièrement réversible. 539 entrées / 672 variantes existantes conservées ;
@@ -204,6 +208,8 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   retrait exact, 272 objets et 277 groupes existants préservés. Les dix objets
   et six groupes modifiés des tables personnelles sont conservés. Seize tests
   synthétiques nouveaux ; fichiers désactivés, contacts et gameplay non qualifiés.
+  Trois laboratoires v2 supplémentaires utilisent les mains MG34 v10 et les
+  cinq libellés communs, sans remplacer les anciens dossiers v1.
 - [Descripteur et tables FG42](../FG42/DESCRIPTEUR_ET_TABLES.md) : fiche moderne
   de 508 octets, munition historique 196 initialisée à 20, sons originaux 55/85,
   icône originale et texte 21502 dans huit langues. Trois préparations privées,

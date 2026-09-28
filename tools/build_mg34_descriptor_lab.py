@@ -19,7 +19,6 @@ from build_benelli_descriptor_lab import output_directory
 from build_modern_asset import ROOT,build_meshes,encode_4ds
 from build_modern_equipment_hose import digest
 from build_rigid_weapon_resource_lab import prepare as prepare_resources,SLOTS
-from build_rigid_weapon_hand_bank import PROFILE
 from dta_archive import DtaArchive
 from item_native_layout import decode_record
 from item_weapon_descriptor import build_weapon,RAW_BASE,RAW_WEAPON
@@ -29,6 +28,7 @@ from item_sound_audit import editor_references
 from sound_definition import parse as parse_sounds
 
 SLOT=SLOTS['MG34']
+PROFILE=ROOT/'experimental/RECONSTRUCTION_BACKLOG/modern-rigid-hand-grips-mg34-linear.json'
 ARCHIVES=('models.dta','Maps.dta','Sounds.dta','others.DTA','LangEnglish.dta','Patch.dta','SabreSquadron.dta','PatchX01.dta')
 SOURCE_PINS={
     'maps/wi_ge-mg34.bmp':('Maps.dta',3128,'9d101281f23e575eabd0a903812dced69bf20ed1cc46a1575bb1b38bef7276ef'),

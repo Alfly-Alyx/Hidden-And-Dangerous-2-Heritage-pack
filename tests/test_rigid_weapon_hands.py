@@ -57,6 +57,24 @@ class RigidWeaponHandTests(unittest.TestCase):
             with self.assertRaises(ValueError):hands.configuration(bad,self.base,self.spec,'FG42')
         with self.assertRaises(ValueError):hands.configuration(self.profile,self.base,self.spec,'Other')
 
+    def test_mg34_linear_candidate_changes_only_explicit_stow_motion(self):
+        from build_mg34_descriptor_lab import PROFILE
+        candidate=json.loads(PROFILE.read_text(encoding='utf-8'))
+        self.assertEqual(digest(json.dumps(candidate,sort_keys=True).encode()),
+                         '87d9f527feec4f2e7dcfdfad9e761782fbe4c8f83afdc08bd92a08609b2c9c91')
+        expected=deepcopy(self.profile)
+        expected['cases']['MG34'].pop('stow_offset')
+        expected['cases']['MG34']['stow_motion']={'kind':'linear_ready_orientation','offset':[0,-.04,-.12]}
+        self.assertEqual(candidate,expected)
+        self.assertEqual(hands.configuration(candidate,self.base,self.spec,'MG34'),
+                         hands.configuration(self.profile,self.base,self.spec,'MG34'))
+        for name in hands.ALIASES:
+            raw=self.compiled['MG34'][2][name][1]
+            actual=hands.placed_tracks(raw,[.07,-.13,.16],clip_name=name,motion_spec=hands.stow_motion(candidate,'MG34'))
+            old=hands.placed_tracks(raw,[.07,-.13,.16],clip_name=name,stow=hands.stow_offset(self.profile,'MG34'))
+            if name not in ('Arm','Disarm'):self.assertEqual(actual,old)
+            else:self.assertNotEqual(actual,old)
+
     def test_adjustment_affects_only_selected_modern_choices(self):
         grips,thumb,_,_=hands.configuration(self.profile,self.base,self.spec,'FG42');before=deepcopy((grips,thumb))
         choice={'contact_offset_delta':[.001,.002,-.003],'rotation_degrees':[3,4,5],
@@ -116,7 +134,7 @@ class RigidWeaponHandTests(unittest.TestCase):
 
     def test_modern_root_motion_preserves_other_channels_and_reverses_at_float32_keys(self):
         choice={'kind':'linear_ready_orientation','offset':[0,-.08,-.1]};shift=[.07,-.13,.16]
-        for case in ('FG42','ZK383'):
+        for case in hands.CASES:
             roots={}
             for name in hands.ALIASES:
                 raw=self.compiled[case][2][name][1];original=parse_5ds(raw);end=original['frame_end']
