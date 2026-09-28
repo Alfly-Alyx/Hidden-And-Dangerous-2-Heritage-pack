@@ -14,6 +14,7 @@ from build_rigid_weapon_fpv_bank import CASES,compile_bank
 from five_ds import parse_5ds
 from menu_gui_audit import parse_4ds_nodes
 from native_hand_constraints import ArmSolverOracle
+from native_hand_targets import validate_receipt
 from rigid_hand_transition_audit import PAIRS,schedule,LIMIT
 from rigid_weapon_hand_audit import load_bank,suffix_checked
 from unified_hand_pose_oracle import UnifiedHandPoseOracle
@@ -30,10 +31,13 @@ def retention_schedule():
 def summarize(rows):
     if not isinstance(rows,list) or not rows:raise ValueError('Missing unified reports')
     total={'sequences':len(rows),'ticks':0,'native_pose_calls':0,'compiled_arm_calls':0,
+           'compiled_target_calls':0,'max_target_input_error':0,
            'committed_rotations':0,'local_rebuilds':0,'clean_ticks_without_native_pose':0,
            'raw_ticks_over_limit':0,'max_before':0,'max_after':0,'max_matrix_error':0,
            'max_native_pose_error':0,'max_solver_rotation_error':0,'owner_allocations':0,'owner_releases':0}
     for row in rows:
+        compiled_targets=row.get('target_preparation_compiled',False)
+        if type(compiled_targets) is not bool:raise ValueError('Invalid target preparation mode')
         if (any(row.get(k) is not True for k in ('native_animation_compiled_commit_refresh_palette_same_memory',
                 'poses_seeded_only_before_first_operation','reference_corrected_poses_carried_independently','solver_cpu_separate'))
                 or any(row.get(k) is not False for k in ('client_hook_implemented','loaded_scene_qualified',
@@ -51,6 +55,11 @@ def summarize(rows):
             if type(value) is not int or not 0<=value<=4096:raise ValueError('Invalid unified owner count')
             total[key]+=value
         for sample in row['samples']:
+            preparation=sample.get('compiled_target_preparation')
+            if compiled_targets:
+                total['max_target_input_error']=max(total['max_target_input_error'],validate_receipt(preparation))
+                total['compiled_target_calls']+=1
+            elif preparation is not None:raise ValueError('Unexpected compiled target receipt')
             for key,limit in (('native_pose_calls',128),('local_rebuilds',37)):
                 value=sample.get(key)
                 if type(value) is not int or not 0<=value<=limit:raise ValueError('Invalid unified sample count')
@@ -72,11 +81,15 @@ def summarize(rows):
     return total
 
 
-def audit(game,bank_root,suffix,profile,compiled_solver,compiled_commit,case,*,archives_only=False):
+def audit(game,bank_root,suffix,profile,compiled_solver,compiled_commit,case,*,archives_only=False,compiled_targets=None):
     if case not in CASES:raise ValueError('Unreviewed unified weapon')
     suffix_checked(suffix)
     library=(game/'LS3DF.dll').read_bytes();solver_raw=compiled_solver.read_bytes();commit_raw=compiled_commit.read_bytes()
-    machine=UnifiedHandPoseOracle(library,commit_raw,ArmSolverOracle(solver_raw))
+    preparer=None;target_raw=None
+    if compiled_targets is not None:
+        from native_hand_targets import TargetPreparationOracle
+        target_raw=compiled_targets.read_bytes();preparer=TargetPreparationOracle(target_raw)
+    machine=UnifiedHandPoseOracle(library,commit_raw,ArmSolverOracle(solver_raw),preparer)
     hands,excluded=read_hands(game,archives_only=archives_only);compiled=compile_bank(case);variants={}
     for source in HAND_MODELS:
         hand=hands[source]
@@ -97,6 +110,7 @@ def audit(game,bank_root,suffix,profile,compiled_solver,compiled_commit,case,*,a
     return {'schema_version':1,'scope':'private_unified_native_rigid_hand_memory','case':case,
         'runtime_status':'pending','library_sha256':digest(library),'compiled_solver_sha256':digest(solver_raw),
         'compiled_commit_sha256':digest(commit_raw),'profile_sha256':digest(json.dumps(profile,sort_keys=True).encode()),
+        'compiled_targets_sha256':digest(target_raw) if target_raw is not None else None,
         'excluded_loose_overrides':excluded,'variants':variants,
         'animation_commit_refresh_palette_share_memory':True,'solver_cpu_separate':True,
         'hand_root_is_diagnostic_joint':True,'owning_visual_is_supplied_record':True,
@@ -111,11 +125,13 @@ def main(argv=None):
     for name in ('game','bank-root','profile','compiled-solver','compiled-commit','json-output'):
         parser.add_argument('--'+name,type=Path,required=True)
     parser.add_argument('--bank-suffix',required=True);parser.add_argument('--case',choices=CASES,required=True)
+    parser.add_argument('--compiled-targets',type=Path)
     parser.add_argument('--archives-only',action='store_true');args=parser.parse_args(argv)
     try:
         if args.json_output.exists():raise ValueError('Use a fresh unified report path')
         report=audit(args.game,args.bank_root,args.bank_suffix,json.loads(args.profile.read_text(encoding='utf-8')),
-            args.compiled_solver,args.compiled_commit,args.case,archives_only=args.archives_only)
+            args.compiled_solver,args.compiled_commit,args.case,archives_only=args.archives_only,
+            compiled_targets=args.compiled_targets)
         with args.json_output.open('x',encoding='utf-8') as out:json.dump(report,out,indent=2);out.write('\n')
         print(json.dumps({s:{k:v[k] for k in ('transition_totals','retention_totals')}
                          for s,v in report['variants'].items()},indent=2));return 0

@@ -107,7 +107,11 @@ pas présentée comme une modification ou une qualification des clips bruts.
 
 Le point après mélange repéré dans le relais de modèle n'est toujours pas
 intercepté. Restent l'identification des modèles réellement chargés, leur
-durée de vie, le filtrage strict des équipements modernes, la préparation
-native des cibles, la réentrance, les limites du visuel propriétaire, le
+durée de vie, le filtrage strict des équipements modernes, la collecte des
+poses vivantes, la réentrance, les limites du visuel propriétaire, le
 budget par frame et les comportements du client. Surfaces, skin, caméra,
 sons et jouabilité ne sont pas qualifiés par ce contrôle de mémoire.
+
+Le [calcul des cibles sur buffers bornés](CIBLES_MAINS_COMPILEES.md) dispose
+désormais d'une implémentation C indépendante ; sa collecte d'entrées et son
+appel restent orchestrés par le banc Python, pas par un hook dans le jeu.

@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **1 232 tests Python réussis sur 1 233 dans la copie de publication**; un test de lien symbolique non exécuté
+- **1 242 tests Python réussis sur 1 243 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -232,6 +232,11 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   dont 102 sans nouveau calcul de pose ; dérive répétée du premier solveur
   corrigée par une inversion exacte, sans relever les seuils. Le solveur reste dans son processeur isolé ;
   aucun hook client, chargement de scène ou rendu n'est revendiqué.
+- [Cibles de mains compilées](CIBLES_MAINS_COMPILEES.md) : calcul C original
+  des transformations courantes, poignets et coudes sur buffers bornés ;
+  huit cas inventés et treize refus exécutés, sorties C transmises au solveur.
+  578 appels sur 80 séquences H/R contrôlés, écart d'entrée maximal `1,11e-16`.
+  L'identification et la collecte des modèles vivants restent à réaliser.
 - [Préparation commune FG42/MG34/ZK-383](ASSEMBLAGE_ARMES_COMMUN.md) : fusion
   réversible sans écrasement des ajouts indépendants ; 61 fichiers privés,
   276 descripteurs, 117 demandes de ressources et 27 lectures d'animations.
