@@ -34,7 +34,7 @@ def reference_arm(values,side):
             for i in range(3)]
 
 
-def invented_values(*,turned=False,target=(.35,.1,.1)):
+def invented_values(*,turned=False,target=(.35,.1,.1),residual_scale=False):
     parent=rotation(euler([20,-15,30] if turned else [0,0,0]));shoulder=[.03,-.02,.01]
     upper=matmul(parent,rotation(euler([5,3,10])))
     fore=matmul(upper,rotation(euler([0,0,5])))
@@ -47,15 +47,21 @@ def invented_values(*,turned=False,target=(.35,.1,.1)):
     values.extend(v for row in parent for v in row)
     values.extend(a+b for a,b in zip(shoulder,target))
     values.extend(v for row in rotation(euler([25,15,-35])) for v in row)
-    values.extend([.01,.35,-.05]);return values
+    values.extend([.01,.35,-.05])
+    if residual_scale:
+        for start in (0,12,24,36):
+            for row in range(3):
+                for col,factor in enumerate((1+2e-8,1-3e-8,1+1e-8)):
+                    values[start+3*row+col]*=factor
+    return values
 
 
 def synthetic_audit(machine):
     tested=[];worst=0
-    for turned in (False,True):
+    for turned,residual in ((False,False),(True,False),(False,True),(True,True)):
         for target in ((.35,.1,.1),(.12,.3,-.08),(-.25,.2,.1)):
             for side in (1,-1):
-                values=invented_values(turned=turned,target=target);saved=deepcopy(values)
+                values=invented_values(turned=turned,target=target,residual_scale=residual);saved=deepcopy(values)
                 output,receipt=machine.solve(values,side)
                 if receipt['status']!=0 or values!=saved:raise ValueError('Compiled invented arm failed or mutated inputs')
                 expected=reference_arm(values,side);error=0
@@ -63,8 +69,8 @@ def synthetic_audit(machine):
                     a=native_affine([0,0,0],output[4*i:4*i+4],[1,1,1])[0]
                     b=native_affine([0,0,0],expected[i],[1,1,1])[0]
                     error=max(error,*(abs(a[r][c]-b[r][c]) for r in range(3) for c in range(3)))
-                if error>2e-6:raise ValueError('Compiled invented rotations differ from independent reference')
-                worst=max(worst,error);tested.append({'turned_parent':turned,'target':target,'side':side,
+                if error>5e-12:raise ValueError('Compiled invented rotations differ from independent reference')
+                worst=max(worst,error);tested.append({'turned_parent':turned,'residual_scale':residual,'target':target,'side':side,
                                                     'rotation_matrix_error':error,'receipt':receipt})
     failures=[]
     for label,changes,kwargs,status in (

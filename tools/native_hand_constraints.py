@@ -14,14 +14,14 @@ from fpv_contact_constraints import correct as correct_reference,ARM_NAMES
 from hand_pose_ik import pinned_skin,validate_basis,vector
 from model_transform import native_affine
 
-CODE_SHA='f2ff000d24ab84ded2a71c409bb61fac825c7b5ea4aac52e6990422dcedaabac'
-CODE_SIZE=5592
-ENTRY_RVA=7471
-BINARY_SHA='bd5d8672695b70d5cc3d0e10608316abbe75763543640d1390f97890f60a5cb7'
-BINARY_SIZE=7168
+CODE_SHA='be596ddb17eb8d1fdc15253f18c826713e0b80ae90a0fcac1d1b42a063b84f62'
+CODE_SIZE=6240
+ENTRY_RVA=8100
+BINARY_SHA='d3ff9aa8bf18b947ad369e8ccc79809c773da9f9b8c102ae17b7ed1527e934bf'
+BINARY_SIZE=8192
 SECTION_PINS={b'.text':(0x1000,CODE_SIZE,CODE_SHA),
-    b'.data':(0x3000,368,'ddce047816c82d65fd5de637dea4c28cf7b69a9f25aa65c510e9aaccb845f720'),
-    b'.reloc':(0x4000,84,'f87768ac6d7d215b2f02dcdd7bd132772cb5a9ef3d063ee4509226f895531340')}
+    b'.data':(0x3000,384,'58c1f4c33fbafb1a81c9535b61b9943f2471123dd261699fb0a6e29592320988'),
+    b'.reloc':(0x4000,88,'17393442c0a7d59629622bbb39fecd73311b0b9ba79f0f52e1c43888b8664d10')}
 
 
 def arm_input(skin,side,wanted):

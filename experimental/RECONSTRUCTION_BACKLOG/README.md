@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **1 225 tests Python réussis sur 1 226 dans la copie de publication**; un test de lien symbolique non exécuté
+- **1 232 tests Python réussis sur 1 233 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -225,6 +225,13 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   rafraîchissement récursif et nouvelle palette natives dans une même mémoire.
   Trois arbres inventés et huit refus vérifiés, puis 546 poses MG34 H/R et
   3 276 rotations/matrices locales contrôlées, sans scène chargée ni hook.
+- [Chaîne de correction unifiée](CHAINE_CORRECTION_UNIFIEE.md) : attaches,
+  poids, poses natives, application compilée, rafraîchissement et palettes
+  utilisent les mêmes objets simulés, avec poses de référence corrigées
+  conservées indépendamment. 80 séquences / 578 instants H/R vérifiés,
+  dont 102 sans nouveau calcul de pose ; dérive répétée du premier solveur
+  corrigée par une inversion exacte, sans relever les seuils. Le solveur reste dans son processeur isolé ;
+  aucun hook client, chargement de scène ou rendu n'est revendiqué.
 - [Préparation commune FG42/MG34/ZK-383](ASSEMBLAGE_ARMES_COMMUN.md) : fusion
   réversible sans écrasement des ajouts indépendants ; 61 fichiers privés,
   276 descripteurs, 117 demandes de ressources et 27 lectures d'animations.

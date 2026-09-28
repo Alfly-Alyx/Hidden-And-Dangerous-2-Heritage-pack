@@ -40,7 +40,7 @@ TinyCC local déjà disponible et épinglé par SHA-256
 `11b86934bb2833f57fa0453a605ca342aee9207e193faea9b973baa2b2b4c35b`.
 Rien n'est téléchargé. La sortie doit être neuve et son nom de fichier reste
 `hand-constraints-v1.dll.disabled` (ABI 1, pas promotion en version jouable).
-L'image de 7 168 octets a pour SHA-256
+La première image historique (v1), de 7 168 octets, a pour SHA-256
 `bd5d8672695b70d5cc3d0e10608316abbe75763543640d1390f97890f60a5cb7` ;
 sa section de code de 5 592 octets :
 `f2ff000d24ab84ded2a71c409bb61fac825c7b5ea4aac52e6990422dcedaabac`.
@@ -130,7 +130,9 @@ L'option `--compiled-commit` du banc de transitions exige `--native` et
 `--compiled-solver`. Elle passe les six rotations calculées au nouveau
 composant, puis contrôle les matrices natives persistantes. La mémoire de
 l'animation et celle de l'application/rafraîchissement restent distinctes ;
-seules ces trois dernières étapes partagent actuellement les mêmes objets.
+seules ces trois dernières étapes partagent les mêmes objets dans ce premier
+banc. La [chaîne unifiée suivante](CHAINE_CORRECTION_UNIFIEE.md) inclut ensuite
+l'animation native dans cette mémoire, sans prétendre charger une scène.
 
 Le passage complet sur MG34 v10 est terminé : **546 poses H/R, 3 276 rotations
 appliquées, 3 276 reconstructions locales et 3 276 signaux au propriétaire**.
@@ -142,6 +144,12 @@ Les 72 écarts bruts d'animation restent présents avant correction ; aucun
 résultat de ce banc n'est transformé en validation de scène ou de jouabilité.
 
 ## Réalisation suivante
+
+La [chaîne unifiée](CHAINE_CORRECTION_UNIFIEE.md#correction-de-la-dérive-à-pas-nul)
+a ensuite révélé un biais de cette première image lors de corrections répétées.
+La source et le contrôleur courants exigent désormais l'inversion exacte v2 ;
+les anciens résultats ponctuels et fichiers v1 sont conservés comme historiques,
+pas réutilisés comme preuve de conservation des poses entre appels.
 
 Le raccordement nécessite encore un point après mélange et avant skin,
 le raccordement du contrat de poses/indicateurs aux objets réellement chargés,
