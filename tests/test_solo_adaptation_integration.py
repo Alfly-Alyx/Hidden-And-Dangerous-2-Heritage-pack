@@ -29,9 +29,18 @@ class SoloAdaptationIntegrationTests(unittest.TestCase):
         self.assertIn("--export-heritage-solo", program)
         self.assertIn("SoloMissionAdaptationInstaller.Install", core)
 
-    def test_no_standalone_commercial_archive_builder_remains(self):
-        self.assertFalse((ROOT / "build-solo-mission-pack.ps1").exists())
-        self.assertFalse((ROOT / "solo-mission-pack/Program.cs").exists())
+    def test_personal_standalone_builder_keeps_generated_payloads_ignored(self):
+        self.assertTrue((ROOT / "build-solo-mission-pack.ps1").is_file())
+        self.assertTrue((ROOT / "solo-mission-pack/Program.cs").is_file())
+        ignored = (ROOT / ".gitignore").read_text(encoding="utf-8")
+        self.assertIn("build/", ignored)
+        self.assertIn("dist/*", ignored)
+        self.assertNotIn("!dist/HD2-Solo-Mission-Pack-Setup.exe", ignored)
+        for archive in (
+            "missions.dta", "Scripts.dta", "Patch.dta", "SabreSquadron.dta",
+        ):
+            with self.subTest(archive=archive):
+                self.assertFalse((ROOT / archive).exists())
 
     def test_menu_integration_uses_the_installed_custom_library(self):
         installer = (ROOT / "installer/CustomMissionManagerInstaller.cs").read_text(
