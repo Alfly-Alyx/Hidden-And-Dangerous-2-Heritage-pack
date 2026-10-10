@@ -38,48 +38,52 @@ def reference_binding(model,records):
 
 class HandModelBindingOracle:
     STOP=0x3000000;STACK=0x3100000;INPUT=0x5000000;OUTPUT=0x5100000;WORK=0x5200000;NODES=0x5300000;MODEL=0x5700000
+    BASE=BASE;BINARY_SIZE=BINARY_SIZE;BINARY_SHA=BINARY_SHA;CODE_END=CODE_END;SNAPSHOT_CHECK=SNAPSHOT_CHECK
+    EXPORTS=EXPORTS;WORK_SIZE=WORK_SIZE;WORK_MAP_SIZE=4096
+    ARGUMENTS={b'Hd2BuildHandModelBinding':7,b'Hd2HandBindingWorkspaceSize':0,b'Hd2HandModelBindingSize':0}
 
     def __init__(self,raw,parent=None):
-        if type(raw) is not bytes or len(raw)!=BINARY_SIZE or digest(raw)!=BINARY_SHA:
+        if type(raw) is not bytes or len(raw)!=self.BINARY_SIZE or digest(raw)!=self.BINARY_SHA:
             raise ValueError('Unreviewed original hand model binding image')
         import pefile
         import unicorn as uni
         from unicorn import x86_const as reg
         pe=pefile.PE(data=raw);mapped=pe.get_memory_mapped_image()
-        if (pe.FILE_HEADER.Machine!=0x14c or pe.OPTIONAL_HEADER.ImageBase!=BASE
+        if (pe.FILE_HEADER.Machine!=0x14c or pe.OPTIONAL_HEADER.ImageBase!=self.BASE
                 or hasattr(pe,'DIRECTORY_ENTRY_IMPORT')
-                or {s.name:s.address for s in pe.DIRECTORY_ENTRY_EXPORT.symbols}!=EXPORTS):
+                or {s.name:s.address for s in pe.DIRECTORY_ENTRY_EXPORT.symbols}!=self.EXPORTS):
             raise ValueError('Unreviewed hand binding PE contract')
         self.uni,self.reg=uni,reg;self.uc=uni.Uc(uni.UC_ARCH_X86,uni.UC_MODE_32) if parent is None else parent.uc
         self.active=False;self.calls={};self.output_writes=0;self.late_fault=None;self.injected=False
-        for at,size,permissions in ((BASE,(len(mapped)+4095)&~4095,uni.UC_PROT_READ|uni.UC_PROT_EXEC),
+        for at,size,permissions in ((self.BASE,(len(mapped)+4095)&~4095,uni.UC_PROT_READ|uni.UC_PROT_EXEC),
                 (self.STOP,4096,uni.UC_PROT_READ|uni.UC_PROT_EXEC),(self.STACK,65536,uni.UC_PROT_READ|uni.UC_PROT_WRITE),
                 (self.INPUT,4096,uni.UC_PROT_READ),(self.OUTPUT,4096,uni.UC_PROT_READ|uni.UC_PROT_WRITE),
-                (self.WORK,4096,uni.UC_PROT_READ|uni.UC_PROT_WRITE)):
+                (self.WORK,self.WORK_MAP_SIZE,uni.UC_PROT_READ|uni.UC_PROT_WRITE)):
             if parent is not None and at in (self.STOP,self.STACK):continue
             self.uc.mem_map(at,size,permissions)
-        self.uc.mem_write(BASE,mapped)
+        self.uc.mem_write(self.BASE,mapped)
         if parent is None:
             for i in range(128):self.uc.mem_map(self.NODES+i*0x2000,4096,uni.UC_PROT_READ)
             self.uc.hook_add(uni.UC_HOOK_CODE,self.on_code);self.uc.hook_add(uni.UC_HOOK_MEM_WRITE,self.on_write)
 
     def on_code(self,uc,address,size,context):
-        if not self.active or not BASE+0x1000<address<address+size<=CODE_END:
+        if not self.active or not self.BASE+0x1000<address<address+size<=self.CODE_END:
             raise ValueError('Binding instruction outside reviewed original code')
-        for name,rva in EXPORTS.items():
-            if address==BASE+rva:self.calls[name.decode()]=self.calls.get(name.decode(),0)+1
-        if address==SNAPSHOT_CHECK and self.late_fault is not None:
+        for name,rva in self.EXPORTS.items():
+            if address==self.BASE+rva:self.calls[name.decode()]=self.calls.get(name.decode(),0)+1
+        if address==self.SNAPSHOT_CHECK and self.late_fault is not None:
             at,value=self.late_fault;uc.mem_write(at,struct.pack('<I',value));self.injected=True;self.late_fault=None
 
     def on_write(self,uc,access,address,size,value,context):
         if not self.active or not any(a<=address and address+size<=b for a,b in
-                ((self.STACK,self.STACK+65536),(self.WORK,self.WORK+WORK_SIZE),(self.OUTPUT,self.OUTPUT+OUTPUT_SIZE))):
+                ((self.STACK,self.STACK+65536),(self.WORK,self.WORK+self.WORK_SIZE),(self.OUTPUT,self.OUTPUT+OUTPUT_SIZE))):
             raise ValueError('Binding write outside result, workspace or stack')
         if self.OUTPUT<=address<self.OUTPUT+OUTPUT_SIZE:self.output_writes+=1
 
     def invoke(self,entry,args):
-        if (self.active or entry not in [BASE+r for r in EXPORTS.values()] or not isinstance(args,list)
-                or len(args)!=(7 if entry==BASE+EXPORTS[b'Hd2BuildHandModelBinding'] else 0)
+        allowed={self.BASE+self.EXPORTS[name]:count for name,count in self.ARGUMENTS.items()}
+        if (self.active or entry not in allowed or not isinstance(args,list)
+                or len(args)!=allowed[entry]
                 or any(type(v) is not int or not 0<=v<=0xffffffff for v in args)):
             raise ValueError('Invalid or nested binding invocation')
         stack=self.STACK+0xf000;self.uc.mem_write(self.STACK,bytes(65536))
