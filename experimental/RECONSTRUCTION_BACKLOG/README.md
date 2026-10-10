@@ -1,6 +1,6 @@
 # Registre maître des reconstructions expérimentales
 
-Inventaire initial : **2026-09-19**. Dernière mise à jour : **2026-09-28**.
+Inventaire initial : **2026-09-19**. Dernière mise à jour : **2026-10-10**.
 
 Branche de travail actuelle : `codex/reconstruction-phase-1`.
 La préparation de `codex/experimental-reconstruction-inventory` a été intégrée
@@ -29,7 +29,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 
 ## Légende d'état
 
-### Avancement vérifié le 27 septembre 2026
+### Avancement consolidé au 10 octobre 2026
 
 - **47 profils / 55 scripts dérivés** reconstruits depuis les archives, avec
   157 sources de mission, trois preuves de campagne Africa 3, deux ressources de dialogue et trois modèles
@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **1 252 tests Python réussis sur 1 253 dans la copie de publication**; un test de lien symbolique non exécuté
+- **1 262 tests Python réussis sur 1 263 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -244,6 +244,13 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   résultats identiques au banc à processeurs séparés dans les tolérances établies.
   Le banc le raccorde aux mêmes objets émulés que les animations et palettes ;
   liaison aux modèles réels et hook client restent à réaliser.
+- [Adaptateur après mélange](ADAPTATEUR_CORRECTION_MAINS.md) : collecte C des
+  poses courantes et appel du correcteur compilé sur un modèle explicitement
+  enregistré. Seize cas inventés, dix refus / ignorances et quatre refus
+  d'enregistrement contrôlés ; six cas de l'adaptateur sur processeur hôte
+  conservent les 108 octets x87 complets. Deux champs mal restaurés par
+  l'émulateur restent explicitement non qualifiés dans celui-ci. Le relais
+  moteur n'est pas encore intercepté et la durée de vie réelle reste à traiter.
 - [Préparation commune FG42/MG34/ZK-383](ASSEMBLAGE_ARMES_COMMUN.md) : fusion
   réversible sans écrasement des ajouts indépendants ; 61 fichiers privés,
   276 descripteurs, 117 demandes de ressources et 27 lectures d'animations.
