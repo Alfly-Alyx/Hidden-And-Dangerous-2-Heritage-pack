@@ -6,10 +6,12 @@ from native_hand_model_binding import HandModelBindingOracle,OUTPUT_SIZE
 
 
 class BoundHandRelayOracle(ScatteredHandRelayOracle):
+    BINDING=HandModelBindingOracle
+
     def __init__(self,library,compiled,binding_raw):
         self.binding=None
         super().__init__(library,compiled)
-        self.binding=HandModelBindingOracle(binding_raw,self)
+        self.binding=self.BINDING(binding_raw,self)
 
     def on_code(self,uc,address,size,context):
         if self.binding is not None and self.binding.active:return self.binding.on_code(uc,address,size,context)
@@ -33,7 +35,7 @@ class BoundHandRelayOracle(ScatteredHandRelayOracle):
             name=raw[:end].decode('ascii')
             records.append({'pointer':pointer,'bytes':0x170,'name_pointer':name_pointer,'name_bytes':end+1,
                             'name':name,'parent':struct.unpack_from('<I',node,0x108)[0]})
-        raw,order,receipt=self.binding.bind(self.STATE+0x100,records)
+        raw,order,receipt=self.build_binding(records)
         if receipt['status'] or order is None:raise ValueError('Compiled native model binding refused')
         self.bound_result=raw;self.binding_receipt=receipt
         self.binding_source_indices=[original[records[i]['pointer']] for i in order]
@@ -41,6 +43,9 @@ class BoundHandRelayOracle(ScatteredHandRelayOracle):
         # Python does not synthesize a replacement order, parent table or roles.
         for offset,pointer in ((4,self.binding.OUTPUT+8),(12,self.binding.OUTPUT+0x408),(16,self.binding.OUTPUT+0x608)):
             self.uc.mem_write(h.CONTEXT+offset,struct.pack('<I',pointer))
+
+    def build_binding(self,records):
+        return self.binding.bind(self.STATE+0x100,records)
 
     def check_adapter_success(self):
         h=self.adapter

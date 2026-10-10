@@ -22,7 +22,7 @@ REFUSALS={'count':1,'output_size':1,'work_size':1,'null_model':1,'short_record':
     'marker_parent':5,'upper_parent':5,'weapon_parent':5,'changed_parent':6,'changed_name_pointer':6,'changed_kind':6}
 
 
-def fixture(machine,count=11,order='ordered',alignment=0,case='valid'):
+def seed_fixture(machine,count=11,order='ordered',alignment=0,case='valid'):
     if count not in (11,128) or order not in ORDERS or type(alignment) is not int or alignment not in (0,4):
         raise ValueError('Unreviewed binding fixture layout')
     if case!='valid' and case not in REFUSALS:raise ValueError('Unreviewed binding refusal')
@@ -68,6 +68,11 @@ def fixture(machine,count=11,order='ordered',alignment=0,case='valid'):
         machine.late_fault=(pointers[10]+offset,value)
         page,block=blocks[10];expected=bytearray(block);struct.pack_into('<I',expected,alignment+offset,value)
         blocks[10]=(page,bytes(expected))
+    return records,overrides,blocks
+
+
+def fixture(machine,count=11,order='ordered',alignment=0,case='valid'):
+    records,overrides,blocks=seed_fixture(machine,count,order,alignment,case)
     _,_,receipt=machine.bind(machine.MODEL,records,overrides=overrides)
     if any(bytes(machine.uc.mem_read(page,4096))!=block for page,block in blocks):
         raise ValueError('Binding changed a native record, name or page guard')

@@ -58,6 +58,9 @@ rejoués avec les noms explicites et conservent ces résultats.
 
 ## Ce qui reste
 
+La [collecte compilée du vecteur du modèle](COLLECTE_MODELE_MAINS.md) est maintenant
+raccordée à cette liaison, sur des plages dont la propriété reste fournie par le banc.
+
 Les objets et leurs plages de noms sont encore construits par le banc. Il reste
 à collecter le modèle réellement assemblé, assurer la propriété de ses
 allocations, associer son équipement moderne et traiter les créations,
