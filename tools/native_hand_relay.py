@@ -13,7 +13,7 @@ from ls3d_attach_oracle import AttachOracle,reference_sequence
 from native_hand_hook import HandHookOracle,ENTRY
 from native_hand_pipeline import WORK_SIZE
 from build_native_hand_pipeline import invented_case,compare
-from build_native_hand_hook import current_data,EXPECTED_CALLS
+from build_native_hand_hook import EXPECTED_CALLS
 from modern_animation import encode_5ds
 from native_arm_pose_commit import JOINT_VTABLE,REFRESH,REFRESH_RANGES
 
@@ -87,13 +87,17 @@ def sequence_steps():
 
 class HandRelayOracle(AnimationStreamOracle):
     STATE_SIZE=0x40000
+    ADAPTER=HandHookOracle
+    HOOK_ENTRY=ENTRY
+    PATCH_BUILDER=staticmethod(relay_patch)
+    EXPECTED_CALLS=EXPECTED_CALLS
 
     def __init__(self,library,compiled):
         self.adapter=None;self.relay_active=False;self.refresh_active=False;self.patched=False
         super().__init__(library)
-        self.adapter=HandHookOracle(compiled,self)
+        self.adapter=self.ADAPTER(compiled,self)
         original=bytes(self.uc.mem_read(HOOK_SITE,6))
-        self.patch=relay_patch(original)
+        self.patch=self.PATCH_BUILDER(original)
         if bytes(self.uc.mem_read(0x100be46c,4))!=bytes(4):raise ValueError('Deferred refresh queue must be empty')
         self.native_size=next(b-a+1 for a,b,_ in self.uc.mem_regions() if a==0x10000000)
         self.native_image=bytes(self.uc.mem_read(0x10000000,self.native_size))
@@ -110,10 +114,36 @@ class HandRelayOracle(AnimationStreamOracle):
         self.patched=enabled
 
     def capture_boundary(self):
-        h=self.adapter
-        self.before_hook=bytes(self.uc.mem_read(h.ARENA,65536))
-        self.observed=current_data(h,self.data,self.offsets)
+        self.before_hook=self.read_arena();self.observed=deepcopy(self.data)
+        for i,at in enumerate(self.offsets):
+            self.observed['poses'][i]=list(struct.unpack_from('<3f',self.before_hook,at+0xb0)
+                +struct.unpack_from('<4f',self.before_hook,at+0xc0)+struct.unpack_from('<3f',self.before_hook,at+0xd0))
         self.state_at_boundary=bytes(self.uc.mem_read(self.STATE,self.STATE_SIZE))
+
+    def read_arena(self):return bytes(self.uc.mem_read(self.adapter.ARENA,65536))
+    def node_addresses(self,offsets):return [self.adapter.ARENA+at for at in offsets]
+    def owner_address(self):return self.adapter.ARENA+0xf000
+
+    def seed_adapter(self,data,arena,offsets,roles):
+        self.adapter.seed(data,arena,offsets,roles)
+        self.uc.mem_write(self.adapter.CONTEXT,struct.pack('<I',self.STATE+0x100))
+
+    def prepare_adapter(self):
+        h=self.adapter
+        h.allowed=[(h.CONTEXT+52,h.CONTEXT+64),(h.WORK,h.WORK+WORK_SIZE),(h.POSES,h.POSES+h.count*40)]
+        for i in h.roles[5:]:
+            at=h.ARENA+h.offsets[i];h.allowed.extend(((at+0xc0,at+0xd0),(at+0xe0,at+0xe4)))
+
+    def begin_adapter(self):self.adapter.mode='hook'
+    def end_adapter(self):self.adapter.mode=None
+
+    def check_adapter_success(self):
+        h=self.adapter
+        if struct.unpack('<2I',self.uc.mem_read(h.CONTEXT+52,8))!=(0,0):raise ValueError('Compiled relay correction failed')
+        snapshot=struct.pack('<'+'f'*(h.count*10),*(v for p in self.observed['poses'] for v in p))
+        if bytes(self.uc.mem_read(h.POSES,h.count*40))!=snapshot:raise ValueError('Relay did not collect native poses')
+
+    def check_external_guards(self):pass # The contiguous arena is checked in full by the caller.
 
     def on_code(self,uc,address,size,context):
         h=self.adapter
@@ -121,17 +151,17 @@ class HandRelayOracle(AnimationStreamOracle):
             return h.on_code(uc,address,size,context)
         if not self.relay_active:return super().on_code(uc,address,size,context)
         if address==HOOK_SITE:self.capture_boundary()
-        if address==ENTRY:
+        if address==self.HOOK_ENTRY:
             if not self.patched or self.before_hook is None or h.mode is not None:
                 raise ValueError('Adapter entered without native post-blend boundary')
-            h.mode='hook'
+            self.begin_adapter()
             h.expected_integer={k:h.reg_read(k) for k in ('EAX','EBX','ECX','EDX','ESI','EDI','EBP','EFLAGS')}
             h.expected_fpu=h.fpu_state()
             if h.expected_integer['ESI']!=self.STATE+0x100:raise ValueError('Native relay forwarded another model')
         if address==HOOK_SITE+5 and self.patched:
             if h.mode!='hook' or h.refresh_calls!=1:raise ValueError('Relay did not return through its adapter')
-            h.check_fpu();h.mode=None
-        if self.refresh_active and (address==ENTRY+40 or address==HOOK_SITE+6):
+            h.check_fpu();self.end_adapter()
+        if self.refresh_active and (address==self.HOOK_ENTRY+40 or address==HOOK_SITE+6):
             self.refresh_active=False
         if address==REFRESH:
             if self.before_hook is None or self.refresh_active:raise ValueError('Unexpected native refresh entry')
@@ -142,7 +172,7 @@ class HandRelayOracle(AnimationStreamOracle):
                     if h.reg_read(name)!=(MODEL_VTABLE if name=='ECX' else value):
                         raise ValueError('Adapter changed integer state before native refresh')
                 h.check_fpu()
-            h.refresh_calls+=1;h.arena_at_refresh=bytes(uc.mem_read(h.ARENA,65536))
+            h.refresh_calls+=1;h.arena_at_refresh=self.read_arena()
             self.model_at_refresh=bytes(uc.mem_read(self.STATE+0x100,0x170));self.refresh_active=True
         if self.refresh_active:
             if not any(a<=address<address+size<=b for a,b in (*REFRESH_RANGES,(0x100881e0,0x100881e1))):
@@ -172,9 +202,7 @@ class HandRelayOracle(AnimationStreamOracle):
             self.uc.reg_write(getattr(self.reg,'UC_X86_REG_'+name),value)
         self.before_hook=self.state_at_boundary=self.observed=None;self.controller_calls=0
         h.calls={};h.refresh_calls=0;h.arena_at_refresh=None
-        h.allowed=[(h.CONTEXT+52,h.CONTEXT+64),(h.WORK,h.WORK+WORK_SIZE),(h.POSES,h.POSES+h.count*40)]
-        for i in h.roles[5:]:
-            at=h.ARENA+h.offsets[i];h.allowed.extend(((at+0xc0,at+0xd0),(at+0xe0,at+0xe4)))
+        self.prepare_adapter()
         self.phase='tick';self.writes=tuple(writes);self.visited=set();self.pose_calls=0;self.relay_active=True
         try:
             self.uc.emu_start(MODEL_TICK,self.STOP,count=6_000_000,timeout=20_000_000)
@@ -182,7 +210,7 @@ class HandRelayOracle(AnimationStreamOracle):
                 raise ValueError('Native model relay budget or stack mismatch')
             for name,value in (('EBX',0x22222222),('ESI',0x55555555),('EDI',0x66666666),('EBP',0x77777777)):
                 if h.reg_read(name)!=value:raise ValueError('Native relay changed callee-saved register')
-        finally:self.relay_active=False;self.refresh_active=False;self.phase=None;self.writes=();h.mode=None
+        finally:self.relay_active=False;self.refresh_active=False;self.phase=None;self.writes=();self.end_adapter()
 
     def run(self,*,turned=False,patched=True,registered=True,controller_present=True):
         try:return self._run(turned=turned,patched=patched,registered=registered,controller_present=controller_present)
@@ -205,7 +233,7 @@ class HandRelayOracle(AnimationStreamOracle):
         # The same real diagnostic model object is used by native attachment,
         # model tick, compiled callback and native recursive Refresh.
         self.uc.mem_write(model,struct.pack('<I',MODEL_VTABLE))
-        mutable=bytearray(arena);nodes=[h.ARENA+at for at in offsets]
+        mutable=bytearray(arena);nodes=self.node_addresses(offsets)
         children={i:[] for i in range(len(nodes))};roots=[]
         for i,node in enumerate(nodes):
             self.uc.mem_write(self.SOURCE+0x400+i*4,struct.pack('<I',node))
@@ -214,7 +242,7 @@ class HandRelayOracle(AnimationStreamOracle):
             (roots if parent==-1 else children[parent]).append(i)
             struct.pack_into('<I',mutable,at,JOINT_VTABLE)
             struct.pack_into('<I',mutable,at+0x108,model if parent==-1 else nodes[parent])
-            struct.pack_into('<I',mutable,at+0x168,h.ARENA+0xf000)
+            struct.pack_into('<I',mutable,at+0x168,self.owner_address())
             struct.pack_into('<I',mutable,at+0x164,0x18)
         for i,rows in children.items():
             if rows:struct.pack_into('<I',mutable,offsets[i]+0x10c,nodes[rows[0]])
@@ -223,8 +251,7 @@ class HandRelayOracle(AnimationStreamOracle):
         self.uc.mem_write(model+0x10c,struct.pack('<I',nodes[roots[0]]))
         struct.pack_into('<I',mutable,0xf0f8,1);struct.pack_into('<I',mutable,0xf0e0,0x11c)
         struct.pack_into('<I',mutable,0xf1d0,0x60000)
-        h.seed(data,bytes(mutable),offsets,roles)
-        self.uc.mem_write(h.CONTEXT,struct.pack('<I',model))
+        self.seed_adapter(data,bytes(mutable),offsets,roles)
         if registered and h.configure():raise ValueError('Relay context registration refused')
         self.data,self.offsets=data,offsets
         pointers={'A':self.STATE+0xa000};data_pointers={'A':self.SOURCE+0x10000}
@@ -238,14 +265,14 @@ class HandRelayOracle(AnimationStreamOracle):
                                             (controller+i*0x1c+0x14,controller+i*0x1c+0x20)))
         for n in nodes:tick_writes.extend(((n+0xb0,n+0xbc),(n+0xc0,n+0xe4)))
         self.refresh_writes=[(n+at,n+at+4) for n in nodes for at in (0xe0,0x104,0x164)]
-        self.refresh_writes.extend((h.ARENA+0xf000+at,h.ARENA+0xf000+at+4) for at in (0xe0,0x1d0,0x218))
+        self.refresh_writes.extend((self.owner_address()+at,self.owner_address()+at+4) for at in (0xe0,0x1d0,0x218))
         self.refresh_writes.extend((model+at,model+at+4) for at in (0xe0,0x104))
         rows=[]
         for step in steps:
             kind=step['kind'];runs=kind=='tick' and controller_present and bool(state['owners'])
             expected=reference_step(state,poses,flags,names,clips,parsed,step) if kind!='tick' or runs else {
                 'state':deepcopy(state),'poses':deepcopy(poses),'flags':flags[:],'pose_calls':0}
-            before=bytes(self.uc.mem_read(self.STATE,self.STATE_SIZE));arena_before=bytes(self.uc.mem_read(h.ARENA,65536))
+            before=bytes(self.uc.mem_read(self.STATE,self.STATE_SIZE));arena_before=self.read_arena()
             if kind=='attach':
                 writes=attach_writes
                 self._invoke(ATTACH,'attach',[model,pointers.get(step['clip'],0),step['slot'],0x3f800000,step['mode']],writes,controller)
@@ -258,7 +285,7 @@ class HandRelayOracle(AnimationStreamOracle):
                 try:self.tick(step['delta'],writes)
                 finally:
                     if not controller_present:self.uc.mem_write(model+0x130,struct.pack('<I',controller))
-            actual=bytes(self.uc.mem_read(self.STATE,self.STATE_SIZE));after=bytes(self.uc.mem_read(h.ARENA,65536))
+            actual=bytes(self.uc.mem_read(self.STATE,self.STATE_SIZE));after=self.read_arena()
             boundary=self.before_hook if kind=='tick' and runs else after
             observed=[];error=0
             for i,at in enumerate(offsets):
@@ -268,7 +295,9 @@ class HandRelayOracle(AnimationStreamOracle):
                 error=max(error,*(abs(a-b) for k in p for a,b in zip(p[k],expected['poses'][i][k])));observed.append(p)
                 if struct.unpack_from('<I',boundary,at+0xe0)[0]!=expected['flags'][i]:raise ValueError('Pre-hook native flags differ')
             audit_state=self.state_at_boundary if kind=='tick' and runs else actual
-            self.check_state(audit_state,expected['state'],parsed,pointers,data_pointers,nodes,node_flags=expected['flags'])
+            node_offsets=dict(zip(nodes,offsets))
+            self.check_state(audit_state,expected['state'],parsed,pointers,data_pointers,nodes,node_flags=expected['flags'],
+                node_flag_reader=lambda node:struct.unpack_from('<I',boundary,node_offsets[node]+0xe0)[0])
             all_writes=[*writes,*(self.refresh_writes if runs else [])]
             allowed={i-self.STATE for a,b in all_writes if self.STATE<=a<self.STATE+self.STATE_SIZE for i in range(a,b)}
             if (error>2e-6 or self.pose_calls!=expected['pose_calls']
@@ -277,17 +306,16 @@ class HandRelayOracle(AnimationStreamOracle):
                     or bytes(self.uc.mem_read(0,4096))!=b'\xff'*4+bytes(4092)):
                 raise ValueError('Native relay animation/state differs')
             state,poses,flags=expected['state'],expected['poses'],expected['flags']
+            self.check_external_guards()
             if kind!='tick':continue
             corrected=runs and patched and registered
-            expected_calls=EXPECTED_CALLS if corrected else {'Hd2OnModelHandPose':1} if runs and patched else {}
+            expected_calls=self.EXPECTED_CALLS if corrected else {'Hd2OnModelHandPose':1} if runs and patched else {}
             if (self.controller_calls!=int(runs) or h.refresh_calls!=int(runs) or h.calls!=expected_calls
                     or (not runs and after!=arena_before)):
                 raise ValueError('Native relay gate or call ordering differs')
             rotation_error=0
             if corrected:
-                if struct.unpack('<2I',self.uc.mem_read(h.CONTEXT+52,8))!=(0,0):raise ValueError('Compiled relay correction failed')
-                snapshot=struct.pack('<'+'f'*(h.count*10),*(v for p in self.observed['poses'] for v in p))
-                if bytes(self.uc.mem_read(h.POSES,h.count*40))!=snapshot:raise ValueError('Relay did not collect native poses')
+                self.check_adapter_success()
                 rotation_error=compare(self.observed,boundary,h.arena_at_refresh,offsets,roles)
                 # Carry an independent reference, not the C result, between ticks.
                 from build_native_hand_targets import reference_inputs

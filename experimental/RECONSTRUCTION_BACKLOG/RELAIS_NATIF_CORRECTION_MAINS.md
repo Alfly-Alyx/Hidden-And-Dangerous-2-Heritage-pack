@@ -58,8 +58,9 @@ La référence de poses corrigées est transportée indépendamment entre les é
 Les onze joints, leurs parents et l'enregistrement sont fournis par le banc.
 Le propriétaire visuel est un enregistrement diagnostique séparé : sa boîte
 englobante, sa géométrie, le skin et le rendu ne sont pas exécutés. Les nœuds
-restent dans une arène contiguë ; les allocations dispersées et la durée de vie
-des modèles réellement chargés restent à gérer. L'animation inventée ne prouve
+restent dans une arène contiguë dans ce banc. La [variante dispersée](RELAIS_MAINS_DISPERSE.md)
+relie maintenant le même enchaînement à des allocations séparées ; la durée de vie
+des modèles réellement chargés reste à gérer. L'animation inventée ne prouve
 pas les transitions d'armes décidées par le client, ni le comportement en jeu.
 
 Restent notamment le raccordement aux équipements modernes et aux vrais modèles,
