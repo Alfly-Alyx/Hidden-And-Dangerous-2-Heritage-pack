@@ -63,7 +63,8 @@ def relay_patch(original,site=HOOK_SITE,target=ENTRY):
 
 def fixture(turned=False):
     data,arena,offsets,roles=invented_case(11,turned)
-    names=['N'+str(i) for i in range(11)]
+    names=['fpv_weapon','MOD_left_hand','MOD_right_hand','Bip01 L Clavicle','Bip01 L UpperArm',
+           'Bip01 L Forearm','Bip01 L Hand','Bip01 R Clavicle','Bip01 R UpperArm','Bip01 R Forearm','Bip01 R Hand']
     tracks=[]
     # Only the two independent weapon markers animate. All arm poses must be
     # read from the persistent native arena, never rewritten by the host.
