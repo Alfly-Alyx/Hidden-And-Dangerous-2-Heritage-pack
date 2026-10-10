@@ -41,8 +41,10 @@ Deux scénarios, onze et 128 nœuds :
 - aucune correction de pose exécutée dans ce banc de durée de vie, aucun
   allocateur ou destructeur appelé, aucun jeu lancé ou modifié.
 
-Les objets sont diagnostiques et les vecteurs préalloués. Les changements de
-parent, la destruction finale, le remplacement complet côté client, la
+Les objets sont diagnostiques et les vecteurs préalloués. Les
+[changements de parent](CHANGEMENT_PARENT_NATIF.md) disposent maintenant d'une
+notification distincte sur le même état, pour des chemins natifs limités.
+La destruction finale, le remplacement complet côté client, la
 reconnaissance d'un équipement moderne autorisé et la gestion d'un refus en
 production restent à raccorder ou qualifier. Ces vérifications ne démontrent
 pas la durée de vie d'un modèle effectivement chargé dans le jeu.

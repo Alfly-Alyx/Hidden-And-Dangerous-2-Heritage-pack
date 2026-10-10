@@ -68,7 +68,8 @@ intégrale des 108 octets x87 dans les sondes natives originales.
 Les [opérations natives d'appartenance](APPARTENANCE_MODELE_NATIVE.md) ont leurs
 effets contrôlés séparément. Les entrées du moteur livrent maintenant leurs
 notifications avant mutation dans le banc privé. Il faut encore assurer une
-gestion exploitable des refus côté client, traiter les changements de parent,
+gestion exploitable des refus côté client, étendre les chemins de
+[changement de parent](CHANGEMENT_PARENT_NATIF.md) déjà raccordés,
 puis qualifier le remplacement complet et la destruction finale.
 Le modèle moderne autorisé, ses allocations et son réarmement doivent toujours
 être établis. Aucun hook n'est installé et aucun fichier du jeu n'est modifié.
