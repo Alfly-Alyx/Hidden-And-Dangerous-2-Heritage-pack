@@ -90,6 +90,11 @@ les liaisons et durées de vie des modèles réels, la réentrance du moteur, le
 limites du visuel propriétaire et le budget par frame restent à construire ou
 qualifier. Cette implémentation ne déclare aucune arme jouable.
 
+Le [nouvel adaptateur après mélange](ADAPTATEUR_CORRECTION_MAINS.md) effectue
+maintenant sa collecte de poses en C sur une arène fournie. Son propre banc
+contrôle le modèle, les refus et la préservation de l'état du processeur ;
+son raccordement au relais natif n'est pas encore une preuve réalisée ici.
+
 ## Reproduction
 
 Construire avec `tools/build_native_hand_pipeline.py --output-name HandPipeline_Compiled_v2`
