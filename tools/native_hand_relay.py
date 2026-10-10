@@ -146,6 +146,9 @@ class HandRelayOracle(AnimationStreamOracle):
 
     def check_external_guards(self):pass # The contiguous arena is checked in full by the caller.
 
+    def relay_case(self,turned):return (*fixture(turned),sequence_steps())
+    def correction_measurement(self):return {}
+
     def on_code(self,uc,address,size,context):
         h=self.adapter
         if h is not None and h.mode in ('configure','fpu_init'):
@@ -226,8 +229,8 @@ class HandRelayOracle(AnimationStreamOracle):
         h=self.adapter
         if h.count and h.configure(False):raise ValueError('Previous relay failed unregister')
         self.set_patch(patched)
-        data,arena,offsets,roles,names,clips,initial=fixture(turned)
-        steps=sequence_steps();parsed,poses,steps=validate(names,clips,initial,steps,9)
+        data,arena,offsets,roles,names,clips,initial,steps=self.relay_case(turned)
+        parsed,poses,steps=validate(names,clips,initial,steps,9)
         AttachOracle.sequence(self,names,clips,[BOOTSTRAP],9)
         state=reference_sequence(names,clips,[BOOTSTRAP],9)[-1];flags=[8]*len(names)
         model,controller=self.STATE+0x100,self.STATE+0x400
@@ -255,11 +258,13 @@ class HandRelayOracle(AnimationStreamOracle):
         self.seed_adapter(data,bytes(mutable),offsets,roles)
         if registered and h.configure():raise ValueError('Relay context registration refused')
         self.data,self.offsets=data,offsets
-        pointers={'A':self.STATE+0xa000};data_pointers={'A':self.SOURCE+0x10000}
+        pointers={key:self.STATE+0xa000+i*0x100 for i,key in enumerate(clips)}
+        data_pointers={key:self.SOURCE+0x10000+i*0x10000 for i,key in enumerate(clips)}
         source=bytes(self.uc.mem_read(self.SOURCE,0xa0000))
         attach_writes=[(0,4),(controller+4,controller+5),(controller+8,controller+0xe8),
             (controller+0xf0,controller+0xf4),(self.STATE+0x800,self.STATE+0xa00),
-            (self.STATE+0x10000,self.STATE+0x18000),(pointers['A']+4,pointers['A']+8)]
+            (self.STATE+0x10000,self.STATE+0x18000)]
+        attach_writes.extend((pointer+4,pointer+8) for pointer in pointers.values())
         attach_writes.extend((n+0xe0,n+0xe4) for n in nodes)
         tick_writes=[(controller+4,controller+5)]
         for i in range(8):tick_writes.extend(((controller+i*0x1c+0xc,controller+i*0x1c+0xd),
@@ -276,10 +281,11 @@ class HandRelayOracle(AnimationStreamOracle):
             before=bytes(self.uc.mem_read(self.STATE,self.STATE_SIZE));arena_before=self.read_arena()
             if kind=='attach':
                 writes=attach_writes
-                self._invoke(ATTACH,'attach',[model,pointers.get(step['clip'],0),step['slot'],0x3f800000,step['mode']],writes,controller)
+                weight=struct.unpack('<I',struct.pack('<f',step['weight']))[0]
+                self._invoke(ATTACH,'attach',[model,pointers.get(step['clip'],0),step['slot'],weight,step['mode']],writes,controller)
             elif kind=='weight':
-                writes=[(controller+4,controller+5),(controller+0x20,controller+0x24)]
-                self._invoke(WEIGHT,'stream_weight',[model,0,struct.unpack('<I',struct.pack('<f',step['weight']))[0]],writes,controller)
+                slot=step['slot'];writes=[(controller+4,controller+5),(controller+0x20+slot*0x1c,controller+0x24+slot*0x1c)]
+                self._invoke(WEIGHT,'stream_weight',[model,slot,struct.unpack('<I',struct.pack('<f',step['weight']))[0]],writes,controller)
             else:
                 writes=tick_writes
                 if not controller_present:self.uc.mem_write(model+0x130,bytes(4))
@@ -314,10 +320,11 @@ class HandRelayOracle(AnimationStreamOracle):
             if (self.controller_calls!=int(runs) or h.refresh_calls!=int(runs) or h.calls!=expected_calls
                     or (not runs and after!=arena_before)):
                 raise ValueError('Native relay gate or call ordering differs')
-            rotation_error=0
+            rotation_error=0;measurement={}
             if corrected:
                 self.check_adapter_success()
                 rotation_error=compare(self.observed,boundary,h.arena_at_refresh,offsets,roles)
+                measurement=self.correction_measurement()
                 # Carry an independent reference, not the C result, between ticks.
                 from build_native_hand_targets import reference_inputs
                 from build_native_hand_constraints import reference_arm
@@ -338,7 +345,7 @@ class HandRelayOracle(AnimationStreamOracle):
             h.check_constants()
             rows.append({'delta':step['delta'],'native_controller_calls':self.controller_calls,'native_pose_calls':self.pose_calls,
                 'adapter_calls':h.calls.get('Hd2OnModelHandPose',0),'refresh_calls':h.refresh_calls,'corrected':corrected,
-                'max_pose_error':error,'max_rotation_error':rotation_error})
+                'max_pose_error':error,'max_rotation_error':rotation_error,**measurement})
         if h.configure(False):raise ValueError('Relay failed final unregister')
         self.set_patch(False)
         return {'turned':turned,'patched':patched,'registered':registered,'controller_present':controller_present,'ticks':rows,

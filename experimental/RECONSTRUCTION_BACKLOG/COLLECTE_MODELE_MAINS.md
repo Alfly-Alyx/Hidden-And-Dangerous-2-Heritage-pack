@@ -54,6 +54,10 @@ Le code commercial n'est exécuté qu'en émulation privée ; le jeu n'est pas l
 
 ## Suite nécessaire
 
+Le [relais sur mains / MG34 complètes](RELAIS_MAINS_EQUIPEMENT_COMPLET.md) utilise
+maintenant 78 nœuds et les deux variantes commerciales de mains. Ses objets
+restent des joints diagnostiques et ne qualifient pas le chargement de scène.
+
 Les [ajouts, retraits et transferts natifs](APPARTENANCE_MODELE_NATIVE.md) sont
 désormais examinés sur vecteurs préalloués et références conservées. Ils ne
 modifient pas automatiquement la hiérarchie des parents ; le collecteur refuse
