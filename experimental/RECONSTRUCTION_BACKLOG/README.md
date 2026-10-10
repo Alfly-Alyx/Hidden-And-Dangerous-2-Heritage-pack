@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **1 307 tests Python réussis sur 1 308 dans la copie de publication**; un test de lien symbolique non exécuté
+- **1 317 tests Python réussis sur 1 318 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -244,6 +244,11 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   résultats identiques au banc à processeurs séparés dans les tolérances établies.
   Le banc le raccorde aux mêmes objets émulés que les animations et palettes ;
   liaison aux modèles réels et hook client restent à réaliser.
+- [Appartenance native des nœuds](APPARTENANCE_MODELE_NATIVE.md) : 562 ajouts,
+  retraits et transferts sur vecteurs préalloués, références conservées. La
+  distinction entre collection, parent et visuel propriétaire est contrôlée ;
+  douze collectes compilées acceptent ou refusent les états attendus. Allocations,
+  destructions finales et invalidation dans le client restent à réaliser.
 - [Collecte compilée du modèle](COLLECTE_MODELE_MAINS.md) : lecture du vecteur
   natif sur plages possédées, correspondance exacte des vues et contrôle final
   avant publication. 32 cas valides / 28 refus ; même relais de 208 mises à jour

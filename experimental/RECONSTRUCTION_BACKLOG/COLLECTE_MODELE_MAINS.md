@@ -54,6 +54,11 @@ Le code commercial n'est exécuté qu'en émulation privée ; le jeu n'est pas l
 
 ## Suite nécessaire
 
+Les [ajouts, retraits et transferts natifs](APPARTENANCE_MODELE_NATIVE.md) sont
+désormais examinés sur vecteurs préalloués et références conservées. Ils ne
+modifient pas automatiquement la hiérarchie des parents ; le collecteur refuse
+les transferts devenus incohérents avec celle-ci.
+
 Les allocations du modèle et des nœuds restent des objets diagnostiques du banc.
 Il faut encore établir leur propriété dans le client, reconnaître l'équipement
 moderne, retirer la liaison avant remplacement / destruction et qualifier les
