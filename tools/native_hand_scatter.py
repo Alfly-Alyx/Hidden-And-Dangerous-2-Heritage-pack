@@ -90,7 +90,7 @@ class HandScatterOracle:
         model=self.MODEL if model_identity is None else model_identity
         if type(model) is not int or not 0x1000<=model<=0xffffffff or model&3:
             raise ValueError('Invalid supplied model identity')
-        if (count not in (11,128) or len(data['poses'])!=count or len(roles)!=11
+        if (not 11<=count<=128 or len(data['poses'])!=count or len(roles)!=11
                 or offsets!=[i*0x200 for i in range(count)] or type(arena) is not bytes or len(arena)!=65536):
             raise ValueError('Invalid scatter diagnostic layout')
         self.pages=[self.NODES+((i*37)%128)*0x2000 for i in range(count)]

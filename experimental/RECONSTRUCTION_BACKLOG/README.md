@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **1 326 tests Python réussis sur 1 327 dans la copie de publication**; un test de lien symbolique non exécuté
+- **1 335 tests Python réussis sur 1 336 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -244,6 +244,12 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   résultats identiques au banc à processeurs séparés dans les tolérances établies.
   Le banc le raccorde aux mêmes objets émulés que les animations et palettes ;
   liaison aux modèles réels et hook client restent à réaliser.
+- [Relais sur mains / MG34 complètes](RELAIS_MAINS_EQUIPEMENT_COMPLET.md) :
+  78 nœuds, deux variantes de mains, neuf clips privés ; 86 séquences / 620
+  mises à jour, 39 000 calculs natifs de pose et 570 corrections déclenchées
+  depuis le relais natif. Écart de poignet après correction inférieur à
+  `1,617e-7`. Joints diagnostiques : ni scène chargée, skin, rendu ou arme jouable
+  déclarés qualifiés.
 - [Retrait explicite de la liaison](RETRAIT_LIAISON_MAINS.md) : garde compilée
   raccordée au vrai registre, 30 cas de fonctionnement / 14 refus ; 24 appels
   après retrait avec anciennes données rendues inaccessibles. Aucun accès aux
