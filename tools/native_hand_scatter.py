@@ -17,35 +17,38 @@ CASES=('valid','count','role_count','work_size','null_model','short_record','ove
 
 
 class HandScatterOracle:
+    BINARY_SHA=BINARY_SHA;BINARY_SIZE=BINARY_SIZE;BASE=BASE;CODE_END=CODE_END;EXPORTS=EXPORTS
     STOP=0x3000000;STACK=0x3100000;NODES=0x4000000;WORK=0x4400000;INPUT=0x4500000;MODEL=0x4900000
 
-    def __init__(self,raw):
-        if type(raw) is not bytes or len(raw)!=BINARY_SIZE or digest(raw)!=BINARY_SHA:
+    def __init__(self,raw,parent=None):
+        if type(raw) is not bytes or len(raw)!=self.BINARY_SIZE or digest(raw)!=self.BINARY_SHA:
             raise ValueError('Unreviewed original hand scatter image')
         import pefile
         import unicorn as uni
         from unicorn import x86_const as reg
         pe=pefile.PE(data=raw);mapped=pe.get_memory_mapped_image()
-        if (pe.FILE_HEADER.Machine!=0x14c or pe.OPTIONAL_HEADER.ImageBase!=BASE
+        if (pe.FILE_HEADER.Machine!=0x14c or pe.OPTIONAL_HEADER.ImageBase!=self.BASE
                 or hasattr(pe,'DIRECTORY_ENTRY_IMPORT')
-                or {s.name:s.address for s in pe.DIRECTORY_ENTRY_EXPORT.symbols}!=EXPORTS):
+                or {s.name:s.address for s in pe.DIRECTORY_ENTRY_EXPORT.symbols}!=self.EXPORTS):
             raise ValueError('Unreviewed scatter PE contract')
-        self.uni,self.reg=uni,reg;self.uc=uni.Uc(uni.UC_ARCH_X86,uni.UC_MODE_32)
+        self.uni,self.reg=uni,reg;self.uc=uni.Uc(uni.UC_ARCH_X86,uni.UC_MODE_32) if parent is None else parent.uc
         self.active=False;self.allowed=[];self.calls={};self.return_to_scatter=None;self.late_mutation=None
-        for at,size,permissions in ((BASE,(len(mapped)+4095)&~4095,uni.UC_PROT_READ|uni.UC_PROT_EXEC),
+        for at,size,permissions in ((self.BASE,(len(mapped)+4095)&~4095,uni.UC_PROT_READ|uni.UC_PROT_EXEC),
                 (self.STOP,4096,uni.UC_PROT_READ|uni.UC_PROT_EXEC),(self.STACK,65536,uni.UC_PROT_READ|uni.UC_PROT_WRITE),
                 (self.WORK,65536,uni.UC_PROT_READ|uni.UC_PROT_WRITE),(self.INPUT,4096,uni.UC_PROT_READ)):
+            if parent is not None and at in (self.STOP,self.STACK):continue
             self.uc.mem_map(at,size,permissions)
-        self.uc.mem_write(BASE,mapped)
+        self.uc.mem_write(self.BASE,mapped)
         for i in range(128):self.uc.mem_map(self.NODES+i*0x2000,4096,uni.UC_PROT_READ|uni.UC_PROT_WRITE)
-        self.uc.hook_add(uni.UC_HOOK_CODE,self.on_code);self.uc.hook_add(uni.UC_HOOK_MEM_WRITE,self.on_write)
+        if parent is None:
+            self.uc.hook_add(uni.UC_HOOK_CODE,self.on_code);self.uc.hook_add(uni.UC_HOOK_MEM_WRITE,self.on_write)
 
     def on_code(self,uc,address,size,context):
-        if not self.active or not BASE+0x1000<address<address+size<=CODE_END:
+        if not self.active or not self.BASE+0x1000<address<address+size<=self.CODE_END:
             raise ValueError('Scatter instruction outside reviewed original code')
-        for name,rva in EXPORTS.items():
-            if address==BASE+rva:self.calls[name.decode()]=self.calls.get(name.decode(),0)+1
-        if address==BASE+EXPORTS[b'Hd2CorrectHandPose']:
+        for name,rva in self.EXPORTS.items():
+            if address==self.BASE+rva:self.calls[name.decode()]=self.calls.get(name.decode(),0)+1
+        if address==self.BASE+self.EXPORTS[b'Hd2CorrectHandPose']:
             self.return_to_scatter=struct.unpack('<I',uc.mem_read(uc.reg_read(self.reg.UC_X86_REG_ESP),4))[0]
         if address==self.return_to_scatter and self.late_mutation is not None:
             # Explicit adversarial host mutation after numerical calculation,
@@ -60,10 +63,10 @@ class HandScatterOracle:
         if any(a<=address and address+size<=b for a,b in self.allowed):self.native_writes+=1
 
     def invoke(self,entry,args):
-        if self.active or entry not in (BASE+EXPORTS[b'Hd2CorrectScatteredHandPose'],BASE+EXPORTS[b'Hd2HandScatterWorkspaceSize']):
+        if self.active or entry not in (self.BASE+self.EXPORTS[b'Hd2CorrectScatteredHandPose'],self.BASE+self.EXPORTS[b'Hd2HandScatterWorkspaceSize']):
             raise ValueError('Invalid or nested scatter entry')
         if (not isinstance(args,list) or any(type(v) is not int or not 0<=v<=0xffffffff for v in args)
-                or len(args)!=(0 if entry==BASE+EXPORTS[b'Hd2HandScatterWorkspaceSize'] else 10)):
+                or len(args)!=(0 if entry==self.BASE+self.EXPORTS[b'Hd2HandScatterWorkspaceSize'] else 10)):
             raise ValueError('Invalid scatter argument contract')
         stack=self.STACK+0xf000;self.uc.mem_write(self.STACK,bytes(65536))
         self.uc.mem_write(stack,struct.pack('<'+'I'*(1+len(args)),self.STOP,*args))
@@ -80,10 +83,13 @@ class HandScatterOracle:
             return self.uc.reg_read(self.reg.UC_X86_REG_EAX)
         finally:self.active=False
 
-    def correct(self,data,arena,offsets,roles,*,alignment=0,case='valid'):
+    def seed(self,data,arena,offsets,roles,*,alignment=0,case='valid',model_identity=None):
         if self.active or type(alignment) is not int or alignment not in (0,4) or case not in CASES:
             raise ValueError('Invalid scatter diagnostic switch')
         count=len(offsets)
+        model=self.MODEL if model_identity is None else model_identity
+        if type(model) is not int or not 0x1000<=model<=0xffffffff or model&3:
+            raise ValueError('Invalid supplied model identity')
         if (count not in (11,128) or len(data['poses'])!=count or len(roles)!=11
                 or offsets!=[i*0x200 for i in range(count)] or type(arena) is not bytes or len(arena)!=65536):
             raise ValueError('Invalid scatter diagnostic layout')
@@ -94,12 +100,12 @@ class HandScatterOracle:
         for i,(pointer,offset) in enumerate(zip(pointers,offsets)):
             block=bytearray(b'Z'*4096);block[alignment:alignment+0x170]=arena[offset:offset+0x170]
             parent=data['parents'][i]
-            struct.pack_into('<I',block,alignment+0x108,self.MODEL if parent<0 else pointers[parent])
+            struct.pack_into('<I',block,alignment+0x108,model if parent<0 else pointers[parent])
             struct.pack_into('<II',source,8*i,pointer,0x170);blocks.append(block)
         struct.pack_into('<'+'i'*count,source,0x800,*data['parents'])
         struct.pack_into('<11I',source,0xa00,*roles)
         struct.pack_into('<90d',source,0xb00,*data['rest']);struct.pack_into('<30d',source,0xe00,*data['grips'])
-        args=[self.MODEL,self.INPUT,count,self.INPUT+0x800,self.INPUT+0xa00,11,self.INPUT+0xb00,self.INPUT+0xe00,self.WORK,WORK_SIZE]
+        args=[model,self.INPUT,count,self.INPUT+0x800,self.INPUT+0xa00,11,self.INPUT+0xb00,self.INPUT+0xe00,self.WORK,WORK_SIZE]
         if case=='count':args[2]=129
         elif case=='role_count':args[5]=10
         elif case=='work_size':args[9]-=1
@@ -124,9 +130,16 @@ class HandScatterOracle:
             self.late_mutation=(at,raw)
         for page,block in zip(self.pages,blocks):self.uc.mem_write(page,bytes(block))
         self.uc.mem_write(self.INPUT,bytes(source));self.uc.mem_write(self.WORK,b'Z'*65536)
-        if self.invoke(BASE+EXPORTS[b'Hd2HandScatterWorkspaceSize'],[])!=WORK_SIZE:
+        self.source=bytes(source);self.blocks=[bytes(b) for b in blocks];self.pointers=pointers
+        self.count=count;self.roles=roles[:];self.offsets=offsets[:]
+        return args,bytes(source),blocks
+
+    def correct(self,data,arena,offsets,roles,*,alignment=0,case='valid'):
+        args,source,blocks=self.seed(data,arena,offsets,roles,alignment=alignment,case=case)
+        count=len(offsets)
+        if self.invoke(self.BASE+self.EXPORTS[b'Hd2HandScatterWorkspaceSize'],[])!=WORK_SIZE:
             raise ValueError('Scatter workspace ABI differs')
-        status=self.invoke(BASE+EXPORTS[b'Hd2CorrectScatteredHandPose'],args)
+        status=self.invoke(self.BASE+self.EXPORTS[b'Hd2CorrectScatteredHandPose'],args)
         actual=[bytes(self.uc.mem_read(page,4096)) for page in self.pages]
         protected=self.after_fault if self.injected else [bytes(b) for b in blocks]
         before=bytearray(arena);after=bytearray(arena)

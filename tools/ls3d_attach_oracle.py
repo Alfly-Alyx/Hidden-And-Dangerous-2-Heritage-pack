@@ -233,7 +233,10 @@ class AttachOracle(MathOracle):
             'poses_or_events_evaluated': False, 'scene_loaded': False,
             'library_loaded': False, 'game_started': False}
 
-    def check_state(self, actual, wanted, parsed, clip_pointers, data_pointers, nodes, *, node_flags=None):
+    def check_state(self, actual, wanted, parsed, clip_pointers, data_pointers, nodes, *, node_flags=None,node_flag_reader=None):
+        # Optional reader accesses an actual boundary snapshot for targets that
+        # are in separately mapped allocations, outside the controller arena.
+        if node_flag_reader is not None and not callable(node_flag_reader):raise ValueError('Invalid node flag snapshot reader')
         if actual[0x404] != int(wanted['dirty']):
             raise ValueError('Attachment dirty flag differs')
         for i, slot in enumerate(wanted['slots']):
@@ -289,7 +292,9 @@ class AttachOracle(MathOracle):
                     raise ValueError('Native attached descriptor/event boundary differs')
         for i, node in enumerate(nodes):
             expected_flag = node_flags[i] if node_flags is not None else (8 | (0x10000000 if i in wanted['touched'] else 0))
-            if struct.unpack_from('<I', actual, node-self.STATE+0xe0)[0] != expected_flag:
+            observed_flag=(struct.unpack_from('<I', actual, node-self.STATE+0xe0)[0]
+                           if node_flag_reader is None else node_flag_reader(node))
+            if type(observed_flag) is not int or observed_flag != expected_flag:
                 raise ValueError('Native animated-node flag differs')
         if (self.alloc_count, self.free_count) != (wanted['allocated'], wanted['freed']):
             raise ValueError('Native owner allocation/release counts differ')

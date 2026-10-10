@@ -55,10 +55,9 @@ dans ces contrôles ; seul le programme C original est exécuté en émulation.
 
 ## Suite
 
-Le [relais natif déjà raccordé](RELAIS_NATIF_CORRECTION_MAINS.md) utilise encore
-son contexte à arène contiguë. Il reste à brancher ce collecteur dispersé sur
-un contexte enregistré, puis à établir l'identité et la durée de vie des modèles
-réels et leurs tailles d'allocation. Le skin, le budget par frame et la validation
+Le collecteur est désormais [branché sur un contexte enregistré et le relais natif](RELAIS_MAINS_DISPERSE.md),
+en complément du banc contigu. Il reste à établir l'identité et la durée de vie
+des modèles réels et leurs tailles d'allocation. Le skin, le budget par frame et la validation
 en jeu ne sont pas couverts par ce lot. Aucun équipement n'est déclaré jouable.
 
 Reproduction : `tools/build_native_hand_scatter.py --output-name HandScatter_Compiled_v1`,
