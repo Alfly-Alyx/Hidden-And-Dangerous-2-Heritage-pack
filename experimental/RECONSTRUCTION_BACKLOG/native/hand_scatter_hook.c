@@ -2,19 +2,8 @@
  * Never installs a hook. Caller serializes access and unregisters BEFORE any
  * model/node/input release, reuse or replacement. No live discovery is implied.
  */
-#include "hand_scatter.h"
+#include "hand_scatter_context.h"
 void Hd2AfterHandPose(void);
-typedef struct {
-    void *model;
-    const Hd2HandNodeView *nodes;
-    unsigned count;
-    const int *parents;
-    const unsigned *roles;
-    unsigned role_count;
-    const double *rest,*grips;
-    Hd2HandScatterWorkspace *work;
-    unsigned work_bytes,busy,status,calls;
-} Hd2ScatterHookContext;
 static Hd2ScatterHookContext *active_context;
 
 static int bounded(const Hd2ScatterHookContext *c) {

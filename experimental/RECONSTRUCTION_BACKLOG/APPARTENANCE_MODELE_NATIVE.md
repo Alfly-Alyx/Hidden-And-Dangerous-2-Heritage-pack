@@ -59,6 +59,10 @@ qualifier les allocations et les destructions finales, puis tester le cycle
 complet du client. Aucun hook de durée de vie n'est installé, aucun modèle du
 jeu personnel n'est modifié et aucune bibliothèque Windows n'est chargée.
 
+La [garde compilée de retrait](RETRAIT_LIAISON_MAINS.md) réalise maintenant le
+retrait du registre sur notification explicite. La livraison de ces notifications
+depuis les opérations du moteur demeure une étape distincte non implémentée.
+
 Reproduction : `tools/model_membership_audit.py --library <LS3DF 1.12>`, avec
 `--compiled-collection <image désactivée>` et `--json-output <rapport neuf>`.
 Rapport privé : `.analysis/native-model-membership-v1-20261010.json`.
