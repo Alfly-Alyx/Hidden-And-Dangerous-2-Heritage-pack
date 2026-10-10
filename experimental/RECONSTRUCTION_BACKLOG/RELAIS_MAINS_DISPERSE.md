@@ -64,6 +64,8 @@ de changement tardif ne remplacent pas cette propriété exclusive. Le propriét
 visuel est diagnostique ; skin, rendu, boîte englobante et budget par frame ne
 sont pas exécutés ou qualifiés. Aucune arme n'est déclarée jouable.
 
+La [liaison compilée par noms et parents](LIAISON_MODELE_MAINS.md) ordonne maintenant
+des nœuds énumérés à l'envers et alimente directement ce contexte dans le banc.
 La suite porte sur la collecte des modèles réellement assemblés, leur identité,
 leurs créations / remplacements / destructions et leur association aux équipements
 modernes, avant toute activation dans une copie de test.
