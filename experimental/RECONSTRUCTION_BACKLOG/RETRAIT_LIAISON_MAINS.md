@@ -2,8 +2,10 @@
 
 Composant original du **10 octobre 2026**, désactivé. Il relie une garde de
 durée de vie au registre compilé du [correcteur dispersé](RELAIS_MAINS_DISPERSE.md).
-Les événements restent fournis par l'appelant du banc : leur interception dans
-le client n'est **pas encore implémentée**.
+Les événements sont fournis explicitement dans ce premier banc. Le
+[raccordement aux entrées natives](NOTIFICATIONS_CYCLE_VIE_NATIVE.md) les livre
+maintenant automatiquement dans l'émulateur privé ; leur gestion dans le
+client réel n'est **pas encore implémentée**.
 
 ## Comportement
 
@@ -64,9 +66,10 @@ intégrale des 108 octets x87 dans les sondes natives originales.
 ## Raccordement restant
 
 Les [opérations natives d'appartenance](APPARTENANCE_MODELE_NATIVE.md) ont leurs
-effets contrôlés séparément. Il faut encore livrer leurs notifications à cette
-garde depuis les points d'entrée du client et du moteur, garantir l'ordre avant
-mutation, puis qualifier le remplacement complet et la destruction finale.
+effets contrôlés séparément. Les entrées du moteur livrent maintenant leurs
+notifications avant mutation dans le banc privé. Il faut encore assurer une
+gestion exploitable des refus côté client, traiter les changements de parent,
+puis qualifier le remplacement complet et la destruction finale.
 Le modèle moderne autorisé, ses allocations et son réarmement doivent toujours
 être établis. Aucun hook n'est installé et aucun fichier du jeu n'est modifié.
 
