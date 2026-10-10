@@ -104,7 +104,7 @@ def build(output):
     if output.exists():raise ValueError('Scatter adapter laboratory already exists')
     if not COMPILER.is_file() or digest(COMPILER.read_bytes())!=COMPILER_SHA:
         raise ValueError('Reviewed local compiler required; nothing downloaded')
-    inputs=[*SOURCES,HEADER,*PROBE_SOURCES];sources={p.name:p.read_bytes() for p in inputs}
+    inputs=[*SOURCES,HEADER,NATIVE/'hand_scatter_context.h',*PROBE_SOURCES];sources={p.name:p.read_bytes() for p in inputs}
     output.mkdir(parents=True,exist_ok=False);binary=output/BASENAME
     subprocess.run([str(COMPILER),'-shared','-nostdlib','-DHD2_HAND_PIPELINE=1','-Wl,-image-base=0x2c000000',
         '-o',str(binary),*[str(p) for p in SOURCES]],check=True,cwd=ROOT)
