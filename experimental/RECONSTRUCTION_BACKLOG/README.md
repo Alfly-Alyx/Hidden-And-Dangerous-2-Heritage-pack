@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **1 262 tests Python réussis sur 1 263 dans la copie de publication**; un test de lien symbolique non exécuté
+- **1 269 tests Python réussis sur 1 270 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -244,6 +244,12 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   résultats identiques au banc à processeurs séparés dans les tolérances établies.
   Le banc le raccorde aux mêmes objets émulés que les animations et palettes ;
   liaison aux modèles réels et hook client restent à réaliser.
+- [Relais natif raccordé](RELAIS_NATIF_CORRECTION_MAINS.md) : animation native,
+  adaptateur compilé et rafraîchissement récursif natif reliés dans la même mémoire
+  émulée. Seize séquences inventées, 208 étapes, 72 rafraîchissements natifs et
+  18 corrections complètes ; détachement, réattachement et contrôleur absent
+  contrôlés. Le patch privé est retiré et l'image native entièrement comparée.
+  Ni modèles chargés réels, allocations dispersées, skin ni jeu actif qualifiés.
 - [Adaptateur après mélange](ADAPTATEUR_CORRECTION_MAINS.md) : collecte C des
   poses courantes et appel du correcteur compilé sur un modèle explicitement
   enregistré. Seize cas inventés, dix refus / ignorances et quatre refus

@@ -10,7 +10,9 @@ L'adaptateur correspond aux six octets (trois instructions) du relais de modèle
 à `0x10034bc3` : chargement de la table virtuelle, passage du modèle puis appel
 de son rafraîchissement `+0x24`. Il conserve les registres entiers, les indicateurs
 et l'état x87 avant d'appeler le correcteur, puis rejoue ces opérations.
-**Le point du moteur n'est pas encore intercepté par ce lot.**
+Le banc autonome décrit ici n'intercepte pas le moteur. Le
+[banc de relais natif](RELAIS_NATIF_CORRECTION_MAINS.md) raccorde ensuite ce point,
+le correcteur et le rafraîchissement natif dans l'émulateur uniquement.
 
 Un contexte fourni par l'appelant désigne exactement un modèle et une arène
 de nœuds, des offsets, parents, rôles, repos et prises. Après validation des
@@ -79,8 +81,9 @@ d'une scène chargée. Le banc unifié précédent contrôle déjà les palettes
 rafraîchissement natif, mais les deux preuves ne sont pas présentées comme une
 exécution complète du nouveau point d'interception.
 
-Restent : connexion du relais et de l'adaptateur dans le banc natif, découverte
-et identification des modèles réels, gestion de leurs créations / destructions,
+La connexion du relais, de l'adaptateur et du rafraîchissement natif est maintenant
+[contrôlée séparément sur des modèles inventés](RELAIS_NATIF_CORRECTION_MAINS.md).
+Restent : découverte et identification des modèles réels, gestion de leurs créations / destructions,
 liaison aux équipements modernes, adaptation des allocations de nœuds du moteur
 à l'arène bornée, protections d'installation et restauration du hook, budget par
 frame et validation en jeu. Aucun équipement n'est déclaré jouable.

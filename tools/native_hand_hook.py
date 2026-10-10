@@ -51,7 +51,7 @@ class HandHookOracle:
     ARENA=0x3900000;INPUT=0x3a00000;WORK=0x3b00000;CONTEXT=0x3c00000
     POSES=0x3d00000;MODEL=0x3e00000;VTABLE=0x3e01000
 
-    def __init__(self,raw):
+    def __init__(self,raw,parent=None):
         if type(raw) is not bytes or len(raw)!=BINARY_SIZE or digest(raw)!=BINARY_SHA:
             raise ValueError('Unreviewed original hand hook image')
         import pefile
@@ -64,7 +64,9 @@ class HandHookOracle:
             raise ValueError('Unreviewed hand hook PE contract')
         if any(not hasattr(reg,'UC_X86_REG_'+name) for name in FPU_REGISTERS):
             raise ValueError('Emulator lacks required x87 state inspection')
-        self.uni,self.reg=uni,reg;self.uc=uni.Uc(uni.UC_ARCH_X86,uni.UC_MODE_32)
+        self.uni,self.reg=uni,reg
+        self.uc=uni.Uc(uni.UC_ARCH_X86,uni.UC_MODE_32) if parent is None else parent.uc
+        if parent is not None:self.ARENA=parent.STATE+0x20000
         self.emulator_restore_limitations=emulator_restore_probe(uni,reg)
         self.mode=None;self.allowed=[];self.count=0;self.calls={};self.refresh_calls=0
         for address,size,permissions in ((BASE,(len(mapped)+4095)&~4095,uni.UC_PROT_READ|uni.UC_PROT_EXEC),
@@ -76,6 +78,9 @@ class HandHookOracle:
                 (self.CONTEXT,4096,uni.UC_PROT_READ|uni.UC_PROT_WRITE),
                 (self.POSES,8192,uni.UC_PROT_READ|uni.UC_PROT_WRITE),
                 (self.MODEL,8192,uni.UC_PROT_READ)):
+            if parent is not None and address==self.STACK:continue
+            if parent is not None and address==self.ARENA:continue
+            if parent is not None and address==self.STOP:address+=4096;size-=4096
             self.uc.mem_map(address,size,permissions)
         self.uc.mem_write(BASE,mapped)
         self.uc.mem_protect(BASE+0x5000,4096,uni.UC_PROT_READ|uni.UC_PROT_WRITE)
@@ -86,7 +91,8 @@ class HandHookOracle:
         struct.pack_into('<I',models,0x1000+0x24,self.REFRESH)
         self.uc.mem_write(self.MODEL,bytes(models));self.model_bytes=bytes(models)
         self.image_data=bytes(self.uc.mem_read(BASE+0x5000,4096))
-        self.uc.hook_add(uni.UC_HOOK_CODE,self.on_code);self.uc.hook_add(uni.UC_HOOK_MEM_WRITE,self.on_write)
+        if parent is None:
+            self.uc.hook_add(uni.UC_HOOK_CODE,self.on_code);self.uc.hook_add(uni.UC_HOOK_MEM_WRITE,self.on_write)
 
     def reg_read(self,name):return self.uc.reg_read(getattr(self.reg,'UC_X86_REG_'+name))
 
