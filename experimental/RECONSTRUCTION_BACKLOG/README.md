@@ -39,7 +39,7 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
 - **20 laboratoires A/B / 40 entrées** contrôlés hors moteur, objectifs
   commerciaux conservés. Sept profils Africa 5 restent sans laboratoire renommé :
   leur détecteur de piste commercial absent empêche la copie complète.
-- **1 335 tests Python réussis sur 1 336 dans la copie de publication**; un test de lien symbolique non exécuté
+- **1 344 tests Python réussis sur 1 345 dans la copie de publication**; un test de lien symbolique non exécuté
   faute de privilège Windows. Compilation console et auto-tests de sécurité C#
   précédemment réussis, sans nouvelle modification C# dans ce lot.
 - Lecteur audio DPCM complété : vingt WAV de missions décodés et mesurés en mémoire,
@@ -250,11 +250,16 @@ l'installation personnelle. Les déploiements privés de test sont isolés et jo
   depuis le relais natif. Écart de poignet après correction inférieur à
   `1,617e-7`. Joints diagnostiques : ni scène chargée, skin, rendu ou arme jouable
   déclarés qualifiés.
+- [Notifications natives de durée de vie](NOTIFICATIONS_CYCLE_VIE_NATIVE.md) :
+  trois entrées moteur raccordées à la garde dans l'émulateur privé, 28
+  notifications et 26 reprises de prologue vérifiées ; deux mutations occupées
+  arrêtées avant leur transmission. Registres, indicateurs et état x87 conservés,
+  image native restaurée. Refus de production et cycle de vie réel non qualifiés.
 - [Retrait explicite de la liaison](RETRAIT_LIAISON_MAINS.md) : garde compilée
   raccordée au vrai registre, 30 cas de fonctionnement / 14 refus ; 24 appels
   après retrait avec anciennes données rendues inaccessibles. Aucun accès aux
-  objets retirés. Les notifications restent fournies par le banc, pas interceptées
-  dans le client ; aucun cycle de vie complet déclaré qualifié.
+  objets retirés. Notifications explicites dans ce premier banc, puis raccordées
+  aux entrées natives ci-dessus ; aucun cycle de vie complet déclaré qualifié.
 - [Appartenance native des nœuds](APPARTENANCE_MODELE_NATIVE.md) : 562 ajouts,
   retraits et transferts sur vecteurs préalloués, références conservées. La
   distinction entre collection, parent et visuel propriétaire est contrôlée ;
