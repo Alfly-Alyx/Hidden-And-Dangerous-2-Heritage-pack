@@ -31,6 +31,7 @@
       "type": "string",
       "pattern": "^[A-Za-z0-9][A-Za-z0-9 _.-]{0,63}$"
     },
+    "preserveTemplateObjectives": { "type": "boolean", "default": false },
     "title": { "$ref": "#/$defs/translation" },
     "objectives": {
       "type": "array",
@@ -38,6 +39,18 @@
       "items": { "$ref": "#/$defs/translation" }
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "required": ["preserveTemplateObjectives"],
+        "properties": { "preserveTemplateObjectives": { "const": true } }
+      },
+      "then": {
+        "required": ["templateMission"],
+        "not": { "required": ["objectives"] }
+      }
+    }
+  ],
   "$defs": {
     "translation": {
       "oneOf": [

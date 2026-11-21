@@ -1,0 +1,71 @@
+{
+  "status": "PASSED",
+  "fixture": "NONJOUABLE : test de copie et de catalogue uniquement, aucun lancement du jeu",
+  "workflow": "Dépôt brut dans CustomMissions, sans mission.json et sans import manuel",
+  "manager": "D:\\Projets\\GITHUB\\H&D2\\dist\\HD2-Custom-Mission-Manager.exe",
+  "manager_sha256": "8A25CB62A863737DCD74613A27CF2AA2401A5710BAC52263D279196FE1B964BE",
+  "test_game": "D:\\Games\\Hidden and Dangerous 2 - Test Menu Personnalise",
+  "baseline_missions": 3,
+  "imported_missions": 4,
+  "restored_missions": 3,
+  "archive": "D:\\Projets\\GITHUB\\H&D2\\output\\release-0.8.0\\custom-manager-roundtrip-2\\archive\\Operation Test Joueur",
+  "commands": [
+    {
+      "step": "01-check-baseline",
+      "arguments": [
+        "--check",
+        "D:\\Games\\Hidden and Dangerous 2 - Test Menu Personnalise\\CustomMissions"
+      ],
+      "exit_code": 0
+    },
+    {
+      "step": "02-self-test-safety",
+      "arguments": [
+        "--self-test-safety",
+        "D:\\Projets\\GITHUB\\H&D2\\output\\release-0.8.0\\custom-manager-roundtrip-2\\safety"
+      ],
+      "exit_code": 0
+    },
+    {
+      "step": "03-check-raw-folder",
+      "arguments": [
+        "--check",
+        "D:\\Games\\Hidden and Dangerous 2 - Test Menu Personnalise\\CustomMissions"
+      ],
+      "exit_code": 0
+    },
+    {
+      "step": "04-integrate-raw-folder",
+      "arguments": [
+        "--integrate",
+        "D:\\Games\\Hidden and Dangerous 2 - Test Menu Personnalise\\CustomMissions",
+        "D:\\Games\\Hidden and Dangerous 2 - Test Menu Personnalise",
+        "D:\\Games\\Hidden and Dangerous 2 - Test Menu Personnalise"
+      ],
+      "exit_code": 0
+    },
+    {
+      "step": "05-reintegrate-baseline",
+      "arguments": [
+        "--integrate",
+        "D:\\Games\\Hidden and Dangerous 2 - Test Menu Personnalise\\CustomMissions",
+        "D:\\Games\\Hidden and Dangerous 2 - Test Menu Personnalise",
+        "D:\\Games\\Hidden and Dangerous 2 - Test Menu Personnalise"
+      ],
+      "exit_code": 0
+    },
+    {
+      "step": "06-check-restored",
+      "arguments": [
+        "--check",
+        "D:\\Games\\Hidden and Dangerous 2 - Test Menu Personnalise\\CustomMissions"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "registry_note": "Une allocation historique dans .catalogue-ids.json peut subsister après retrait.",
+  "fixture_tree_sha256": "F76D8C217589539BFC6027E74D2A82EB92553D4258DBC197E5916E6243AAA7E5",
+  "catalogue_contains_fixture": true,
+  "preexisting_files_verified": 81,
+  "error": null
+}

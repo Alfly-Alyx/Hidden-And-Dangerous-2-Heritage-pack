@@ -1,0 +1,33 @@
+{
+  "status": "FAILED",
+  "fixture": "NONJOUABLE : test de copie et de catalogue uniquement, aucun lancement du jeu",
+  "workflow": "Dépôt brut dans CustomMissions, sans mission.json et sans import manuel",
+  "manager": "D:\\Projets\\GITHUB\\H&D2\\dist\\HD2-Custom-Mission-Manager.exe",
+  "manager_sha256": "8A25CB62A863737DCD74613A27CF2AA2401A5710BAC52263D279196FE1B964BE",
+  "test_game": "D:\\Games\\Hidden and Dangerous 2 - Test Menu Personnalise",
+  "baseline_missions": 3,
+  "imported_missions": null,
+  "restored_missions": null,
+  "archive": null,
+  "commands": [
+    {
+      "step": "01-check-baseline",
+      "arguments": [
+        "--check",
+        "D:\\Games\\Hidden and Dangerous 2 - Test Menu Personnalise\\CustomMissions"
+      ],
+      "exit_code": 0
+    },
+    {
+      "step": "02-self-test-safety",
+      "arguments": [
+        "--self-test-safety",
+        "D:\\Projets\\GITHUB\\H&D2\\output\\release-0.8.0\\custom-manager-roundtrip\\safety"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "registry_note": "Une allocation historique dans .catalogue-ids.json peut subsister après retrait.",
+  "preexisting_files_verified": 81,
+  "error": "Access to the path 'D:\\Games\\Hidden and Dangerous 2 - Test Menu Personnalise\\CustomMissions\\Operation Test Joueur' is denied."
+}

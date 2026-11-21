@@ -61,7 +61,9 @@ Image originale de 2 560 octets, sans import système et refusant l'initialisati
 par chargement Windows ordinaire. SHA-256 :
 `17716a5576e4d1a783d8ec9294a0432810240ebace1d606d6186ac1cba821573`.
 
-Il reste à traiter la conservation mondiale, les autres branches de scène,
+La [conservation mondiale](CONSERVATION_MONDE_PARENT.md) est maintenant exécutée
+séparément sur des arbres diagnostiques à échelles uniformes. Il reste les
+autres branches de scène, la régénération des caches de quaternion,
 la gestion de refus réelle, la reconnaissance des ressources autorisées et le
 remplacement / la destruction complets. Les allocations restent fournies par
 le banc ; aucune correction de pose n'est exécutée dans ce scénario de durée
