@@ -54,6 +54,12 @@ EXPORT void HookSelect(void);
 EXPORT void HookNativeSingle(void);
 EXPORT void HookNativeCarnage(void);
 EXPORT void HookCatalogueReset(void);
+EXPORT void HookCleanupSlot(void);
+EXPORT void HookGroupStartA(void);
+EXPORT void HookGroupStartB(void);
+EXPORT void HookRecordStore(void);
+EXPORT void HookGetSlot(void);
+EXPORT unsigned HookExtraSlots[64];
 EXPORT void HookTitle(void);
 EXPORT void HookRefreshDone(void);
 
@@ -344,7 +350,15 @@ EXPORT MenuHook MenuHooks[] = {
     HOOK(0x63be73, "\xa1\x34\xea\x8a\x00", HookNativeCarnage),
     HOOK(0x6b6912, "\xc7\x80\xe8\x00\x00\x00\x01\x00\x00\x00", HookCatalogueReset),
     HOOK(0x63abec, "\x89\x5c\x24\x30\xc7\x44\x24\x1c\x00\x00\x10\x14", HookTitle),
-    HOOK(0x63af06, "\x8b\x4c\x24\x34\x5f", HookRefreshDone)
+    HOOK(0x63af06, "\x8b\x4c\x24\x34\x5f", HookRefreshDone),
+    /* Mission browser teardown: ignore non-pointer slots (custom catalogues >= 3). */
+    HOOK(0x67e49e, "\x8b\x37\x85\xf6\x74\x16", HookCleanupSlot),
+    /* Stock table rebuild (0x67e500) assumes two catalogues: group-start array is 50 dwords and
+     * the record table 120 slots. Keep writes for custom catalogues inside their arrays. */
+    HOOK(0x67e55b, "\x8b\xcd\x89\x3c\x96", HookGroupStartA),
+    HOOK(0x67e605, "\x8d\x04\x53\x89\x3c\x86", HookGroupStartB),
+    HOOK(0x67e5d5, "\x89\x45\x00\x8b\x44\x24\x14", HookRecordStore),
+    HOOK(0x67e633, "\x83\xf8\x78\x7c\x05", HookGetSlot)
 };
 EXPORT const unsigned MenuHookCount = sizeof(MenuHooks) / sizeof(MenuHooks[0]);
 

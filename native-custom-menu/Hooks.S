@@ -532,3 +532,65 @@ HookRefreshDone:
     mov 0x34(%esp), %ecx
     pop %edi
     jump(0x63af0b)
+
+/* Mission browser teardown (0x67e490): skip slots that are small integers, not pointers. */
+.globl HookCleanupSlot
+HookCleanupSlot:
+    mov (%edi), %esi
+    cmp $0x10000, %esi
+    jb 1f
+    jump(0x67e4a4)
+1:  jump(0x67e4ba)
+
+/* 0x67e55d: this[campaign*30+group] = start, only inside the 50-dword array. */
+.globl HookGroupStartA
+HookGroupStartA:
+    mov %ebp, %ecx
+    cmp $50, %edx
+    jae 1f
+    mov %edi, (%esi,%edx,4)
+1:  jump(0x67e560)
+
+/* 0x67e608: same store after the loop. */
+.globl HookGroupStartB
+HookGroupStartB:
+    lea (%ebx,%edx,2), %eax
+    cmp $50, %eax
+    jae 1f
+    mov %edi, (%esi,%eax,4)
+1:  jump(0x67e60b)
+
+/* 0x67e5d5: store a new record: in the table, or in our extra table beyond it. */
+.globl HookRecordStore
+HookRecordStore:
+    push %edx
+    lea 0x2a8(%esi), %edx
+    cmp %edx, %ebp
+    jae 1f
+    pop %edx
+    mov %eax, 0(%ebp)
+    jmp 2f
+1:  mov %ebp, %edx
+    sub %esi, %edx
+    sub $0x2a8, %edx
+    shr $2, %edx
+    cmp $64, %edx
+    jae 3f
+    mov %eax, HookExtraSlots(,%edx,4)
+3:  pop %edx
+2:  mov 0x14(%esp), %eax
+    jump(0x67e5dc)
+
+/* 0x67e633: slot lookup; slots 120.. come from our extra table. */
+.globl HookGetSlot
+HookGetSlot:
+    cmp $0x78, %eax
+    jl 1f
+    sub $0x78, %eax
+    cmp $64, %eax
+    jae 2f
+    mov HookExtraSlots(,%eax,4), %eax
+    ret $4
+2:  xor %eax, %eax
+    ret $4
+1:  jump(0x67e63d)

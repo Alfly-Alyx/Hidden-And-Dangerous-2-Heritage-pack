@@ -23,6 +23,7 @@ namespace HD2CustomMissionManager
         public string FrenchTitle;
         public int[] ObjectiveTextIds;
         public string SpawnSourceMission;
+        public bool UseSoloLoader;
         public string[] SpawnActors;
         public string SpawnPositionActor;
         public string[] ExtraSoloScripts;
@@ -136,6 +137,7 @@ namespace HD2CustomMissionManager
                 DefaultTitle = "SOLO ADAPTATION - ALPS 3",
                 FrenchTitle = "ADAPTATION SOLO - ALPES 3",
                 ObjectiveTextIds = new[] { 15011, 15010, 15002 },
+                UseSoloLoader = true,
                 SpawnSourceMission = "Alps2",
                 SpawnActors = new[] { "Spawnpoint01" },
                 SpawnPositionActor = "zone1"
@@ -148,6 +150,7 @@ namespace HD2CustomMissionManager
                 DefaultTitle = "SOLO ADAPTATION - ARDENNES 1",
                 FrenchTitle = "ADAPTATION SOLO - ARDENNES 1",
                 ObjectiveTextIds = new[] { 15020, 15021, 15022 },
+                UseSoloLoader = true,
                 SpawnSourceMission = "Alps2",
                 SpawnActors = new[] { "Spawnpoint01" },
                 SpawnPositionActor = "zone1"
@@ -620,6 +623,13 @@ namespace HD2CustomMissionManager
                     data = convertedActors;
                 if (String.Equals(name, "scripts.dta", StringComparison.OrdinalIgnoreCase))
                     continue;
+                if (String.Equals(name, "tree.klz", StringComparison.OrdinalIgnoreCase))
+                    data = ClearMissionAreaLimits(data);
+                ArchivedFile soloLoader;
+                if (spec.UseSoloLoader
+                    && String.Equals(name, "loader.4ds", StringComparison.OrdinalIgnoreCase)
+                    && spawnFiles.TryGetValue("loader.4ds", out soloLoader))
+                    data = soloLoader.Data;
                 WriteFile(Path.Combine(missionRoot, name), data);
             }
             WriteFile(Path.Combine(missionRoot, "scripts.dta"), soloRegistry);
@@ -705,6 +715,63 @@ namespace HD2CustomMissionManager
             byte[] actors = File.ReadAllBytes(Path.Combine(mission, "actors.bin"));
             foreach (string actor in spec.SpawnActors)
                 FindActorRecord(actors, actor);
+        }
+
+        // Supprime la limite de zone de combat (avertissement + echec de mission)
+        // dans tree.klz, comme tools/tree_klz.py : bits 0x60 des collisions et
+        // murs invisibles "border" renommes en "H2BORD". Taille inchangee.
+        private static byte[] ClearMissionAreaLimits(byte[] source)
+        {
+            if (source == null || source.Length == 16) return source;
+            if (source.Length < 24 || ReadUInt32(source, 0) != 0x43666947)
+                throw new InvalidDataException("tree.klz invalide.");
+            byte[] data = (byte[])source.Clone();
+            int labelCount = checked((int)ReadUInt32(data, 12));
+            if (labelCount < 0 || labelCount > (data.Length - 24) / 4)
+                throw new InvalidDataException("tree.klz : table d'objets invalide.");
+            for (int index = 0; index < labelCount; index++)
+            {
+                int start = checked((int)ReadUInt32(data, 24 + index * 4) + 4);
+                if (start < 0 || start >= data.Length)
+                    throw new InvalidDataException("tree.klz : etiquette hors fichier.");
+                int end = Array.IndexOf(data, (byte)0, start);
+                if (end < 0) throw new InvalidDataException("tree.klz : etiquette non terminee.");
+                for (int at = start; at + 6 <= end; at++)
+                {
+                    if ((data[at] | 0x20) == 'b' && (data[at + 1] | 0x20) == 'o'
+                        && (data[at + 2] | 0x20) == 'r' && (data[at + 3] | 0x20) == 'd'
+                        && (data[at + 4] | 0x20) == 'e' && (data[at + 5] | 0x20) == 'r')
+                    {
+                        byte[] marker = Encoding.ASCII.GetBytes("H2BORD");
+                        Buffer.BlockCopy(marker, 0, data, at, 6);
+                        at += 5;
+                    }
+                }
+            }
+            int collision = checked((int)ReadUInt32(data, 8));
+            if (collision < 24 || collision + 164 > data.Length)
+                throw new InvalidDataException("tree.klz : collisions hors fichier.");
+            long gridX = ReadUInt32(data, collision + 24);
+            long gridZ = ReadUInt32(data, collision + 28);
+            long gridY = ReadUInt32(data, collision + 48);
+            if (gridX == 0 || gridY == 0 || gridZ == 0)
+                throw new InvalidDataException("tree.klz : grille invalide.");
+            long position = collision + 164 + 4 * ((gridX + 1) + (gridY + 1) + (gridZ + 1)) + 16;
+            int[][] sections = {
+                new[] { 72, 32 }, new[] { 88, 32 }, new[] { 80, 192 },
+                new[] { 112, 32 }, new[] { 104, 160 }, new[] { 96, 32 }
+            };
+            foreach (int[] section in sections)
+            {
+                long count = ReadUInt32(data, collision + section[0]);
+                long size = section[1];
+                if (count > data.Length / size || position + count * size > data.Length)
+                    throw new InvalidDataException("tree.klz : table de collisions invalide.");
+                for (long item = 0; item < count; item++)
+                    data[position + item * size + 1] &= 0x9F;
+                position += count * size;
+            }
+            return data;
         }
 
         private static void WriteFile(string path, byte[] data)
@@ -1005,8 +1072,68 @@ namespace HD2CustomMissionManager
                 records.Add(record);
             }
             byte[] result = AppendActorRecords(multiplayerActors, records);
+            result = AppendTailEntries(result, soloActors, spec.SpawnActors);
             foreach (string actor in spec.SpawnActors)
                 FindActorRecord(result, actor);
+            return result;
+        }
+
+        // Chaque acteur possede une "fiche" (bloc 0xAE21, nom dans 0xAE23) dans le
+        // bloc 0xAE20 qui suit la section d'acteurs. Sans fiche, le moteur ne
+        // cree pas les personnages : on copie donc les fiches des acteurs ajoutes.
+        private static byte[] AppendTailEntries(
+            byte[] data, byte[] soloData, string[] actorNames)
+        {
+            int soloSectionStart, soloSectionEnd, sectionStart, sectionEnd;
+            ActorSection(soloData, out soloSectionStart, out soloSectionEnd);
+            ActorSection(data, out sectionStart, out sectionEnd);
+            if (soloSectionEnd + 6 > soloData.Length || sectionEnd + 6 > data.Length
+                || ReadUInt16(soloData, soloSectionEnd) != 0xAE20
+                || ReadUInt16(data, sectionEnd) != 0xAE20)
+                return data;
+            int soloTailEnd = BlockEnd(soloData, soloSectionEnd, soloData.Length);
+            int tailEnd = BlockEnd(data, sectionEnd, data.Length);
+            HashSet<string> existing = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            int cursor = sectionEnd + 6;
+            while (cursor < tailEnd)
+            {
+                int end = BlockEnd(data, cursor, tailEnd);
+                string name = DirectString(data, cursor, end, 0xAE23);
+                if (name != null) existing.Add(name);
+                cursor = end;
+            }
+            List<byte[]> additions = new List<byte[]>();
+            foreach (string wanted in actorNames)
+            {
+                if (existing.Contains(wanted)) continue;
+                cursor = soloSectionEnd + 6;
+                while (cursor < soloTailEnd)
+                {
+                    int end = BlockEnd(soloData, cursor, soloTailEnd);
+                    string name = DirectString(soloData, cursor, end, 0xAE23);
+                    if (String.Equals(name, wanted, StringComparison.OrdinalIgnoreCase))
+                    {
+                        byte[] entry = new byte[end - cursor];
+                        Buffer.BlockCopy(soloData, cursor, entry, 0, entry.Length);
+                        additions.Add(entry);
+                        break;
+                    }
+                    cursor = end;
+                }
+            }
+            if (additions.Count == 0) return data;
+            int added = additions.Sum(item => item.Length);
+            byte[] result = new byte[data.Length + added];
+            Buffer.BlockCopy(data, 0, result, 0, tailEnd);
+            int output = tailEnd;
+            foreach (byte[] entry in additions)
+            {
+                Buffer.BlockCopy(entry, 0, result, output, entry.Length);
+                output += entry.Length;
+            }
+            Buffer.BlockCopy(data, tailEnd, result, output, data.Length - tailEnd);
+            WriteUInt32(result, 2, result.Length);
+            WriteUInt32(result, sectionEnd + 2, (tailEnd - sectionEnd) + added);
             return result;
         }
 
