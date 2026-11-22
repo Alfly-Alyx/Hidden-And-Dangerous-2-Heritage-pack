@@ -261,6 +261,10 @@ namespace HD2CommunityInstaller
             string gameRoot = Path.GetFullPath(gamePath)
                 .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
                 + Path.DirectorySeparatorChar;
+            // Les missions installees par le gestionnaire sont suivies par empreinte :
+            // PatchLooseMissionTrees ne les modifie pas, elles ne comptent donc pas ici.
+            Dictionary<string, string> managedTrees =
+                ManagedMissionTreeInventory.ReadHashes(gamePath);
             string missionsRoot = Path.Combine(gameRoot, "Missions");
             if (!Directory.Exists(missionsRoot)) return;
             foreach (string tree in Directory.GetFiles(
@@ -273,6 +277,7 @@ namespace HD2CommunityInstaller
                 string relative = target.Substring(gameRoot.Length)
                     .Replace((char)92, '/');
                 if (official.Contains(relative)) continue;
+                if (managedTrees.ContainsKey(target)) continue;
                 total++;
                 if (TreeKlzPatcher.Audit(File.ReadAllBytes(target)).ChangedItems == 0)
                     ready++;
