@@ -75,7 +75,7 @@ Le rapport raconte les découvertes : contenu coupé, variantes de missions, Lon
 
 ## État actuel
 
-La version **0.10.0** consolide notamment :
+La version **1.0.0** rend jouables les 11 adaptations solo avec l’équipe et les armes, supprime la limite de zone de combat sur toutes les missions, ferme automatiquement le jeu avant l’installation et corrige la réexécution du setup avec l’exploration libre activée. La version **0.10.0** consolidait notamment :
 
 - la détection exacte des options déjà installées ;
 - une seule liste H&D2 réunissant le service communautaire déjà utilisé et OpenSpy ;

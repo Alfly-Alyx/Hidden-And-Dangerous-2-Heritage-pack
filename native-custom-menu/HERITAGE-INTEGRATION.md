@@ -69,8 +69,7 @@ de textes vides ou de second bouton Retour.
 - L'extension graphique des menus hors 4:3 reste un chantier séparé, non validé
   par cette livraison.
 
-Avant distribution, lancer `tools/custom_mission_setup_audit.py` et
-`tools/installer_wiring_audit.py`. Vérifier également les ressources réellement
+Avant distribution, lancer `tools/custom_mission_setup_audit.py`. Vérifier également les ressources réellement
 embarquées avec `CustomMissionManagerInstaller.ValidateOnly()` dans le setup.
 
 Pour toute question, contacter la tâche **Modifier la GUI du jeu**

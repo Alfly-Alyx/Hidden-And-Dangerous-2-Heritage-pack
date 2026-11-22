@@ -18,3 +18,8 @@ dist/*
 __pycache__/
 .venv/
 tmp/
+experimental/
+validation/
+gui-test-harness/
+output/*
+!output/pdf/
