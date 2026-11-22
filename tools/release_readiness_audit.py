@@ -33,7 +33,7 @@ import signal_graph_audit
 import stable_candidate_coverage_audit
 
 
-FINAL_SETUP = "H-D2-Heritage-Pack-Setup.exe"
+FINAL_SETUP = "HD2-Heritage-Pack-Setup.exe"
 CUSTOM_CASES = {
     "custom.single_setup_integration",
     "custom.three_categories",

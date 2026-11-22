@@ -47,7 +47,7 @@ republication.
 En conséquence :
 
 - aucune donnée CMP n'est incorporée à
-  `H-D2-Heritage-Pack-Setup.exe` ;
+  `HD2-Heritage-Pack-Setup.exe` ;
 - aucune archive CMP n'est publiée dans le dépôt ou les livrables du Heritage
   Pack ;
 - l'utilisateur choisit la case CMP, puis l'installateur récupère directement

@@ -2,3 +2,9 @@
 # These embedded documents are checked byte-for-byte by the installer.
 custom-missions/README.md text eol=lf
 dist/CustomMissions/README.md text eol=lf
+custom-missions/mission.schema.json text eol=crlf
+custom-missions/_modele/mission.json text eol=crlf
+custom-missions/_modele/payload/Missions/MaMission/LISEZ_MOI.txt text eol=crlf
+dist/CustomMissions/mission.schema.json text eol=crlf
+dist/CustomMissions/_modele/mission.json text eol=crlf
+dist/CustomMissions/_modele/payload/Missions/MaMission/LISEZ_MOI.txt text eol=crlf

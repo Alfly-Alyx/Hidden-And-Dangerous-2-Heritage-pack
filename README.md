@@ -36,7 +36,7 @@ Heritage Pack restores content designed for H&D2 but removed, disabled, or incor
 
 1. Install **Hidden & Dangerous 2: Sabre Squadron** and update **1.12**.
 2. Close the game.
-3. Download `H-D2-Heritage-Pack-Setup.exe` from Releases.
+3. Download `HD2-Heritage-Pack-Setup.exe` from Releases.
 4. Run it as administrator.
 5. Check the game folder, choose your options, and select **Installer**.
 6. Run the tool again and select **Vérifier l’état** if you want to confirm the result.

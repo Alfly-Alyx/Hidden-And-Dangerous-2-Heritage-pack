@@ -155,6 +155,64 @@ namespace HD2CommunityInstaller
             return text.ToString();
         }
 
+        private static readonly string[] GameProcessNames = {
+            "HD2", "HD2_SabreSquadron"
+        };
+
+        // Ferme le jeu s'il est lance : ses fichiers (scripts, menus, archives)
+        // ne peuvent pas etre remplaces pendant qu'il tourne.
+        private static void CloseRunningGame(string gamePath, Action<string> progress)
+        {
+            string root = Path.GetFullPath(gamePath).TrimEnd('\\') + "\\";
+            List<Process> running = new List<Process>();
+            foreach (string name in GameProcessNames)
+            {
+                foreach (Process process in Process.GetProcessesByName(name))
+                {
+                    bool inGame = true;
+                    try
+                    {
+                        string path = process.MainModule.FileName;
+                        inGame = path.StartsWith(root, StringComparison.OrdinalIgnoreCase);
+                    }
+                    catch { }
+                    if (inGame) running.Add(process);
+                    else process.Dispose();
+                }
+            }
+            if (running.Count == 0) return;
+            Report(progress, "Hidden & Dangerous 2 est lance : fermeture du jeu...");
+            Log("Fermeture du jeu avant l'installation (" + running.Count + " processus).");
+            foreach (Process process in running)
+            {
+                try
+                {
+                    if (!process.HasExited)
+                    {
+                        process.CloseMainWindow();
+                        if (!process.WaitForExit(5000))
+                        {
+                            process.Kill();
+                            process.WaitForExit(10000);
+                        }
+                    }
+                }
+                catch (Exception error)
+                {
+                    Log("Fermeture du jeu impossible : " + error.Message);
+                }
+            }
+            foreach (Process process in running)
+            {
+                bool stillRunning = false;
+                try { stillRunning = !process.HasExited; } catch { }
+                process.Dispose();
+                if (stillRunning)
+                    throw new InvalidOperationException(
+                        "Le jeu est toujours lance. Fermez-le puis relancez l'installation.");
+            }
+        }
+
         public static void Install(InstallOptions options, Action<string> progress, Action<int> percent)
         {
             ValidateGamePath(options.GamePath);
@@ -169,6 +227,7 @@ namespace HD2CommunityInstaller
             if (options.InstallAutomaticDiagnostics)
                 DiagnosticMonitorInstaller.ValidateOnly();
             if (options.DownloadGuides) GuideDownloader.ValidateOnly();
+            CloseRunningGame(options.GamePath, progress);
             bool updating = File.Exists(AppConfig.StateFile);
             if (updating)
                 EnsureSafeUpdate(options.GamePath);
@@ -639,6 +698,7 @@ namespace HD2CommunityInstaller
                     string actual = CmpInstaller.ComputeSha256(target);
                     if (!String.Equals(actual, change.InstalledSha256,
                             StringComparison.OrdinalIgnoreCase)
+                        && !IsManagerManagedOutput(change.RelativePath)
                         && !MatchesLegacyPrototypeRewrite(change, target))
                         conflicts.Add(change.RelativePath + " (modifie)");
                 }
@@ -646,6 +706,37 @@ namespace HD2CommunityInstaller
             if (GraphicsConfigurator.HasRestoreConflict(state))
                 conflicts.Add("Registre LS3D_setup (modifie)");
             return conflicts;
+        }
+
+        // Fichiers que le gestionnaire de missions reecrit lui-meme (tables de
+        // texte, menus, listes de missions) : leur modification n'est pas un
+        // conflit, l'etape d'integration du menu les regenere et les rehache.
+        private static bool IsManagerManagedOutput(string relative)
+        {
+            string path = relative.Replace('/', '\\').ToLowerInvariant();
+            // Les 11 adaptations solo du pack (paquets, missions et scripts installes)
+            // sont regenerees par l'installeur : corrections de test comprises.
+            if (path.StartsWith("custommissions\\heritage solo - ")
+                || path.StartsWith("missions\\hp_solo_")
+                || path.StartsWith("scripts\\hp_solo_"))
+                return true;
+            if (path.StartsWith("text\\") && path.EndsWith("\\texty_dd.txt"))
+                return true;
+            switch (path)
+            {
+                case "gamedata\\gamedata02.gdt":
+                case "gamedata\\gamedata03.gdt":
+                case "gamedata\\gamedata04.gdt":
+                case "gamedata\\gamedata05.gdt":
+                case "models\\singleplayer.4ds":
+                case "models\\single mission 2.4ds":
+                case "scripts\\hd2.custommenu.asi":
+                case "static_menu_managed_files.json":
+                case "custom_missions_install.json":
+                case "custommissions\\.catalogue-ids.json":
+                    return true;
+            }
+            return false;
         }
 
         private static bool MatchesLegacyPrototypeRewrite(

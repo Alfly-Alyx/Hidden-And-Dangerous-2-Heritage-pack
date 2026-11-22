@@ -39,6 +39,7 @@ $common = @(
     '/nologo', '/utf8output', '/checked+', '/warn:4', '/platform:anycpu', '/optimize+',
     '/reference:System.dll', '/reference:System.Core.dll', '/reference:System.Drawing.dll',
     '/reference:System.Windows.Forms.dll', '/reference:System.Web.Extensions.dll',
+    '/reference:System.IO.Compression.dll', '/reference:System.IO.Compression.FileSystem.dll',
     "/resource:$nativeMenu,HD2CustomMissionManager.CustomMenu.asi"
 ) + $sources
 

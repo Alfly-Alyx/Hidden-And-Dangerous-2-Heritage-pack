@@ -7,7 +7,7 @@
 - Le chargeur ASI du correctif écran large, déjà fourni par le Heritage Pack.
 
 `build.ps1` reconstruit le gestionnaire, embarque son EXE et son empreinte
-dans `dist/H-D2-Heritage-Pack-Setup.exe`. Le raccordement est dans
+dans `dist/HD2-Heritage-Pack-Setup.exe`. Le raccordement est dans
 `installer/CustomMissionManagerInstaller.cs` et `InstallerCore.cs`.
 Préserver les missions et autres fichiers utilisateur non suivis lors des mises
 à jour ; ne pas redistribuer les fichiers commerciaux utilisés pour les tests.

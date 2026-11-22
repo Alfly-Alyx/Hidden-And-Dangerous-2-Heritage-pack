@@ -95,7 +95,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 if (-not $ConsoleOnly) {
-    $finalOut = Join-Path $dist 'H-D2-Heritage-Pack-Setup.exe'
+    $finalOut = Join-Path $dist 'HD2-Heritage-Pack-Setup.exe'
     $manifest = Join-Path $projectRoot 'installer\app.manifest'
     $finalArgs = @('/target:winexe', "/win32manifest:$manifest", "/win32icon:$icon", "/out:$finalOut") + $common
     & $csc $finalArgs

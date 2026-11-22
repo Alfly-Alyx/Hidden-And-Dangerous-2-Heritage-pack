@@ -608,7 +608,7 @@ def audit(root: Path) -> dict[str, object]:
         historical_icon,
         "installer\\assets\\hd2-heritage-icon.ico" in build,
         '"/win32icon:$icon"' in build,
-        "H-D2-Heritage-Pack-Setup.exe" in build,
+        "HD2-Heritage-Pack-Setup.exe" in build,
         'AssemblyTitle("H&D2 Heritage Pack Installer")' in assembly,
         'AssemblyProduct("H&D2 Heritage Pack")' in assembly,
         'Text = "Hidden & Dangerous 2 - Heritage Pack"' in main_form,
