@@ -14,9 +14,6 @@ output/audit/*-prebuild.json
 build/
 custom-mission-tool/bin/
 dist/*
-!dist/HD2-Custom-Mission-Manager.exe
-!dist/CustomMissions/
-!dist/CustomMissions/**
 *.log
 __pycache__/
 .venv/
