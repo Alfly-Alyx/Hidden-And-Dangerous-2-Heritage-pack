@@ -75,6 +75,8 @@ The report tells the story of the findings: cut content, mission variants, Londo
 
 ## Current status
 
+Version **1.0.0** makes the 11 solo adaptations playable with the squad and weapons, removes the combat-zone limit on every mission, closes the game automatically before installing, and fixes re-running the setup with free exploration enabled.
+
 Version **0.10.1** corrects reinstalling the custom mission menu and shows progress while the 11 solo adaptations are created. The adaptations remain in their own menu category. Free exploration leaves their manager-owned mission files intact; the original solo missions are unchanged.
 
 Version **0.10.0** consolidates:
